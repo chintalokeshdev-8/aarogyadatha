@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star } from "lucide-react";
+import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -338,10 +338,31 @@ export function LabReportsClient({
                                                 <span className="sr-only">Toggle</span>
                                             </Button>
                                         </CollapsibleTrigger>
-                                        <CollapsibleContent>
-                                            <div className="border-t">
+                                        <CollapsibleContent className="p-4 border-t">
+                                            <div className="space-y-4 mb-6">
+                                                <h4 className="font-semibold text-base">Lab Information</h4>
+                                                <div className="space-y-2 text-sm text-muted-foreground">
+                                                    <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {lab.address}</p>
+                                                    <p className="flex items-center gap-2"><Phone className="h-4 w-4"/> {lab.phone}</p>
+                                                    <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {lab.hours}</p>
+                                                    <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-diagnostics))'}}>
+                                                        <Globe className="h-4 w-4"/> Visit Website
+                                                    </a>
+                                                </div>
+                                                <div className="flex gap-2 pt-2">
+                                                    <Button variant="outline" size="sm">
+                                                        <Share2 className="mr-2 h-4 w-4"/> Share Directions
+                                                    </Button>
+                                                    <Button variant="outline" size="sm">
+                                                        <Map className="mr-2 h-4 w-4"/> View Location
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                 <h4 className="font-semibold text-base mb-4">Available Tests</h4>
                                                 {lab.tests.map((test: any) => (
-                                                     <div key={test.name} className="p-4 flex flex-col sm:flex-row justify-between sm:items-center border-b last:border-b-0">
+                                                     <div key={test.name} className="p-4 flex flex-col sm:flex-row justify-between sm:items-center border-t first:border-t-0">
                                                         <div className="mb-4 sm:mb-0">
                                                             <p className="font-semibold">{test.name}</p>
                                                             <Badge variant="outline" className="mt-1">{test.category}</Badge>

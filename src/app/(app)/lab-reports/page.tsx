@@ -30,6 +30,10 @@ const diagnosticLabs = [
     { 
         name: "Yoda Diagnostics", 
         location: "Kothapeta, Guntur",
+        address: "D.No: 12-12, 36/1, Old Club Rd, opp. Manasa hospital, Kothapeta, Guntur, Andhra Pradesh 522001",
+        phone: "096405 75575",
+        website: "https://yodadiagnostics.com/",
+        hours: "Open ⋅ Closes 11 pm",
         logo: "https://picsum.photos/seed/yoda_logo/100/100",
         dataAiHint: "modern lab logo",
         recommended: true,
@@ -42,6 +46,10 @@ const diagnosticLabs = [
     { 
         name: "Apollo Diagnostics", 
         location: "Guntur & Hyderabad",
+        address: "5-88-10, 1st Floor, Lakshmipuram Main Road, Guntur, Andhra Pradesh 522007",
+        phone: "0863 222 2108",
+        website: "https://www.apollodiagnostics.in/",
+        hours: "Open 24 hours",
         logo: "https://picsum.photos/seed/apollo_logo/100/100",
         dataAiHint: "apollo hospital logo",
         tests: [
@@ -53,6 +61,10 @@ const diagnosticLabs = [
     { 
         name: "Vijaya Diagnostics", 
         location: "Hyderabad",
+        address: "3-6-272, Himayatnagar, Hyderabad, Telangana 500029",
+        phone: "040 2342 0400",
+        website: "https://www.vijayadiagnostic.com/",
+        hours: "Open ⋅ Closes 10 pm",
         logo: "https://picsum.photos/seed/vijaya_logo/100/100",
         dataAiHint: "diagnostics lab logo",
         tests: [
@@ -64,6 +76,10 @@ const diagnosticLabs = [
     { 
         name: "Dr. Lal PathLabs", 
         location: "Guntur",
+        address: "1st Floor, Hindu College Down, 5/1, Arundelpet, Guntur, Andhra Pradesh 522002",
+        phone: "07961204892",
+        website: "https://www.lalpathlabs.com/",
+        hours: "Open ⋅ Closes 8 pm",
         logo: "https://picsum.photos/seed/lal_logo/100/100",
         dataAiHint: "pathology lab logo",
         tests: [
@@ -74,6 +90,10 @@ const diagnosticLabs = [
     { 
         name: "Yashoda Hospitals Lab", 
         location: "Hyderabad",
+        address: "Raj Bhavan Road, Somajiguda, Hyderabad, Telangana 500082",
+        phone: "040 4567 4567",
+        website: "https://www.yashodahospitals.com/yashoda-diagnostics/",
+        hours: "Open 24 hours",
         logo: "https://picsum.photos/seed/yashoda_logo/100/100",
         dataAiHint: "hospital logo",
         tests: [
