@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical } from "lucide-react";
+import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -16,6 +16,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 
 const getStatusBadgeClass = (status: string) => {
     switch (status) {
@@ -196,7 +199,7 @@ interface LabReportsClientProps {
     labReports: any[];
     imagingReports: any[];
     prescriptionReports: any[];
-    diagnosticTests: any[];
+    diagnosticLabs: any[];
     dummyReportData: Record<string, { content: string, image?: string, dataAiHint?: string }>;
 }
 
@@ -204,7 +207,7 @@ export function LabReportsClient({
     labReports,
     imagingReports,
     prescriptionReports,
-    diagnosticTests,
+    diagnosticLabs,
     dummyReportData
 }: LabReportsClientProps) {
     const [isAnalyzeOpen, setAnalyzeOpen] = useState(false);
@@ -216,6 +219,8 @@ export function LabReportsClient({
     const [reportImage, setReportImage] = useState<string | undefined>(undefined);
     const [reportImageHint, setReportImageHint] = useState<string | undefined>(undefined);
     const [fileName, setFileName] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [openLab, setOpenLab] = useState<string | null>(diagnosticLabs.length > 0 ? diagnosticLabs[0].name : null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -255,11 +260,15 @@ export function LabReportsClient({
         });
     };
 
+    const filteredLabs = diagnosticLabs.filter(lab => 
+        lab.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
         <div className="space-y-8">
              <div>
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics + Reports</h1>
-                <p className="text-muted-foreground">Find diagnostic tests and view your reports.</p>
+                <p className="text-muted-foreground">Find diagnostic labs and view your reports.</p>
             </div>
             <Tabs defaultValue="diagnostics" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 border p-0 h-auto" style={{borderColor: 'hsl(var(--nav-diagnostics))'}}>
@@ -269,14 +278,19 @@ export function LabReportsClient({
                 <TabsContent value="diagnostics" className="mt-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Find a Test</CardTitle>
-                            <CardDescription>Search for labs and tests near you.</CardDescription>
+                            <CardTitle>Find a Lab</CardTitle>
+                            <CardDescription>Search for diagnostic labs near you.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                             <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                                 <div className="relative md:col-span-2">
                                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                    <Input placeholder="Search test name, lab, or package..." className="pl-10" />
+                                    <Input 
+                                        placeholder="Search by lab name..." 
+                                        className="pl-10"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
                                 </div>
                                 <Select>
                                     <SelectTrigger>
@@ -291,31 +305,48 @@ export function LabReportsClient({
                                         <SelectItem value="vijayawada">Vijayawada</SelectItem>
                                     </SelectContent>
                                 </Select>
-                                <Select>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="All Categories" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="all">All Categories</SelectItem>
-                                        <SelectItem value="blood">Blood Tests</SelectItem>
-                                        <SelectItem value="imaging">Imaging</SelectItem>
-                                        <SelectItem value="packages">Health Packages</SelectItem>
-                                    </SelectContent>
-                                </Select>
                             </div>
                             <div className="space-y-4">
-                                {diagnosticTests.map(test => (
-                                    <Card key={test.name} className="p-4 flex flex-col sm:flex-row justify-between sm:items-center">
-                                        <div className="mb-4 sm:mb-0">
-                                            <p className="font-bold text-lg">{test.name}</p>
-                                            <p className="text-sm text-muted-foreground">{test.lab}</p>
-                                            <Badge variant="outline" className="mt-2">{test.category}</Badge>
-                                        </div>
-                                        <div className="flex items-center gap-4">
-                                            <p className="text-xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>₹{test.price}</p>
-                                            <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>Book Now</Button>
-                                        </div>
-                                    </Card>
+                                {filteredLabs.map(lab => (
+                                    <Collapsible 
+                                        key={lab.name} 
+                                        open={openLab === lab.name}
+                                        onOpenChange={() => setOpenLab(openLab === lab.name ? null : lab.name)}
+                                        className="border rounded-lg"
+                                    >
+                                        <CollapsibleTrigger className="w-full p-4 flex justify-between items-center hover:bg-muted/50 transition-colors">
+                                            <div className="flex items-center gap-4">
+                                                 <Avatar className="h-12 w-12 border">
+                                                    <AvatarImage src={lab.logo} data-ai-hint={lab.dataAiHint} />
+                                                    <AvatarFallback>{lab.name.substring(0, 2)}</AvatarFallback>
+                                                </Avatar>
+                                                <div>
+                                                    <p className="font-bold text-lg text-left">{lab.name}</p>
+                                                    <p className="text-sm text-muted-foreground text-left flex items-center gap-1"><MapPin className="h-3 w-3" /> {lab.location}</p>
+                                                </div>
+                                            </div>
+                                            <Button variant="ghost" size="sm" className="w-9 p-0">
+                                                {openLab === lab.name ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                                                <span className="sr-only">Toggle</span>
+                                            </Button>
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent>
+                                            <div className="border-t">
+                                                {lab.tests.map((test: any) => (
+                                                     <div key={test.name} className="p-4 flex flex-col sm:flex-row justify-between sm:items-center border-b last:border-b-0">
+                                                        <div className="mb-4 sm:mb-0">
+                                                            <p className="font-semibold">{test.name}</p>
+                                                            <Badge variant="outline" className="mt-1">{test.category}</Badge>
+                                                        </div>
+                                                        <div className="flex items-center gap-4">
+                                                            <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>₹{test.price}</p>
+                                                            <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>Book Now</Button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </CollapsibleContent>
+                                    </Collapsible>
                                 ))}
                             </div>
                         </CardContent>
@@ -501,5 +532,3 @@ export function LabReportsClient({
         </div>
     )
 }
-
-    

@@ -1,3 +1,4 @@
+
 import { LabReportsClient } from './lab-reports-client';
 
 const labReports = [
@@ -25,13 +26,49 @@ const prescriptionReports = [
     { testName: "Allergy Follow-up", date: "2024-07-18", doctor: "Dr. Ananya Sharma", status: "Completed" },
 ];
 
-const diagnosticTests = [
-    { name: "Complete Blood Picture (CBP)", lab: "Apollo Diagnostics", price: 300, category: "Blood" },
-    { name: "COVID-19 RT-PCR", lab: "Vijaya Diagnostics", price: 1200, category: "Imaging" },
-    { name: "Thyroid Profile (T3, T4, TSH)", lab: "Dr. Lal PathLabs", price: 600, category: "Blood" },
-    { name: "MRI Brain Scan", lab: "Yashoda Hospitals Lab", price: 5000, category: "Imaging" },
-    { name: "Full Body Checkup", lab: "Apollo Diagnostics", price: 2500, category: "Packages" },
-    { name: "Vitamin D Test", lab: "Vijaya Diagnostics", price: 800, category: "Blood" },
+const diagnosticLabs = [
+    { 
+        name: "Apollo Diagnostics", 
+        location: "Guntur & Hyderabad",
+        logo: "https://picsum.photos/seed/apollo_logo/100/100",
+        dataAiHint: "apollo hospital logo",
+        tests: [
+            { name: "Complete Blood Picture (CBP)", price: 300, category: "Blood" },
+            { name: "Full Body Checkup", price: 2500, category: "Packages" },
+            { name: "Urine Analysis", price: 250, category: "Blood" },
+        ]
+    },
+    { 
+        name: "Vijaya Diagnostics", 
+        location: "Hyderabad",
+        logo: "https://picsum.photos/seed/vijaya_logo/100/100",
+        dataAiHint: "diagnostics lab logo",
+        tests: [
+            { name: "COVID-19 RT-PCR", price: 1200, category: "Pathology" },
+            { name: "Vitamin D Test", price: 800, category: "Blood" },
+            { name: "ECG", price: 400, category: "Cardiology" },
+        ]
+    },
+    { 
+        name: "Dr. Lal PathLabs", 
+        location: "Guntur",
+        logo: "https://picsum.photos/seed/lal_logo/100/100",
+        dataAiHint: "pathology lab logo",
+        tests: [
+            { name: "Thyroid Profile (T3, T4, TSH)", price: 600, category: "Blood" },
+            { name: "Diabetes Health Checkup", price: 1500, category: "Packages" },
+        ]
+    },
+    { 
+        name: "Yashoda Hospitals Lab", 
+        location: "Hyderabad",
+        logo: "https://picsum.photos/seed/yashoda_logo/100/100",
+        dataAiHint: "hospital logo",
+        tests: [
+            { name: "MRI Brain Scan", price: 5000, category: "Imaging" },
+            { name: "CT Scan (Chest)", price: 3500, category: "Imaging" },
+        ]
+    }
 ];
 
 const dummyReportData: Record<string, { content: string, image?: string, dataAiHint?: string }> = {
@@ -136,7 +173,7 @@ export default function DiagnosticsPage() {
         labReports={labReports}
         imagingReports={imagingReports}
         prescriptionReports={prescriptionReports}
-        diagnosticTests={diagnosticTests}
+        diagnosticLabs={diagnosticLabs}
         dummyReportData={dummyReportData}
       />
     );
