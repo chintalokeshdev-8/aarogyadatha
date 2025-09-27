@@ -39,8 +39,11 @@ const diagnosticLabs = [
         recommended: true,
         tests: [
             { name: "Master Health Checkup", price: 3000, category: "Packages" },
+            { name: "Cardiac Wellness Package", price: 5000, category: "Packages" },
             { name: "Fasting Blood Sugar", price: 150, category: "Blood" },
             { name: "Kidney Function Test", price: 450, category: "Blood" },
+            { name: "Ultrasound Abdomen", price: 1200, category: "Imaging" },
+            { name: "Digital X-Ray Chest", price: 500, category: "Imaging" },
         ]
     },
     { 
@@ -54,8 +57,11 @@ const diagnosticLabs = [
         dataAiHint: "apollo hospital logo",
         tests: [
             { name: "Complete Blood Picture (CBP)", price: 300, category: "Blood" },
+            { name: "Lipid Profile", price: 600, category: "Blood" },
             { name: "Full Body Checkup", price: 2500, category: "Packages" },
+            { name: "Women's Health Package", price: 3500, category: "Packages" },
             { name: "Urine Analysis", price: 250, category: "Blood" },
+            { name: "X-Ray Chest", price: 450, category: "Imaging" },
         ]
     },
     { 
@@ -70,6 +76,8 @@ const diagnosticLabs = [
         tests: [
             { name: "COVID-19 RT-PCR", price: 1200, category: "Pathology" },
             { name: "Vitamin D Test", price: 800, category: "Blood" },
+            { name: "Advanced Full Body Checkup", price: 4500, category: "Packages" },
+            { name: "MRI Knee", price: 4000, category: "Imaging" },
             { name: "ECG", price: 400, category: "Cardiology" },
         ]
     },
@@ -84,7 +92,10 @@ const diagnosticLabs = [
         dataAiHint: "pathology lab logo",
         tests: [
             { name: "Thyroid Profile (T3, T4, TSH)", price: 600, category: "Blood" },
+            { name: "Dengue Panel", price: 1100, category: "Pathology" },
             { name: "Diabetes Health Checkup", price: 1500, category: "Packages" },
+            { name: "Fever Panel", price: 2000, category: "Packages" },
+            { name: "CT Scan Head", price: 2500, category: "Imaging" },
         ]
     },
     { 
@@ -99,6 +110,9 @@ const diagnosticLabs = [
         tests: [
             { name: "MRI Brain Scan", price: 5000, category: "Imaging" },
             { name: "CT Scan (Chest)", price: 3500, category: "Imaging" },
+            { name: "Executive Health Checkup", price: 6000, category: "Packages" },
+            { name: "Lipid Profile", price: 700, category: "Blood" },
+            { name: "Liver Function Test", price: 550, category: "Blood" },
         ]
     }
 ];
