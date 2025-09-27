@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp } from "lucide-react";
+import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -321,7 +321,15 @@ export function LabReportsClient({
                                                     <AvatarFallback>{lab.name.substring(0, 2)}</AvatarFallback>
                                                 </Avatar>
                                                 <div>
-                                                    <p className="font-bold text-lg text-left">{lab.name}</p>
+                                                    <div className="flex items-center gap-2">
+                                                        <p className="font-bold text-lg text-left">{lab.name}</p>
+                                                        {lab.recommended && (
+                                                            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                                                                <Star className="h-3 w-3 mr-1" />
+                                                                Recommended
+                                                            </Badge>
+                                                        )}
+                                                    </div>
                                                     <p className="text-sm text-muted-foreground text-left flex items-center gap-1"><MapPin className="h-3 w-3" /> {lab.location}</p>
                                                 </div>
                                             </div>

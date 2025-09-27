@@ -28,6 +28,18 @@ const prescriptionReports = [
 
 const diagnosticLabs = [
     { 
+        name: "Yoda Diagnostics", 
+        location: "Kothapeta, Guntur",
+        logo: "https://picsum.photos/seed/yoda_logo/100/100",
+        dataAiHint: "modern lab logo",
+        recommended: true,
+        tests: [
+            { name: "Master Health Checkup", price: 3000, category: "Packages" },
+            { name: "Fasting Blood Sugar", price: 150, category: "Blood" },
+            { name: "Kidney Function Test", price: 450, category: "Blood" },
+        ]
+    },
+    { 
         name: "Apollo Diagnostics", 
         location: "Guntur & Hyderabad",
         logo: "https://picsum.photos/seed/apollo_logo/100/100",
