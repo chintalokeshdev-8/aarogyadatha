@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -221,7 +221,18 @@ export function LabReportsClient({
     const [fileName, setFileName] = useState('');
     const [prescriptionFileName, setPrescriptionFileName] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('All');
     const [openLab, setOpenLab] = useState<string | null>(diagnosticLabs.length > 0 ? diagnosticLabs[0].name : null);
+
+    const testCategories = useMemo(() => {
+        const categories = new Set<string>();
+        diagnosticLabs.forEach(lab => {
+            lab.tests.forEach((test: any) => {
+                categories.add(test.category);
+            });
+        });
+        return ['All', ...Array.from(categories)];
+    }, [diagnosticLabs]);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -269,9 +280,21 @@ export function LabReportsClient({
         });
     };
 
-    const filteredLabs = diagnosticLabs.filter(lab => 
-        lab.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredLabs = useMemo(() => {
+        return diagnosticLabs
+            .filter(lab => 
+                lab.name.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map(lab => {
+                const filteredTests = selectedCategory === 'All' 
+                    ? lab.tests 
+                    : lab.tests.filter((test: any) => test.category === selectedCategory);
+                
+                return { ...lab, tests: filteredTests };
+            })
+            .filter(lab => lab.tests.length > 0);
+    }, [diagnosticLabs, searchTerm, selectedCategory]);
+
 
     return (
         <div className="space-y-8">
@@ -292,7 +315,7 @@ export function LabReportsClient({
                         </CardHeader>
                         <CardContent>
                              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                                <div className="relative md:col-span-2">
+                                <div className="relative">
                                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                     <Input 
                                         placeholder="Search by lab name..." 
@@ -301,6 +324,19 @@ export function LabReportsClient({
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                     />
                                 </div>
+                                <Select onValueChange={setSelectedCategory} defaultValue="All">
+                                    <SelectTrigger>
+                                        <div className="flex items-center gap-2">
+                                            <TestTube className="h-4 w-4" />
+                                            <SelectValue placeholder="Filter by Test Type" />
+                                        </div>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {testCategories.map(category => (
+                                            <SelectItem key={category} value={category}>{category}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                                 <Select>
                                     <SelectTrigger>
                                         <div className="flex items-center gap-2">
