@@ -219,6 +219,7 @@ export function LabReportsClient({
     const [reportImage, setReportImage] = useState<string | undefined>(undefined);
     const [reportImageHint, setReportImageHint] = useState<string | undefined>(undefined);
     const [fileName, setFileName] = useState('');
+    const [prescriptionFileName, setPrescriptionFileName] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [openLab, setOpenLab] = useState<string | null>(diagnosticLabs.length > 0 ? diagnosticLabs[0].name : null);
 
@@ -227,6 +228,14 @@ export function LabReportsClient({
             setFileName(event.target.files[0].name);
         } else {
             setFileName('');
+        }
+    };
+
+    const handlePrescriptionFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            setPrescriptionFileName(event.target.files[0].name);
+        } else {
+            setPrescriptionFileName('');
         }
     };
 
@@ -357,6 +366,44 @@ export function LabReportsClient({
                                                         <Map className="mr-2 h-4 w-4"/> View Location
                                                     </Button>
                                                 </div>
+                                            </div>
+
+                                            <div className="p-4 border rounded-lg bg-muted/30 mb-6">
+                                                <h4 className="font-semibold text-base mb-2">Have a Prescription?</h4>
+                                                <p className="text-sm text-muted-foreground mb-4">Upload your prescription to get exact prices from the lab reception.</p>
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button variant="outline" className="w-full sm:w-auto bg-background">
+                                                            <Upload className="mr-2 h-4 w-4" /> Upload Test Prescription
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent className="sm:max-w-[425px]">
+                                                        <DialogHeader>
+                                                            <DialogTitle>Upload for {lab.name}</DialogTitle>
+                                                            <DialogDescription>
+                                                                Upload your test prescription to get an accurate price quote.
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+                                                        <div className="grid gap-4 py-4">
+                                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                                <Label htmlFor="prescription-file" className="text-right">File</Label>
+                                                                <div className="col-span-3">
+                                                                    <Button asChild variant="outline">
+                                                                        <label htmlFor="prescription-upload" className="cursor-pointer w-full">
+                                                                            <Upload className="mr-2 h-4 w-4" />
+                                                                            {prescriptionFileName || 'Choose File'}
+                                                                        </label>
+                                                                    </Button>
+                                                                    <input id="prescription-upload" type="file" className="hidden" onChange={handlePrescriptionFileChange} accept="image/*,.pdf" />
+                                                                    {prescriptionFileName && <p className="text-xs text-muted-foreground mt-2">{prescriptionFileName}</p>}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <CardFooter className="p-0 pt-4">
+                                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>Send to Lab</Button>
+                                                        </CardFooter>
+                                                    </DialogContent>
+                                                </Dialog>
                                             </div>
                                             
                                             <div>
