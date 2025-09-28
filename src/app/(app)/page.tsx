@@ -122,7 +122,7 @@ export default function DashboardPage() {
                     <h3 className="text-xl font-bold text-blue-800 dark:text-blue-300">Link Your Government Health ID</h3>
                     <p className="text-blue-700 dark:text-blue-400/80 mt-1">Connect your Aarogyasri (UHID) or ABHA ID to securely access and manage your health records, benefits, and history in one place.</p>
                 </div>
-                <Link href="/my-health-ids">
+                <Link href="/profile#gov-health-ids">
                     <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-white mt-4 md:mt-0">
                         Link Now <Link2 className="ml-2 h-4 w-4" />
                     </Button>

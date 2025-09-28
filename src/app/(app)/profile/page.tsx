@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Heart, Droplets, Phone, Mail, MapPin, Shield, FileDown, Pencil, ShieldAlert, Users, HeartPulse, Pill, Trash2, Palette, Search, Hospital, UserPlus, Link2 } from "lucide-react";
+import { User, Heart, Droplets, Phone, Mail, MapPin, Shield, FileDown, Pencil, ShieldAlert, Users, HeartPulse, Pill, Trash2, Palette, Search, Hospital, UserPlus, Link2, Download, Printer } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { HealthOverview } from '../health-overview';
 import { GovIdIcon } from '@/components/icons/gov-id-icon';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const recentVisits = [
   { date: "2024-07-15", reason: "Fever & Cold", doctor: "Dr. Shashank" },
@@ -157,7 +158,7 @@ export default function ProfilePage() {
                 </CardContent>
             </Card>
 
-            <Card id="gov-health-ids">
+             <Card id="gov-health-ids">
                 <CardHeader>
                     <div className="flex items-center gap-3">
                         <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--nav-profile))'}}/>
@@ -167,24 +168,94 @@ export default function ProfilePage() {
                         </div>
                     </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="p-4 border rounded-lg bg-muted/40 flex justify-between items-center">
-                        <div>
-                            <p className="font-semibold">Aarogyasri Card (UHID)</p>
-                            <p className="text-sm text-muted-foreground">YS-1234-5678-9012</p>
+                <CardContent className="space-y-6">
+                    <div className="space-y-4">
+                        <CardHeader className="p-0">
+                            <div className="flex justify-between items-center">
+                                <CardTitle>Ayushman Bharat Health Account (ABHA)</CardTitle>
+                                <div className="flex gap-2">
+                                     <Button variant="outline"><Printer className="mr-2"/> Print</Button>
+                                    <Button><Download className="mr-2"/> Download</Button>
+                                </div>
+                            </div>
+                        </CardHeader>
+                         <div className="border-2 rounded-lg p-6 relative bg-blue-50" style={{borderColor: 'hsl(var(--primary))'}}>
+                            <div className="absolute top-4 left-4 flex items-center gap-2">
+                                <Image src="https://abdm.gov.in/assets/images/emblem_white_logo.svg" alt="National Health Authority" width={40} height={40} data-ai-hint="government logo" />
+                                <div>
+                                    <p className="font-bold text-sm">National Health Authority</p>
+                                </div>
+                            </div>
+                            <div className="absolute top-4 right-4">
+                                <Image src="https://abdm.gov.in/assets/images/abdm_logo.svg" alt="ABDM Logo" width={90} height={40} data-ai-hint="health mission logo" />
+                            </div>
+                            
+                            <div className="mt-20 grid md:grid-cols-3 gap-6 items-center">
+                                <div className="space-y-4 md:col-span-2">
+                                    <div className="flex items-center gap-4">
+                                        <Avatar className="h-24 w-24 border-4 border-white shadow-md">
+                                            <AvatarImage src="/images/profile.jpg" />
+                                            <AvatarFallback className="text-3xl">CL</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="text-sm text-muted-foreground">Name/పేరు</p>
+                                            <p className="text-2xl font-bold">Chinta Lokesh Babu</p>
+                                            <p className="text-xl font-semibold">చింతా లోకేష్ బాబు</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-sm text-muted-foreground">ABHA number/అభా నెంబరు</p>
+                                        <p className="text-xl font-bold tracking-wider">24-0278-1857-2658</p>
+                                    </div>
+                                     <div>
+                                        <p className="text-sm text-muted-foreground">ABHA address/అభా చిరునామా</p>
+                                        <p className="text-lg font-semibold">lokeshl1996@abdm</p>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p className="text-sm text-muted-foreground">Gender/లింగము</p>
+                                            <p className="text-lg font-semibold">Male/మగ</p>
+                                        </div>
+                                         <div>
+                                            <p className="text-sm text-muted-foreground">Date of birth/పుట్టిన తేదీ</p>
+                                            <p className="text-lg font-semibold">01-01-1997</p>
+                                        </div>
+                                         <div>
+                                            <p className="text-sm text-muted-foreground">Mobile/చరవాణి</p>
+                                            <p className="text-lg font-semibold">8008334948</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col items-center justify-center space-y-2">
+                                    <div className="bg-white p-2 rounded-lg border shadow-sm">
+                                        <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Commons_QR_code.png" alt="ABHA QR Code" width={150} height={150} data-ai-hint="qr code" />
+                                    </div>
+                                    <p className="text-sm font-medium">Scan QR to verify</p>
+                                </div>
+                            </div>
                         </div>
-                        <Badge variant="outline" className="text-green-700 border-green-200 bg-green-50">Verified</Badge>
                     </div>
-                    <div className="p-4 border rounded-lg bg-muted/40 flex justify-between items-center">
-                        <div>
-                            <p className="font-semibold">ABHA ID (Health Account)</p>
-                            <p className="text-sm text-muted-foreground">Linked</p>
+
+                    <Separator />
+
+                    <div className="space-y-4">
+                        <CardHeader className="p-0">
+                           <div className="flex items-center gap-3">
+                                <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--primary))'}}/>
+                                <div>
+                                    <CardTitle>Aarogyasri Health Card (UHID)</CardTitle>
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <div className="p-4 border rounded-lg bg-muted/40 flex justify-between items-center">
+                            <div>
+                                <p className="font-semibold text-lg">Universal Health ID (UHID)</p>
+                                <p className="text-base text-muted-foreground tracking-wider">YS-1234-5678-9012</p>
+                            </div>
+                            <Badge variant="outline" className="text-green-700 border-green-200 bg-green-50">Verified</Badge>
                         </div>
-                         <Badge variant="outline" className="text-green-700 border-green-200 bg-green-50">Verified</Badge>
                     </div>
-                     <Link href="/my-health-ids">
-                        <Button className="w-full">Manage Health IDs</Button>
-                    </Link>
                 </CardContent>
             </Card>
             
