@@ -266,7 +266,7 @@ export default function ProfilePage() {
                             <div>
                                 <p className="font-semibold text-lg">Universal Health ID (UHID)</p>
                                 <p className="text-base text-muted-foreground tracking-wider">
-                                    {showUhid ? 'YS-1234-5678-9012' : 'YS-XXXX-XXXX-9012'}
+                                    {showUhid ? 'CB-1234-5678-9012' : 'CB-XXXX-XXXX-9012'}
                                 </p>
                             </div>
                              <div className="flex items-center gap-4">
