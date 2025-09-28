@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History } from "lucide-react";
@@ -131,15 +132,22 @@ const getStatusInfo = (status: string) => {
 };
 
 export default function OpdQueuePage() {
+    const [today, setToday] = useState('');
+
+    useEffect(() => {
+        setToday(new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
+    }, []);
+
     const currentStatusInfo = getStatusInfo(appointmentDetails.status);
     const StatusIcon = currentStatusInfo.icon;
-    const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
+    
     return (
         <div className="space-y-8">
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-chat))'}}>Your Appointment Status</h1>
-                <p className="text-muted-foreground mt-2">Status for your appointments on {today}.</p>
+                <p className="text-muted-foreground mt-2">
+                    {today ? `Status for your appointments on ${today}.` : 'Loading date...'}
+                </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -362,3 +370,4 @@ export default function OpdQueuePage() {
     
 
     
+
