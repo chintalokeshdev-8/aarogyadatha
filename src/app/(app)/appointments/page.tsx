@@ -305,7 +305,7 @@ export default function AppointmentsPage() {
             </div>
 
             <Card className="p-4 shadow-sm">
-                <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                         <Input placeholder="Doctor or hospital..." className="pl-10" />
@@ -424,3 +424,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    

@@ -210,7 +210,7 @@ export default function OpdQueuePage() {
             </Card>
 
 
-            <div className="grid lg:grid-cols-2 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <div className="space-y-8">
                     <Card>
                         <CardHeader>
@@ -304,7 +304,7 @@ export default function OpdQueuePage() {
                     </Card>
                 </div>
 
-                 <Card className="flex flex-col h-[70vh]">
+                 <Card className="flex flex-col h-[70vh] lg:h-auto">
                     <CardHeader className="flex flex-row items-center gap-4 border-b">
                         <Avatar>
                             <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
@@ -364,10 +364,6 @@ export default function OpdQueuePage() {
 
         </div>
     );
+}
 
     
-
-    
-
-    
-

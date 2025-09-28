@@ -142,7 +142,7 @@ const ReportViewer = ({ content }: { content: string }) => {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><FlaskConical className="h-5 w-5 text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}} /> {patientInfo['Test'] || 'Report Details'}</CardTitle>
                 </CardHeader>
-                <CardContent className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
                     <div className="flex items-center gap-2">
                         <User className="h-4 w-4 text-muted-foreground" />
                         <strong>Patient:</strong> {patientInfo['Patient Name']}
@@ -152,7 +152,7 @@ const ReportViewer = ({ content }: { content: string }) => {
                         <strong>Date:</strong> {patientInfo['Date']}
                     </div>
                     {patientInfo['Doctor'] && (
-                         <div className="flex items-center gap-2 col-span-2">
+                         <div className="flex items-center gap-2 col-span-1 sm:col-span-2">
                             <StethoscopeIcon className="h-4 w-4 text-muted-foreground" />
                             <strong>Doctor:</strong> {patientInfo['Doctor']}
                         </div>
@@ -314,7 +314,7 @@ export function LabReportsClient({
                             <CardDescription>Search for diagnostic labs near you.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                                 <div className="relative">
                                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                     <Input 
@@ -468,14 +468,14 @@ export function LabReportsClient({
                 </TabsContent>
                 <TabsContent value="reports" className="mt-6">
                     <Card>
-                        <CardHeader className="flex flex-row justify-between items-start">
+                        <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                             <div>
                                 <CardTitle>My Reports</CardTitle>
                                 <CardDescription>View, download, and analyze your medical test results.</CardDescription>
                             </div>
                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>
+                                    <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} className="mt-4 sm:mt-0">
                                         <Upload className="mr-2 h-4 w-4" />
                                         Upload Report
                                     </Button>
@@ -577,7 +577,7 @@ export function LabReportsClient({
                         <DialogTitle className="flex items-center gap-2 text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}><Sparkles /> AI Report Analysis</DialogTitle>
                         <DialogDescription>Analyzing: {selectedReport?.testName} from {selectedReport?.date}</DialogDescription>
                     </DialogHeader>
-                    <div className="grid md:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
                         <div className="space-y-4">
                             <h3 className="font-semibold">Original Report Content</h3>
                             <Textarea 
@@ -646,3 +646,5 @@ export function LabReportsClient({
         </div>
     )
 }
+
+    

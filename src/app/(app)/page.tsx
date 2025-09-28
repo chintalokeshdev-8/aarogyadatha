@@ -24,7 +24,7 @@ const quickAccessItems = [
   { href: '/appointments', icon: CalendarCheck, label: 'Appointments', description: 'సమయం నమోదు చేసుకోండి', color: 'hsl(var(--nav-appointments))' },
   { href: '/opd-queue', icon: MessageSquare, label: 'OP STATUS', description: 'OP స్థితి', color: 'hsl(var(--nav-chat))' },
   { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', description: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
-  { href: '/my-health-ids', icon: GovIdIcon, label: 'My Health IDs', description: 'ఆరోగ్య ఐడి', color: 'hsl(var(--primary))' },
+  { href: '/profile#gov-health-ids', icon: GovIdIcon, label: 'My Health IDs', description: 'ఆరోగ్య ఐడి', color: 'hsl(var(--primary))' },
   { href: '/medicines', icon: Pill, label: 'My Medicines', description: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
   { href: '/blood-bank', icon: Droplets, label: 'Blood Bank', description: 'రక్త నిధి', color: 'hsl(var(--nav-blood-bank))' },
   { href: '/health-tracker', label: 'Health Tracker', description: 'ఆరోగ్య ట్రాకర్', icon: Activity, color: 'hsl(var(--nav-profile))' },
@@ -166,7 +166,7 @@ export default function DashboardPage() {
 
       <section>
         <h2 className="text-xl font-semibold mb-4">Quick Access</h2>
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
           {quickAccessItems.map((item) => (
             <Link key={item.href} href={item.href} passHref>
               <Card className="text-center p-4 hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center aspect-square">
@@ -213,3 +213,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    

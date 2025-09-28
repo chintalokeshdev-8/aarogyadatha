@@ -185,7 +185,7 @@ export default function ProfilePage() {
                         </CardHeader>
                         {showAbha ? (
                              <div className="border-2 rounded-lg p-6 relative bg-blue-50" style={{borderColor: 'hsl(var(--primary))'}}>
-                                <div className="flex justify-between items-start mb-12">
+                                <div className="flex justify-between items-start mb-4 sm:mb-12">
                                     <div className="flex items-center gap-2">
                                         <Image src="https://abdm.gov.in/assets/images/emblem_white_logo.svg" alt="National Health Authority" width={40} height={40} data-ai-hint="government logo" />
                                         <p className="font-bold text-sm">National Health Authority</p>
@@ -193,9 +193,9 @@ export default function ProfilePage() {
                                     <Image src="https://abdm.gov.in/assets/images/abdm_logo.svg" alt="ABDM Logo" width={90} height={40} data-ai-hint="health mission logo" />
                                 </div>
                                 
-                                <div className="grid md:grid-cols-3 gap-6 items-center">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                                     <div className="space-y-4 md:col-span-2">
-                                        <div className="flex items-center gap-4">
+                                        <div className="flex flex-col sm:flex-row items-center gap-4">
                                             <Avatar className="h-24 w-24 border-4 border-white shadow-md">
                                                 <AvatarImage src="/images/profile.jpg" />
                                                 <AvatarFallback className="text-3xl">CL</AvatarFallback>
@@ -280,7 +280,7 @@ export default function ProfilePage() {
                 </CardContent>
             </Card>
             
-            <div className="grid lg:grid-cols-3 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 <div className="lg:col-span-2 space-y-8">
                      <section>
                         <h2 className="text-xl font-semibold mb-4">Health Overview</h2>
@@ -397,3 +397,5 @@ export default function ProfilePage() {
         </div>
     );
 }
+
+    
