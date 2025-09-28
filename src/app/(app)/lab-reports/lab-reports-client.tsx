@@ -359,29 +359,31 @@ export function LabReportsClient({
                                         onOpenChange={() => setOpenLab(openLab === lab.name ? null : lab.name)}
                                         className="border rounded-lg"
                                     >
-                                        <CollapsibleTrigger className="w-full p-4 flex justify-between items-center hover:bg-muted/50 transition-colors">
-                                            <div className="flex items-center gap-4">
-                                                 <Avatar className="h-12 w-12 border">
-                                                    <AvatarImage src={lab.logo} data-ai-hint={lab.dataAiHint} />
-                                                    <AvatarFallback>{lab.name.substring(0, 2)}</AvatarFallback>
-                                                </Avatar>
-                                                <div>
-                                                    <div className="flex items-center gap-2">
-                                                        <p className="font-bold text-lg text-left">{lab.name}</p>
-                                                        {lab.recommended && (
-                                                            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
-                                                                <Star className="h-3 w-3 mr-1" />
-                                                                Recommended
-                                                            </Badge>
-                                                        )}
+                                        <CollapsibleTrigger asChild>
+                                            <div className="w-full p-4 flex justify-between items-center hover:bg-muted/50 transition-colors cursor-pointer">
+                                                <div className="flex items-center gap-4">
+                                                     <Avatar className="h-12 w-12 border">
+                                                        <AvatarImage src={lab.logo} data-ai-hint={lab.dataAiHint} />
+                                                        <AvatarFallback>{lab.name.substring(0, 2)}</AvatarFallback>
+                                                    </Avatar>
+                                                    <div>
+                                                        <div className="flex items-center gap-2">
+                                                            <p className="font-bold text-lg text-left">{lab.name}</p>
+                                                            {lab.recommended && (
+                                                                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                                                                    <Star className="h-3 w-3 mr-1" />
+                                                                    Recommended
+                                                                </Badge>
+                                                            )}
+                                                        </div>
+                                                        <p className="text-sm text-muted-foreground text-left flex items-center gap-1"><MapPin className="h-3 w-3" /> {lab.location}</p>
                                                     </div>
-                                                    <p className="text-sm text-muted-foreground text-left flex items-center gap-1"><MapPin className="h-3 w-3" /> {lab.location}</p>
                                                 </div>
+                                                <Button variant="ghost" size="sm" className="w-9 p-0">
+                                                    {openLab === lab.name ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                                                    <span className="sr-only">Toggle</span>
+                                                </Button>
                                             </div>
-                                            <Button variant="ghost" size="sm" className="w-9 p-0">
-                                                {openLab === lab.name ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-                                                <span className="sr-only">Toggle</span>
-                                            </Button>
                                         </CollapsibleTrigger>
                                         <CollapsibleContent className="p-4 border-t">
                                             <div className="space-y-4 mb-6">
