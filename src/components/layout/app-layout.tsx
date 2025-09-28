@@ -100,7 +100,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         return (
                            <Link href={item.href} key={item.label} className="flex-shrink-0">
                                <div className={cn(
-                                   "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-24 py-1",
+                                   "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-20 py-1",
                                    isActive ? "scale-105" : "scale-100",
                                    isSpecial ? 'bg-destructive/10' : '',
                                    item.label === 'Blood Bank' && 'bg-red-500/10'
@@ -111,14 +111,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             backgroundColor: isActive && !isSpecial ? `${item.color.replace(')', ' / 0.1)')}` : 'transparent',
                                         }}
                                     >
-                                       <item.icon className="h-6 w-6" style={{ color: isSpecial ? specialColor : item.color }} />
+                                       <item.icon className="h-5 w-5" style={{ color: isSpecial ? specialColor : item.color }} />
                                    </div>
                                    <div className="text-center leading-tight">
-                                        <p className="text-xs font-bold"
+                                        <p className="text-[11px] font-bold whitespace-normal"
                                            style={{color: isActive || isSpecial ? (isSpecial ? specialColor : item.color) : 'hsl(var(--foreground))'}}>
                                            {item.label}
                                         </p>
-                                        <p className="text-[10px] font-medium"
+                                        <p className="text-[10px] font-medium whitespace-normal"
                                            style={{color: isActive || isSpecial ? (isSpecial ? specialColor : item.color) : 'hsl(var(--muted-foreground))'}}>
                                            {item.telugu}
                                         </p>

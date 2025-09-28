@@ -169,12 +169,12 @@ export default function DashboardPage() {
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
           {quickAccessItems.map((item) => (
             <Link key={item.href} href={item.href} passHref>
-              <Card className="text-center p-4 hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center aspect-square">
-                <div className="p-3 rounded-full mb-3" style={{backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
-                    <item.icon className="h-10 w-10" style={{color: item.color}} />
+              <Card className="text-center p-2 hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center aspect-square">
+                <div className="p-2 rounded-full mb-2" style={{backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
+                    <item.icon className="h-8 w-8" style={{color: item.color}} />
                 </div>
-                <p className="font-bold text-sm">{item.label}</p>
-                <p className="text-xs text-muted-foreground">{item.description}</p>
+                <p className="font-bold text-xs leading-tight">{item.label}</p>
+                <p className="text-xs text-muted-foreground whitespace-normal">{item.description}</p>
               </Card>
             </Link>
           ))}
@@ -213,5 +213,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
