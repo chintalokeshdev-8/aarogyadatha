@@ -5,13 +5,14 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Heart, Droplets, Phone, Mail, MapPin, Shield, FileDown, Pencil, ShieldAlert, Users, HeartPulse, Pill, Trash2, Palette, Search, Hospital, UserPlus } from "lucide-react";
+import { User, Heart, Droplets, Phone, Mail, MapPin, Shield, FileDown, Pencil, ShieldAlert, Users, HeartPulse, Pill, Trash2, Palette, Search, Hospital, UserPlus, Link2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { HealthOverview } from '../health-overview';
+import { GovIdIcon } from '@/components/icons/gov-id-icon';
 
 const recentVisits = [
   { date: "2024-07-15", reason: "Fever & Cold", doctor: "Dr. Shashank" },
@@ -155,6 +156,39 @@ export default function ProfilePage() {
                 </CardContent>
             </Card>
 
+            <Card id="gov-health-ids">
+                <CardHeader>
+                    <div className="flex items-center gap-3">
+                        <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--nav-profile))'}}/>
+                        <div>
+                            <CardTitle>Government Health IDs</CardTitle>
+                            <CardDescription>Aarogyasri (UHID) & ABHA ID</CardDescription>
+                        </div>
+                    </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="p-4 border rounded-lg bg-muted/40">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <p className="font-semibold">Aarogyasri Card (UHID)</p>
+                                <p className="text-sm text-muted-foreground">YS-1234-5678-9012</p>
+                            </div>
+                            <Badge variant="outline" className="text-green-700 border-green-200 bg-green-50">Verified</Badge>
+                        </div>
+                    </div>
+                    <div className="p-4 border rounded-lg bg-muted/40">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <p className="font-semibold">ABHA ID (Health Account)</p>
+                                <p className="text-sm text-muted-foreground">Not Linked</p>
+                            </div>
+                            <Button size="sm" variant="outline">
+                                Link Now <Link2 className="ml-2 h-4 w-4"/>
+                            </Button>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
             
             <div className="grid lg:grid-cols-3 gap-8 items-start">
                 <div className="lg:col-span-2 space-y-8">
