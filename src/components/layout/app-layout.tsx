@@ -114,11 +114,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                        <item.icon className="h-5 w-5" style={{ color: isSpecial ? specialColor : item.color }} />
                                    </div>
                                    <div className="text-center leading-tight">
-                                        <p className="text-[11px] font-bold whitespace-normal"
+                                        <p className="text-xs font-bold whitespace-normal"
                                            style={{color: isActive || isSpecial ? (isSpecial ? specialColor : item.color) : 'hsl(var(--foreground))'}}>
                                            {item.label}
                                         </p>
-                                        <p className="text-[10px] font-medium whitespace-normal"
+                                        <p className="text-[11px] font-medium whitespace-normal"
                                            style={{color: isActive || isSpecial ? (isSpecial ? specialColor : item.color) : 'hsl(var(--muted-foreground))'}}>
                                            {item.telugu}
                                         </p>
