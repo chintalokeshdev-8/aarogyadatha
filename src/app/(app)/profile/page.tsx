@@ -180,17 +180,15 @@ export default function ProfilePage() {
                             </div>
                         </CardHeader>
                          <div className="border-2 rounded-lg p-6 relative bg-blue-50" style={{borderColor: 'hsl(var(--primary))'}}>
-                            <div className="absolute top-4 left-4 flex items-center gap-2">
-                                <Image src="https://abdm.gov.in/assets/images/emblem_white_logo.svg" alt="National Health Authority" width={40} height={40} data-ai-hint="government logo" />
-                                <div>
+                            <div className="flex justify-between items-start mb-12">
+                                <div className="flex items-center gap-2">
+                                    <Image src="https://abdm.gov.in/assets/images/emblem_white_logo.svg" alt="National Health Authority" width={40} height={40} data-ai-hint="government logo" />
                                     <p className="font-bold text-sm">National Health Authority</p>
                                 </div>
-                            </div>
-                            <div className="absolute top-4 right-4">
                                 <Image src="https://abdm.gov.in/assets/images/abdm_logo.svg" alt="ABDM Logo" width={90} height={40} data-ai-hint="health mission logo" />
                             </div>
                             
-                            <div className="mt-20 grid md:grid-cols-3 gap-6 items-center">
+                            <div className="grid md:grid-cols-3 gap-6 items-center">
                                 <div className="space-y-4 md:col-span-2">
                                     <div className="flex items-center gap-4">
                                         <Avatar className="h-24 w-24 border-4 border-white shadow-md">
