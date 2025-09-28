@@ -213,7 +213,7 @@ export default function ProfilePage() {
                                         </div>
                                         <div>
                                             <p className="text-sm text-muted-foreground">ABHA address/అభా చిరునామా</p>
-                                            <p className="text-lg font-semibold">lokeshl1996@abdm</p>
+                                            <p className="text-lg font-semibold">chinta1997@abdm</p>
                                         </div>
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
@@ -397,5 +397,3 @@ export default function ProfilePage() {
         </div>
     );
 }
-
-    
