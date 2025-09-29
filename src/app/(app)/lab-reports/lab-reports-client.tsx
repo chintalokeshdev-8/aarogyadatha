@@ -214,6 +214,7 @@ export function LabReportsClient({
     const [isViewOpen, setViewOpen] = useState(false);
     const [selectedReport, setSelectedReport] = useState<any | null>(null);
     const [analysisResult, setAnalysisResult] = useState<ReportAnalysisOutput | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [isPending, startTransition] = useTransition();
     const [reportContent, setReportContent] = useState('');
     const [reportImage, setReportImage] = useState<string | undefined>(undefined);
@@ -240,6 +241,14 @@ export function LabReportsClient({
         } else {
             setFileName('');
         }
+    };
+    
+    const handleAction = (action: Function) => {
+        setIsSubmitting(true);
+        setTimeout(() => {
+            action();
+            setIsSubmitting(false);
+        }, 1000);
     };
 
     const handlePrescriptionFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -397,11 +406,11 @@ export function LabReportsClient({
                                                     </a>
                                                 </div>
                                                 <div className="flex gap-2 pt-2">
-                                                    <Button variant="outline" size="sm">
-                                                        <Share2 className="mr-2 h-4 w-4"/> Share Directions
+                                                    <Button variant="outline" size="sm" onClick={() => handleAction(() => {})}>
+                                                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Share2 className="mr-2 h-4 w-4"/>} Share Directions
                                                     </Button>
-                                                    <Button variant="outline" size="sm">
-                                                        <Map className="mr-2 h-4 w-4"/> View Location
+                                                    <Button variant="outline" size="sm" onClick={() => handleAction(() => {})}>
+                                                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Map className="mr-2 h-4 w-4"/>} View Location
                                                     </Button>
                                                 </div>
                                             </div>
@@ -438,7 +447,9 @@ export function LabReportsClient({
                                                             </div>
                                                         </div>
                                                         <CardFooter className="p-0 pt-4">
-                                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>Send to Lab</Button>
+                                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
+                                                                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...</> : 'Send to Lab'}
+                                                            </Button>
                                                         </CardFooter>
                                                     </DialogContent>
                                                 </Dialog>
@@ -454,7 +465,9 @@ export function LabReportsClient({
                                                         </div>
                                                         <div className="flex items-center gap-4">
                                                             <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>₹{test.price}</p>
-                                                            <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>Book Now</Button>
+                                                            <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
+                                                                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Booking...</> : 'Book Now'}
+                                                            </Button>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -520,7 +533,9 @@ export function LabReportsClient({
                                         </div>
                                     </div>
                                     <CardFooter className="p-0 pt-4">
-                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>Save Report</Button>
+                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
+                                            {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Report'}
+                                        </Button>
                                     </CardFooter>
                                 </DialogContent>
                             </Dialog>
@@ -646,5 +661,7 @@ export function LabReportsClient({
         </div>
     )
 }
+
+    
 
     

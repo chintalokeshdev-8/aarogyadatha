@@ -218,8 +218,8 @@ export default function SymptomCheckerPage() {
                             </p>
                          </div>
                          <Link href="/appointments" className="w-full">
-                            <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
-                                Book an Appointment
+                            <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}} disabled={isPending}>
+                               {isPending ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait...</> : 'Book an Appointment'}
                             </Button>
                         </Link>
                     </CardFooter>
@@ -244,3 +244,6 @@ export default function SymptomCheckerPage() {
         </div>
     );
 }
+
+
+    

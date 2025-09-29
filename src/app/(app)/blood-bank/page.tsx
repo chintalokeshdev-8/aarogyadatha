@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Droplets, MapPin, UserPlus } from "lucide-react";
+import { User, Droplets, MapPin, UserPlus, Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { formatDistanceToNow } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+
 
 const bloodRequestsData = [
     { patientName: "lokesh chinta", bloodType: "O+", city: "guntur", contactInfo: "lokesh@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 5) },
@@ -26,6 +28,20 @@ const cities = ["All", "guntur", "hyderabad", "vijayawada", "mumbai", "bangalore
 
 export default function BloodBankPage() {
     const [bloodRequests, setBloodRequests] = useState<any[]>([]);
+    const { toast } = useToast();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleSubmit = (e: React.FormEvent, successMessage: string) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setTimeout(() => {
+            setIsSubmitting(false);
+            toast({
+                title: "Success!",
+                description: successMessage,
+            });
+        }, 1500);
+    };
 
     useEffect(() => {
         // This runs only on the client, after hydration
@@ -106,7 +122,7 @@ export default function BloodBankPage() {
                             </div>
                         </TabsContent>
                         <TabsContent value="request" className="mt-0">
-                            <form className="space-y-4">
+                            <form className="space-y-4" onSubmit={(e) => handleSubmit(e, "Your blood request has been posted successfully.")}>
                                 <div className="space-y-2">
                                     <Label htmlFor="patientName">Patient Name</Label>
                                     <Input id="patientName" placeholder="Enter patient's name" />
@@ -139,11 +155,13 @@ export default function BloodBankPage() {
                                     <Label htmlFor="contactInfo">Contact Info (Phone or Email)</Label>
                                     <Input id="contactInfo" placeholder="Enter contact details" />
                                 </div>
-                                <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-blood-bank))'}}>Post Blood Request</Button>
+                                <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-blood-bank))'}} disabled={isSubmitting}>
+                                    {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Posting...</> : 'Post Blood Request'}
+                                </Button>
                             </form>
                         </TabsContent>
                         <TabsContent value="register" className="mt-0">
-                            <form className="space-y-6">
+                            <form className="space-y-6" onSubmit={(e) => handleSubmit(e, "You have been registered as a donor. Thank you!")}>
                                 <div className="space-y-2">
                                     <Label htmlFor="donorName">Full Name</Label>
                                     <Input id="donorName" placeholder="Enter your full name" />
@@ -186,7 +204,9 @@ export default function BloodBankPage() {
                                     </div>
                                     <Switch id="availability-mode" />
                                 </div>
-                                <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-blood-bank))'}}>Register as a Donor</Button>
+                                <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-blood-bank))'}} disabled={isSubmitting}>
+                                    {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Registering...</> : 'Register as a Donor'}
+                                </Button>
                             </form>
                         </TabsContent>
                     </div>
@@ -195,3 +215,5 @@ export default function BloodBankPage() {
         </Card>
     );
 }
+
+    

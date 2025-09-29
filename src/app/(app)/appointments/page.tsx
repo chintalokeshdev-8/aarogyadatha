@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 
@@ -273,6 +273,9 @@ export default function AppointmentsPage() {
     const [isProfileOpen, setProfileOpen] = useState(false);
     const { toast } = useToast();
     const router = useRouter();
+    const [bookingDoctor, setBookingDoctor] = useState<string | null>(null);
+    const [isSharing, setIsSharing] = useState(false);
+
 
     const handleViewProfile = (doctor: any) => {
         setSelectedDoctor(doctor);
@@ -280,6 +283,7 @@ export default function AppointmentsPage() {
     };
     
     const handleShare = (doctor: any) => {
+        setIsSharing(true);
         const hospital = hospitalsData[doctor.hospital as keyof typeof hospitalsData];
         const shareText = `Check out Dr. ${doctor.name}, ${doctor.specialty} at ${doctor.hospital}.\nAddress: ${hospital.address}\nContact: ${hospital.phone}`;
         navigator.clipboard.writeText(shareText);
@@ -287,14 +291,19 @@ export default function AppointmentsPage() {
             title: "Copied to Clipboard",
             description: "Doctor's details have been copied.",
         });
+        setTimeout(() => setIsSharing(false), 1000);
     };
 
     const handleBookAppointment = (doctor: any) => {
-        toast({
-            title: "Appointment Confirmed!",
-            description: `Your appointment with ${doctor.name} is booked. Check the OP Status page for live updates.`,
-        });
-        router.push('/opd-queue');
+        setBookingDoctor(doctor.name);
+        setTimeout(() => {
+            toast({
+                title: "Appointment Confirmed!",
+                description: `Your appointment with ${doctor.name} is booked. Check the OP Status page for live updates.`,
+            });
+            router.push('/opd-queue');
+            setBookingDoctor(null);
+        }, 1500);
     };
 
     return (
@@ -351,32 +360,38 @@ export default function AppointmentsPage() {
             </Card>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {doctors.map((doctor, index) => (
-                    <Card key={index} className="transition-shadow hover:shadow-md">
-                        <CardContent className="p-6">
-                            <div className="flex flex-col sm:flex-row gap-6">
-                                <Avatar className="h-28 w-28 border-4" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
-                                    <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
-                                    <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1">
-                                    <h3 className="text-2xl font-bold">{doctor.name}</h3>
-                                    <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold">{doctor.specialty}</p>
-                                    <p className="text-sm text-muted-foreground">{doctor.experience} experience</p>
-                                    <p className="text-sm text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
+                {doctors.map((doctor, index) => {
+                    const isBooking = bookingDoctor === doctor.name;
+                    return (
+                        <Card key={index} className="transition-shadow hover:shadow-md">
+                            <CardContent className="p-6">
+                                <div className="flex flex-col sm:flex-row gap-6">
+                                    <Avatar className="h-28 w-28 border-4" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
+                                        <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
+                                        <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-1">
+                                        <h3 className="text-2xl font-bold">{doctor.name}</h3>
+                                        <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold">{doctor.specialty}</p>
+                                        <p className="text-sm text-muted-foreground">{doctor.experience} experience</p>
+                                        <p className="text-sm text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="mt-4 space-y-3 text-sm">
-                                <p><strong className="font-semibold">Successful Surgeries:</strong> {doctor.surgeries}</p>
-                                <p><strong className="font-semibold">Main Focus:</strong> {doctor.mainDealing}</p>
-                            </div>
-                             <div className="mt-6 flex justify-end gap-2">
-                                <Button variant="outline" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
-                                <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)}>Book Appointment</Button>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
+                                <div className="mt-4 space-y-3 text-sm">
+                                    <p><strong className="font-semibold">Successful Surgeries:</strong> {doctor.surgeries}</p>
+                                    <p><strong className="font-semibold">Main Focus:</strong> {doctor.mainDealing}</p>
+                                </div>
+                                 <div className="mt-6 flex justify-end gap-2">
+                                    <Button variant="outline" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
+                                    <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
+                                        {isBooking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                        {isBooking ? 'Booking...' : 'Book Appointment'}
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )
+                })}
             </div>
 
             <Dialog open={isProfileOpen} onOpenChange={setProfileOpen}>
@@ -408,11 +423,13 @@ export default function AppointmentsPage() {
                                     </div>
                                 </div>
                                 <div className="flex justify-end gap-2">
-                                    <Button variant="outline" onClick={() => handleShare(selectedDoctor)}>
-                                        <Copy className="mr-2 h-4 w-4" /> Copy Details
+                                    <Button variant="outline" onClick={() => handleShare(selectedDoctor)} disabled={isSharing}>
+                                        {isSharing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Copy className="mr-2 h-4 w-4" />}
+                                        {isSharing ? 'Copying...' : 'Copy Details'}
                                     </Button>
-                                     <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(selectedDoctor)}>
-                                        Book Appointment
+                                     <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(selectedDoctor)} disabled={bookingDoctor === selectedDoctor.name}>
+                                        {bookingDoctor === selectedDoctor.name ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                        {bookingDoctor === selectedDoctor.name ? 'Booking...' : 'Book Appointment'}
                                     </Button>
                                 </div>
                             </div>
@@ -424,5 +441,7 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
 
     

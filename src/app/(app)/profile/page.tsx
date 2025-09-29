@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User, Heart, Droplets, Phone, Mail, MapPin, Shield, FileDown, Pencil, ShieldAlert, Users, HeartPulse, Pill, Trash2, Palette, Search, Hospital, UserPlus, Link2, Download, Printer, Eye, EyeOff } from "lucide-react";
+import { User, Heart, Droplets, Phone, Mail, MapPin, Shield, FileDown, Pencil, ShieldAlert, Users, HeartPulse, Pill, Trash2, Palette, Search, Hospital, UserPlus, Link2, Download, Printer, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -92,6 +92,9 @@ export default function ProfilePage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [showUhid, setShowUhid] = useState(false);
     const [showAbha, setShowAbha] = useState(false);
+    const [isDownloading, setIsDownloading] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
 
     const filteredHospitals = networkHospitals.filter(hospital =>
         hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -99,35 +102,49 @@ export default function ProfilePage() {
     );
 
     const handleDownloadData = () => {
-        const userProfileData = {
-            name: "Chinta Lokesh Babu",
-            age: 27,
-            gender: "Male",
-            bloodGroup: "O+ Positive",
-            address: "Rentachintala, Palnadu District",
-            email: "lokeshbabu9298@gmail.com",
-            phone: "+91 8008334948",
-        };
+        setIsDownloading(true);
+        setTimeout(() => {
+            const userProfileData = {
+                name: "Chinta Lokesh Babu",
+                age: 27,
+                gender: "Male",
+                bloodGroup: "O+ Positive",
+                address: "Rentachintala, Palnadu District",
+                email: "lokeshbabu9298@gmail.com",
+                phone: "+91 8008334948",
+            };
 
-        const comprehensiveData = {
-            userProfile: userProfileData,
-            healthOverview: healthOverviewItems,
-            recentVisits,
-            medicalReports,
-            healthInsurance: {
-                provider: "Star Health - Family Plan",
-                status: "Active",
-            },
-        };
+            const comprehensiveData = {
+                userProfile: userProfileData,
+                healthOverview: healthOverviewItems,
+                recentVisits,
+                medicalReports,
+                healthInsurance: {
+                    provider: "Star Health - Family Plan",
+                    status: "Active",
+                },
+            };
 
-        const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
-            JSON.stringify(comprehensiveData, null, 2)
-        )}`;
-        const link = document.createElement("a");
-        link.href = jsonString;
-        link.download = "medbridgee-my-data.json";
-        link.click();
+            const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(
+                JSON.stringify(comprehensiveData, null, 2)
+            )}`;
+            const link = document.createElement("a");
+            link.href = jsonString;
+            link.download = "medbridgee-my-data.json";
+            link.click();
+            setIsDownloading(false);
+        }, 1000);
     };
+    
+     const handleDeleteAccount = () => {
+        setIsDeleting(true);
+        // Simulate API call
+        setTimeout(() => {
+            console.log("Account deleted");
+            setIsDeleting(false);
+        }, 2000);
+    };
+
 
     return (
         <div className="space-y-8">
@@ -344,14 +361,20 @@ export default function ProfilePage() {
                                    <FileDown className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
                                    <p className="font-semibold">Export My Data</p>
                                 </div>
-                               <Button variant="outline" size="sm" onClick={handleDownloadData}>Download</Button>
+                               <Button variant="outline" size="sm" onClick={handleDownloadData} disabled={isDownloading}>
+                                   {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                   {isDownloading ? 'Downloading...' : 'Download'}
+                               </Button>
                             </div>
                              <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
                                 <div className="flex items-center gap-3">
                                    <Trash2 className="h-5 w-5 text-destructive"/>
                                    <p className="font-semibold">Account</p>
                                 </div>
-                               <Button variant="destructive" size="sm">Delete Account</Button>
+                               <Button variant="destructive" size="sm" onClick={handleDeleteAccount} disabled={isDeleting}>
+                                   {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                   {isDeleting ? 'Deleting...' : 'Delete Account'}
+                               </Button>
                             </div>
                         </CardContent>
                     </Card>
@@ -397,5 +420,7 @@ export default function ProfilePage() {
         </div>
     );
 }
+
+    
 
     

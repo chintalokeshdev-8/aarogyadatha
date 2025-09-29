@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Heart, TrendingUp, PlusCircle, Scale, Activity, Flame, Footprints, Info, Watch, Radio, Target, Bike, PersonStanding, Dumbbell, Leaf, Check, Droplets, Wind, Brain } from "lucide-react";
+import { Heart, TrendingUp, PlusCircle, Scale, Activity, Flame, Footprints, Info, Watch, Radio, Target, Bike, PersonStanding, Dumbbell, Leaf, Check, Droplets, Wind, Brain, Loader2 } from "lucide-react";
 import { useMemo, useState, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from 'next/image';
@@ -266,6 +266,9 @@ export default function HealthTrackerPage() {
     const [weight, setWeight] = useState('');
     const [heightUnit, setHeightUnit] = useState('cm');
     const [weightUnit, setWeightUnit] = useState('kg');
+    const [isSaving, setIsSaving] = useState(false);
+    const [isConnecting, setIsConnecting] = useState(false);
+    const [isStartingExercise, setIsStartingExercise] = useState(false);
 
     const calculatedBmi = useMemo(() => {
         const h = parseFloat(height);
@@ -311,6 +314,21 @@ export default function HealthTrackerPage() {
         lbs: 'e.g., 165'
     };
 
+    const handleSaveMeasurement = () => {
+        setIsSaving(true);
+        setTimeout(() => setIsSaving(false), 1500);
+    };
+
+    const handleConnectWatch = () => {
+        setIsConnecting(true);
+        setTimeout(() => setIsConnecting(false), 2000);
+    };
+
+    const handleStartExercise = () => {
+        setIsStartingExercise(true);
+        setTimeout(() => setIsStartingExercise(false), 2000);
+    };
+
     return (
         <div className="space-y-8">
             <div className="flex justify-between items-center">
@@ -318,7 +336,10 @@ export default function HealthTrackerPage() {
                     <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>Health & Activity</h1>
                     <p className="text-muted-foreground">Monitor your vitals, steps, and activity goals.</p>
                 </div>
-                <Button variant="outline"><Watch className="mr-2 h-4 w-4"/> Connect Watch</Button>
+                <Button variant="outline" onClick={handleConnectWatch} disabled={isConnecting}>
+                    {isConnecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Watch className="mr-2 h-4 w-4"/>}
+                    {isConnecting ? 'Connecting...' : 'Connect Watch'}
+                </Button>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
@@ -389,7 +410,10 @@ export default function HealthTrackerPage() {
                                 </div>
                             </div>
                         </div>
-                        <Button className="w-full h-10" style={{backgroundColor: 'hsl(var(--nav-profile))'}}>Start Exercise</Button>
+                        <Button className="w-full h-10" style={{backgroundColor: 'hsl(var(--nav-profile))'}} onClick={handleStartExercise} disabled={isStartingExercise}>
+                            {isStartingExercise ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                            {isStartingExercise ? 'Starting...' : 'Start Exercise'}
+                        </Button>
                     </CardContent>
                 </Card>
             </div>
@@ -520,7 +544,10 @@ export default function HealthTrackerPage() {
                             <Input id="bpDiastolic" type="number" placeholder="e.g., 80" />
                         </div>
                     </div>
-                    <Button className="w-full sm:w-auto" style={{backgroundColor: 'hsl(var(--nav-profile))'}}>Save Measurement</Button>
+                    <Button className="w-full sm:w-auto" style={{backgroundColor: 'hsl(var(--nav-profile))'}} onClick={handleSaveMeasurement} disabled={isSaving}>
+                        {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                        {isSaving ? 'Saving...' : 'Save Measurement'}
+                    </Button>
                 </CardContent>
             </Card>
 
@@ -584,6 +611,9 @@ export default function HealthTrackerPage() {
 
 
 
+
+
+    
 
 
     
