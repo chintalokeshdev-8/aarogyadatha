@@ -24,9 +24,9 @@ export default function MedicineAssistantPage() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8 relative">
+        <div className="max-w-4xl mx-auto space-y-8">
              {isPending && (
-                <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-lg">
+                <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-50">
                     <Loader2 className="h-16 w-16 animate-spin mb-4" style={{color: 'hsl(var(--nav-medicines))'}} />
                     <h2 className="text-2xl font-bold">Fetching Medicine Data...</h2>
                     <p className="text-muted-foreground">Our AI is preparing the information for you.</p>
