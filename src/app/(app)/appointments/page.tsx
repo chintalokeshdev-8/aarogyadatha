@@ -314,8 +314,8 @@ export default function AppointmentsPage() {
             </div>
 
             <Card className="p-4 shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="relative">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="relative md:col-span-2">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                         <Input placeholder="Doctor or hospital..." className="pl-10" />
                     </div>
@@ -356,6 +356,7 @@ export default function AppointmentsPage() {
                             <SelectItem value="bangalore">Bangalore</SelectItem>
                         </SelectContent>
                     </Select>
+                    <Button className="md:col-start-5" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>Go</Button>
                 </div>
             </Card>
 
@@ -441,6 +442,8 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
 
     
 
