@@ -24,7 +24,14 @@ export default function MedicineAssistantPage() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-8 relative">
+             {isPending && (
+                <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-50 rounded-lg">
+                    <Loader2 className="h-16 w-16 animate-spin mb-4" style={{color: 'hsl(var(--nav-medicines))'}} />
+                    <h2 className="text-2xl font-bold">Fetching Medicine Data...</h2>
+                    <p className="text-muted-foreground">Our AI is preparing the information for you.</p>
+                </div>
+            )}
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-medicines))'}}>AI Medicine Assistant</h1>
                 <p className="text-muted-foreground">Get information about medications, dosages, and side effects.</p>
@@ -62,16 +69,6 @@ export default function MedicineAssistantPage() {
                 </form>
             </Card>
 
-            {isPending && (
-                <Card>
-                    <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-2">
-                        <Loader2 className="h-12 w-12 animate-spin" style={{color: 'hsl(var(--nav-medicines))'}} />
-                        <h2 className="text-xl font-semibold">Loading Medicine Data</h2>
-                        <p className="text-muted-foreground">Our AI is preparing the information for you.</p>
-                    </CardContent>
-                </Card>
-            )}
-
             {result && !isPending && (
                 <Card>
                     <CardHeader>
@@ -104,5 +101,3 @@ export default function MedicineAssistantPage() {
         </div>
     );
 }
-
-    

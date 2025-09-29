@@ -114,7 +114,14 @@ export default function SymptomCheckerPage() {
     }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 relative">
+            {isPending && (
+                <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+                    <Loader2 className="h-16 w-16 animate-spin mb-4" style={{color: 'hsl(var(--nav-symptoms))'}} />
+                    <h2 className="text-2xl font-bold">Analyzing your symptoms...</h2>
+                    <p className="text-muted-foreground">Our AI is working on it. This may take a moment.</p>
+                </div>
+            )}
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>AI Symptom Checker</h1>
                 <p className="text-muted-foreground mt-2">Describe your symptoms to get intelligent health guidance.</p>
@@ -175,15 +182,6 @@ export default function SymptomCheckerPage() {
                 </CardContent>
             </Card>
             
-            {isPending && (
-                <Card>
-                    <CardContent className="p-6 flex flex-col items-center justify-center text-center">
-                        <Loader2 className="h-12 w-12 animate-spin mb-4" style={{color: 'hsl(var(--nav-symptoms))'}} />
-                        <h2 className="text-xl font-semibold">Analyzing your symptoms...</h2>
-                        <p className="text-muted-foreground">Our AI is working on it. This may take a moment.</p>
-                    </CardContent>
-                </Card>
-            )}
 
             {analysis && !isPending && (
                 <Card>
@@ -244,6 +242,3 @@ export default function SymptomCheckerPage() {
         </div>
     );
 }
-
-
-    

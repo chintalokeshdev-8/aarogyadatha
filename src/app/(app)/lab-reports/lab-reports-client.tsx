@@ -609,15 +609,15 @@ export function LabReportsClient({
                                 ) : "Run AI Analysis"}
                             </Button>
                         </div>
-                        <div className="space-y-4">
+                        <div className="space-y-4 relative">
                              <h3 className="font-semibold">AI Summary & Findings</h3>
-                            {isPending && !analysisResult && (
-                                <div className="flex flex-col items-center justify-center h-96 rounded-lg bg-muted/50">
+                            {isPending && (
+                                <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-10 rounded-lg">
                                     <Loader2 className="h-10 w-10 animate-spin text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}/>
                                     <p className="mt-4 text-muted-foreground">The AI is analyzing your report...</p>
                                 </div>
                             )}
-                            {analysisResult && (
+                            {analysisResult ? (
                                 <div className="space-y-4">
                                     <Card>
                                         <CardHeader className="pb-2">
@@ -653,6 +653,10 @@ export function LabReportsClient({
                                         </Card>
                                     )}
                                 </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center h-96 rounded-lg bg-muted/50 border border-dashed">
+                                    <p className="text-muted-foreground">AI analysis results will appear here.</p>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -661,7 +665,3 @@ export function LabReportsClient({
         </div>
     )
 }
-
-    
-
-    
