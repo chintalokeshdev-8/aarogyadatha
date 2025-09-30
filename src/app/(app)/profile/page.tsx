@@ -344,41 +344,6 @@ export default function ProfilePage() {
                             </Dialog>
                         </CardContent>
                     </Card>
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>Settings & Data</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                                <div className="flex items-center gap-3">
-                                    <Palette className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
-                                    <p className="font-semibold">Theme</p>
-                                </div>
-                                <ThemeToggle />
-                            </div>
-                            <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                                <div className="flex items-center gap-3">
-                                   <FileDown className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
-                                   <p className="font-semibold">Export My Data</p>
-                                </div>
-                               <Button variant="outline" size="sm" onClick={handleDownloadData} disabled={isDownloading}>
-                                   {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                   {isDownloading ? 'Downloading...' : 'Download'}
-                               </Button>
-                            </div>
-                             <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                                <div className="flex items-center gap-3">
-                                   <Trash2 className="h-5 w-5 text-destructive"/>
-                                   <p className="font-semibold">Account</p>
-                                </div>
-                               <Button variant="destructive" size="sm" onClick={handleDeleteAccount} disabled={isDeleting}>
-                                   {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                   {isDeleting ? 'Deleting...' : 'Delete Account'}
-                               </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
-                    
                 </div>
                 <div className="space-y-8">
                     <Card>
@@ -420,7 +385,5 @@ export default function ProfilePage() {
         </div>
     );
 }
-
-    
 
     

@@ -1,4 +1,6 @@
 
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -83,7 +85,7 @@ export default function SettingsPage() {
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Data & Privacy</CardTitle>
+                        <CardTitle>Data &amp; Privacy</CardTitle>
                         <CardDescription>Export or delete your personal data.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -114,3 +116,5 @@ export default function SettingsPage() {
         </div>
     );
 }
+
+    
