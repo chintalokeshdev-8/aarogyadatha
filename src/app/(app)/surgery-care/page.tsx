@@ -84,6 +84,10 @@ function InquiryForm({ topic }: { topic: string }) {
                     </SelectContent>
                 </Select>
             </div>
+            <div className="space-y-2">
+                <Label htmlFor="message">Tell us more (optional)</Label>
+                <Textarea id="message" placeholder="Please provide a brief reason for your inquiry..." />
+            </div>
             <Button type="submit" className="w-full" style={{ backgroundColor: 'hsl(var(--nav-appointments))' }} disabled={isSubmitting}>
                 {isSubmitting ? (
                     <>
@@ -179,7 +183,7 @@ export default function SurgeryCarePage() {
                     <DialogHeader>
                         <DialogTitle>Request a Call Back</DialogTitle>
                         <DialogDescription>
-                            You are requesting help for: <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{inquiryTopic}</span>. Fill out the form and our team will contact you shortly.
+                            Your inquiry for <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{inquiryTopic}</span> has been noted. Please fill out the form below, and our expert team will contact you shortly to assist you.
                         </DialogDescription>
                     </DialogHeader>
                     <InquiryForm topic={inquiryTopic} />
