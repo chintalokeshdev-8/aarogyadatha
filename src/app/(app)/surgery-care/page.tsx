@@ -43,9 +43,7 @@ const transplantsOffered = [
     { name: 'Liver Transplant', imageUrl: 'https://picsum.photos/seed/liver-transplant/100/100', dataAiHint: 'liver organ' },
     { name: 'Heart Transplant', imageUrl: 'https://picsum.photos/seed/heart-transplant/100/100', dataAiHint: 'heart transplant' },
     { name: 'Lung Transplant', imageUrl: 'https://picsum.photos/seed/lung-transplant/100/100', dataAiHint: 'lungs organ' },
-]
-
-const surgeryCategories = ["All Procedures", "Orthopedics", "General Surgery", "Urology", "Gynaecology", "Ophthalmology", "Transplants", "Cosmetic"];
+];
 
 function InquiryForm({ topic }: { topic: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -100,7 +98,6 @@ function InquiryForm({ topic }: { topic: string }) {
     );
 }
 
-
 export default function SurgeryCarePage() {
     const [inquiryTopic, setInquiryTopic] = useState('');
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -120,7 +117,7 @@ export default function SurgeryCarePage() {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {services.map((service, index) => (
-                         <DialogTrigger asChild key={index} onClick={() => handleInquiryClick(service.title)}>
+                        <DialogTrigger asChild key={index} onClick={() => handleInquiryClick(service.title)}>
                             <Card className="flex items-center p-4 hover:bg-muted/50 transition-colors cursor-pointer">
                                 <div className="p-3 bg-primary/10 rounded-full mr-4">
                                     <service.icon className="h-6 w-6" style={{ color: 'hsl(var(--nav-appointments))' }} />
@@ -178,17 +175,17 @@ export default function SurgeryCarePage() {
                         ))}
                     </CardContent>
                 </Card>
-
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Request a Call Back</DialogTitle>
-                        <DialogDescription>
-                            Your inquiry for <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{inquiryTopic}</span> has been noted. Please fill out the form below, and our expert team will contact you shortly to assist you.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <InquiryForm topic={inquiryTopic} />
-                </DialogContent>
             </div>
+
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Request a Call Back</DialogTitle>
+                    <DialogDescription>
+                        Your inquiry for <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{inquiryTopic}</span> has been noted. Please fill out the form below, and our expert team will contact you shortly to assist you.
+                    </DialogDescription>
+                </DialogHeader>
+                <InquiryForm topic={inquiryTopic} />
+            </DialogContent>
         </Dialog>
     );
 }
