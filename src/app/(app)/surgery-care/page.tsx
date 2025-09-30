@@ -11,12 +11,27 @@ import { Textarea } from "@/components/ui/textarea";
 import { Briefcase, Hospital, Loader2, MessageSquare, Search, ShieldCheck, UserCheck } from "lucide-react";
 import { RupeeIcon } from '@/components/icons/rupee-icon';
 import { InsuranceIcon } from '@/components/icons/insurance-icon';
+import Image from 'next/image';
 
 const services = [
     { title: "Get An Expert Second Opinion", icon: UserCheck },
     { title: "Find Top Cashless Hospitals", icon: Hospital },
     { title: "Find Surgery Cost Estimate", icon: RupeeIcon },
     { title: "Verify Insurance Coverage", icon: InsuranceIcon },
+];
+
+const surgeriesOffered = [
+    { name: 'Cataract', imageUrl: 'https://picsum.photos/seed/cataract/100/100', dataAiHint: 'eye icon' },
+    { name: 'Lasik', imageUrl: 'https://picsum.photos/seed/lasik/100/100', dataAiHint: 'eye laser icon' },
+    { name: 'Tonsillectomy', imageUrl: 'https://picsum.photos/seed/tonsillectomy/100/100', dataAiHint: 'throat icon' },
+    { name: 'IUI', imageUrl: 'https://picsum.photos/seed/iui/100/100', dataAiHint: 'uterus icon' },
+    { name: 'IVF', imageUrl: 'https://picsum.photos/seed/ivf/100/100', dataAiHint: 'injection icon' },
+    { name: 'Viral Fever/Flu', imageUrl: 'https://picsum.photos/seed/flu/100/100', dataAiHint: 'thermometer icon' },
+    { name: 'Hair-Transplant', imageUrl: 'https://picsum.photos/seed/hair/100/100', dataAiHint: 'hair follicle icon' },
+    { name: 'Lipoma', imageUrl: 'https://picsum.photos/seed/lipoma/100/100', dataAiHint: 'body lumps icon' },
+    { name: 'Fissure', imageUrl: 'https://picsum.photos/seed/fissure/100/100', dataAiHint: 'intestine icon' },
+    { name: 'Fistula', imageUrl: 'https://picsum.photos/seed/fistula/100/100', dataAiHint: 'sitting person pain icon' },
+    { name: 'Piles', imageUrl: 'https://picsum.photos/seed/piles/100/100', dataAiHint: 'person toilet pain icon' },
 ];
 
 export default function SurgeryCarePage() {
@@ -36,6 +51,27 @@ export default function SurgeryCarePage() {
                 <h1 className="text-3xl font-bold" style={{ color: 'hsl(var(--nav-appointments))' }}>Surgery Care</h1>
                 <p className="text-muted-foreground mt-2">Explore surgery options and get expert guidance.</p>
             </div>
+            
+            <Card>
+                <CardHeader>
+                    <CardTitle>Surgeries Offered</CardTitle>
+                </CardHeader>
+                <CardContent className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    {surgeriesOffered.map((surgery) => (
+                        <Card key={surgery.name} className="text-center p-4 hover:shadow-md transition-shadow cursor-pointer">
+                            <Image
+                                src={surgery.imageUrl}
+                                alt={`${surgery.name} icon`}
+                                width={60}
+                                height={60}
+                                data-ai-hint={surgery.dataAiHint}
+                                className="mx-auto rounded-lg mb-2"
+                            />
+                            <p className="font-semibold text-sm">{surgery.name}</p>
+                        </Card>
+                    ))}
+                </CardContent>
+            </Card>
 
             <div className="grid md:grid-cols-2 gap-8 items-start">
                 <Card>
