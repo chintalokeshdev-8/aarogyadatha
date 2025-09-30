@@ -91,8 +91,8 @@ export default function DashboardPage() {
       <Card className="bg-primary text-primary-foreground">
           <CardContent className="p-6">
               <div className="space-y-4">
-                  <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left justify-between">
-                      <div className="flex flex-col md:flex-row items-center gap-4">
+                  <div className="flex flex-row items-center justify-between">
+                      <div className="flex items-center gap-4">
                           <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
                               <AvatarImage src="/images/profile.jpg" />
                               <AvatarFallback>CLB</AvatarFallback>
