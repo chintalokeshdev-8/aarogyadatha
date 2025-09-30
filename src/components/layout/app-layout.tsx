@@ -22,6 +22,7 @@ import {
   LogOut,
   Settings,
   Search,
+  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -32,6 +33,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { ThemeToggle } from "../theme-toggle";
 import { NotificationsDropdown } from "./notifications-dropdown";
 import { Input } from "../ui/input";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const menuItems = [
   { href: "/", label: "Home", telugu: "హోమ్", icon: LayoutGrid, color: "hsl(var(--nav-home))" },
@@ -52,6 +54,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const viewportRef = React.useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = React.useState(false);
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+  const isMobile = useIsMobile();
+
 
   React.useEffect(() => {
     setIsClient(true);
@@ -75,70 +80,89 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/30">
-      <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-background border-b border-t-4 border-t-primary gap-4">
-        <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-primary rounded-lg">
-                <Activity className="w-6 h-6 text-primary-foreground" />
+      <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-background border-b border-t-4 border-t-primary gap-4 h-16">
+        {isMobile && isSearchOpen ? (
+            <div className="flex items-center gap-2 w-full">
+                <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(false)}>
+                    <ArrowLeft className="h-5 w-5" />
+                </Button>
+                <div className="relative w-full">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input placeholder="Search for doctors, medicines, reports..." className="pl-10" autoFocus />
+                </div>
             </div>
-            <h1 className="text-xl font-bold">MedBridgee</h1>
-        </div>
+        ) : (
+            <>
+                <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-primary rounded-lg">
+                        <Activity className="w-6 h-6 text-primary-foreground" />
+                    </div>
+                    <h1 className="text-xl font-bold">MedBridgee</h1>
+                </div>
 
-        <div className="flex items-center gap-2">
-             <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
-                <Search className="h-5 w-5" />
-            </Button>
-            <NotificationsDropdown />
+                <div className="hidden md:block flex-1 max-w-xl">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Input placeholder="Search for doctors, medicines, reports..." className="pl-10" />
+                    </div>
+                </div>
 
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                        <Avatar className="h-10 w-10">
-                            <AvatarImage src="/images/profile.jpg" />
-                            <AvatarFallback>CL</AvatarFallback>
-                        </Avatar>
+                <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full md:hidden" onClick={() => setIsSearchOpen(true)}>
+                        <Search className="h-5 w-5" />
                     </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-64" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                        <div className="flex flex-col items-center space-y-2 py-4">
-                            <Avatar className="h-20 w-20">
-                                <AvatarImage src="/images/profile.jpg" />
-                                <AvatarFallback className="text-2xl">CL</AvatarFallback>
-                            </Avatar>
-                            <div className="text-center">
-                               <p className="text-base font-medium leading-none">Chinta Lokesh Babu</p>
-                               <p className="text-sm leading-none text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                    <NotificationsDropdown />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                                <Avatar className="h-10 w-10">
+                                    <AvatarImage src="/images/profile.jpg" />
+                                    <AvatarFallback>CL</AvatarFallback>
+                                </Avatar>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-64" align="end" forceMount>
+                            <DropdownMenuLabel className="font-normal">
+                                <div className="flex flex-col items-center space-y-2 py-4">
+                                    <Avatar className="h-20 w-20">
+                                        <AvatarImage src="/images/profile.jpg" />
+                                        <AvatarFallback className="text-2xl">CL</AvatarFallback>
+                                    </Avatar>
+                                    <div className="text-center">
+                                    <p className="text-base font-medium leading-none">Chinta Lokesh Babu</p>
+                                    <p className="text-sm leading-none text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                                    </div>
+                                </div>
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                                <Link href="/profile" passHref>
+                                    <DropdownMenuItem>
+                                        <User className="mr-2 h-4 w-4" />
+                                        <span>Profile</span>
+                                    </DropdownMenuItem>
+                                </Link>
+                                <Link href="/settings" passHref>
+                                    <DropdownMenuItem>
+                                        <Settings className="mr-2 h-4 w-4" />
+                                        <span>Settings</span>
+                                    </DropdownMenuItem>
+                                </Link>
+                            </DropdownMenuGroup>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <LogOut className="mr-2 h-4 w-4" />
+                                <span>Sign out</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <div className="flex items-center justify-center p-2">
+                                <ThemeToggle />
                             </div>
-                        </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                     <DropdownMenuGroup>
-                        <Link href="/profile" passHref>
-                            <DropdownMenuItem>
-                                <User className="mr-2 h-4 w-4" />
-                                <span>Profile</span>
-                            </DropdownMenuItem>
-                        </Link>
-                         <Link href="/settings" passHref>
-                            <DropdownMenuItem>
-                                <Settings className="mr-2 h-4 w-4" />
-                                <span>Settings</span>
-                            </DropdownMenuItem>
-                        </Link>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                     <DropdownMenuItem>
-                        <LogOut className="mr-2 h-4 w-4" />
-                        <span>Sign out</span>
-                    </DropdownMenuItem>
-                     <DropdownMenuSeparator />
-                     <div className="flex items-center justify-center p-2">
-                        <ThemeToggle />
-                     </div>
-                </DropdownMenuContent>
-            </DropdownMenu>
-        </div>
-
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </>
+        )}
       </header>
       <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24">
           {children}
