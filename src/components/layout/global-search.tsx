@@ -55,7 +55,7 @@ export function GlobalSearch() {
                     const Icon = item.icon;
                     return (
                       <CommandItem
-                        key={item.href}
+                        key={item.title}
                         value={`${group.heading} ${item.title} ${item.keywords || ''}`}
                         onSelect={() => {
                           runCommand(() => router.push(item.href));
