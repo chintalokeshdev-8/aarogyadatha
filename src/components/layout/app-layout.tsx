@@ -19,12 +19,16 @@ import {
   Heart,
   ChevronLeft,
   Droplets,
+  LogOut,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "../ui/button";
 import { PregnantLadyIcon } from "../icons/pregnant-lady-icon";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ThemeToggle } from "../theme-toggle";
 
 const menuItems = [
   { href: "/", label: "Home", telugu: "హోమ్", icon: LayoutGrid, color: "hsl(var(--nav-home))" },
@@ -75,10 +79,56 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
             <h1 className="text-xl font-bold">MedBridgee</h1>
         </div>
-        <Avatar className="h-8 w-8">
-            <AvatarImage src="/images/profile.jpg" />
-            <AvatarFallback>CL</AvatarFallback>
-        </Avatar>
+
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Avatar className="h-10 w-10">
+                        <AvatarImage src="/images/profile.jpg" />
+                        <AvatarFallback>CL</AvatarFallback>
+                    </Avatar>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-64" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col items-center space-y-2 py-4">
+                        <Avatar className="h-20 w-20">
+                            <AvatarImage src="/images/profile.jpg" />
+                            <AvatarFallback className="text-2xl">CL</AvatarFallback>
+                        </Avatar>
+                        <div className="text-center">
+                           <p className="text-base font-medium leading-none">Chinta Lokesh Babu</p>
+                           <p className="text-sm leading-none text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                        </div>
+                    </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                 <DropdownMenuGroup>
+                    <Link href="/profile" passHref>
+                        <DropdownMenuItem>
+                            <User className="mr-2 h-4 w-4" />
+                            <span>Profile</span>
+                        </DropdownMenuItem>
+                    </Link>
+                     <Link href="/settings" passHref>
+                        <DropdownMenuItem>
+                            <Settings className="mr-2 h-4 w-4" />
+                            <span>Settings</span>
+                        </DropdownMenuItem>
+                    </Link>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                 <DropdownMenuItem>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sign out</span>
+                </DropdownMenuItem>
+                 <DropdownMenuSeparator />
+                 <div className="flex items-center justify-center p-2">
+                    <ThemeToggle />
+                 </div>
+            </DropdownMenuContent>
+        </DropdownMenu>
+
       </header>
       <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24">
           {children}
