@@ -161,8 +161,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                              <DropdownMenuGroup className="p-2">
                                 <Link href="/profile" passHref>
                                     <DropdownMenuItem>
-                                        <Pencil />
-                                        <span>Edit Profile</span>
+                                        <Activity />
+                                        <span>My Health Activity</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/settings" passHref>
@@ -201,7 +201,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         const specialColor = item.label === 'Emergency' ? 'hsl(var(--destructive))' : 'hsl(var(--nav-blood-bank))';
 
                         return (
-                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", index < menuItems.length - 1 && "border-r pr-2 mr-2")}>
+                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < menuItems.length - 1 && item.href !== '/profile') && "border-r pr-2 mr-2", item.href === '/profile' ? 'hidden' : '')}>
                                <div className={cn(
                                    "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-[5.5rem] py-1",
                                    isActive ? "scale-105" : "scale-100",
@@ -243,3 +243,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+    
