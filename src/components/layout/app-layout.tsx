@@ -141,12 +141,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-80 border-primary/50" align="end" forceMount>
                                 <DropdownMenuLabel className="font-normal p-3">
-                                <div className="flex items-start gap-4">
+                                <div className="flex items-center gap-4">
                                     <Avatar className="h-12 w-12">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
-                                    <div className="flex-1">
+                                    <div>
                                         <p className="text-xl font-bold whitespace-nowrap">Chinta Lokesh Babu</p>
                                         <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
                                         <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
@@ -290,5 +290,3 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-    
