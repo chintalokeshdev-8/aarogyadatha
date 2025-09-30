@@ -94,12 +94,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   const showMobileSearch = isClient && isMobile && isSearchOpen;
-  const showDefaultHeader = !showMobileSearch;
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/30">
       <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-background border-b border-t-4 border-t-primary gap-4 h-16">
-        {showMobileSearch && (
+        {showMobileSearch ? (
             <div className="flex items-center gap-2 w-full">
                 <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(false)}>
                     <ArrowLeft className="h-5 w-5" />
@@ -109,9 +108,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <Input placeholder="Search for doctors, medicines, reports..." className="pl-10" autoFocus />
                 </div>
             </div>
-        )}
-        
-        {showDefaultHeader && (
+        ) : (
             <>
                 <Link href="/" className="flex items-center gap-2">
                     <div className="p-1.5 bg-primary rounded-lg">
@@ -295,5 +292,3 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-    
