@@ -27,6 +27,7 @@ import {
   MapPin,
   Pencil,
   Phone,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -149,6 +150,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         <span className="font-semibold">Profile</span>
                                     </DropdownMenuItem>
                                 </Link>
+                                <Link href="/insurances" passHref>
+                                    <DropdownMenuItem className="p-3">
+                                        <Shield className="mr-3 text-primary" />
+                                        <span className="font-semibold">Insurances</span>
+                                    </DropdownMenuItem>
+                                </Link>
                                 <Link href="/settings" passHref>
                                     <DropdownMenuItem className="p-3">
                                         <Settings className="mr-3 text-primary" />
@@ -193,9 +200,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         const specialColor = item.label === 'Emergency' ? 'hsl(var(--destructive))' : 'hsl(var(--nav-blood-bank))';
 
                         return (
-                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < menuItems.length - 1 && item.href !== '/profile') && "border-r pr-2 mr-2", item.href === '/profile' ? 'hidden' : '')}>
+                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < menuItems.length - 1) && "pr-2 mr-2", item.href === '/profile' ? 'hidden' : '')}>
                                <div className={cn(
-                                   "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-[5.5rem] py-1",
+                                   "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-24 py-1",
                                    isActive ? "scale-105" : "scale-100",
                                    isSpecial ? 'bg-destructive/10' : '',
                                    item.label === 'Blood Bank' && 'bg-red-500/10'
