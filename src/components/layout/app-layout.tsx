@@ -126,7 +126,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-96" align="end" forceMount>
+                        <DropdownMenuContent className="w-96 border-primary/50" align="end" forceMount>
                             <DropdownMenuLabel className="font-normal p-4">
                                 <div className="flex items-start gap-4">
                                     <Avatar className="h-12 w-12">
@@ -134,15 +134,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         <AvatarFallback className="text-xl">CL</AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1 space-y-1">
-                                        <p className="text-lg font-semibold leading-none">Chinta Lokesh Babu</p>
-                                        <div className="flex items-center gap-x-3 text-xs text-muted-foreground">
+                                        <p className="text-xl font-bold leading-none">Chinta Lokesh Babu</p>
+                                        <div className="flex items-center gap-x-3 text-sm text-muted-foreground">
                                             <span>27 years old</span>
                                             <span>Male</span>
                                             <span>O+ Positive</span>
                                         </div>
-                                         <p className="text-xs text-muted-foreground">Rentachintala, Palnadu District</p>
+                                         <p className="text-sm text-muted-foreground">Rentachintala, Palnadu District</p>
 
-                                        <div className="text-sm text-muted-foreground space-y-2 pt-2">
+                                        <div className="text-base text-muted-foreground space-y-2 pt-2">
                                             <div className="flex items-center gap-3">
                                                 <Mail className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
                                                 <span>lokeshbabu9298@gmail.com</span>
