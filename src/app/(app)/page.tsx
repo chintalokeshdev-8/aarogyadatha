@@ -89,42 +89,35 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <Card className="bg-primary text-primary-foreground">
-        <CardContent className="p-6">
-          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left justify-between">
-            <div className="flex flex-col md:flex-row items-center gap-4">
-                <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
-                    <AvatarImage src="/images/profile.jpg" />
-                    <AvatarFallback>CLB</AvatarFallback>
-                </Avatar>
-                <div>
-                    <h2 className="text-xl font-semibold">Chinta Lokesh Babu</h2>
-                    <p className="text-sm opacity-80">Patient ID: PAT001</p>
-                </div>
-            </div>
-            <div className="text-center">
-                <p className="font-bold text-lg">O+ Positive</p>
-                <p className="text-sm opacity-80">Blood Group</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-primary text-primary-foreground">
           <CardContent className="p-6">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-                  <div className="flex-1">
-                      <h3 className="font-bold text-lg flex items-center gap-2 justify-center md:justify-start">
-                          <GovIdIcon className="h-6 w-6"/> Link Your Government Health ID
-                      </h3>
-                      <p className="text-sm opacity-90 mt-2">
-                          Connect your Aarogyasri (UHID) or ABHA ID to securely access and manage your health records, benefits, and history in one place.
-                      </p>
+              <div className="space-y-4">
+                  <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-left justify-between">
+                      <div className="flex flex-col md:flex-row items-center gap-4">
+                          <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
+                              <AvatarImage src="/images/profile.jpg" />
+                              <AvatarFallback>CLB</AvatarFallback>
+                          </Avatar>
+                          <div>
+                              <h2 className="text-xl font-semibold">Chinta Lokesh Babu</h2>
+                              <p className="text-sm opacity-80">Patient ID: PAT001</p>
+                          </div>
+                      </div>
+                      <div className="text-center">
+                          <p className="font-bold text-lg">O+ Positive</p>
+                          <p className="text-sm opacity-80">Blood Group</p>
+                      </div>
                   </div>
-                  <Link href="/insurances#gov-health-ids">
-                    <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
-                        <Link2 className="mr-2 h-4 w-4" /> Link Now
-                    </Button>
-                </Link>
+                  <div className="border-t border-primary-foreground/20 my-4"></div>
+                   <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                      <p className="text-sm opacity-90 flex-1">
+                          Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records, benefits, and history in one place.
+                      </p>
+                      <Link href="/insurances">
+                        <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
+                            <Link2 className="mr-2 h-4 w-4" /> Link Now
+                        </Button>
+                    </Link>
+                  </div>
               </div>
           </CardContent>
       </Card>
