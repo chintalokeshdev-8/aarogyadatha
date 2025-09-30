@@ -26,12 +26,11 @@ export function NotificationsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full relative">
-          <Bell className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="h-12 w-12 rounded-full relative">
+          <Bell className="h-6 w-6" />
           {notifications.some(n => !n.read) && (
-            <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+            <span className="absolute top-3 right-3 flex h-3 w-3">
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary border-2 border-background"></span>
             </span>
           )}
         </Button>
