@@ -21,18 +21,21 @@ const services = [
 ];
 
 const surgeriesOffered = [
+    { name: 'ACL/PCL-Injuries', imageUrl: 'https://picsum.photos/seed/acl/100/100', dataAiHint: 'knee joint' },
+    { name: 'Knee-Replacement', imageUrl: 'https://picsum.photos/seed/knee/100/100', dataAiHint: 'knee bone' },
+    { name: 'Hysterectomy', imageUrl: 'https://picsum.photos/seed/hysterectomy/100/100', dataAiHint: 'uterus organ' },
+    { name: 'Natural/C-Section', imageUrl: 'https://picsum.photos/seed/csection/100/100', dataAiHint: 'baby womb' },
+    { name: 'Gallstones', imageUrl: 'https://picsum.photos/seed/gallstones/100/100', dataAiHint: 'gallbladder stones' },
+    { name: 'Hernia', imageUrl: 'https://picsum.photos/seed/hernia/100/100', dataAiHint: 'abdominal hernia' },
+    { name: 'Circumcision', imageUrl: 'https://picsum.photos/seed/circumcision/100/100', dataAiHint: 'urology icon' },
+    { name: 'Kidney-Stones', imageUrl: 'https://picsum.photos/seed/kidneystone/100/100', dataAiHint: 'kidney stones' },
+    { name: 'Varicose Veins', imageUrl: 'https://picsum.photos/seed/varicose/100/100', dataAiHint: 'leg veins' },
     { name: 'Cataract', imageUrl: 'https://picsum.photos/seed/cataract/100/100', dataAiHint: 'eye icon' },
     { name: 'Lasik', imageUrl: 'https://picsum.photos/seed/lasik/100/100', dataAiHint: 'eye laser icon' },
     { name: 'Tonsillectomy', imageUrl: 'https://picsum.photos/seed/tonsillectomy/100/100', dataAiHint: 'throat icon' },
-    { name: 'IUI', imageUrl: 'https://picsum.photos/seed/iui/100/100', dataAiHint: 'uterus icon' },
-    { name: 'IVF', imageUrl: 'https://picsum.photos/seed/ivf/100/100', dataAiHint: 'injection icon' },
-    { name: 'Viral Fever/Flu', imageUrl: 'https://picsum.photos/seed/flu/100/100', dataAiHint: 'thermometer icon' },
-    { name: 'Hair-Transplant', imageUrl: 'https://picsum.photos/seed/hair/100/100', dataAiHint: 'hair follicle icon' },
-    { name: 'Lipoma', imageUrl: 'https://picsum.photos/seed/lipoma/100/100', dataAiHint: 'body lumps icon' },
-    { name: 'Fissure', imageUrl: 'https://picsum.photos/seed/fissure/100/100', dataAiHint: 'intestine icon' },
-    { name: 'Fistula', imageUrl: 'https://picsum.photos/seed/fistula/100/100', dataAiHint: 'sitting person pain icon' },
-    { name: 'Piles', imageUrl: 'https://picsum.photos/seed/piles/100/100', dataAiHint: 'person toilet pain icon' },
 ];
+
+const surgeryCategories = ["Top Surgeries", "Aesthetics", "Cardiology", "ENT"];
 
 export default function SurgeryCarePage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +52,13 @@ export default function SurgeryCarePage() {
         <div className="space-y-8">
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{ color: 'hsl(var(--nav-appointments))' }}>Surgery Care</h1>
-                <p className="text-muted-foreground mt-2">Explore surgery options and get expert guidance.</p>
+                <p className="text-muted-foreground mt-2">50+ Surgical Conditions Covered.</p>
+            </div>
+
+            <div className="flex justify-center flex-wrap gap-2">
+                {surgeryCategories.map((category) => (
+                    <Button key={category} variant="outline">{category}</Button>
+                ))}
             </div>
             
             <Card>
