@@ -2,7 +2,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Bell, FileDown, Lock, Palette, Trash2, User, Loader2 } from "lucide-react";
 import React from "react";
@@ -116,5 +116,3 @@ export default function SettingsPage() {
         </div>
     );
 }
-
-    
