@@ -21,6 +21,8 @@ import {
   Droplets,
   LogOut,
   Settings,
+  Search,
+  Bell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -80,54 +82,63 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <h1 className="text-xl font-bold">MedBridgee</h1>
         </div>
 
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <Avatar className="h-10 w-10">
-                        <AvatarImage src="/images/profile.jpg" />
-                        <AvatarFallback>CL</AvatarFallback>
-                    </Avatar>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-64" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col items-center space-y-2 py-4">
-                        <Avatar className="h-20 w-20">
+        <div className="flex items-center gap-2">
+            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
+                <Search className="h-5 w-5" />
+            </Button>
+            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
+                <Bell className="h-5 w-5" />
+            </Button>
+
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                        <Avatar className="h-10 w-10">
                             <AvatarImage src="/images/profile.jpg" />
-                            <AvatarFallback className="text-2xl">CL</AvatarFallback>
+                            <AvatarFallback>CL</AvatarFallback>
                         </Avatar>
-                        <div className="text-center">
-                           <p className="text-base font-medium leading-none">Chinta Lokesh Babu</p>
-                           <p className="text-sm leading-none text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col items-center space-y-2 py-4">
+                            <Avatar className="h-20 w-20">
+                                <AvatarImage src="/images/profile.jpg" />
+                                <AvatarFallback className="text-2xl">CL</AvatarFallback>
+                            </Avatar>
+                            <div className="text-center">
+                               <p className="text-base font-medium leading-none">Chinta Lokesh Babu</p>
+                               <p className="text-sm leading-none text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                            </div>
                         </div>
-                    </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                 <DropdownMenuGroup>
-                    <Link href="/profile" passHref>
-                        <DropdownMenuItem>
-                            <User className="mr-2 h-4 w-4" />
-                            <span>Profile</span>
-                        </DropdownMenuItem>
-                    </Link>
-                     <Link href="/settings" passHref>
-                        <DropdownMenuItem>
-                            <Settings className="mr-2 h-4 w-4" />
-                            <span>Settings</span>
-                        </DropdownMenuItem>
-                    </Link>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                 <DropdownMenuItem>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Sign out</span>
-                </DropdownMenuItem>
-                 <DropdownMenuSeparator />
-                 <div className="flex items-center justify-center p-2">
-                    <ThemeToggle />
-                 </div>
-            </DropdownMenuContent>
-        </DropdownMenu>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                     <DropdownMenuGroup>
+                        <Link href="/profile" passHref>
+                            <DropdownMenuItem>
+                                <User className="mr-2 h-4 w-4" />
+                                <span>Profile</span>
+                            </DropdownMenuItem>
+                        </Link>
+                         <Link href="/settings" passHref>
+                            <DropdownMenuItem>
+                                <Settings className="mr-2 h-4 w-4" />
+                                <span>Settings</span>
+                            </DropdownMenuItem>
+                        </Link>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                     <DropdownMenuItem>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Sign out</span>
+                    </DropdownMenuItem>
+                     <DropdownMenuSeparator />
+                     <div className="flex items-center justify-center p-2">
+                        <ThemeToggle />
+                     </div>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
 
       </header>
       <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24">
