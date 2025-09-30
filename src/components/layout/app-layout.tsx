@@ -126,61 +126,50 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-[22rem] border-primary/50" align="end" forceMount>
-                            <DropdownMenuLabel className="font-normal p-4">
-                                <div className="flex items-start gap-4">
-                                    <Avatar className="h-12 w-12">
-                                        <AvatarImage src="/images/profile.jpg" />
-                                        <AvatarFallback className="text-xl">CL</AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex-1 space-y-1">
-                                        <p className="text-lg font-semibold leading-none">Chinta Lokesh Babu</p>
-                                        <div className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
-                                            <span>27 years old</span>
-                                            <span>Male</span>
-                                            <span>O+ Positive</span>
-                                        </div>
-                                         <p className="text-sm text-muted-foreground">Rentachintala, Palnadu District</p>
-
-                                        <div className="text-base text-muted-foreground space-y-2 pt-2">
-                                            <div className="flex items-center gap-3">
-                                                <Mail className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
-                                                <span>lokeshbabu9298@gmail.com</span>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <Phone className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}}/>
-                                                <span>+91 8008334948</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <DropdownMenuContent className="w-80" align="end" forceMount>
+                            <DropdownMenuLabel className="flex justify-between items-center p-3">
+                               <div className="flex items-center gap-3">
+                                   <Avatar className="h-10 w-10">
+                                       <AvatarImage src="/images/profile.jpg" />
+                                       <AvatarFallback>CL</AvatarFallback>
+                                   </Avatar>
+                                   <div>
+                                     <p className="font-semibold">Chinta Lokesh Babu</p>
+                                     <p className="text-xs text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                                   </div>
+                               </div>
+                                <Button variant="ghost" size="sm" className="h-auto px-2 py-1 text-xs">
+                                  <Pencil className="mr-1 h-3 w-3"/> Edit
+                                </Button>
                             </DropdownMenuLabel>
-                             <DropdownMenuSeparator />
-                             <DropdownMenuGroup className="p-2">
+                            <DropdownMenuSeparator />
+                             <div className="p-1">
                                 <Link href="/profile" passHref>
-                                    <DropdownMenuItem>
-                                        <User />
-                                        <span>Profile</span>
+                                    <DropdownMenuItem className="p-3">
+                                        <User className="mr-3 text-primary" />
+                                        <span className="font-semibold">My Profile</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/settings" passHref>
-                                    <DropdownMenuItem>
-                                        <Settings />
-                                        <span>Settings</span>
+                                    <DropdownMenuItem className="p-3">
+                                        <Settings className="mr-3 text-primary" />
+                                        <span className="font-semibold">Settings</span>
                                     </DropdownMenuItem>
                                 </Link>
-                                <DropdownMenuItem>
-                                     <a href="tel:+918008443938" className="flex items-center gap-2">
-                                        <Phone />
-                                        <span>Customer Support</span>
+                                <DropdownMenuItem className="p-3">
+                                     <a href="tel:+918008443938" className="flex items-center w-full">
+                                        <Phone className="mr-3 text-primary" />
+                                        <span className="font-semibold">Customer Support</span>
                                     </a>
                                 </DropdownMenuItem>
-                            </DropdownMenuGroup>
+                            </div>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>
-                                <LogOut />
-                                <span>Sign out</span>
-                            </DropdownMenuItem>
+                            <div className="p-1">
+                                <DropdownMenuItem className="p-3 text-red-600 focus:bg-red-50 focus:text-red-700 dark:focus:bg-red-900/50 dark:focus:text-red-500">
+                                    <LogOut className="mr-3" />
+                                    <span className="font-semibold">Sign out</span>
+                                </DropdownMenuItem>
+                            </div>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
