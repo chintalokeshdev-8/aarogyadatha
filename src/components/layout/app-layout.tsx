@@ -126,12 +126,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-80" align="end" forceMount>
+                        <DropdownMenuContent className="w-96" align="end" forceMount>
                             <DropdownMenuLabel className="font-normal p-4">
                                 <div className="flex items-start gap-4">
-                                    <Avatar className="h-16 w-16">
+                                    <Avatar className="h-12 w-12">
                                         <AvatarImage src="/images/profile.jpg" />
-                                        <AvatarFallback className="text-2xl">CL</AvatarFallback>
+                                        <AvatarFallback className="text-xl">CL</AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1 space-y-1">
                                         <p className="text-lg font-semibold leading-none">Chinta Lokesh Babu</p>
