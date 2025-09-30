@@ -80,13 +80,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="p-1.5 bg-primary rounded-lg">
                 <Activity className="w-6 h-6 text-primary-foreground" />
             </div>
-            <h1 className="text-xl font-bold hidden sm:block">MedBridgee</h1>
+            <h1 className="text-xl font-bold">MedBridgee</h1>
         </div>
 
-        <div className="flex-1 max-w-md">
+        <div className="flex-1 max-w-sm sm:max-w-md">
             <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input placeholder="Search reports, doctors, settings..." className="pl-10" />
+                <Input placeholder="Search..." className="pl-10" />
             </div>
         </div>
 
