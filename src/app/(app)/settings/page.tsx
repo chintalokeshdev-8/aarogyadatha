@@ -90,10 +90,6 @@ export default function SettingsPage() {
                         <CardDescription>Get help and view our policies.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <Button variant="outline" className="w-full justify-start gap-3">
-                            <Phone className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
-                            <span>Customer Support</span>
-                        </Button>
                          <Link href="/terms">
                             <Button variant="outline" className="w-full justify-start gap-3">
                                 <FileText className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>

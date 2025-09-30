@@ -144,7 +144,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                     </div>
                                 </div>
                             </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
+                             <DropdownMenuSeparator />
                              <DropdownMenuGroup className="p-2">
                                 <div className="text-sm text-muted-foreground space-y-2">
                                      <div className="flex items-center gap-3 p-2">
@@ -171,6 +171,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         <span>Settings</span>
                                     </DropdownMenuItem>
                                 </Link>
+                                <DropdownMenuItem>
+                                    <Phone />
+                                    <span>Customer Support</span>
+                                </DropdownMenuItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
