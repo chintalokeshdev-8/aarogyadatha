@@ -67,34 +67,31 @@ export default function ProfilePage() {
 
     return (
         <div className="space-y-8">
-            <Card>
-                <CardContent className="p-6">
-                    <div className="flex flex-col md:flex-row items-center gap-6">
-                        <Avatar className="h-28 w-28 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
-                            <AvatarImage src="/images/profile.jpg" />
-                            <AvatarFallback className="text-3xl">CL</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 text-center md:text-left">
-                            <h1 className="text-3xl font-bold">Chinta Lokesh Babu</h1>
-                            <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 mt-2 text-muted-foreground">
-                                <div className="flex items-center gap-2"><User /> 27 years old</div>
-                                <div className="flex items-center gap-2"><Heart /> Male</div>
-                                <div className="flex items-center gap-2"><Droplets /> O+ Positive</div>
-                            </div>
-                            <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 mt-2 text-muted-foreground">
-                                <div className="flex items-center gap-2"><MapPin /> Rentachintala, Palnadu District</div>
-                            </div>
-                        </div>
-                        <Button style={{backgroundColor: 'hsl(var(--nav-profile))'}}><Pencil className="mr-2 h-4 w-4" /> Edit Profile</Button>
+            <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-card border rounded-lg">
+                <Avatar className="h-28 w-28 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                    <AvatarImage src="/images/profile.jpg" />
+                    <AvatarFallback className="text-3xl">CL</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 text-center md:text-left">
+                    <h1 className="text-3xl font-bold">Chinta Lokesh Babu</h1>
+                    <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 mt-2 text-muted-foreground">
+                        <div className="flex items-center gap-2"><User /> 27 years old</div>
+                        <div className="flex items-center gap-2"><Heart /> Male</div>
+                        <div className="flex items-center gap-2"><Droplets /> O+ Positive</div>
                     </div>
-                    <Separator className="my-6" />
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                        <div className="flex items-center gap-3"><Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5"/><span>lokeshbabu9298@gmail.com</span></div>
-                        <div className="flex items-center gap-3"><Phone style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5"/><span>+91 8008334948</span></div>
-                        <div className="flex items-start gap-3"><MapPin style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5 mt-1"/><span>Rentala village, Rentachintala mandal, Palnadu district, India</span></div>
+                    <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 mt-2 text-muted-foreground">
+                        <div className="flex items-center gap-2"><MapPin /> Rentachintala, Palnadu District</div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+                <Button style={{backgroundColor: 'hsl(var(--nav-profile))'}}><Pencil className="mr-2 h-4 w-4" /> Edit Profile</Button>
+            </div>
+            <div className="p-6 bg-card border rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div className="flex items-center gap-3"><Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5"/><span>lokeshbabu9298@gmail.com</span></div>
+                    <div className="flex items-center gap-3"><Phone style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5"/><span>+91 8008334948</span></div>
+                    <div className="flex items-start gap-3"><MapPin style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5 mt-1"/><span>Rentala village, Rentachintala mandal, Palnadu district, India</span></div>
+                </div>
+            </div>
 
              <Card id="gov-health-ids">
                 <CardHeader>
@@ -304,3 +301,5 @@ export default function ProfilePage() {
         </div>
     );
 }
+
+    
