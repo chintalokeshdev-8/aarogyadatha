@@ -232,7 +232,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24">
           {children}
       </main>
-      <footer className="sticky bottom-0 z-20 mt-auto bg-background border-t">
+      <footer className="fixed bottom-0 z-20 w-full bg-background border-t">
         <div className="relative">
             <div className="absolute top-0 left-0 h-full flex items-center pl-2 bg-gradient-to-r from-background to-transparent w-12 z-10">
                 <Button variant="ghost" size="icon" className="bg-muted rounded-full h-8 w-8" onClick={handleScrollLeft}>
