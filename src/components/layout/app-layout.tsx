@@ -83,14 +83,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <h1 className="text-xl font-bold">MedBridgee</h1>
         </div>
 
-        <div className="flex-1 max-w-sm sm:max-w-md">
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input placeholder="Search..." className="pl-10" />
-            </div>
-        </div>
-
         <div className="flex items-center gap-2">
+             <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
+                <Search className="h-5 w-5" />
+            </Button>
             <NotificationsDropdown />
 
             <DropdownMenu>
