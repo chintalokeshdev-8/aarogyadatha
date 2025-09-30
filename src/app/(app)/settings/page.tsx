@@ -4,8 +4,9 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { Bell, FileDown, Lock, Palette, Trash2, User, Loader2 } from "lucide-react";
+import { Bell, FileDown, Lock, Palette, Trash2, User, Loader2, HelpCircle, FileText, Info, Phone } from "lucide-react";
 import React from "react";
+import Link from "next/link";
 
 export default function SettingsPage() {
 
@@ -80,6 +81,31 @@ export default function SettingsPage() {
                             <Bell className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
                             <span>Manage Notifications</span>
                         </Button>
+                    </CardContent>
+                </Card>
+
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>Help & Support</CardTitle>
+                        <CardDescription>Get help and view our policies.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <Button variant="outline" className="w-full justify-start gap-3">
+                            <Phone className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
+                            <span>Customer Support</span>
+                        </Button>
+                         <Link href="/terms">
+                            <Button variant="outline" className="w-full justify-start gap-3">
+                                <FileText className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
+                                <span>Terms & Conditions</span>
+                            </Button>
+                        </Link>
+                         <Link href="/about">
+                            <Button variant="outline" className="w-full justify-start gap-3">
+                                <Info className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
+                                <span>About MedBridgee</span>
+                            </Button>
+                        </Link>
                     </CardContent>
                 </Card>
 
