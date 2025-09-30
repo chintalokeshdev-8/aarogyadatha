@@ -98,12 +98,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
         ) : (
             <>
-                <div className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2">
                     <div className="p-1.5 bg-primary rounded-lg">
                         <Activity className="w-6 h-6 text-primary-foreground" />
                     </div>
                     <h1 className="text-xl font-bold">medibridge</h1>
-                </div>
+                </Link>
 
                 <div className="hidden md:block flex-1 max-w-xl">
                     <div className="relative">
@@ -126,7 +126,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-[22rem] border-primary/50" align="end" forceMount>
+                        <DropdownMenuContent className="w-80 border-primary/50" align="end" forceMount>
                             <DropdownMenuLabel className="font-normal p-3">
                                <div className="flex items-start gap-4">
                                    <Avatar className="h-12 w-12">
