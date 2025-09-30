@@ -136,7 +136,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                        </Avatar>
                                        <div>
                                          <p className="font-semibold">Chinta Lokesh Babu</p>
-                                         <p className="text-xs text-muted-foreground">lokeshbabu9298@gmail.com</p>
                                          <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
                                          <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
                                          <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
