@@ -61,7 +61,9 @@ const menuItems = [
 const familyAccounts = [
     { name: "Chinta Lokesh Babu", avatar: "/images/profile.jpg", fallback: "CL", isCurrentUser: true },
     { name: "Chinta Ramana", avatar: "https://picsum.photos/seed/user2/100/100", fallback: "CR", isCurrentUser: false },
-    { name: "Chinta Anusha", avatar: "https://picsum.photos/seed/user3/100/100", fallback: "CA", isCurrentUser: false },
+    { name: "Lakshmi Narayana", avatar: "https://picsum.photos/seed/user3/100/100", fallback: "LN", isCurrentUser: false },
+    { name: "Chinta Ashok", avatar: "https://picsum.photos/seed/user4/100/100", fallback: "CA", isCurrentUser: false },
+    { name: "Shiva Parvathi", avatar: "https://picsum.photos/seed/user5/100/100", fallback: "SP", isCurrentUser: false },
 ];
 
 
@@ -288,3 +290,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+    
