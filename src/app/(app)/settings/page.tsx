@@ -99,7 +99,7 @@ export default function SettingsPage() {
                          <Link href="/about">
                             <Button variant="outline" className="w-full justify-start gap-3">
                                 <Info className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
-                                <span>About MedBridgee</span>
+                                <span>About medibridge</span>
                             </Button>
                         </Link>
                     </CardContent>

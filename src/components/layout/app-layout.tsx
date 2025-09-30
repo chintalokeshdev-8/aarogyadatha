@@ -102,7 +102,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <div className="p-1.5 bg-primary rounded-lg">
                         <Activity className="w-6 h-6 text-primary-foreground" />
                     </div>
-                    <h1 className="text-xl font-bold">MedBridgee</h1>
+                    <h1 className="text-xl font-bold">medibridge</h1>
                 </div>
 
                 <div className="hidden md:block flex-1 max-w-xl">
@@ -126,15 +126,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-80" align="end" forceMount>
+                        <DropdownMenuContent className="w-[22rem] border-primary/50" align="end" forceMount>
                             <DropdownMenuLabel className="font-normal p-3">
-                               <div className="flex items-center gap-3">
-                                   <Avatar className="h-10 w-10">
+                               <div className="flex items-start gap-4">
+                                   <Avatar className="h-12 w-12">
                                        <AvatarImage src="/images/profile.jpg" />
                                        <AvatarFallback>CL</AvatarFallback>
                                    </Avatar>
                                    <div className="flex-1">
-                                     <p className="text-lg font-extrabold whitespace-nowrap">Chinta Lokesh Babu</p>
+                                     <p className="text-xl font-bold whitespace-nowrap">Chinta Lokesh Babu</p>
                                      <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
                                      <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
                                      <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>

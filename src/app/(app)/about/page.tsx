@@ -9,7 +9,7 @@ export default function AboutPage() {
                 <div className="inline-block p-3 bg-primary/10 rounded-full">
                      <Activity className="h-8 w-8 text-primary" />
                 </div>
-                <h1 className="text-4xl font-bold">About MedBridgee</h1>
+                <h1 className="text-4xl font-bold">About medibridge</h1>
                 <p className="text-muted-foreground text-lg">Your Comprehensive Health Companion</p>
             </div>
 
@@ -19,7 +19,7 @@ export default function AboutPage() {
                 </CardHeader>
                 <CardContent className="space-y-4 text-muted-foreground">
                     <p>
-                        MedBridgee is an all-in-one digital health platform designed to empower users by providing easy access to a wide range of healthcare services and information. In a world where managing health can be complex and fragmented, MedBridgee serves as a single, user-friendly bridge between patients and the healthcare ecosystem. Our mission is to make healthcare simple, accessible, and personalized for everyone.
+                        medibridge is an all-in-one digital health platform designed to empower users by providing easy access to a wide range of healthcare services and information. In a world where managing health can be complex and fragmented, medibridge serves as a single, user-friendly bridge between patients and the healthcare ecosystem. Our mission is to make healthcare simple, accessible, and personalized for everyone.
                     </p>
                      <p>
                         The app is built with a mobile-first approach, featuring a clean interface and intuitive navigation. It also includes bilingual support (English and Telugu) to cater to a diverse user base.

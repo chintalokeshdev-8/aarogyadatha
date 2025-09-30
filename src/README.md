@@ -1,8 +1,8 @@
-# MedBridgee: Your Comprehensive Health Companion
+# medibridge: Your Comprehensive Health Companion
 
 ## Introduction
 
-MedBridgee is an all-in-one digital health platform designed to empower users by providing easy access to a wide range of healthcare services and information. In a world where managing health can be complex and fragmented, MedBridgee serves as a single, user-friendly bridge between patients and the healthcare ecosystem. Our mission is to make healthcare simple, accessible, and personalized for everyone.
+medibridge is an all-in-one digital health platform designed to empower users by providing easy access to a wide range of healthcare services and information. In a world where managing health can be complex and fragmented, medibridge serves as a single, user-friendly bridge between patients and the healthcare ecosystem. Our mission is to make healthcare simple, accessible, and personalized for everyone.
 
 The app is built with a mobile-first approach, featuring a clean interface and intuitive navigation. It also includes bilingual support (English and Telugu) to cater to a diverse user base.
 
@@ -10,7 +10,7 @@ The app is built with a mobile-first approach, featuring a clean interface and i
 
 ## Core Features
 
-MedBridgee integrates multiple essential health services into one seamless application. Below is a breakdown of each key feature.
+medibridge integrates multiple essential health services into one seamless application. Below is a breakdown of each key feature.
 
 ### 1. Government Health ID Integration (Aarogyasri & ABHA)
 - **What it is:** A secure way for users to link their official government-provided health identities—the Aarogyasri UHID (for Andhra Pradesh residents) and the national ABHA (Ayushman Bharat Health Account) ID.
