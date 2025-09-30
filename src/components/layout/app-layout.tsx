@@ -135,7 +135,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                            <AvatarFallback>CL</AvatarFallback>
                                        </Avatar>
                                        <div>
-                                         <p className="font-semibold">Chinta Lokesh Babu</p>
+                                         <p className="text-lg font-extrabold">Chinta Lokesh Babu</p>
                                          <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
                                          <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
                                          <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
