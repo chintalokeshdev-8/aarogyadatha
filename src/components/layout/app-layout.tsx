@@ -30,6 +30,7 @@ import {
   Shield,
   Users,
   CheckCircle,
+  Briefcase,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -48,6 +49,7 @@ const menuItems = [
   { href: "/", label: "Home", telugu: "హోమ్", icon: LayoutGrid, color: "hsl(var(--nav-home))" },
   { href: "/symptom-checker", label: "AI Symptom Checker", telugu: "లక్షణాలు", icon: HeartPulse, color: "hsl(var(--nav-symptoms))" },
   { href: "/appointments", label: "Appointments", telugu: "నమోదులు", icon: CalendarCheck, color: "hsl(var(--nav-appointments))" },
+  { href: "/surgery-care", label: "Surgery Care", telugu: "సర్జరీ కేర్", icon: Briefcase, color: "hsl(var(--nav-appointments))" },
   { href: "/opd-queue", label: "OP STATUS", telugu: "OP స్థితి", icon: MessageSquare, color: "hsl(var(--nav-chat))" },
   { href: "/lab-reports", label: "Diagnostics", telugu: "రిపోర్టులు", icon: TestTube, color: "hsl(var(--nav-diagnostics))" },
   { href: "/medicines", label: "Medicines", telugu: "మందులు", icon: Pill, color: "hsl(var(--nav-medicines))" },
@@ -92,8 +94,27 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         viewportRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
+  
+  if (!isClient) {
+    return (
+      <div className="flex flex-col min-h-screen bg-muted/30">
+          <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-background border-b border-t-4 border-t-primary gap-4 h-16">
+              <Link href="/" className="flex items-center gap-2">
+                  <div className="p-1.5 bg-primary rounded-lg">
+                      <Activity className="w-6 h-6 text-primary-foreground" />
+                  </div>
+                  <h1 className="text-xl font-bold">medibridge</h1>
+              </Link>
+          </header>
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24">
+              {children}
+          </main>
+      </div>
+    );
+  }
 
-  const showMobileSearch = isClient && isMobile && isSearchOpen;
+
+  const showMobileSearch = isMobile && isSearchOpen;
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/30">
@@ -125,7 +146,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    {isClient && isMobile && (
+                    {isMobile && (
                         <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full" onClick={() => setIsSearchOpen(true)}>
                             <Search className="h-5 w-5" />
                         </Button>
