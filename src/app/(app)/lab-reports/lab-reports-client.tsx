@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock } from "lucide-react";
+import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock, Filter, X } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -18,6 +18,10 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 
 
 const getStatusBadgeClass = (status: string) => {
@@ -45,7 +49,7 @@ const ReportTable = ({ reports, onAnalyze, onView }: { reports: any[], onAnalyze
             </TableRow>
         </TableHeader>
         <TableBody>
-            {reports.map((report, index) => (
+            {reports.length > 0 ? reports.map((report, index) => (
                 <TableRow key={index} className='border-b'>
                     <TableCell className="font-medium">{report.testName}</TableCell>
                     <TableCell>{report.date}</TableCell>
@@ -61,9 +65,21 @@ const ReportTable = ({ reports, onAnalyze, onView }: { reports: any[], onAnalyze
                                 <Button variant="outline" size="icon" className="h-8 w-8" onClick={() => onView(report)}>
                                     <Eye className="h-4 w-4" />
                                 </Button>
-                                <Button variant="outline" size="icon" className="h-8 w-8">
-                                    <FileDown className="h-4 w-4" />
-                                </Button>
+
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                         <Button variant="outline" size="icon" className="h-8 w-8">
+                                            <FileDown className="h-4 w-4" />
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className='sm:max-w-md'>
+                                        <DialogHeader>
+                                            <DialogTitle>Download Report</DialogTitle>
+                                            <DialogDescription>This action will download a PDF of the report.</DialogDescription>
+                                        </DialogHeader>
+                                        <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>Download PDF</Button>
+                                    </DialogContent>
+                                </Dialog>
                                 <Button variant="outline" size="icon" className="h-8 w-8 border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(report)}>
                                     <Sparkles className="h-4 w-4" />
                                 </Button>
@@ -73,7 +89,13 @@ const ReportTable = ({ reports, onAnalyze, onView }: { reports: any[], onAnalyze
                         )}
                     </TableCell>
                 </TableRow>
-            ))}
+            )) : (
+                 <TableRow>
+                    <TableCell colSpan={5} className="h-24 text-center">
+                        No reports found.
+                    </TableCell>
+                </TableRow>
+            )}
         </TableBody>
     </Table>
 );
@@ -221,9 +243,37 @@ export function LabReportsClient({
     const [reportImageHint, setReportImageHint] = useState<string | undefined>(undefined);
     const [fileName, setFileName] = useState('');
     const [prescriptionFileName, setPrescriptionFileName] = useState('');
+    
+    // Filters for diagnostics
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [openLab, setOpenLab] = useState<string | null>(diagnosticLabs.length > 0 ? diagnosticLabs[0].name : null);
+
+    // Filters for reports
+    const [reportSearchTerm, setReportSearchTerm] = useState('');
+    const [reportDoctor, setReportDoctor] = useState('all');
+    const [reportStatus, setReportStatus] = useState('all');
+    const [reportDate, setReportDate] = useState<Date | undefined>();
+
+    const allDoctors = useMemo(() => {
+        const doctors = new Set<string>();
+        [...labReports, ...imagingReports, ...prescriptionReports].forEach(r => doctors.add(r.doctor));
+        return ['all', ...Array.from(doctors)];
+    }, [labReports, imagingReports, prescriptionReports]);
+
+    const filterReports = (reports: any[]) => {
+        return reports.filter(report => {
+            const searchTermMatch = report.testName.toLowerCase().includes(reportSearchTerm.toLowerCase());
+            const doctorMatch = reportDoctor === 'all' || report.doctor === reportDoctor;
+            const statusMatch = reportStatus === 'all' || report.status === reportStatus;
+            const dateMatch = !reportDate || format(new Date(report.date), 'yyyy-MM-dd') === format(reportDate, 'yyyy-MM-dd');
+            return searchTermMatch && doctorMatch && statusMatch && dateMatch;
+        });
+    };
+
+    const filteredLabReports = useMemo(() => filterReports(labReports), [labReports, reportSearchTerm, reportDoctor, reportStatus, reportDate]);
+    const filteredImagingReports = useMemo(() => filterReports(imagingReports), [imagingReports, reportSearchTerm, reportDoctor, reportStatus, reportDate]);
+    const filteredPrescriptionReports = useMemo(() => filterReports(prescriptionReports), [prescriptionReports, reportSearchTerm, reportDoctor, reportStatus, reportDate]);
 
     const testCategories = useMemo(() => {
         const categories = new Set<string>();
@@ -303,6 +353,13 @@ export function LabReportsClient({
             })
             .filter(lab => lab.tests.length > 0);
     }, [diagnosticLabs, searchTerm, selectedCategory]);
+
+    const clearFilters = () => {
+        setReportSearchTerm('');
+        setReportDoctor('all');
+        setReportStatus('all');
+        setReportDate(undefined);
+    };
 
 
     return (
@@ -481,64 +538,130 @@ export function LabReportsClient({
                 </TabsContent>
                 <TabsContent value="reports" className="mt-6">
                     <Card>
-                        <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                            <div>
-                                <CardTitle>My Reports</CardTitle>
-                                <CardDescription>View, download, and analyze your medical test results.</CardDescription>
-                            </div>
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} className="mt-4 sm:mt-0">
-                                        <Upload className="mr-2 h-4 w-4" />
-                                        Upload Report
-                                    </Button>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-[425px]">
-                                    <DialogHeader>
-                                        <DialogTitle>Upload New Report</DialogTitle>
-                                        <DialogDescription>
-                                            Add a new medical document to your records. You can upload an image or PDF file.
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="grid gap-4 py-4">
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="report-type" className="text-right">Type</Label>
-                                            <Select>
-                                                <SelectTrigger id="report-type" className="col-span-3">
-                                                    <SelectValue placeholder="Select report type" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="lab">Lab Report</SelectItem>
-                                                    <SelectItem value="imaging">Imaging</SelectItem>
-                                                    <SelectItem value="prescription">Prescription</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="report-name" className="text-right">Name</Label>
-                                            <Input id="report-name" placeholder="e.g., Complete Blood Count" className="col-span-3" />
-                                        </div>
-                                        <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="report-file" className="text-right">File</Label>
-                                            <div className="col-span-3">
-                                                <Button asChild variant="outline">
-                                                    <label htmlFor="file-upload" className="cursor-pointer w-full">
-                                                        <Upload className="mr-2 h-4 w-4" />
-                                                        {fileName || 'Choose File'}
-                                                    </label>
-                                                </Button>
-                                                <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
-                                                {fileName && <p className="text-xs text-muted-foreground mt-2">{fileName}</p>}
+                        <CardHeader>
+                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                                <div>
+                                    <CardTitle>My Reports</CardTitle>
+                                    <CardDescription>View, download, and analyze your medical test results.</CardDescription>
+                                </div>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} className="mt-4 sm:mt-0">
+                                            <Upload className="mr-2 h-4 w-4" />
+                                            Upload Report
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[425px]">
+                                        <DialogHeader>
+                                            <DialogTitle>Upload New Report</DialogTitle>
+                                            <DialogDescription>
+                                                Add a new medical document to your records. You can upload an image or PDF file.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="grid gap-4 py-4">
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="report-type" className="text-right">Type</Label>
+                                                <Select>
+                                                    <SelectTrigger id="report-type" className="col-span-3">
+                                                        <SelectValue placeholder="Select report type" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="lab">Lab Report</SelectItem>
+                                                        <SelectItem value="imaging">Imaging</SelectItem>
+                                                        <SelectItem value="prescription">Prescription</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="report-name" className="text-right">Name</Label>
+                                                <Input id="report-name" placeholder="e.g., Complete Blood Count" className="col-span-3" />
+                                            </div>
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="report-file" className="text-right">File</Label>
+                                                <div className="col-span-3">
+                                                    <Button asChild variant="outline">
+                                                        <label htmlFor="file-upload" className="cursor-pointer w-full">
+                                                            <Upload className="mr-2 h-4 w-4" />
+                                                            {fileName || 'Choose File'}
+                                                        </label>
+                                                    </Button>
+                                                    <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
+                                                    {fileName && <p className="text-xs text-muted-foreground mt-2">{fileName}</p>}
+                                                </div>
                                             </div>
                                         </div>
+                                        <CardFooter className="p-0 pt-4">
+                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
+                                                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Report'}
+                                            </Button>
+                                        </CardFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+                             <div className="border-t mt-4 pt-4">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <Filter className="h-5 w-5"/>
+                                    <h3 className="text-lg font-semibold">Filters</h3>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                                    <div className="relative lg:col-span-2">
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        <Input 
+                                            placeholder="Search by report name..." 
+                                            className="pl-10"
+                                            value={reportSearchTerm}
+                                            onChange={(e) => setReportSearchTerm(e.target.value)}
+                                        />
                                     </div>
-                                    <CardFooter className="p-0 pt-4">
-                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
-                                            {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Report'}
+                                    <Select value={reportDoctor} onValueChange={setReportDoctor}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Filter by Doctor" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {allDoctors.map(doc => <SelectItem key={doc} value={doc}>{doc === 'all' ? 'All Doctors' : doc}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+                                    <Select value={reportStatus} onValueChange={setReportStatus}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Filter by Status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="all">All Statuses</SelectItem>
+                                            <SelectItem value="Completed">Completed</SelectItem>
+                                            <SelectItem value="Processing">Processing</SelectItem>
+                                            <SelectItem value="Pending">Pending</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                      <Popover>
+                                        <PopoverTrigger asChild>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                            "justify-start text-left font-normal",
+                                            !reportDate && "text-muted-foreground"
+                                            )}
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {reportDate ? format(reportDate, "PPP") : <span>Filter by date</span>}
                                         </Button>
-                                    </CardFooter>
-                                </DialogContent>
-                            </Dialog>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                        <CalendarComponent
+                                            mode="single"
+                                            selected={reportDate}
+                                            onSelect={setReportDate}
+                                            initialFocus
+                                        />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                                <div className='flex justify-end mt-2'>
+                                     <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2">
+                                        <X className='mr-2 h-4 w-4' />
+                                        Clear Filters
+                                    </Button>
+                                </div>
+                            </div>
                         </CardHeader>
                         <CardContent>
                            <Tabs defaultValue="lab" className="w-full">
@@ -548,13 +671,13 @@ export function LabReportsClient({
                                     <TabsTrigger value="prescriptions" className="flex items-center gap-2"><FileText className="h-4 w-4"/> Prescriptions</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="lab" className="mt-4">
-                                     <ReportTable reports={labReports} onAnalyze={handleAnalyze} onView={handleView} />
+                                     <ReportTable reports={filteredLabReports} onAnalyze={handleAnalyze} onView={handleView} />
                                 </TabsContent>
                                 <TabsContent value="imaging" className="mt-4">
-                                    <ReportTable reports={imagingReports} onAnalyze={handleAnalyze} onView={handleView} />
+                                    <ReportTable reports={filteredImagingReports} onAnalyze={handleAnalyze} onView={handleView} />
                                 </TabsContent>
                                 <TabsContent value="prescriptions" className="mt-4">
-                                     <ReportTable reports={prescriptionReports} onAnalyze={handleAnalyze} onView={handleView} />
+                                     <ReportTable reports={filteredPrescriptionReports} onAnalyze={handleAnalyze} onView={handleView} />
                                 </TabsContent>
                             </Tabs>
                         </CardContent>
