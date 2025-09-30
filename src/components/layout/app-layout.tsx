@@ -161,8 +161,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                              <DropdownMenuGroup className="p-2">
                                 <Link href="/profile" passHref>
                                     <DropdownMenuItem>
-                                        <Activity />
-                                        <span>My Health Activity</span>
+                                        <User />
+                                        <span>Profile</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/settings" passHref>
@@ -247,3 +247,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+    
