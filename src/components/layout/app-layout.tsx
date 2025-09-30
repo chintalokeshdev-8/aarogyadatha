@@ -22,7 +22,6 @@ import {
   LogOut,
   Settings,
   Search,
-  Bell,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -31,6 +30,8 @@ import { Button } from "../ui/button";
 import { PregnantLadyIcon } from "../icons/pregnant-lady-icon";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "../theme-toggle";
+import { GlobalSearch } from "./global-search";
+import { NotificationsDropdown } from "./notifications-dropdown";
 
 const menuItems = [
   { href: "/", label: "Home", telugu: "హోమ్", icon: LayoutGrid, color: "hsl(var(--nav-home))" },
@@ -83,12 +84,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
-                <Search className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full">
-                <Bell className="h-5 w-5" />
-            </Button>
+            <GlobalSearch />
+            <NotificationsDropdown />
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
