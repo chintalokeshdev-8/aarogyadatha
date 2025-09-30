@@ -24,7 +24,7 @@ const quickAccessItems = [
   { href: '/appointments', icon: CalendarCheck, label: 'Appointments', description: 'సమయం నమోదు చేసుకోండి', color: 'hsl(var(--nav-appointments))' },
   { href: '/opd-queue', icon: MessageSquare, label: 'OP STATUS', description: 'OP స్థితి', color: 'hsl(var(--nav-chat))' },
   { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', description: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
-  { href: '/profile#gov-health-ids', icon: GovIdIcon, label: 'My Health IDs', description: 'ఆరోగ్య ఐడి', color: 'hsl(var(--primary))' },
+  { href: '/insurances', icon: GovIdIcon, label: 'My Health IDs', description: 'ఆరోగ్య ఐడి', color: 'hsl(var(--primary))' },
   { href: '/medicines', icon: Pill, label: 'My Medicines', description: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
   { href: '/blood-bank', icon: Droplets, label: 'Blood Bank', description: 'రక్త నిధి', color: 'hsl(var(--nav-blood-bank))' },
   { href: '/health-tracker', label: 'Health Tracker', description: 'ఆరోగ్య ట్రాకర్', icon: Activity, color: 'hsl(var(--nav-profile))' },
@@ -89,41 +89,25 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <Card className="bg-primary text-primary-foreground">
-        <CardContent className="p-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
-              <AvatarImage src="/images/profile.jpg" />
-              <AvatarFallback>CLB</AvatarFallback>
-            </Avatar>
-            <div>
-              <h2 className="text-xl font-semibold">Chinta Lokesh Babu</h2>
-              <p className="text-sm opacity-80">Patient ID: PAT001</p>
-            </div>
-          </div>
-          <div className="text-right">
-              <p className="font-bold text-lg">O+ Positive</p>
-              <p className="text-sm opacity-80">Blood Group</p>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-700/50">
         <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
-                <GovIdIcon className="h-16 w-16 text-blue-600 dark:text-blue-400" />
-                <div className="flex-1">
-                    <h3 className="text-xl font-bold text-blue-800 dark:text-blue-300">Link Your Government Health ID</h3>
-                    <p className="text-blue-700 dark:text-blue-400/80 mt-1">Connect your Aarogyasri (UHID) or ABHA ID to securely access and manage your health records, benefits, and history in one place.</p>
+          <div className="flex flex-col text-center items-center gap-4 md:flex-row md:text-left justify-between">
+            <div className="flex flex-col md:flex-row items-center gap-4">
+                <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
+                    <AvatarImage src="/images/profile.jpg" />
+                    <AvatarFallback>CLB</AvatarFallback>
+                </Avatar>
+                <div>
+                    <h2 className="text-xl font-semibold">Chinta Lokesh Babu</h2>
+                    <p className="text-sm opacity-80">Patient ID: PAT001</p>
                 </div>
-                <Link href="/profile#gov-health-ids">
-                    <Button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-white mt-4 md:mt-0">
-                        Link Now <Link2 className="ml-2 h-4 w-4" />
-                    </Button>
-                </Link>
             </div>
+            <div className="text-center">
+                <p className="font-bold text-lg">O+ Positive</p>
+                <p className="text-sm opacity-80">Blood Group</p>
+            </div>
+          </div>
         </CardContent>
       </Card>
-
 
        <Card>
           <CardHeader>
