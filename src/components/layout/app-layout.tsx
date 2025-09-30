@@ -37,6 +37,7 @@ import {
   Download,
   Printer,
   Loader2,
+  Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -439,12 +440,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 <div className="p-4">
                                      <DropdownMenuSeparator />
                                     <DropdownMenuGroup>
-                                        <Link href="/profile" passHref>
-                                            <DropdownMenuItem>
-                                                <Activity className="mr-2 h-4 w-4" />
-                                                <span>My Health Activity</span>
-                                            </DropdownMenuItem>
-                                        </Link>
                                         <Link href="/settings" passHref>
                                             <DropdownMenuItem>
                                                 <Settings className="mr-2 h-4 w-4" />
@@ -529,3 +524,4 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
