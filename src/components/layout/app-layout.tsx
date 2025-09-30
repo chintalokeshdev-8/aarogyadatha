@@ -126,7 +126,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-96 border-primary/50" align="end" forceMount>
+                        <DropdownMenuContent className="w-[22rem] border-primary/50" align="end" forceMount>
                             <DropdownMenuLabel className="font-normal p-4">
                                 <div className="flex items-start gap-4">
                                     <Avatar className="h-12 w-12">
@@ -134,8 +134,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         <AvatarFallback className="text-xl">CL</AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1 space-y-1">
-                                        <p className="text-xl font-bold leading-none">Chinta Lokesh Babu</p>
-                                        <div className="flex items-center gap-x-3 text-sm text-muted-foreground">
+                                        <p className="text-lg font-semibold leading-none">Chinta Lokesh Babu</p>
+                                        <div className="flex flex-wrap items-center gap-x-3 text-sm text-muted-foreground">
                                             <span>27 years old</span>
                                             <span>Male</span>
                                             <span>O+ Positive</span>
