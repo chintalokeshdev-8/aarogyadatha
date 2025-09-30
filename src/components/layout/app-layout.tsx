@@ -128,35 +128,33 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-80" align="end" forceMount>
                             <DropdownMenuLabel className="font-normal p-4">
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-start gap-4">
                                     <Avatar className="h-16 w-16">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback className="text-2xl">CL</AvatarFallback>
                                     </Avatar>
-                                    <div className="flex-1">
+                                    <div className="flex-1 space-y-1">
                                         <p className="text-lg font-semibold leading-none">Chinta Lokesh Babu</p>
-                                        <div className="flex items-center gap-x-3 text-xs text-muted-foreground mt-1">
+                                        <div className="flex items-center gap-x-3 text-xs text-muted-foreground">
                                             <span>27 years old</span>
                                             <span>Male</span>
                                             <span>O+ Positive</span>
                                         </div>
-                                         <p className="text-xs text-muted-foreground mt-1">Rentachintala, Palnadu District</p>
+                                         <p className="text-xs text-muted-foreground">Rentachintala, Palnadu District</p>
+
+                                        <div className="text-sm text-muted-foreground space-y-2 pt-2">
+                                            <div className="flex items-center gap-3">
+                                                <Mail className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
+                                                <span>lokeshbabu9298@gmail.com</span>
+                                            </div>
+                                            <div className="flex items-center gap-3">
+                                                <Phone className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}}/>
+                                                <span>+91 8008334948</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </DropdownMenuLabel>
-                             <DropdownMenuSeparator />
-                             <DropdownMenuGroup className="p-2">
-                                <div className="text-sm text-muted-foreground space-y-2">
-                                     <div className="flex items-center gap-3 p-2">
-                                        <Mail className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
-                                        <span>lokeshbabu9298@gmail.com</span>
-                                    </div>
-                                     <div className="flex items-center gap-3 p-2">
-                                        <Phone className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}}/>
-                                        <span>+91 8008334948</span>
-                                    </div>
-                                </div>
-                            </DropdownMenuGroup>
                              <DropdownMenuSeparator />
                              <DropdownMenuGroup className="p-2">
                                 <Link href="/profile" passHref>
@@ -172,8 +170,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                     </DropdownMenuItem>
                                 </Link>
                                 <DropdownMenuItem>
-                                    <Phone />
-                                    <span>Customer Support</span>
+                                     <a href="tel:+918008443938" className="flex items-center gap-2">
+                                        <Phone />
+                                        <span>Customer Support</span>
+                                    </a>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
@@ -247,5 +247,3 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-    
