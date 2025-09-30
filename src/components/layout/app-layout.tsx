@@ -200,7 +200,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         const specialColor = item.label === 'Emergency' ? 'hsl(var(--destructive))' : 'hsl(var(--nav-blood-bank))';
 
                         return (
-                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < menuItems.length - 1) && "pr-2 mr-2", item.href === '/profile' ? 'hidden' : '')}>
+                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < menuItems.length - 1) && "border-r pr-2 mr-2", item.href === '/profile' ? 'hidden' : '')}>
                                <div className={cn(
                                    "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-24 py-1",
                                    isActive ? "scale-105" : "scale-100",
@@ -216,11 +216,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                        <item.icon className="h-5 w-5" style={{ color: isSpecial ? specialColor : item.color }} />
                                    </div>
                                    <div className="text-center leading-tight">
-                                        <p className="text-xs font-bold whitespace-normal"
+                                        <p className="text-sm font-bold whitespace-normal"
                                            style={{color: isActive || isSpecial ? (isSpecial ? specialColor : item.color) : 'hsl(var(--foreground))'}}>
                                            {item.label}
                                         </p>
-                                        <p className="text-[11px] font-medium whitespace-normal"
+                                        <p className="text-xs font-medium whitespace-normal"
                                            style={{color: isActive || isSpecial ? (isSpecial ? specialColor : item.color) : 'hsl(var(--muted-foreground))'}}>
                                            {item.telugu}
                                         </p>
