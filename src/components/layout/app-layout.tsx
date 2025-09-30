@@ -127,27 +127,32 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-80" align="end" forceMount>
-                            <DropdownMenuLabel className="flex justify-between items-center p-3">
-                               <div className="flex items-center gap-3">
-                                   <Avatar className="h-10 w-10">
-                                       <AvatarImage src="/images/profile.jpg" />
-                                       <AvatarFallback>CL</AvatarFallback>
-                                   </Avatar>
-                                   <div>
-                                     <p className="font-semibold">Chinta Lokesh Babu</p>
-                                     <p className="text-xs text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                            <DropdownMenuLabel className="font-normal p-3">
+                               <div className="flex justify-between items-start">
+                                   <div className="flex items-center gap-3">
+                                       <Avatar className="h-10 w-10">
+                                           <AvatarImage src="/images/profile.jpg" />
+                                           <AvatarFallback>CL</AvatarFallback>
+                                       </Avatar>
+                                       <div>
+                                         <p className="font-semibold">Chinta Lokesh Babu</p>
+                                         <p className="text-xs text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                                         <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
+                                         <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
+                                         <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
+                                       </div>
                                    </div>
+                                    <Button variant="ghost" size="sm" className="h-auto px-2 py-1 text-xs">
+                                      <Pencil className="mr-1 h-3 w-3"/> Edit
+                                    </Button>
                                </div>
-                                <Button variant="ghost" size="sm" className="h-auto px-2 py-1 text-xs">
-                                  <Pencil className="mr-1 h-3 w-3"/> Edit
-                                </Button>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
                              <div className="p-1">
                                 <Link href="/profile" passHref>
                                     <DropdownMenuItem className="p-3">
                                         <User className="mr-3 text-primary" />
-                                        <span className="font-semibold">My Profile</span>
+                                        <span className="font-semibold">Profile</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/settings" passHref>
