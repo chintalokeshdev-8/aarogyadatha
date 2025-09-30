@@ -23,6 +23,10 @@ import {
   Settings,
   Search,
   ArrowLeft,
+  Mail,
+  MapPin,
+  Pencil,
+  Phone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -122,37 +126,57 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-64" align="end" forceMount>
-                            <DropdownMenuLabel className="font-normal">
-                                <div className="flex flex-col space-y-1">
-                                    <p className="text-sm font-medium leading-none">Chinta Lokesh Babu</p>
-                                    <p className="text-xs leading-none text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                        <DropdownMenuContent className="w-80" align="end" forceMount>
+                            <DropdownMenuLabel className="font-normal p-4">
+                                <div className="flex items-center gap-4">
+                                    <Avatar className="h-16 w-16">
+                                        <AvatarImage src="/images/profile.jpg" />
+                                        <AvatarFallback className="text-2xl">CL</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-1">
+                                        <p className="text-lg font-semibold leading-none">Chinta Lokesh Babu</p>
+                                        <div className="flex items-center gap-x-3 text-xs text-muted-foreground mt-1">
+                                            <span>27 years old</span>
+                                            <span>Male</span>
+                                            <span>O+ Positive</span>
+                                        </div>
+                                         <p className="text-xs text-muted-foreground mt-1">Rentachintala, Palnadu District</p>
+                                    </div>
                                 </div>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuGroup>
+                             <DropdownMenuGroup className="p-2">
+                                <div className="text-sm text-muted-foreground space-y-2">
+                                     <div className="flex items-center gap-3 p-2">
+                                        <Mail className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
+                                        <span>lokeshbabu9298@gmail.com</span>
+                                    </div>
+                                     <div className="flex items-center gap-3 p-2">
+                                        <Phone className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}}/>
+                                        <span>+91 8008334948</span>
+                                    </div>
+                                </div>
+                            </DropdownMenuGroup>
+                             <DropdownMenuSeparator />
+                             <DropdownMenuGroup className="p-2">
                                 <Link href="/profile" passHref>
                                     <DropdownMenuItem>
-                                        <Activity className="mr-2 h-4 w-4" />
-                                        <span>My Health Activity</span>
+                                        <Pencil />
+                                        <span>Edit Profile</span>
                                     </DropdownMenuItem>
                                 </Link>
                                 <Link href="/settings" passHref>
                                     <DropdownMenuItem>
-                                        <Settings className="mr-2 h-4 w-4" />
+                                        <Settings />
                                         <span>Settings</span>
                                     </DropdownMenuItem>
                                 </Link>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
-                                <LogOut className="mr-2 h-4 w-4" />
+                                <LogOut />
                                 <span>Sign out</span>
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <div className="flex items-center justify-center p-2">
-                                <ThemeToggle />
-                            </div>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
