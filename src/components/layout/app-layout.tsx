@@ -128,22 +128,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-80" align="end" forceMount>
                             <DropdownMenuLabel className="font-normal p-3">
-                               <div className="flex justify-between items-start">
-                                   <div className="flex items-center gap-3">
-                                       <Avatar className="h-10 w-10">
-                                           <AvatarImage src="/images/profile.jpg" />
-                                           <AvatarFallback>CL</AvatarFallback>
-                                       </Avatar>
-                                       <div>
-                                         <p className="text-lg font-extrabold">Chinta Lokesh Babu</p>
-                                         <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
-                                         <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
-                                         <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
-                                       </div>
+                               <div className="flex items-center gap-3">
+                                   <Avatar className="h-10 w-10">
+                                       <AvatarImage src="/images/profile.jpg" />
+                                       <AvatarFallback>CL</AvatarFallback>
+                                   </Avatar>
+                                   <div className="flex-1">
+                                     <p className="text-lg font-extrabold whitespace-nowrap">Chinta Lokesh Babu</p>
+                                     <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
+                                     <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
+                                     <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
                                    </div>
-                                    <Button variant="ghost" size="sm" className="h-auto px-2 py-1 text-xs">
-                                      <Pencil className="mr-1 h-3 w-3"/> Edit
-                                    </Button>
                                </div>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
