@@ -28,6 +28,8 @@ import {
   Pencil,
   Phone,
   Shield,
+  Users,
+  CheckCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -39,6 +41,7 @@ import { ThemeToggle } from "../theme-toggle";
 import { NotificationsDropdown } from "./notifications-dropdown";
 import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 
 const menuItems = [
@@ -53,6 +56,12 @@ const menuItems = [
   { href: "/junior-doctors", label: "Jr. Doctors", telugu: "డాక్టర్లు", icon: Headset, color: "hsl(var(--nav-junior-doctors))" },
   { href: "/pregnancy-tracker", label: "Pregnancy Care", telugu: "గర్భం", icon: PregnantLadyIcon, color: "hsl(var(--nav-appointments))" },
   { href: "/emergency", label: "Emergency", telugu: "తక్షణ సహాయం", icon: Siren, color: "hsl(var(--destructive))" },
+];
+
+const familyAccounts = [
+    { name: "Chinta Lokesh Babu", avatar: "/images/profile.jpg", fallback: "CL", isCurrentUser: true },
+    { name: "Chinta Ramana", avatar: "https://picsum.photos/seed/user2/100/100", fallback: "CR", isCurrentUser: false },
+    { name: "Chinta Anusha", avatar: "https://picsum.photos/seed/user3/100/100", fallback: "CA", isCurrentUser: false },
 ];
 
 
@@ -118,66 +127,103 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         <Search className="h-5 w-5" />
                     </Button>
                     <NotificationsDropdown />
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                                <Avatar className="h-10 w-10">
-                                    <AvatarImage src="/images/profile.jpg" />
-                                    <AvatarFallback>CL</AvatarFallback>
-                                </Avatar>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-80 border-primary/50" align="end" forceMount>
-                            <DropdownMenuLabel className="font-normal p-3">
-                               <div className="flex items-start gap-4">
-                                   <Avatar className="h-12 w-12">
-                                       <AvatarImage src="/images/profile.jpg" />
-                                       <AvatarFallback>CL</AvatarFallback>
-                                   </Avatar>
-                                   <div className="flex-1">
-                                     <p className="text-xl font-bold whitespace-nowrap">Chinta Lokesh Babu</p>
-                                     <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
-                                     <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
-                                     <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
-                                   </div>
-                               </div>
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                             <div className="p-1">
-                                <Link href="/profile" passHref>
+                    <Dialog>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                                    <Avatar className="h-10 w-10">
+                                        <AvatarImage src="/images/profile.jpg" />
+                                        <AvatarFallback>CL</AvatarFallback>
+                                    </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-80 border-primary/50" align="end" forceMount>
+                                <DropdownMenuLabel className="font-normal p-3">
+                                <div className="flex items-start gap-4">
+                                    <Avatar className="h-12 w-12">
+                                        <AvatarImage src="/images/profile.jpg" />
+                                        <AvatarFallback>CL</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-1">
+                                        <p className="text-xl font-bold whitespace-nowrap">Chinta Lokesh Babu</p>
+                                        <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
+                                        <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
+                                        <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
+                                    </div>
+                                </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <div className="p-1">
+                                    <DialogTrigger asChild>
+                                        <DropdownMenuItem className="p-3">
+                                            <Users className="mr-3 text-primary" />
+                                            <span className="font-semibold">Switch Account</span>
+                                        </DropdownMenuItem>
+                                    </DialogTrigger>
+                                    <Link href="/profile" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <User className="mr-3 text-primary" />
+                                            <span className="font-semibold">Profile</span>
+                                        </DropdownMenuItem>
+                                    </Link>
+                                    <Link href="/insurances" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <Shield className="mr-3 text-primary" />
+                                            <span className="font-semibold">Insurances</span>
+                                        </DropdownMenuItem>
+                                    </Link>
+                                    <Link href="/settings" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <Settings className="mr-3 text-primary" />
+                                            <span className="font-semibold">Settings</span>
+                                        </DropdownMenuItem>
+                                    </Link>
                                     <DropdownMenuItem className="p-3">
-                                        <User className="mr-3 text-primary" />
-                                        <span className="font-semibold">Profile</span>
+                                        <a href="tel:+918008443938" className="flex items-center w-full">
+                                            <Phone className="mr-3 text-primary" />
+                                            <span className="font-semibold">Customer Support</span>
+                                        </a>
                                     </DropdownMenuItem>
-                                </Link>
-                                <Link href="/insurances" passHref>
-                                    <DropdownMenuItem className="p-3">
-                                        <Shield className="mr-3 text-primary" />
-                                        <span className="font-semibold">Insurances</span>
+                                </div>
+                                <DropdownMenuSeparator />
+                                <div className="p-1">
+                                    <DropdownMenuItem className="p-3 text-red-600 focus:bg-red-50 focus:text-red-700 dark:focus:bg-red-900/50 dark:focus:text-red-500">
+                                        <LogOut className="mr-3" />
+                                        <span className="font-semibold">Sign out</span>
                                     </DropdownMenuItem>
-                                </Link>
-                                <Link href="/settings" passHref>
-                                    <DropdownMenuItem className="p-3">
-                                        <Settings className="mr-3 text-primary" />
-                                        <span className="font-semibold">Settings</span>
-                                    </DropdownMenuItem>
-                                </Link>
-                                <DropdownMenuItem className="p-3">
-                                     <a href="tel:+918008443938" className="flex items-center w-full">
-                                        <Phone className="mr-3 text-primary" />
-                                        <span className="font-semibold">Customer Support</span>
-                                    </a>
-                                </DropdownMenuItem>
+                                </div>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                         <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Switch Account</DialogTitle>
+                                <DialogDescription>
+                                    Select a profile to continue.
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-3">
+                                {familyAccounts.map((account, index) => (
+                                    <div key={index} className={cn("p-3 rounded-lg flex items-center justify-between", account.isCurrentUser ? "bg-primary/10 border border-primary/20" : "bg-muted/50")}>
+                                        <div className="flex items-center gap-3">
+                                            <Avatar>
+                                                <AvatarImage src={account.avatar} />
+                                                <AvatarFallback>{account.fallback}</AvatarFallback>
+                                            </Avatar>
+                                            <p className="font-semibold">{account.name}</p>
+                                        </div>
+                                        {account.isCurrentUser ? (
+                                            <div className="flex items-center gap-2 text-primary font-semibold">
+                                                <CheckCircle className="h-5 w-5" />
+                                                Current
+                                            </div>
+                                        ) : (
+                                            <Button variant="outline" size="sm">Switch</Button>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
-                            <DropdownMenuSeparator />
-                            <div className="p-1">
-                                <DropdownMenuItem className="p-3 text-red-600 focus:bg-red-50 focus:text-red-700 dark:focus:bg-red-900/50 dark:focus:text-red-500">
-                                    <LogOut className="mr-3" />
-                                    <span className="font-semibold">Sign out</span>
-                                </DropdownMenuItem>
-                            </div>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </>
         )}
