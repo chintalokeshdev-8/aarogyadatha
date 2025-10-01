@@ -262,119 +262,60 @@ export default function OpdQueuePage() {
                 </CardHeader>
             </Card>
 
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                <div className="space-y-8">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                             <div className={`flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
-                                <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
-                                <div className="flex-1">
-                                    <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
-                                        {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
-                                    </p>
-                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
-                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
-                                </div>
-                                {currentStatusInfo.indicator && (
-                                    <span className="relative flex h-4 w-4 mt-1">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
-                                    </span>
-                                )}
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Live Queue</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {queue.map(patient => (
-                                    <div key={patient.token} className={`flex items-center justify-between p-3 rounded-lg ${patient.token === 23 ? 'bg-primary/10' : 'bg-muted/40'}`} style={patient.token === 23 ? {backgroundColor: 'hsla(var(--nav-chat)/0.1)'} : {}}>
-                                        <div className="flex items-center gap-3">
-                                            <div className={`flex items-center justify-center h-10 w-10 rounded-full font-bold text-lg ${patient.token === 23 ? 'text-primary-foreground' : 'bg-muted'}`} style={patient.token === 23 ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
-                                                {patient.token}
-                                            </div>
-                                            <div>
-                                                <p className="font-semibold">{patient.name}</p>
-                                            </div>
-                                        </div>
-                                        <Badge variant={patient.status === 'Consulting' ? 'default' : (patient.token === 23 ? 'outline' : 'secondary')}
-                                           className={patient.status === 'Consulting' ? 'bg-primary' : (patient.token === 23 ? 'border-primary text-primary' : '')}
-                                           style={patient.status === 'Consulting' ? {backgroundColor: 'hsl(var(--nav-chat))'} : (patient.token === 23 ? {borderColor: 'hsl(var(--nav-chat))', color: 'hsl(var(--nav-chat))'} : {})}
-                                        >
-                                            {patient.status}
-                                        </Badge>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                 <Card className="flex flex-col h-[70vh] lg:h-auto">
-                    <CardHeader className="flex flex-row items-center gap-4 border-b">
-                        <Avatar>
-                            <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
-                            <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <CardTitle>{appointmentDetails.doctor.name}</CardTitle>
-                            <p className="text-sm text-green-600 font-medium flex items-center gap-1.5">
-                                <span className="relative flex h-3 w-3">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
-                                </span>
-                                Online
-                            </p>
-                        </div>
+            <div className="space-y-8">
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex-1 overflow-y-auto p-6 space-y-6">
-                        {messages.map((msg, index) => (
-                            <div key={index} className={`flex items-end gap-2 max-w-[80%] ${msg.sender === 'user' ? 'justify-end ml-auto' : 'justify-start'}`}>
-                                {msg.sender === 'doctor' && (
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
-                                        <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                    </Avatar>
-                                )}
-                                <div className={`rounded-lg px-4 py-2 ${msg.sender === 'user' ? 'text-primary-foreground' : 'bg-muted'}`}
-                                 style={msg.sender === 'user' ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
-                                    <p>{msg.text}</p>
-                                    <p className={`text-xs mt-1 text-right ${msg.sender === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>{msg.time}</p>
-
-                                </div>
-                                {msg.sender === 'user' && (
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage src="/images/profile.jpg" />
-                                        <AvatarFallback>CL</AvatarFallback>
-                                    </Avatar>
-                                )}
+                    <CardContent>
+                         <div className={`flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
+                            <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
+                            <div className="flex-1">
+                                <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
+                                    {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
+                                </p>
+                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
+                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
                             </div>
-                        ))}
+                            {currentStatusInfo.indicator && (
+                                <span className="relative flex h-4 w-4 mt-1">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
+                                </span>
+                            )}
+                        </div>
                     </CardContent>
-                    <CardFooter className="border-t p-4 space-y-4 flex-col items-start bg-muted/30">
-                         <div className="flex flex-wrap gap-2">
-                            {quickQuestions.map((q, i) => (
-                                 <Button key={i} variant="outline" size="sm" className="text-xs">{q}</Button>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Live Queue</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-3">
+                            {queue.map(patient => (
+                                <div key={patient.token} className={`flex items-center justify-between p-3 rounded-lg ${patient.token === 23 ? 'bg-primary/10' : 'bg-muted/40'}`} style={patient.token === 23 ? {backgroundColor: 'hsla(var(--nav-chat)/0.1)'} : {}}>
+                                    <div className="flex items-center gap-3">
+                                        <div className={`flex items-center justify-center h-10 w-10 rounded-full font-bold text-lg ${patient.token === 23 ? 'text-primary-foreground' : 'bg-muted'}`} style={patient.token === 23 ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
+                                            {patient.token}
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold">{patient.name}</p>
+                                        </div>
+                                    </div>
+                                    <Badge variant={patient.status === 'Consulting' ? 'default' : (patient.token === 23 ? 'outline' : 'secondary')}
+                                       className={patient.status === 'Consulting' ? 'bg-primary' : (patient.token === 23 ? 'border-primary text-primary' : '')}
+                                       style={patient.status === 'Consulting' ? {backgroundColor: 'hsl(var(--nav-chat))'} : (patient.token === 23 ? {borderColor: 'hsl(var(--nav-chat))', color: 'hsl(var(--nav-chat))'} : {})}
+                                    >
+                                        {patient.status}
+                                    </Badge>
+                                </div>
                             ))}
                         </div>
-                        <div className="flex w-full items-center space-x-2">
-                            <Input type="text" placeholder="Type your message..." className="flex-1" />
-                            <Button type="submit" size="icon" style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
-                                <Send className="h-4 w-4" />
-                                <span className="sr-only">Send</span>
-                            </Button>
-                        </div>
-                    </CardFooter>
+                    </CardContent>
                 </Card>
             </div>
+
              <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
@@ -452,6 +393,66 @@ export default function OpdQueuePage() {
                     ))}
                 </CardContent>
             </Card>
+
+             <Card className="flex flex-col">
+                <CardHeader className="flex flex-row items-center gap-4 border-b">
+                    <Avatar>
+                        <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
+                        <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <CardTitle>{appointmentDetails.doctor.name}</CardTitle>
+                        <p className="text-sm text-green-600 font-medium flex items-center gap-1.5">
+                            <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
+                            </span>
+                            Online
+                        </p>
+                    </div>
+                </CardHeader>
+                <CardContent className="flex-1 overflow-y-auto p-6 space-y-6">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`flex items-end gap-2 max-w-[80%] ${msg.sender === 'user' ? 'justify-end ml-auto' : 'justify-start'}`}>
+                            {msg.sender === 'doctor' && (
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
+                                    <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                </Avatar>
+                            )}
+                            <div className={`rounded-lg px-4 py-2 ${msg.sender === 'user' ? 'text-primary-foreground' : 'bg-muted'}`}
+                             style={msg.sender === 'user' ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
+                                <p>{msg.text}</p>
+                                <p className={`text-xs mt-1 text-right ${msg.sender === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>{msg.time}</p>
+
+                            </div>
+                            {msg.sender === 'user' && (
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage src="/images/profile.jpg" />
+                                    <AvatarFallback>CL</AvatarFallback>
+                                </Avatar>
+                            )}
+                        </div>
+                    ))}
+                </CardContent>
+                <CardFooter className="border-t p-4 space-y-4 flex-col items-start bg-muted/30">
+                     <div className="flex flex-wrap gap-2">
+                        {quickQuestions.map((q, i) => (
+                             <Button key={i} variant="outline" size="sm" className="text-xs">{q}</Button>
+                        ))}
+                    </div>
+                    <div className="flex w-full items-center space-x-2">
+                        <Input type="text" placeholder="Type your message..." className="flex-1" />
+                        <Button type="submit" size="icon" style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
+                            <Send className="h-4 w-4" />
+                            <span className="sr-only">Send</span>
+                        </Button>
+                    </div>
+                </CardFooter>
+            </Card>
+
         </div>
     );
 }
+
+  
