@@ -189,6 +189,9 @@ function DietPlanDialog() {
 
 function MedicineForm({ medicine, onSave }: { medicine?: any; onSave: (med: any) => void }) {
     const [name, setName] = useState(medicine?.name || '');
+    const [teluguName, setTeluguName] = useState(medicine?.teluguName || '');
+    const [use, setUse] = useState(medicine?.use || '');
+    const [teluguUse, setTeluguUse] = useState(medicine?.teluguUse || '');
     const [dosage, setDosage] = useState(medicine?.dosage || '');
     const [frequency, setFrequency] = useState(medicine?.frequency || '');
     const { toast } = useToast();
@@ -198,11 +201,11 @@ function MedicineForm({ medicine, onSave }: { medicine?: any; onSave: (med: any)
         const newMed = {
             ...medicine,
             name,
+            teluguName,
+            use,
+            teluguUse,
             dosage,
             frequency,
-            use: medicine?.use || "User added medicine",
-            teluguName: medicine?.teluguName || "",
-            teluguUse: medicine?.teluguUse || "",
             alerts: medicine?.alerts || [{ time: "9:00 AM", status: "pending" }],
         };
         onSave(newMed);
@@ -217,6 +220,18 @@ function MedicineForm({ medicine, onSave }: { medicine?: any; onSave: (med: any)
             <div className="space-y-2">
                 <Label htmlFor="med-name">Medicine Name</Label>
                 <Input id="med-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Paracetamol" required />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="med-telugu-name">Medicine Name (Telugu)</Label>
+                <Input id="med-telugu-name" value={teluguName} onChange={(e) => setTeluguName(e.target.value)} placeholder="ఉదా., పారాసిటమాల్" />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="med-use">Use (English)</Label>
+                <Input id="med-use" value={use} onChange={(e) => setUse(e.target.value)} placeholder="e.g., For fever and pain relief" />
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor="med-telugu-use">Use (Telugu)</Label>
+                <Input id="med-telugu-use" value={teluguUse} onChange={(e) => setTeluguUse(e.target.value)} placeholder="ఉదా., జ్వరం మరియు నొప్పి నివారణకు" />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="med-dosage">Dosage</Label>
@@ -431,3 +446,5 @@ export default function MyMedicinesPage() {
         </Dialog>
     );
 }
+
+    
