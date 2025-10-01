@@ -63,10 +63,10 @@ const appointmentDetails = {
 
 const previousAppointments = [
     {
-        initialDoctor: "Dr. Dokku Vasu Babu",
+        problem: "Consultation for post-viral fatigue and chest pain.",
         specialty: "Cardiologist",
         date: "2024-08-05",
-        notes: "Consultation for post-viral fatigue and chest pain.",
+        initialDoctor: "Dr. Dokku Vasu Babu",
         prescriptions: [
             {
                 title: "1st Follow-up Prescription",
@@ -82,8 +82,8 @@ const previousAppointments = [
             },
             {
                 title: "2nd Follow-up Prescription",
-                status: "Active",
-                date: "Aug 19, 2024 - Present",
+                status: "Completed",
+                date: "Aug 19, 2024 - Sep 02, 2024",
                 doctor: "Dr. Ramesh Babu",
                 summary: "Follow-up tests and revised medication after Troponin-I levels showed improvement. Patient feels less fatigue. BP is stable at 120/80 mmHg.",
                 medicines: ["Atorvastatin 20mg", "Aspirin 81mg"],
@@ -96,8 +96,8 @@ const previousAppointments = [
             {
                 title: "Condition Status",
                 status: "Improved",
-                date: "As of Aug 19, 2024",
-                doctor: "Dr. Ramesh Babu",
+                date: "As of Sep 03, 2024",
+                doctor: "Dr. Anjali",
                 summary: "Patient showing significant improvement. Key cardiac markers have normalized. Final check-up scheduled to confirm full recovery.",
                 medicines: [],
                  details: []
@@ -105,10 +105,10 @@ const previousAppointments = [
         ]
     },
     {
-        initialDoctor: "Dr. Anjali",
+        problem: "Consultation for seasonal flu.",
         specialty: "General Physician",
         date: "2024-07-15",
-        notes: "Consultation for seasonal flu.",
+        initialDoctor: "Dr. Anjali",
         prescriptions: [
              {
                 title: "Initial Prescription",
@@ -117,6 +117,43 @@ const previousAppointments = [
                 doctor: "Dr. Anjali",
                 summary: "Standard treatment for viral infection. Patient reported fever and cough. Prescribed rest and hydration.",
                 medicines: ["Paracetamol 500mg", "Cetirizine 10mg"],
+                details: []
+            },
+            {
+                title: "Condition Status",
+                status: "Resolved",
+                date: "As of Jul 23, 2024",
+                doctor: "Dr. Anjali",
+                summary: "Symptoms resolved after one week of treatment. Patient advised to continue monitoring for any recurring issues.",
+                medicines: [],
+                 details: []
+            }
+        ]
+    },
+     {
+        problem: "Orthopedic consultation for knee pain.",
+        specialty: "Orthopedic Surgeon",
+        date: "2024-06-10",
+        initialDoctor: "Dr. Lakshmi Narasaiah",
+        prescriptions: [
+             {
+                title: "Initial Consultation",
+                status: "Completed",
+                date: "Jun 10, 2024 - Jun 24, 2024",
+                doctor: "Dr. Lakshmi Narasaiah",
+                summary: "Patient Sreenu reported mild to moderate knee pain after a minor fall. Advised rest and anti-inflammatory medication. X-Ray ordered.",
+                medicines: ["Ibuprofen 400mg", "Glucosamine"],
+                details: [
+                     { name: 'Knee X-Ray', date: '2024-06-11', status: 'Normal', result: 'Completed' },
+                ]
+            },
+            {
+                title: "1st Follow-up",
+                status: "Completed",
+                date: "Jun 25, 2024 - Jul 09, 2024",
+                doctor: "Dr. G. Ravi Shankara Reddy",
+                summary: "Pain persists. Since X-Ray was normal, a course of physiotherapy was recommended to strengthen the knee.",
+                medicines: ["Continue Ibuprofen as needed"],
                 details: []
             }
         ]
@@ -195,12 +232,12 @@ export default function OpdQueuePage() {
 
     const filteredAppointments = useMemo(() => {
         return previousAppointments.filter(appt => {
-            const searchTermMatch = appt.notes.toLowerCase().includes(searchTerm.toLowerCase());
+            const searchTermMatch = appt.problem.toLowerCase().includes(searchTerm.toLowerCase());
             const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor;
             const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
             return searchTermMatch && doctorMatch && dateMatch;
         });
-    }, [searchTerm, filterDoctor, filterDate]);
+    }, [previousAppointments, searchTerm, filterDoctor, filterDate]);
 
     const clearFilters = () => {
         setSearchTerm('');
@@ -214,7 +251,7 @@ export default function OpdQueuePage() {
     return (
         <div className="space-y-8">
             <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-chat))'}}>Appointments &amp; History</h1>
+                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-chat))'}}>Appointments & History</h1>
                 <p className="text-muted-foreground mt-2">
                     {today ? `Status for your appointments on ${today}.` : 'Loading date...'}
                 </p>
@@ -279,8 +316,8 @@ export default function OpdQueuePage() {
                 </CardHeader>
             </Card>
 
-            <div className="grid lg:grid-cols-2 gap-8">
-                 <div className="lg:col-span-2 space-y-8">
+            <div className="grid lg:grid-cols-1 gap-8">
+                 <div className="lg:col-span-1 space-y-8">
                      <Card>
                         <CardHeader>
                             <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
@@ -332,65 +369,65 @@ export default function OpdQueuePage() {
                             </div>
                         </CardContent>
                     </Card>
-
-                     <Card className="flex flex-col">
-                        <CardHeader className="flex flex-row items-center gap-4 border-b">
-                            <Avatar>
-                                <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
-                                <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                                <CardTitle>{appointmentDetails.doctor.name}</CardTitle>
-                                <p className="text-sm text-green-600 font-medium flex items-center gap-1.5">
-                                    <span className="relative flex h-3 w-3">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
-                                    </span>
-                                    Online
-                                </p>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="flex-1 overflow-y-auto p-6 space-y-6">
-                            {messages.map((msg, index) => (
-                                <div key={index} className={`flex items-end gap-2 max-w-[80%] ${msg.sender === 'user' ? 'justify-end ml-auto' : 'justify-start'}`}>
-                                    {msg.sender === 'doctor' && (
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
-                                            <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                        </Avatar>
-                                    )}
-                                    <div className={`rounded-lg px-4 py-2 ${msg.sender === 'user' ? 'text-primary-foreground' : 'bg-muted'}`}
-                                    style={msg.sender === 'user' ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
-                                        <p>{msg.text}</p>
-                                        <p className={`text-xs mt-1 text-right ${msg.sender === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>{msg.time}</p>
-
-                                    </div>
-                                    {msg.sender === 'user' && (
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarImage src="/images/profile.jpg" />
-                                            <AvatarFallback>CL</AvatarFallback>
-                                        </Avatar>
-                                    )}
-                                </div>
-                            ))}
-                        </CardContent>
-                        <CardFooter className="border-t p-4 space-y-4 flex-col items-start bg-muted/30">
-                            <div className="flex flex-wrap gap-2">
-                                {quickQuestions.map((q, i) => (
-                                    <Button key={i} variant="outline" size="sm" className="text-xs">{q}</Button>
-                                ))}
-                            </div>
-                            <div className="flex w-full items-center space-x-2">
-                                <Input type="text" placeholder="Type your message..." className="flex-1" />
-                                <Button type="submit" size="icon" style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
-                                    <Send className="h-4 w-4" />
-                                    <span className="sr-only">Send</span>
-                                </Button>
-                            </div>
-                        </CardFooter>
-                    </Card>
                  </div>
             </div>
+
+             <Card className="flex flex-col">
+                <CardHeader className="flex flex-row items-center gap-4 border-b">
+                    <Avatar>
+                        <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
+                        <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <CardTitle>{appointmentDetails.doctor.name}</CardTitle>
+                        <p className="text-sm text-green-600 font-medium flex items-center gap-1.5">
+                            <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
+                            </span>
+                            Online
+                        </p>
+                    </div>
+                </CardHeader>
+                <CardContent className="flex-1 overflow-y-auto p-6 space-y-6">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`flex items-end gap-2 max-w-[80%] ${msg.sender === 'user' ? 'justify-end ml-auto' : 'justify-start'}`}>
+                            {msg.sender === 'doctor' && (
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
+                                    <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                </Avatar>
+                            )}
+                            <div className={`rounded-lg px-4 py-2 ${msg.sender === 'user' ? 'text-primary-foreground' : 'bg-muted'}`}
+                            style={msg.sender === 'user' ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
+                                <p>{msg.text}</p>
+                                <p className={`text-xs mt-1 text-right ${msg.sender === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>{msg.time}</p>
+
+                            </div>
+                            {msg.sender === 'user' && (
+                                <Avatar className="h-8 w-8">
+                                    <AvatarImage src="/images/profile.jpg" />
+                                    <AvatarFallback>CL</AvatarFallback>
+                                </Avatar>
+                            )}
+                        </div>
+                    ))}
+                </CardContent>
+                <CardFooter className="border-t p-4 space-y-4 flex-col items-start bg-muted/30">
+                    <div className="flex flex-wrap gap-2">
+                        {quickQuestions.map((q, i) => (
+                            <Button key={i} variant="outline" size="sm" className="text-xs">{q}</Button>
+                        ))}
+                    </div>
+                    <div className="flex w-full items-center space-x-2">
+                        <Input type="text" placeholder="Type your message..." className="flex-1" />
+                        <Button type="submit" size="icon" style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
+                            <Send className="h-4 w-4" />
+                            <span className="sr-only">Send</span>
+                        </Button>
+                    </div>
+                </CardFooter>
+            </Card>
 
              <Card>
                 <CardHeader>
@@ -455,7 +492,7 @@ export default function OpdQueuePage() {
                         <Collapsible key={index} className="border rounded-lg" defaultOpen={index === 0}>
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
                                 <div>
-                                    <p className="text-xl font-bold">{appt.notes}</p>
+                                    <p className="text-xl font-bold">{appt.problem}</p>
                                     <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
                                     <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {appt.date} by {appt.initialDoctor}</div>
                                 </div>
@@ -472,7 +509,7 @@ export default function OpdQueuePage() {
                                                         <p className="font-bold text-lg">{item.title}</p>
                                                         <div className="text-sm font-semibold text-muted-foreground">by {item.doctor}</div>
                                                         <div className="flex items-center gap-2 mt-1">
-                                                            <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
+                                                            <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
                                                             <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
                                                         </div>
                                                     </div>
@@ -553,15 +590,7 @@ export default function OpdQueuePage() {
                     )}
                 </CardContent>
             </Card>
-
         </div>
     );
-
-    
-
-
-
-
-    
-
+}
     
