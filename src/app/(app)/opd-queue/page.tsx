@@ -1,10 +1,10 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle } from "lucide-react";
+import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { cn } from '@/lib/utils';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Link from 'next/link';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 
 const queue = [
@@ -55,20 +60,6 @@ const appointmentDetails = {
     status: "Available", // Can be "Available", "In Surgery", "On Leave"
 };
 
-const otherAppointments = [
-    {
-        doctor: "Dr. Dokku Vasu Babu",
-        specialty: "Cardiologist",
-        date: "2024-08-05",
-        time: "11:00 AM",
-    },
-    {
-        doctor: "Dr. Lakshmi Narasaiah",
-        specialty: "Orthopedic Surgeon",
-        date: "2024-08-12",
-        time: "02:30 PM",
-    }
-];
 
 const previousAppointments = [
     {
@@ -188,10 +179,34 @@ const getReportStatusBadge = (status: string) => {
 
 export default function OpdQueuePage() {
     const [today, setToday] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterDoctor, setFilterDoctor] = useState('all');
+    const [filterDate, setFilterDate] = useState<Date | undefined>();
 
     useEffect(() => {
         setToday(new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
     }, []);
+    
+    const allDoctors = useMemo(() => {
+        const doctors = new Set<string>();
+        previousAppointments.forEach(appt => doctors.add(appt.initialDoctor));
+        return ['all', ...Array.from(doctors)];
+    }, []);
+
+    const filteredAppointments = useMemo(() => {
+        return previousAppointments.filter(appt => {
+            const searchTermMatch = appt.notes.toLowerCase().includes(searchTerm.toLowerCase());
+            const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor;
+            const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
+            return searchTermMatch && doctorMatch && dateMatch;
+        });
+    }, [searchTerm, filterDoctor, filterDate]);
+
+    const clearFilters = () => {
+        setSearchTerm('');
+        setFilterDoctor('all');
+        setFilterDate(undefined);
+    };
 
     const currentStatusInfo = getStatusInfo(appointmentDetails.status);
     const StatusIcon = currentStatusInfo.icon;
@@ -381,15 +396,68 @@ export default function OpdQueuePage() {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
                     <CardDescription>Review your past consultations and prescriptions, grouped by health concern.</CardDescription>
+                    <div className="border-t mt-4 pt-4">
+                        <div className="flex items-center gap-2 mb-4">
+                            <Filter className="h-5 w-5"/>
+                            <h3 className="text-lg font-semibold">Filters</h3>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="relative lg:col-span-2">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                <Input 
+                                    placeholder="Search by consultation reason..." 
+                                    className="pl-10"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                            </div>
+                            <Select value={filterDoctor} onValueChange={setFilterDoctor}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Filter by Doctor" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {allDoctors.map(doc => <SelectItem key={doc} value={doc}>{doc === 'all' ? 'All Doctors' : doc}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                    "justify-start text-left font-normal",
+                                    !filterDate && "text-muted-foreground"
+                                    )}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {filterDate ? format(filterDate, "PPP") : <span>Filter by date</span>}
+                                </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0">
+                                <CalendarComponent
+                                    mode="single"
+                                    selected={filterDate}
+                                    onSelect={setFilterDate}
+                                    initialFocus
+                                />
+                                </PopoverContent>
+                            </Popover>
+                        </div>
+                        <div className='flex justify-end mt-2'>
+                                <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2">
+                                <X className='mr-2 h-4 w-4' />
+                                Clear Filters
+                            </Button>
+                        </div>
+                    </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    {previousAppointments.map((appt, index) => (
+                    {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
                         <Collapsible key={index} className="border rounded-lg" defaultOpen={index === 0}>
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
                                 <div>
                                     <p className="text-xl font-bold">{appt.notes}</p>
                                     <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
-                                    <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {appt.date}</div>
+                                    <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {appt.date} by {appt.initialDoctor}</div>
                                 </div>
                                 <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
                             </CollapsibleTrigger>
@@ -425,7 +493,7 @@ export default function OpdQueuePage() {
                                                             </DialogTrigger>
                                                         )}
                                                         {item.title === 'Condition Status' && (
-                                                             <Link href="/appointments">
+                                                                <Link href="/appointments">
                                                                 <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
                                                                     Book Second Opinion
                                                                 </Button>
@@ -438,7 +506,7 @@ export default function OpdQueuePage() {
                                                     <DialogHeader>
                                                         <DialogTitle>{item.title}</DialogTitle>
                                                         <DialogDescription>
-                                                           Follow-up from {item.date} by {item.doctor}.
+                                                            Follow-up from {item.date} by {item.doctor}.
                                                         </DialogDescription>
                                                     </DialogHeader>
                                                     <div className="max-h-[60vh] overflow-y-auto p-1 space-y-4">
@@ -480,7 +548,9 @@ export default function OpdQueuePage() {
                                 )}
                             </CollapsibleContent>
                         </Collapsible>
-                    ))}
+                    )) : (
+                        <div className="text-center p-8 text-muted-foreground">No appointments match your filters.</div>
+                    )}
                 </CardContent>
             </Card>
 
