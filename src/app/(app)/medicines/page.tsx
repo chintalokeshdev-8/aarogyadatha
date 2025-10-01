@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useTransition } from 'react';
@@ -5,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -178,6 +179,9 @@ export default function MyMedicinesPage() {
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-3">
+                                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                                                <Pencil className="h-4 w-4 text-muted-foreground"/>
+                                            </Button>
                                             <Label htmlFor={`med-${index}`} className="text-sm font-medium">{med.taken ? 'Taken' : 'Take'}</Label>
                                             <Checkbox id={`med-${index}`} checked={med.taken} />
                                         </div>
