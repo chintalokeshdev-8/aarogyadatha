@@ -29,18 +29,6 @@ const queue = [
     { token: 24, name: "s. narayana", status: "Waiting" },
 ];
 
-const messages = [
-    { sender: "doctor", text: "Hello Chinta, your turn is next. Please be ready.", time: "10:30 AM" },
-    { sender: "user", text: "Okay, doctor. I have my reports ready.", time: "10:32 AM" },
-    { sender: "doctor", text: "Excellent. I will call you in shortly.", time: "10:33 AM" },
-];
-
-const quickQuestions = [
-    "How long is the wait?",
-    "Is the doctor available?",
-    "Can I share my reports?",
-];
-
 const appointmentDetails = {
     doctor: {
         name: "Dr. Ramesh Babu",
@@ -314,7 +302,25 @@ export default function OpdQueuePage() {
                         <div className="flex-1">
                             <CardTitle className="text-2xl">{appointmentDetails.doctor.name}</CardTitle>
                             <CardDescription className="font-semibold text-base" style={{color: 'hsl(var(--nav-chat))'}}>{appointmentDetails.doctor.specialty}</CardDescription>
-                            <div className="mt-2 space-y-1 text-sm text-muted-foreground">
+                            
+                            <div className={`mt-4 flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
+                                <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
+                                <div className="flex-1">
+                                    <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
+                                        {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
+                                    </p>
+                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
+                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
+                                </div>
+                                {currentStatusInfo.indicator && (
+                                    <span className="relative flex h-4 w-4 mt-1">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
+                                    </span>
+                                )}
+                            </div>
+                            
+                            <div className="mt-4 space-y-1 text-sm text-muted-foreground">
                                 <p className="flex items-center gap-2"><Award className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-chat))'}}/><strong>Successful Surgeries:</strong> {appointmentDetails.doctor.surgeries}</p>
                                 <p className="flex items-center gap-2"><Stethoscope className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-chat))'}}/><strong>Main Focus:</strong> {appointmentDetails.doctor.mainDealing}</p>
                             </div>
@@ -339,31 +345,7 @@ export default function OpdQueuePage() {
                 </CardHeader>
             </Card>
 
-             <div className="grid lg:grid-cols-2 gap-8">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className={`flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
-                            <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
-                            <div className="flex-1">
-                                <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
-                                    {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
-                                </p>
-                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
-                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
-                            </div>
-                            {currentStatusInfo.indicator && (
-                                <span className="relative flex h-4 w-4 mt-1">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
-                                </span>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
-
+             <div className="grid lg:grid-cols-1 gap-8">
                 <Card>
                     <CardHeader>
                         <CardTitle>Live Queue</CardTitle>
@@ -561,3 +543,5 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+
+    
