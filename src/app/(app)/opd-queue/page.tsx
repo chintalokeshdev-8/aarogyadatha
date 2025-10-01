@@ -72,7 +72,7 @@ const otherAppointments = [
 
 const previousAppointments = [
     {
-        doctor: "Dr. Dokku Vasu Babu",
+        initialDoctor: "Dr. Dokku Vasu Babu",
         specialty: "Cardiologist",
         date: "2024-08-05",
         notes: "Consultation for post-viral fatigue and chest pain.",
@@ -93,7 +93,7 @@ const previousAppointments = [
                 title: "2nd Follow-up Prescription",
                 status: "Active",
                 date: "Aug 19, 2024 - Present",
-                doctor: "Dr. Dokku Vasu Babu",
+                doctor: "Dr. Ramesh Babu",
                 summary: "Follow-up tests and revised medication after Troponin-I levels showed improvement. Patient feels less fatigue. BP is stable at 120/80 mmHg.",
                 medicines: ["Atorvastatin 20mg", "Aspirin 81mg"],
                  details: [
@@ -106,7 +106,7 @@ const previousAppointments = [
                 title: "Condition Status",
                 status: "Improved",
                 date: "As of Aug 19, 2024",
-                doctor: "Dr. Dokku Vasu Babu",
+                doctor: "Dr. Ramesh Babu",
                 summary: "Patient showing significant improvement. Key cardiac markers have normalized. Final check-up scheduled to confirm full recovery.",
                 medicines: [],
                  details: []
@@ -114,7 +114,7 @@ const previousAppointments = [
         ]
     },
     {
-        doctor: "Dr. Anjali",
+        initialDoctor: "Dr. Anjali",
         specialty: "General Physician",
         date: "2024-07-15",
         notes: "Consultation for seasonal flu.",
@@ -265,8 +265,8 @@ export default function OpdQueuePage() {
             </Card>
 
             <div className="grid lg:grid-cols-2 gap-8">
-                 <div className="space-y-8 lg:col-span-2">
-                    <Card>
+                 <div className="lg:col-span-2 space-y-8">
+                     <Card>
                         <CardHeader>
                             <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
                         </CardHeader>
@@ -374,7 +374,7 @@ export default function OpdQueuePage() {
                             </div>
                         </CardFooter>
                     </Card>
-                </div>
+                 </div>
             </div>
 
              <Card>
@@ -388,7 +388,7 @@ export default function OpdQueuePage() {
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
                                 <div>
                                     <p className="text-xl font-bold">{appt.notes}</p>
-                                    <p className="text-base font-semibold text-muted-foreground">Dr. {appt.doctor} &bull; {appt.specialty}</p>
+                                    <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
                                     <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {appt.date}</div>
                                 </div>
                                 <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
@@ -402,6 +402,7 @@ export default function OpdQueuePage() {
                                                 <div className='p-4 border bg-background rounded-lg'>
                                                     <div className='mb-4'>
                                                         <p className="font-bold text-lg">{item.title}</p>
+                                                        <div className="text-sm font-semibold text-muted-foreground">by {item.doctor}</div>
                                                         <div className="flex items-center gap-2 mt-1">
                                                             <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
                                                             <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
@@ -460,7 +461,11 @@ export default function OpdQueuePage() {
                                                                         <TableCell className="font-bold">{detail.name}</TableCell>
                                                                         <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
                                                                         <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
-                                                                        <TableCell className="text-right"><Button variant="link" className="h-auto p-0">View</Button></TableCell>
+                                                                        <TableCell className="text-right">
+                                                                            <DialogTrigger asChild>
+                                                                                <Button variant="link" className="h-auto p-0">View</Button>
+                                                                            </DialogTrigger>
+                                                                        </TableCell>
                                                                     </TableRow>
                                                                 ))}
                                                             </TableBody>
@@ -486,5 +491,7 @@ export default function OpdQueuePage() {
 
 
 
+
+    
 
     
