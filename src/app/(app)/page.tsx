@@ -90,26 +90,26 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <Card className="bg-primary text-primary-foreground">
           <CardContent className="p-6">
-              <div className="space-y-4">
-                  <div className="flex flex-row items-center justify-between">
-                      <div className="flex items-center gap-4">
-                          <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
-                              <AvatarImage src="/images/profile.jpg" />
-                              <AvatarFallback>CLB</AvatarFallback>
-                          </Avatar>
-                          <div>
-                              <h2 className="text-xl font-semibold">Chinta Lokesh Babu</h2>
-                              <p className="text-sm opacity-80">Patient ID: PAT001</p>
-                          </div>
-                      </div>
-                      <div className="text-center">
-                          <p className="font-bold text-lg">O+ Positive</p>
-                          <p className="text-sm opacity-80">Blood Group</p>
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-4">
+                      <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
+                          <AvatarImage src="/images/profile.jpg" />
+                          <AvatarFallback>CLB</AvatarFallback>
+                      </Avatar>
+                      <div>
+                          <h2 className="text-xl font-semibold">Chinta Lokesh Babu</h2>
+                          <p className="text-sm opacity-80">Patient ID: PAT001</p>
                       </div>
                   </div>
-                  <div className="border-t border-primary-foreground/20 my-4"></div>
-                   <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-                      <p className="text-sm opacity-90 flex-1">
+                  <div className="text-center rounded-lg bg-primary-foreground/10 px-4 py-2">
+                      <p className="font-bold text-lg">O+ Positive</p>
+                      <p className="text-sm opacity-80">Blood Group</p>
+                  </div>
+              </div>
+              <div className="border-t border-primary-foreground/20 my-4"></div>
+              <div className="grid md:grid-cols-2 gap-4">
+                  <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+                       <p className="text-sm opacity-90 flex-1">
                           Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records, benefits, and history in one place.
                       </p>
                        <Link href="/insurances">
@@ -118,8 +118,7 @@ export default function DashboardPage() {
                         </Button>
                     </Link>
                   </div>
-                   <div className="border-t border-primary-foreground/20 my-4"></div>
-                   <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                   <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
                        <p className="text-sm opacity-90 flex-1 italic font-semibold">
                           "Right disease for the right doctor is 100% cure"
                       </p>
