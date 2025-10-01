@@ -393,63 +393,6 @@ export default function OpdQueuePage() {
                 </Card>
              </div>
 
-             <Card className="flex flex-col">
-                <CardHeader className="flex flex-row items-center gap-4 border-b">
-                    <Avatar>
-                        <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
-                        <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <CardTitle>{appointmentDetails.doctor.name}</CardTitle>
-                        <p className="text-sm text-green-600 font-medium flex items-center gap-1.5">
-                            <span className="relative flex h-3 w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
-                            </span>
-                            Online
-                        </p>
-                    </div>
-                </CardHeader>
-                <CardContent className="flex-1 overflow-y-auto p-6 space-y-6">
-                    {messages.map((msg, index) => (
-                        <div key={index} className={`flex items-end gap-2 max-w-[80%] ${msg.sender === 'user' ? 'justify-end ml-auto' : 'justify-start'}`}>
-                            {msg.sender === 'doctor' && (
-                                <Avatar className="h-8 w-8">
-                                    <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
-                                    <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                </Avatar>
-                            )}
-                            <div className={`rounded-lg px-4 py-2 ${msg.sender === 'user' ? 'text-primary-foreground' : 'bg-muted'}`}
-                            style={msg.sender === 'user' ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
-                                <p>{msg.text}</p>
-                                <p className={`text-xs mt-1 text-right ${msg.sender === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>{msg.time}</p>
-
-                            </div>
-                            {msg.sender === 'user' && (
-                                <Avatar className="h-8 w-8">
-                                    <AvatarImage src="/images/profile.jpg" />
-                                    <AvatarFallback>CL</AvatarFallback>
-                                </Avatar>
-                            )}
-                        </div>
-                    ))}
-                </CardContent>
-                <CardFooter className="border-t p-4 space-y-4 flex-col items-start bg-muted/30">
-                    <div className="flex flex-wrap gap-2">
-                        {quickQuestions.map((q, i) => (
-                            <Button key={i} variant="outline" size="sm" className="text-xs">{q}</Button>
-                        ))}
-                    </div>
-                    <div className="flex w-full items-center space-x-2">
-                        <Input type="text" placeholder="Type your message..." className="flex-1" />
-                        <Button type="submit" size="icon" style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
-                            <Send className="h-4 w-4" />
-                            <span className="sr-only">Send</span>
-                        </Button>
-                    </div>
-                </CardFooter>
-            </Card>
-
              <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
@@ -618,6 +561,3 @@ export default function OpdQueuePage() {
         </div>
     );
 }
-    
-
-    
