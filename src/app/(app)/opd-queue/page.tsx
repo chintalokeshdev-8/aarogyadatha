@@ -226,18 +226,41 @@ export default function OpdQueuePage() {
     
     const allDoctors = useMemo(() => {
         const doctors = new Set<string>();
-        previousAppointments.forEach(appt => doctors.add(appt.initialDoctor));
+        previousAppointments.forEach(appt => {
+            doctors.add(appt.initialDoctor);
+            appt.prescriptions.forEach(p => doctors.add(p.doctor));
+        });
         return ['all', ...Array.from(doctors)];
     }, []);
 
     const filteredAppointments = useMemo(() => {
-        return previousAppointments.filter(appt => {
-            const searchTermMatch = appt.problem.toLowerCase().includes(searchTerm.toLowerCase());
-            const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor;
-            const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
-            return searchTermMatch && doctorMatch && dateMatch;
-        });
-    }, [previousAppointments, searchTerm, filterDoctor, filterDate]);
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    
+    return previousAppointments.filter(appt => {
+        const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor || appt.prescriptions.some(p => p.doctor === filterDoctor);
+        const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
+
+        if (!searchTerm) {
+            return doctorMatch && dateMatch;
+        }
+
+        const keywordMatch = 
+            appt.problem.toLowerCase().includes(lowercasedSearchTerm) ||
+            appt.initialDoctor.toLowerCase().includes(lowercasedSearchTerm) ||
+            appt.specialty.toLowerCase().includes(lowercasedSearchTerm) ||
+            appt.date.toLowerCase().includes(lowercasedSearchTerm) ||
+            appt.prescriptions.some(p => 
+                p.title.toLowerCase().includes(lowercasedSearchTerm) ||
+                p.doctor.toLowerCase().includes(lowercasedSearchTerm) ||
+                p.summary.toLowerCase().includes(lowercasedSearchTerm) ||
+                p.medicines.some(m => m.toLowerCase().includes(lowercasedSearchTerm)) ||
+                p.details.some(d => d.name.toLowerCase().includes(lowercasedSearchTerm))
+            );
+
+        return keywordMatch && doctorMatch && dateMatch;
+    });
+}, [previousAppointments, searchTerm, filterDoctor, filterDate]);
+
 
     const clearFilters = () => {
         setSearchTerm('');
@@ -316,61 +339,59 @@ export default function OpdQueuePage() {
                 </CardHeader>
             </Card>
 
-            <div className="grid lg:grid-cols-1 gap-8">
-                 <div className="lg:col-span-1 space-y-8">
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className={`flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
-                                <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
-                                <div className="flex-1">
-                                    <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
-                                        {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
-                                    </p>
-                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
-                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
-                                </div>
-                                {currentStatusInfo.indicator && (
-                                    <span className="relative flex h-4 w-4 mt-1">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
-                                    </span>
-                                )}
+             <div className="grid lg:grid-cols-2 gap-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className={`flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
+                            <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
+                            <div className="flex-1">
+                                <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
+                                    {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
+                                </p>
+                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
+                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
                             </div>
-                        </CardContent>
-                    </Card>
+                            {currentStatusInfo.indicator && (
+                                <span className="relative flex h-4 w-4 mt-1">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
+                                </span>
+                            )}
+                        </div>
+                    </CardContent>
+                </Card>
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Live Queue</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-3">
-                                {queue.map(patient => (
-                                    <div key={patient.token} className={`flex items-center justify-between p-3 rounded-lg ${patient.token === 23 ? 'bg-primary/10' : 'bg-muted/40'}`} style={patient.token === 23 ? {backgroundColor: 'hsla(var(--nav-chat)/0.1)'} : {}}>
-                                        <div className="flex items-center gap-3">
-                                            <div className={`flex items-center justify-center h-10 w-10 rounded-full font-bold text-lg ${patient.token === 23 ? 'text-primary-foreground' : 'bg-muted'}`} style={patient.token === 23 ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
-                                                {patient.token}
-                                            </div>
-                                            <div>
-                                                <p className="font-semibold">{patient.name}</p>
-                                            </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Live Queue</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-3">
+                            {queue.map(patient => (
+                                <div key={patient.token} className={`flex items-center justify-between p-3 rounded-lg ${patient.token === 23 ? 'bg-primary/10' : 'bg-muted/40'}`} style={patient.token === 23 ? {backgroundColor: 'hsla(var(--nav-chat)/0.1)'} : {}}>
+                                    <div className="flex items-center gap-3">
+                                        <div className={`flex items-center justify-center h-10 w-10 rounded-full font-bold text-lg ${patient.token === 23 ? 'text-primary-foreground' : 'bg-muted'}`} style={patient.token === 23 ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
+                                            {patient.token}
                                         </div>
-                                        <Badge variant={patient.status === 'Consulting' ? 'default' : (patient.token === 23 ? 'outline' : 'secondary')}
-                                        className={patient.status === 'Consulting' ? 'bg-primary' : (patient.token === 23 ? 'border-primary text-primary' : '')}
-                                        style={patient.status === 'Consulting' ? {backgroundColor: 'hsl(var(--nav-chat))'} : (patient.token === 23 ? {borderColor: 'hsl(var(--nav-chat))', color: 'hsl(var(--nav-chat))'} : {})}
-                                        >
-                                            {patient.status}
-                                        </Badge>
+                                        <div>
+                                            <p className="font-semibold">{patient.name}</p>
+                                        </div>
                                     </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                 </div>
-            </div>
+                                    <Badge variant={patient.status === 'Consulting' ? 'default' : (patient.token === 23 ? 'outline' : 'secondary')}
+                                    className={patient.status === 'Consulting' ? 'bg-primary' : (patient.token === 23 ? 'border-primary text-primary' : '')}
+                                    style={patient.status === 'Consulting' ? {backgroundColor: 'hsl(var(--nav-chat))'} : (patient.token === 23 ? {borderColor: 'hsl(var(--nav-chat))', color: 'hsl(var(--nav-chat))'} : {})}
+                                    >
+                                        {patient.status}
+                                    </Badge>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+             </div>
 
              <Card className="flex flex-col">
                 <CardHeader className="flex flex-row items-center gap-4 border-b">
@@ -442,7 +463,7 @@ export default function OpdQueuePage() {
                             <div className="relative lg:col-span-2">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                 <Input 
-                                    placeholder="Search by consultation reason..." 
+                                    placeholder="Search by reason, doctor, test..." 
                                     className="pl-10"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -507,14 +528,14 @@ export default function OpdQueuePage() {
                                                 <div className='p-4 border bg-background rounded-lg'>
                                                     <div className='mb-4'>
                                                         <p className="font-bold text-lg">{item.title}</p>
-                                                        <div className="text-sm font-semibold text-muted-foreground">by {item.doctor}</div>
+                                                         <div className="text-sm font-semibold text-muted-foreground">by {item.doctor}</div>
                                                         <div className="flex items-center gap-2 mt-1">
                                                             <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
                                                             <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
                                                         </div>
                                                     </div>
-
-                                                    {item.medicines.length > 0 && (
+                                                    
+                                                     {item.medicines.length > 0 && (
                                                         <div className='mb-4'>
                                                             <h5 className="font-semibold text-base mb-2">Medications</h5>
                                                             <div className="flex flex-wrap gap-2">
@@ -524,7 +545,7 @@ export default function OpdQueuePage() {
                                                     )}
 
                                                     <div className="flex items-center gap-2 mt-4">
-                                                        {(item.details.length > 0) && (
+                                                        {(item.details.length > 0 || item.summary) && (
                                                             <DialogTrigger asChild>
                                                                 <Button variant="link" className="p-0 h-auto">View Details</Button>
                                                             </DialogTrigger>
@@ -547,34 +568,38 @@ export default function OpdQueuePage() {
                                                         </DialogDescription>
                                                     </DialogHeader>
                                                     <div className="max-h-[60vh] overflow-y-auto p-1 space-y-4">
-                                                        <div>
-                                                            <h4 className='font-semibold mb-2'>Condition Summary</h4>
-                                                            <p className='text-sm text-muted-foreground'>{item.summary}</p>
-                                                        </div>
-                                                        <Table>
-                                                            <TableHeader>
-                                                                <TableRow>
-                                                                    <TableHead>Test/Marker</TableHead>
-                                                                    <TableHead>Status</TableHead>
-                                                                    <TableHead>Result</TableHead>
-                                                                    <TableHead className="text-right">Action</TableHead>
-                                                                </TableRow>
-                                                            </TableHeader>
-                                                            <TableBody>
-                                                                {item.details.map((detail, dIndex) => (
-                                                                    <TableRow key={dIndex}>
-                                                                        <TableCell className="font-bold">{detail.name}</TableCell>
-                                                                        <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
-                                                                        <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
-                                                                        <TableCell className="text-right">
-                                                                            <DialogTrigger asChild>
-                                                                                <Button variant="link" className="h-auto p-0">View</Button>
-                                                                            </DialogTrigger>
-                                                                        </TableCell>
+                                                        {item.summary && (
+                                                            <div>
+                                                                <h4 className='font-semibold mb-2'>Condition Summary</h4>
+                                                                <p className='text-sm text-muted-foreground'>{item.summary}</p>
+                                                            </div>
+                                                        )}
+                                                        {item.details.length > 0 && (
+                                                            <Table>
+                                                                <TableHeader>
+                                                                    <TableRow>
+                                                                        <TableHead>Test/Marker</TableHead>
+                                                                        <TableHead>Status</TableHead>
+                                                                        <TableHead>Result</TableHead>
+                                                                        <TableHead className="text-right">Action</TableHead>
                                                                     </TableRow>
-                                                                ))}
-                                                            </TableBody>
-                                                        </Table>
+                                                                </TableHeader>
+                                                                <TableBody>
+                                                                    {item.details.map((detail, dIndex) => (
+                                                                        <TableRow key={dIndex}>
+                                                                            <TableCell className="font-bold">{detail.name}</TableCell>
+                                                                            <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
+                                                                            <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
+                                                                            <TableCell className="text-right">
+                                                                                <DialogTrigger asChild>
+                                                                                    <Button variant="link" className="h-auto p-0">View</Button>
+                                                                                </DialogTrigger>
+                                                                            </TableCell>
+                                                                        </TableRow>
+                                                                    ))}
+                                                                </TableBody>
+                                                            </Table>
+                                                        )}
                                                     </div>
                                                 </DialogContent>
                                             </Dialog>
@@ -593,4 +618,6 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+    
+
     
