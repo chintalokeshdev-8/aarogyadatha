@@ -15,6 +15,7 @@ import { generateDietPlan, AiDietPlanOutput } from '@/ai/flows/ai-diet-plan';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { Calendar } from '@/components/ui/calendar';
 
 const initialMedicineSchedule = [
     { 
@@ -66,12 +67,12 @@ const initialMedicineSchedule = [
     },
 ];
 
-const medicineHistory = [
-    { date: "Yesterday, Jul 16", medicine: "Paracetamol", status: "full" },
-    { date: "Yesterday, Jul 16", medicine: "Metformin", status: "partial" },
-    { date: "Tuesday, Jul 15", medicine: "Paracetamol", status: "full" },
-    { date: "Tuesday, Jul 15", medicine: "Metformin", status: "missed" },
-];
+const medicineHistoryData = {
+    full: [new Date(2024, 6, 15), new Date(2024, 6, 12), new Date(2024, 6, 11)],
+    partial: [new Date(2024, 6, 16), new Date(2024, 6, 10)],
+    missed: [new Date(2024, 6, 14), new Date(2024, 6, 13)]
+};
+
 
 const medicineAssistanceItems = [
     { href: '/medicine-assistant', icon: FlaskConical, label: 'AI Medicine Assistant' },
@@ -254,6 +255,7 @@ export default function MyMedicinesPage() {
     const [medicineSchedule, setMedicineSchedule] = useState(initialMedicineSchedule);
     const [editingMedicine, setEditingMedicine] = useState<any | null>(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [date, setDate] = React.useState<Date | undefined>(new Date());
 
     const handleSaveMedicine = (med: any) => {
         if (editingMedicine) {
@@ -292,14 +294,6 @@ export default function MyMedicinesPage() {
     const openAddDialog = () => {
         setEditingMedicine(null);
         setIsFormOpen(true);
-    };
-
-    const getStatusIcon = (status: 'full' | 'partial' | 'missed') => {
-        switch (status) {
-            case 'full': return <CheckCircle className="h-5 w-5 text-green-500" />;
-            case 'partial': return <CircleDot className="h-5 w-5 text-yellow-500" />;
-            case 'missed': return <XCircle className="h-5 w-5 text-red-500" />;
-        }
     };
 
     return (
@@ -373,22 +367,40 @@ export default function MyMedicinesPage() {
 
                         <Card>
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2"><History /> Medication History</CardTitle>
-                                <CardDescription>Your adherence record for the past few days.</CardDescription>
+                                <CardTitle className="flex items-center gap-2 text-2xl"><History /> Medication History</CardTitle>
+                                <CardDescription>Your adherence record over the last month.</CardDescription>
                             </CardHeader>
-                            <CardContent>
-                                {medicineHistory.map((item, index) => (
-                                    <div key={index} className="flex justify-between items-center p-3 border-b last:border-b-0">
-                                        <div>
-                                            <p className="font-semibold">{item.medicine}</p>
-                                            <p className="text-sm text-muted-foreground">{item.date}</p>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            {getStatusIcon(item.status as any)}
-                                            <span className="font-semibold capitalize">{item.status}</span>
-                                        </div>
+                            <CardContent className="flex flex-col items-center">
+                                <Calendar
+                                    mode="single"
+                                    selected={date}
+                                    onSelect={setDate}
+                                    className="rounded-md border p-0"
+                                    modifiers={{ 
+                                        full: medicineHistoryData.full, 
+                                        partial: medicineHistoryData.partial,
+                                        missed: medicineHistoryData.missed,
+                                    }}
+                                    modifiersStyles={{
+                                        full: { backgroundColor: '#22c55e', color: 'white' },
+                                        partial: { backgroundColor: '#f59e0b', color: 'white' },
+                                        missed: { backgroundColor: '#ef4444', color: 'white' }
+                                    }}
+                                />
+                                <div className="flex flex-wrap justify-center gap-4 mt-6 text-lg">
+                                    <div className="flex items-center gap-2">
+                                        <div className="h-5 w-5 rounded-full bg-green-500" />
+                                        <span className="font-semibold">Full Adherence</span>
                                     </div>
-                                ))}
+                                    <div className="flex items-center gap-2">
+                                        <div className="h-5 w-5 rounded-full bg-yellow-500" />
+                                        <span className="font-semibold">Partial</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="h-5 w-5 rounded-full bg-red-500" />
+                                        <span className="font-semibold">Missed All</span>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>
@@ -446,5 +458,3 @@ export default function MyMedicinesPage() {
         </Dialog>
     );
 }
-
-    
