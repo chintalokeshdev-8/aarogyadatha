@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, SlashCircle } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, CircleDot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -282,7 +282,7 @@ export default function MyMedicinesPage() {
     const getStatusIcon = (status: 'full' | 'partial' | 'missed') => {
         switch (status) {
             case 'full': return <CheckCircle className="h-5 w-5 text-green-500" />;
-            case 'partial': return <SlashCircle className="h-5 w-5 text-yellow-500" />;
+            case 'partial': return <CircleDot className="h-5 w-5 text-yellow-500" />;
             case 'missed': return <XCircle className="h-5 w-5 text-red-500" />;
         }
     };
