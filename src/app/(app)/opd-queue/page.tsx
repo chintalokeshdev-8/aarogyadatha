@@ -4,10 +4,12 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History } from "lucide-react";
+import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+
 
 const queue = [
     { token: 19, name: "Bala Krishna", status: "Consulting" },
@@ -85,6 +87,17 @@ const previousAppointments = [
     }
 ];
 
+const prescriptionHistoryData = [
+    {
+        title: "1st Follow-up Prescription",
+        status: "Completed",
+        date: "Jul 1, 2024 - Jul 14, 2024",
+        doctor: "Dr. Rajesh Kumar",
+        summary: "Prescription for initial viral infection treatment.",
+        medicines: ["Paracetamol 500mg", "Cetirizine 10mg"]
+    }
+];
+
 
 const getStatusInfo = (status: string) => {
     switch (status) {
@@ -144,7 +157,7 @@ export default function OpdQueuePage() {
     return (
         <div className="space-y-8">
             <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-chat))'}}>Your Appointment Status</h1>
+                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-chat))'}}>Appointments &amp; History</h1>
                 <p className="text-muted-foreground mt-2">
                     {today ? `Status for your appointments on ${today}.` : 'Loading date...'}
                 </p>
@@ -264,26 +277,7 @@ export default function OpdQueuePage() {
                         </CardContent>
                     </Card>
 
-                     <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><Calendar className="h-5 w-5"/>Other Appointments</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            {otherAppointments.map((appt, index) => (
-                                <div key={index} className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                                    <div>
-                                        <p className="font-semibold">{appt.doctor}</p>
-                                        <p className="text-sm text-muted-foreground">{appt.specialty}</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="font-semibold flex items-center gap-2"> {appt.date}</p>
-                                        <p className="text-sm text-muted-foreground flex items-center gap-2 justify-end"><Clock className="h-4 w-4"/> Est. Time: {appt.time}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </CardContent>
-                    </Card>
-                     <Card>
+                    <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2"><History className="h-5 w-5"/>Previous Appointments</CardTitle>
                         </CardHeader>
@@ -361,7 +355,47 @@ export default function OpdQueuePage() {
                     </CardFooter>
                 </Card>
             </div>
-
+             <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-xl"><History /> Prescription History</CardTitle>
+                    <CardDescription>Review your past treatment plans.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    {prescriptionHistoryData.map((item, index) => (
+                        <Collapsible key={index} className="border rounded-lg">
+                            <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between">
+                                <div className="text-left">
+                                    <p className="text-lg font-bold">{item.title}</p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'}>{item.status}</Badge>
+                                        <p className="text-sm font-semibold text-muted-foreground">{item.date}</p>
+                                    </div>
+                                </div>
+                                <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="p-4 border-t space-y-4">
+                                <div>
+                                    <p className="font-semibold text-base">Prescribed by:</p>
+                                    <p className="text-muted-foreground">{item.doctor}</p>
+                                </div>
+                                    <div>
+                                    <p className="font-semibold text-base">Summary:</p>
+                                    <p className="text-muted-foreground">{item.summary}</p>
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-base">Medications in this plan:</p>
+                                    <ul className="list-disc list-inside text-muted-foreground">
+                                        {item.medicines.map(med => <li key={med}>{med}</li>)}
+                                    </ul>
+                                </div>
+                                <Button variant="outline" size="sm" className="w-full">
+                                    <FileText className="mr-2 h-4 w-4" /> View Full Prescription
+                                </Button>
+                            </CollapsibleContent>
+                        </Collapsible>
+                    ))}
+                </CardContent>
+            </Card>
         </div>
     );
 }

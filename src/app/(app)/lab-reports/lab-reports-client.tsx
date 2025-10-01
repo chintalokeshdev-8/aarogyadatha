@@ -273,7 +273,6 @@ export function LabReportsClient({
 
     const filteredLabReports = useMemo(() => filterReports(labReports), [labReports, reportSearchTerm, reportDoctor, reportStatus, reportDate]);
     const filteredImagingReports = useMemo(() => filterReports(imagingReports), [imagingReports, reportSearchTerm, reportDoctor, reportStatus, reportDate]);
-    const filteredPrescriptionReports = useMemo(() => filterReports(prescriptionReports), [prescriptionReports, reportSearchTerm, reportDoctor, reportStatus, reportDate]);
 
     const testCategories = useMemo(() => {
         const categories = new Set<string>();
@@ -458,7 +457,7 @@ export function LabReportsClient({
                                                     <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {lab.address}</p>
                                                     <p className="flex items-center gap-2"><Phone className="h-4 w-4"/> {lab.phone}</p>
                                                     <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {lab.hours}</p>
-                                                    <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-diagnostics))'}}>
+                                                    <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-diagnostics))')}>
                                                         <Globe className="h-4 w-4"/> Visit Website
                                                     </a>
                                                 </div>
@@ -668,16 +667,12 @@ export function LabReportsClient({
                                 <TabsList>
                                     <TabsTrigger value="lab" className="flex items-center gap-2"><TestTube className="h-4 w-4"/> Lab Reports</TabsTrigger>
                                     <TabsTrigger value="imaging" className="flex items-center gap-2"><Scan className="h-4 w-4"/> Imaging</TabsTrigger>
-                                    <TabsTrigger value="prescriptions" className="flex items-center gap-2"><FileText className="h-4 w-4"/> Prescriptions</TabsTrigger>
                                 </TabsList>
                                 <TabsContent value="lab" className="mt-4">
                                      <ReportTable reports={filteredLabReports} onAnalyze={handleAnalyze} onView={handleView} />
                                 </TabsContent>
                                 <TabsContent value="imaging" className="mt-4">
                                     <ReportTable reports={filteredImagingReports} onAnalyze={handleAnalyze} onView={handleView} />
-                                </TabsContent>
-                                <TabsContent value="prescriptions" className="mt-4">
-                                     <ReportTable reports={filteredPrescriptionReports} onAnalyze={handleAnalyze} onView={handleView} />
                                 </TabsContent>
                             </Tabs>
                         </CardContent>
@@ -733,7 +728,7 @@ export function LabReportsClient({
                             </Button>
                         </div>
                         <div className="space-y-4 relative">
-                             <h3 className="font-semibold">AI Summary & Findings</h3>
+                             <h3 className="font-semibold">AI Summary &amp; Findings</h3>
                             {isPending && (
                                 <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-10 rounded-lg">
                                     <Loader2 className="h-10 w-10 animate-spin text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}/>
@@ -788,3 +783,5 @@ export function LabReportsClient({
         </div>
     )
 }
+
+    
