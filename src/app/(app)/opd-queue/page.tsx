@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText } from "lucide-react";
+import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -71,30 +71,39 @@ const previousAppointments = [
         doctor: "Dr. Anjali",
         specialty: "General Physician",
         date: "2024-07-15",
-        notes: "Consultation for seasonal flu. Prescribed Paracetamol."
+        notes: "Consultation for seasonal flu.",
+        prescriptions: [
+            {
+                title: "Initial Prescription",
+                status: "Completed",
+                date: "Jul 1, 2024 - Jul 14, 2024",
+                doctor: "Dr. Anjali",
+                summary: "Initial viral infection treatment.",
+                medicines: ["Paracetamol 500mg", "Cetirizine 10mg"]
+            },
+            {
+                title: "1st Follow-up Prescription",
+                status: "Active",
+                date: "Jul 15, 2024 - Present",
+                doctor: "Dr. Anjali",
+                summary: "Follow-up for persistent cough.",
+                medicines: ["Cough Syrup", "Vitamin C"]
+            }
+        ]
     },
     {
         doctor: "Dr. Subbamma",
         specialty: "Dermatologist",
         date: "2024-06-28",
-        notes: "Follow-up on skin rash. Advised to continue medication."
+        notes: "Follow-up on skin rash. Advised to continue medication.",
+        prescriptions: []
     },
     {
         doctor: "Dr. Ramesh Babu",
         specialty: "Nephrologist",
         date: "2024-05-20",
-        notes: "Regular kidney check-up. Reports were normal."
-    }
-];
-
-const prescriptionHistoryData = [
-    {
-        title: "1st Follow-up Prescription",
-        status: "Completed",
-        date: "Jul 1, 2024 - Jul 14, 2024",
-        doctor: "Dr. Rajesh Kumar",
-        summary: "Prescription for initial viral infection treatment.",
-        medicines: ["Paracetamol 500mg", "Cetirizine 10mg"]
+        notes: "Regular kidney check-up. Reports were normal.",
+        prescriptions: []
     }
 ];
 
@@ -279,60 +288,55 @@ export default function OpdQueuePage() {
                     
                     <Card>
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><History className="h-5 w-5"/>Previous Appointments</CardTitle>
+                            <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
+                            <CardDescription>Review your past consultations and prescriptions.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-3">
                             {previousAppointments.map((appt, index) => (
-                                <div key={index} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 cursor-pointer">
-                                    <div>
-                                        <p className="font-semibold">{appt.doctor}</p>
-                                        <p className="text-sm text-muted-foreground">{appt.specialty}</p>
-                                         <p className="text-xs text-muted-foreground mt-2">{appt.notes}</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="font-semibold flex items-center gap-2"><Calendar className="h-4 w-4"/> {appt.date}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-xl"><History /> Prescription History</CardTitle>
-                            <CardDescription>Review your past treatment plans.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            {prescriptionHistoryData.map((item, index) => (
                                 <Collapsible key={index} className="border rounded-lg">
-                                    <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between">
-                                        <div className="text-left">
-                                            <p className="text-lg font-bold">{item.title}</p>
-                                            <div className="flex items-center gap-2 mt-1">
-                                                <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'}>{item.status}</Badge>
-                                                <p className="text-sm font-semibold text-muted-foreground">{item.date}</p>
-                                            </div>
+                                    <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
+                                        <div>
+                                            <p className="text-lg font-bold">{appt.doctor}</p>
+                                            <p className="text-sm font-semibold text-muted-foreground">{appt.specialty}</p>
+                                            <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> {appt.date}</div>
+                                            <p className="text-sm text-muted-foreground mt-2">{appt.notes}</p>
                                         </div>
                                         <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
                                     </CollapsibleTrigger>
-                                    <CollapsibleContent className="p-4 border-t space-y-4">
-                                        <div>
-                                            <p className="font-semibold text-base">Prescribed by:</p>
-                                            <p className="text-muted-foreground">{item.doctor}</p>
-                                        </div>
-                                            <div>
-                                            <p className="font-semibold text-base">Summary:</p>
-                                            <p className="text-muted-foreground">{item.summary}</p>
-                                        </div>
-                                        <div>
-                                            <p className="font-semibold text-base">Medications in this plan:</p>
-                                            <ul className="list-disc list-inside text-muted-foreground">
-                                                {item.medicines.map(med => <li key={med}>{med}</li>)}
-                                            </ul>
-                                        </div>
-                                        <Button variant="outline" size="sm" className="w-full">
-                                            <FileText className="mr-2 h-4 w-4" /> View Full Prescription
-                                        </Button>
+                                    <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
+                                        <h4 className="font-bold text-base flex items-center gap-2"><FileText className="h-4 w-4" /> Prescription & Follow-up History</h4>
+                                        {appt.prescriptions.length > 0 ? (
+                                            <div className="space-y-3">
+                                                {appt.prescriptions.map((item, pIndex) => (
+                                                    <Collapsible key={pIndex} className="border rounded-lg bg-background">
+                                                        <CollapsibleTrigger className="w-full p-3 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
+                                                            <div>
+                                                                <p className="font-semibold">{item.title}</p>
+                                                                <div className="flex items-center gap-2 mt-1">
+                                                                    <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={item.status === 'Active' ? 'bg-green-100 text-green-800' : ''}>{item.status}</Badge>
+                                                                    <p className="text-xs font-medium text-muted-foreground">{item.date}</p>
+                                                                </div>
+                                                            </div>
+                                                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                                        </CollapsibleTrigger>
+                                                        <CollapsibleContent className="p-3 border-t space-y-3">
+                                                            <div>
+                                                                <p className="font-semibold text-sm">Summary:</p>
+                                                                <p className="text-sm text-muted-foreground">{item.summary}</p>
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-semibold text-sm">Medications:</p>
+                                                                <ul className="list-none text-muted-foreground text-sm space-y-1 mt-1">
+                                                                    {item.medicines.map(med => <li key={med} className="flex items-center gap-2"><Pill className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-medicines))'}}/>{med}</li>)}
+                                                                </ul>
+                                                            </div>
+                                                        </CollapsibleContent>
+                                                    </Collapsible>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <p className="text-sm text-muted-foreground text-center py-4">No prescriptions found for this appointment.</p>
+                                        )}
                                     </CollapsibleContent>
                                 </Collapsible>
                             ))}
@@ -402,3 +406,4 @@ export default function OpdQueuePage() {
 }
 
     
+
