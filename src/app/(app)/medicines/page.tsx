@@ -4,9 +4,8 @@
 import React, { useState, useTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, CircleDot } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -15,7 +14,8 @@ import { generateDietPlan, AiDietPlanOutput } from '@/ai/flows/ai-diet-plan';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { Calendar } from '@/components/ui/calendar';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+
 
 const initialMedicineSchedule = [
     { 
@@ -67,10 +67,50 @@ const initialMedicineSchedule = [
     },
 ];
 
-const medicineHistoryData = {
-    full: [new Date(2024, 6, 15), new Date(2024, 6, 12), new Date(2024, 6, 11)],
-    partial: [new Date(2024, 6, 16), new Date(2024, 6, 10)],
-    missed: [new Date(2024, 6, 14), new Date(2024, 6, 13)]
+const medicineHistoryData = [
+    {
+        date: "Today, Jul 17, 2024",
+        summary: "3 of 7 doses taken",
+        medicines: [
+            { name: "Paracetamol", alerts: [{time: "9:00 AM", status: "taken"}, {time: "1:00 PM", status: "taken"}, {time: "9:00 PM", status: "pending"}] },
+            { name: "Vitamin D3", alerts: [{time: "1:00 PM", status: "taken"}] },
+            { name: "Metformin", alerts: [{time: "8:30 AM", status: "missed"}, {time: "8:30 PM", status: "pending"}] },
+            { name: "Omega-3", alerts: [{time: "9:30 PM", status: "pending"}] },
+        ]
+    },
+    {
+        date: "Yesterday, Jul 16, 2024",
+        summary: "5 of 7 doses taken",
+        medicines: [
+             { name: "Paracetamol", alerts: [{time: "9:00 AM", status: "taken"}, {time: "1:00 PM", status: "taken"}, {time: "9:00 PM", status: "taken"}] },
+             { name: "Vitamin D3", alerts: [] },
+             { name: "Metformin", alerts: [{time: "8:30 AM", status: "missed"}, {time: "8:30 PM", status: "taken"}] },
+             { name: "Omega-3", alerts: [{time: "9:30 PM", status: "taken"}] },
+        ]
+    },
+    {
+        date: "Jul 15, 2024",
+        summary: "7 of 7 doses taken",
+        medicines: [
+             { name: "Paracetamol", alerts: [{time: "9:00 AM", status: "taken"}, {time: "1:00 PM", status: "taken"}, {time: "9:00 PM", status: "taken"}] },
+             { name: "Vitamin D3", alerts: [] },
+             { name: "Metformin", alerts: [{time: "8:30 AM", status: "taken"}, {time: "8:30 PM", status: "taken"}] },
+             { name: "Omega-3", alerts: [{time: "9:30 PM", status: "taken"}] },
+        ]
+    }
+];
+
+const getStatusIcon = (status: string) => {
+    switch (status) {
+        case 'taken':
+            return <CheckCircle className="h-5 w-5 text-green-500" />;
+        case 'missed':
+            return <XCircle className="h-5 w-5 text-red-500" />;
+        case 'pending':
+            return <Clock className="h-5 w-5 text-yellow-500" />;
+        default:
+            return null;
+    }
 };
 
 
@@ -255,7 +295,6 @@ export default function MyMedicinesPage() {
     const [medicineSchedule, setMedicineSchedule] = useState(initialMedicineSchedule);
     const [editingMedicine, setEditingMedicine] = useState<any | null>(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [date, setDate] = React.useState<Date | undefined>(new Date());
 
     const handleSaveMedicine = (med: any) => {
         if (editingMedicine) {
@@ -275,7 +314,8 @@ export default function MyMedicinesPage() {
                         ...med,
                         alerts: med.alerts.map(alert => {
                             if (alert.time === alertTime) {
-                                return { ...alert, status: alert.status === 'taken' ? 'pending' : 'taken' };
+                                const newStatus = alert.status === 'taken' ? 'pending' : 'taken';
+                                return { ...alert, status: newStatus };
                             }
                             return alert;
                         }),
@@ -368,39 +408,40 @@ export default function MyMedicinesPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 text-2xl"><History /> Medication History</CardTitle>
-                                <CardDescription>Your adherence record over the last month.</CardDescription>
+                                <CardDescription>Your adherence record over the last few days.</CardDescription>
                             </CardHeader>
-                            <CardContent className="flex flex-col items-center">
-                                <Calendar
-                                    mode="single"
-                                    selected={date}
-                                    onSelect={setDate}
-                                    className="rounded-md border p-0"
-                                    modifiers={{ 
-                                        full: medicineHistoryData.full, 
-                                        partial: medicineHistoryData.partial,
-                                        missed: medicineHistoryData.missed,
-                                    }}
-                                    modifiersStyles={{
-                                        full: { backgroundColor: '#22c55e', color: 'white' },
-                                        partial: { backgroundColor: '#f59e0b', color: 'white' },
-                                        missed: { backgroundColor: '#ef4444', color: 'white' }
-                                    }}
-                                />
-                                <div className="flex flex-wrap justify-center gap-4 mt-6 text-lg">
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-5 w-5 rounded-full bg-green-500" />
-                                        <span className="font-semibold">Full Adherence</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-5 w-5 rounded-full bg-yellow-500" />
-                                        <span className="font-semibold">Partial</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-5 w-5 rounded-full bg-red-500" />
-                                        <span className="font-semibold">Missed All</span>
-                                    </div>
-                                </div>
+                            <CardContent className="space-y-3">
+                                {medicineHistoryData.map((day, index) => (
+                                    <Collapsible key={index} className="border rounded-lg">
+                                        <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between">
+                                            <div className="text-left">
+                                                <p className="text-lg font-bold">{day.date}</p>
+                                                <p className="text-sm font-semibold text-muted-foreground">{day.summary}</p>
+                                            </div>
+                                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent className="p-4 border-t space-y-4">
+                                            {day.medicines.map((med, medIndex) => (
+                                                <div key={medIndex}>
+                                                    <p className="font-bold text-base">{med.name}</p>
+                                                    {med.alerts.length > 0 ? (
+                                                        <div className="flex flex-wrap items-center gap-4 mt-2">
+                                                            {med.alerts.map((alert, alertIndex) => (
+                                                                <div key={alertIndex} className="flex items-center gap-2">
+                                                                    {getStatusIcon(alert.status)}
+                                                                    <span className="font-semibold text-sm">{alert.time}</span>
+                                                                    <span className="text-sm text-muted-foreground capitalize">({alert.status})</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    ) : (
+                                                        <p className="text-sm text-muted-foreground mt-1">No doses scheduled on this day.</p>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </CollapsibleContent>
+                                    </Collapsible>
+                                ))}
                             </CardContent>
                         </Card>
                     </div>
