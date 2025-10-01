@@ -263,59 +263,60 @@ export default function OpdQueuePage() {
                 </CardHeader>
             </Card>
 
-            <div className="space-y-8">
-                 <Card>
-                    <CardHeader>
-                        <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                         <div className={`flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
-                            <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
-                            <div className="flex-1">
-                                <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
-                                    {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
-                                </p>
-                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
-                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
-                            </div>
-                            {currentStatusInfo.indicator && (
-                                <span className="relative flex h-4 w-4 mt-1">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
-                                </span>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Live Queue</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-3">
-                            {queue.map(patient => (
-                                <div key={patient.token} className={`flex items-center justify-between p-3 rounded-lg ${patient.token === 23 ? 'bg-primary/10' : 'bg-muted/40'}`} style={patient.token === 23 ? {backgroundColor: 'hsla(var(--nav-chat)/0.1)'} : {}}>
-                                    <div className="flex items-center gap-3">
-                                        <div className={`flex items-center justify-center h-10 w-10 rounded-full font-bold text-lg ${patient.token === 23 ? 'text-primary-foreground' : 'bg-muted'}`} style={patient.token === 23 ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
-                                            {patient.token}
-                                        </div>
-                                        <div>
-                                            <p className="font-semibold">{patient.name}</p>
-                                        </div>
-                                    </div>
-                                    <Badge variant={patient.status === 'Consulting' ? 'default' : (patient.token === 23 ? 'outline' : 'secondary')}
-                                       className={patient.status === 'Consulting' ? 'bg-primary' : (patient.token === 23 ? 'border-primary text-primary' : '')}
-                                       style={patient.status === 'Consulting' ? {backgroundColor: 'hsl(var(--nav-chat))'} : (patient.token === 23 ? {borderColor: 'hsl(var(--nav-chat))', color: 'hsl(var(--nav-chat))'} : {})}
-                                    >
-                                        {patient.status}
-                                    </Badge>
+            <div className="grid lg:grid-cols-2 gap-8">
+                 <div className="space-y-8">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>OP Status (డాక్టర్ స్థితి)</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className={`flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
+                                <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
+                                <div className="flex-1">
+                                    <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
+                                        {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
+                                    </p>
+                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
+                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
                                 </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
+                                {currentStatusInfo.indicator && (
+                                    <span className="relative flex h-4 w-4 mt-1">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
+                                    </span>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
 
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Live Queue</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-3">
+                                {queue.map(patient => (
+                                    <div key={patient.token} className={`flex items-center justify-between p-3 rounded-lg ${patient.token === 23 ? 'bg-primary/10' : 'bg-muted/40'}`} style={patient.token === 23 ? {backgroundColor: 'hsla(var(--nav-chat)/0.1)'} : {}}>
+                                        <div className="flex items-center gap-3">
+                                            <div className={`flex items-center justify-center h-10 w-10 rounded-full font-bold text-lg ${patient.token === 23 ? 'text-primary-foreground' : 'bg-muted'}`} style={patient.token === 23 ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
+                                                {patient.token}
+                                            </div>
+                                            <div>
+                                                <p className="font-semibold">{patient.name}</p>
+                                            </div>
+                                        </div>
+                                        <Badge variant={patient.status === 'Consulting' ? 'default' : (patient.token === 23 ? 'outline' : 'secondary')}
+                                        className={patient.status === 'Consulting' ? 'bg-primary' : (patient.token === 23 ? 'border-primary text-primary' : '')}
+                                        style={patient.status === 'Consulting' ? {backgroundColor: 'hsl(var(--nav-chat))'} : (patient.token === 23 ? {borderColor: 'hsl(var(--nav-chat))', color: 'hsl(var(--nav-chat))'} : {})}
+                                        >
+                                            {patient.status}
+                                        </Badge>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
                  <Card className="flex flex-col">
                     <CardHeader className="flex flex-row items-center gap-4 border-b">
                         <Avatar>
@@ -377,17 +378,16 @@ export default function OpdQueuePage() {
              <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
-                    <CardDescription>Review your past consultations and prescriptions.</CardDescription>
+                    <CardDescription>Review your past consultations and prescriptions, grouped by health concern.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {previousAppointments.map((appt, index) => (
                         <Collapsible key={index} className="border rounded-lg" defaultOpen={index === 0}>
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
                                 <div>
-                                    <p className="text-xl font-bold">{appt.doctor}</p>
-                                    <p className="text-base font-semibold text-muted-foreground">{appt.specialty}</p>
-                                    <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> {appt.date}</div>
-                                    <p className="text-base text-muted-foreground mt-2 font-medium">{appt.notes}</p>
+                                    <p className="text-xl font-bold">{appt.notes}</p>
+                                    <p className="text-base font-semibold text-muted-foreground">Dr. {appt.doctor} &bull; {appt.specialty}</p>
+                                    <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {appt.date}</div>
                                 </div>
                                 <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
                             </CollapsibleTrigger>
@@ -426,7 +426,7 @@ export default function OpdQueuePage() {
                                                     <DialogHeader>
                                                         <DialogTitle>{item.title}</DialogTitle>
                                                         <DialogDescription>
-                                                            Prescription from {item.date} by {item.doctor}.
+                                                           Follow-up from {item.date} by {item.doctor}.
                                                         </DialogDescription>
                                                     </DialogHeader>
                                                     <div className="max-h-[60vh] overflow-y-auto p-1 space-y-4">
@@ -472,4 +472,5 @@ export default function OpdQueuePage() {
     );
 
     
+
 
