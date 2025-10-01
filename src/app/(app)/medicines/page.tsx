@@ -5,7 +5,7 @@ import React, { useState, useTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -97,6 +97,17 @@ const medicineHistoryData = [
              { name: "Metformin", alerts: [{time: "8:30 AM", status: "taken"}, {time: "8:30 PM", status: "taken"}] },
              { name: "Omega-3", alerts: [{time: "9:30 PM", status: "taken"}] },
         ]
+    }
+];
+
+const prescriptionHistoryData = [
+    {
+        title: "1st Follow-up Prescription",
+        status: "Completed",
+        date: "Jul 1, 2024 - Jul 14, 2024",
+        doctor: "Dr. Rajesh Kumar",
+        summary: "Prescription for initial viral infection treatment.",
+        medicines: ["Paracetamol 500mg", "Cetirizine 10mg"]
     }
 ];
 
@@ -347,14 +358,19 @@ export default function MyMedicinesPage() {
                 <div className="grid lg:grid-cols-3 gap-8 items-start">
                     <div className="lg:col-span-2 space-y-8">
                         <Card>
-                            <CardHeader className="flex flex-row items-center justify-between">
-                                <div>
-                                    <CardTitle className="flex items-center gap-2"><Bell /> Today's Schedule</CardTitle>
-                                    <CardDescription>Wednesday, July 17, 2024</CardDescription>
+                            <CardHeader>
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <CardTitle className="text-xl">Current Prescription (Follow-up 2)</CardTitle>
+                                        <CardDescription className="flex items-center gap-2">
+                                            <Badge className="bg-green-100 text-green-800">Active</Badge> 
+                                            <span>Started on Jul 15, 2024</span>
+                                        </CardDescription>
+                                    </div>
+                                    <Button variant="outline" onClick={openAddDialog}>
+                                        <PlusCircle className="mr-2 h-4 w-4" /> Add Medicine
+                                    </Button>
                                 </div>
-                                <Button variant="outline" onClick={openAddDialog}>
-                                    <PlusCircle className="mr-2 h-4 w-4" /> Add Medicine
-                                </Button>
                             </CardHeader>
                             <CardContent>
                                 <div className="space-y-4">
@@ -467,6 +483,48 @@ export default function MyMedicinesPage() {
                                     </div>
                                     <DietPlanDialog />
                                 </div>
+                            </CardContent>
+                        </Card>
+                        
+                         <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2 text-xl"><History /> Prescription History</CardTitle>
+                                <CardDescription>Review your past treatment plans.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-3">
+                                {prescriptionHistoryData.map((item, index) => (
+                                    <Collapsible key={index} className="border rounded-lg">
+                                        <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between">
+                                            <div className="text-left">
+                                                <p className="text-lg font-bold">{item.title}</p>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'}>{item.status}</Badge>
+                                                    <p className="text-sm font-semibold text-muted-foreground">{item.date}</p>
+                                                </div>
+                                            </div>
+                                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent className="p-4 border-t space-y-4">
+                                            <div>
+                                                <p className="font-semibold text-base">Prescribed by:</p>
+                                                <p className="text-muted-foreground">{item.doctor}</p>
+                                            </div>
+                                             <div>
+                                                <p className="font-semibold text-base">Summary:</p>
+                                                <p className="text-muted-foreground">{item.summary}</p>
+                                            </div>
+                                            <div>
+                                                <p className="font-semibold text-base">Medications in this plan:</p>
+                                                <ul className="list-disc list-inside text-muted-foreground">
+                                                    {item.medicines.map(med => <li key={med}>{med}</li>)}
+                                                </ul>
+                                            </div>
+                                            <Button variant="outline" size="sm" className="w-full">
+                                                <FileText className="mr-2 h-4 w-4" /> View Full Prescription
+                                            </Button>
+                                        </CollapsibleContent>
+                                    </Collapsible>
+                                ))}
                             </CardContent>
                         </Card>
 
