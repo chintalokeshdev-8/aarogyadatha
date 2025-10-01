@@ -19,13 +19,6 @@ const imagingReports = [
     { testName: "CT Scan Abdomen", date: "2024-02-25", doctor: "Dr. Arjun Kumar", status: "Completed", type: "mri" },
 ]
 
-const prescriptionReports = [
-    { testName: "Fever & Cold Consultation", date: "2024-07-22", doctor: "Dr. Shashank", status: "Completed" },
-    { testName: "Fever & Cold Consultation", date: "2024-07-15", doctor: "Dr. Shashank", status: "Completed" },
-    { testName: "Regular Checkup", date: "2024-06-20", doctor: "Dr. Siva Parvathi", status: "Completed" },
-    { testName: "Allergy Follow-up", date: "2024-07-18", doctor: "Dr. Ananya Sharma", status: "Completed" },
-];
-
 const diagnosticLabs = [
     { 
         name: "Yoda Diagnostics", 
@@ -218,7 +211,6 @@ export default function DiagnosticsPage() {
       <LabReportsClient
         labReports={labReports}
         imagingReports={imagingReports}
-        prescriptionReports={prescriptionReports}
         diagnosticLabs={diagnosticLabs}
         dummyReportData={dummyReportData}
       />

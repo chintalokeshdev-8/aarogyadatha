@@ -220,7 +220,6 @@ const ReportViewer = ({ content }: { content: string }) => {
 interface LabReportsClientProps {
     labReports: any[];
     imagingReports: any[];
-    prescriptionReports: any[];
     diagnosticLabs: any[];
     dummyReportData: Record<string, { content: string, image?: string, dataAiHint?: string }>;
 }
@@ -228,7 +227,6 @@ interface LabReportsClientProps {
 export function LabReportsClient({
     labReports,
     imagingReports,
-    prescriptionReports,
     diagnosticLabs,
     dummyReportData
 }: LabReportsClientProps) {
@@ -257,9 +255,9 @@ export function LabReportsClient({
 
     const allDoctors = useMemo(() => {
         const doctors = new Set<string>();
-        [...labReports, ...imagingReports, ...prescriptionReports].forEach(r => doctors.add(r.doctor));
+        [...labReports, ...imagingReports].forEach(r => doctors.add(r.doctor));
         return ['all', ...Array.from(doctors)];
-    }, [labReports, imagingReports, prescriptionReports]);
+    }, [labReports, imagingReports]);
 
     const filterReports = (reports: any[]) => {
         return reports.filter(report => {
@@ -360,7 +358,6 @@ export function LabReportsClient({
         setReportDate(undefined);
     };
 
-
     return (
         <div className="space-y-8">
              <div>
@@ -457,7 +454,7 @@ export function LabReportsClient({
                                                     <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {lab.address}</p>
                                                     <p className="flex items-center gap-2"><Phone className="h-4 w-4"/> {lab.phone}</p>
                                                     <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {lab.hours}</p>
-                                                    <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-diagnostics))')}>
+                                                    <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-diagnostics))'}}>
                                                         <Globe className="h-4 w-4"/> Visit Website
                                                     </a>
                                                 </div>
@@ -781,7 +778,5 @@ export function LabReportsClient({
                 </DialogContent>
             </Dialog>
         </div>
-    )
+    );
 }
-
-    
