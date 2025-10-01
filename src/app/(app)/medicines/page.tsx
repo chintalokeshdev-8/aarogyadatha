@@ -6,15 +6,17 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { generateDietPlan, AiDietPlanOutput } from '@/ai/flows/ai-diet-plan';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 
-const medicineSchedule = [
+const initialMedicineSchedule = [
     { name: "Paracetamol", teluguName: "పారాసిటమాల్", use: "For fever and pain relief", teluguUse: "జ్వరం మరియు నొప్పి నివారణకు", dosage: "500mg", time: "After Breakfast", teluguTime: "అల్పాహారం తర్వాత", taken: true, frequency: "3 times a day", alertTime: "9:00 AM" },
     { name: "Vitamin D3", teluguName: "విటమిన్ డి3", use: "For bone health", teluguUse: "ఎముకల ఆరోగ్యానికి", dosage: "60000 IU", time: "After Lunch", teluguTime: "భోజనం తర్వాత", taken: true, frequency: "Once a week", alertTime: "1:00 PM" },
     { name: "Metformin", teluguName: "మెట్‌ఫార్మిన్", use: "To control blood sugar", teluguUse: "రక్తంలో చక్కెరను నియంత్రించడానికి", dosage: "1000mg", time: "After Dinner", teluguTime: "రాత్రి భోజనం తర్వాత", taken: false, frequency: "Twice a day", alertTime: "9:00 PM" },
@@ -135,119 +137,218 @@ function DietPlanDialog() {
     );
 }
 
+function MedicineForm({ medicine, onSave }: { medicine?: any; onSave: (med: any) => void }) {
+    const [name, setName] = useState(medicine?.name || '');
+    const [dosage, setDosage] = useState(medicine?.dosage || '');
+    const [frequency, setFrequency] = useState(medicine?.frequency || '');
+    const [time, setTime] = useState(medicine?.time || '');
+    const { toast } = useToast();
 
-export default function MyMedicinesPage() {
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newMed = {
+            ...medicine,
+            name,
+            dosage,
+            frequency,
+            time,
+            use: medicine?.use || "User added medicine",
+            teluguName: medicine?.teluguName || "",
+            teluguUse: medicine?.teluguUse || "",
+            taken: medicine?.taken || false,
+            alertTime: medicine?.alertTime || "N/A"
+        };
+        onSave(newMed);
+        toast({
+            title: "Medicine Saved!",
+            description: `${name} has been successfully saved.`,
+        });
+    };
+
     return (
-        <div className="space-y-8">
-            <div className="text-left">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-medicines))'}}>My Medicines</h1>
-                <p className="text-muted-foreground">Your daily medication schedule and recovery plan.</p>
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+                <Label htmlFor="med-name">Medicine Name</Label>
+                <Input id="med-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g., Paracetamol" required />
             </div>
-            
-            <div className="grid lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-8">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><Bell /> Today's Schedule</CardTitle>
-                            <CardDescription>Wednesday, July 17, 2024</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-4">
-                                {medicineSchedule.map((med, index) => (
-                                    <div key={index} className={cn('p-4 rounded-lg flex items-center justify-between transition-all', med.taken ? 'bg-green-100/60 border border-green-200' : 'bg-muted/40')}>
-                                        <div className="flex items-start gap-4">
-                                            <div className="pt-1">
-                                                <AlarmClock className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
-                                            </div>
-                                            <div>
-                                                <div className="flex items-baseline gap-2">
-                                                    <p className="font-extrabold text-xl">{med.name}</p>
-                                                    <p className="font-bold text-lg text-muted-foreground">{med.teluguName}</p>
-                                                </div>
-                                                <div className="font-semibold text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
-                                                    <Info className="h-4 w-4" />
-                                                    <div>
-                                                        <p>{med.use}</p>
-                                                        <p className="text-sm">{med.teluguUse}</p>
-                                                    </div>
-                                                </div>
-                                                <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.time} ({med.teluguTime})</p>
-                                                <div className="text-xs font-semibold mt-2 p-1 px-2.5 rounded-full inline-flex items-center gap-1.5" style={{backgroundColor: 'hsla(var(--nav-medicines)/0.1)', color: 'hsl(var(--nav-medicines))'}}>
-                                                    <Bell className="h-3 w-3"/>
-                                                    {med.alertTime} • {med.frequency}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center space-x-3">
-                                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                                                <Pencil className="h-4 w-4 text-muted-foreground"/>
-                                            </Button>
-                                            <Label htmlFor={`med-${index}`} className="text-sm font-medium">{med.taken ? 'Taken' : 'Take'}</Label>
-                                            <Checkbox id={`med-${index}`} checked={med.taken} />
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                             <CardTitle className="flex items-center gap-2"><Award /> Weekly Progress</CardTitle>
-                             <CardDescription>Your adherence to medication and diet plan this week.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div>
-                                <div className="flex justify-between mb-1"><p>Medication</p><p className="font-semibold">90%</p></div>
-                                <Progress value={90} className="h-2"/>
-                            </div>
-                             <div>
-                                <div className="flex justify-between mb-1"><p>Diet</p><p className="font-semibold">75%</p></div>
-                                <Progress value={75} className="h-2"/>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                <div className="space-y-8">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Diet & Recovery Plan (ఆహారం & కోలుకునే ప్రణాళిక)</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div>
-                                <Label>Recovery Probability (కోలుకునే సంభావ్యత)</Label>
-                                <div className="flex items-center gap-2 mt-1">
-                                    <Progress value={85} className="w-full" />
-                                    <span className="font-bold" style={{color: 'hsl(var(--nav-medicines))'}}>85%</span>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="font-semibold flex items-center gap-2 mb-2"><Utensils style={{color: 'hsl(var(--nav-medicines))'}}/> Recommended Diet (సిఫార్సు చేయబడిన ఆహారం)</h3>
-                                <div className="text-sm text-muted-foreground p-3 bg-muted/40 rounded-lg space-y-1">
-                                    <p>• This is a general diet plan.</p>
-                                    <p>• Get a personalized AI plan for better results.</p>
-                                </div>
-                                <DietPlanDialog />
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                     <Card>
-                        <CardHeader><CardTitle>Medicine Assistance</CardTitle></CardHeader>
-                        <CardContent className="space-y-3">
-                           {medicineAssistanceItems.map((item) => (
-                             <Link key={item.label} href={item.href} passHref>
-                                <Button variant="outline" className="w-full justify-start gap-3">
-                                    <item.icon className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
-                                    <span>{item.label}</span>
-                                </Button>
-                            </Link>
-                           ))}
-                        </CardContent>
-                    </Card>
-                </div>
+            <div className="space-y-2">
+                <Label htmlFor="med-dosage">Dosage</Label>
+                <Input id="med-dosage" value={dosage} onChange={(e) => setDosage(e.target.value)} placeholder="e.g., 500mg" />
             </div>
-        </div>
+            <div className="space-y-2">
+                <Label htmlFor="med-frequency">Frequency</Label>
+                <Input id="med-frequency" value={frequency} onChange={(e) => setFrequency(e.target.value)} placeholder="e.g., Twice a day" />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="med-time">Time</Label>
+                <Input id="med-time" value={time} onChange={(e) => setTime(e.target.value)} placeholder="e.g., After Breakfast" />
+            </div>
+            <DialogFooter>
+                <DialogClose asChild>
+                    <Button type="submit" style={{ backgroundColor: 'hsl(var(--nav-medicines))' }}>Save Changes</Button>
+                </DialogClose>
+            </DialogFooter>
+        </form>
     );
 }
+
+export default function MyMedicinesPage() {
+    const [medicineSchedule, setMedicineSchedule] = useState(initialMedicineSchedule);
+    const [editingMedicine, setEditingMedicine] = useState<any | null>(null);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+
+    const handleSaveMedicine = (med: any) => {
+        if (editingMedicine) {
+            setMedicineSchedule(medicineSchedule.map(m => m.name === editingMedicine.name ? med : m));
+        } else {
+            setMedicineSchedule([...medicineSchedule, med]);
+        }
+        setEditingMedicine(null);
+        setIsFormOpen(false);
+    };
+
+    const openEditDialog = (med: any) => {
+        setEditingMedicine(med);
+        setIsFormOpen(true);
+    };
+
+    const openAddDialog = () => {
+        setEditingMedicine(null);
+        setIsFormOpen(true);
+    };
+
+    return (
+        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+            <div className="space-y-8">
+                <div className="text-left">
+                    <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-medicines))'}}>My Medicines</h1>
+                    <p className="text-muted-foreground">Your daily medication schedule and recovery plan.</p>
+                </div>
+                
+                <div className="grid lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 space-y-8">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between">
+                                <div>
+                                    <CardTitle className="flex items-center gap-2"><Bell /> Today's Schedule</CardTitle>
+                                    <CardDescription>Wednesday, July 17, 2024</CardDescription>
+                                </div>
+                                <Button variant="outline" onClick={openAddDialog}>
+                                    <PlusCircle className="mr-2 h-4 w-4" /> Add Medicine
+                                </Button>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-4">
+                                    {medicineSchedule.map((med, index) => (
+                                        <div key={index} className={cn('p-4 rounded-lg flex items-center justify-between transition-all', med.taken ? 'bg-green-100/60 border border-green-200' : 'bg-muted/40')}>
+                                            <div className="flex items-start gap-4">
+                                                <div className="pt-1">
+                                                    <AlarmClock className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
+                                                </div>
+                                                <div>
+                                                    <div className="flex items-baseline gap-2">
+                                                        <p className="font-extrabold text-xl">{med.name}</p>
+                                                        <p className="font-bold text-lg text-muted-foreground">{med.teluguName}</p>
+                                                    </div>
+                                                    <div className="font-semibold text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
+                                                        <Info className="h-4 w-4" />
+                                                        <div>
+                                                            <p>{med.use}</p>
+                                                            <p className="text-sm">{med.teluguUse}</p>
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.time} ({med.teluguTime})</p>
+                                                    <div className="text-xs font-semibold mt-2 p-1 px-2.5 rounded-full inline-flex items-center gap-1.5" style={{backgroundColor: 'hsla(var(--nav-medicines)/0.1)', color: 'hsl(var(--nav-medicines))'}}>
+                                                        <Bell className="h-3 w-3"/>
+                                                        {med.alertTime} • {med.frequency}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center space-x-3">
+                                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEditDialog(med)}>
+                                                    <Pencil className="h-4 w-4 text-muted-foreground"/>
+                                                </Button>
+                                                <Label htmlFor={`med-${index}`} className="text-sm font-medium">{med.taken ? 'Taken' : 'Take'}</Label>
+                                                <Checkbox id={`med-${index}`} checked={med.taken} onCheckedChange={(checked) => {
+                                                    setMedicineSchedule(medicineSchedule.map(m => m.name === med.name ? {...m, taken: !!checked} : m))
+                                                }}/>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2"><Award /> Weekly Progress</CardTitle>
+                                <CardDescription>Your adherence to medication and diet plan this week.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                <div>
+                                    <div className="flex justify-between mb-1"><p>Medication</p><p className="font-semibold">90%</p></div>
+                                    <Progress value={90} className="h-2"/>
+                                </div>
+                                <div>
+                                    <div className="flex justify-between mb-1"><p>Diet</p><p className="font-semibold">75%</p></div>
+                                    <Progress value={75} className="h-2"/>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    <div className="space-y-8">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Diet & Recovery Plan (ఆహారం & కోలుకునే ప్రణాళిక)</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                <div>
+                                    <Label>Recovery Probability (కోలుకునే సంభావ్యత)</Label>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <Progress value={85} className="w-full" />
+                                        <span className="font-bold" style={{color: 'hsl(var(--nav-medicines))'}}>85%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold flex items-center gap-2 mb-2"><Utensils style={{color: 'hsl(var(--nav-medicines))'}}/> Recommended Diet (సిఫార్సు చేయబడిన ఆహారం)</h3>
+                                    <div className="text-sm text-muted-foreground p-3 bg-muted/40 rounded-lg space-y-1">
+                                        <p>• This is a general diet plan.</p>
+                                        <p>• Get a personalized AI plan for better results.</p>
+                                    </div>
+                                    <DietPlanDialog />
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader><CardTitle>Medicine Assistance</CardTitle></CardHeader>
+                            <CardContent className="space-y-3">
+                            {medicineAssistanceItems.map((item) => (
+                                <Link key={item.label} href={item.href} passHref>
+                                    <Button variant="outline" className="w-full justify-start gap-3">
+                                        <item.icon className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
+                                        <span>{item.label}</span>
+                                    </Button>
+                                </Link>
+                            ))}
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{editingMedicine ? 'Edit Medicine' : 'Add New Medicine'}</DialogTitle>
+                    <DialogDescription>
+                        {editingMedicine ? 'Update the details for your medication.' : 'Manually add a new medicine to your schedule.'}
+                    </DialogDescription>
+                </DialogHeader>
+                <MedicineForm medicine={editingMedicine} onSave={handleSaveMedicine} />
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+    
