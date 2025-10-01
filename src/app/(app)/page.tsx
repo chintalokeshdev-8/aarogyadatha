@@ -112,9 +112,20 @@ export default function DashboardPage() {
                       <p className="text-sm opacity-90 flex-1">
                           Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records, benefits, and history in one place.
                       </p>
-                      <Link href="/insurances">
+                       <Link href="/insurances">
                         <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
                             <Link2 className="mr-2 h-4 w-4" /> Link Now
+                        </Button>
+                    </Link>
+                  </div>
+                   <div className="border-t border-primary-foreground/20 my-4"></div>
+                   <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                       <p className="text-sm opacity-90 flex-1 italic font-semibold">
+                          "Right disease for the right doctor is 100% cure"
+                      </p>
+                      <Link href="/appointments">
+                        <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
+                            <CalendarCheck className="mr-2 h-4 w-4" /> Book Appointment
                         </Button>
                     </Link>
                   </div>
