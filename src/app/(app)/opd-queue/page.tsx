@@ -276,7 +276,7 @@ export default function OpdQueuePage() {
                             </div>
                         </CardContent>
                     </Card>
-
+                    
                     <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2"><History className="h-5 w-5"/>Previous Appointments</CardTitle>
@@ -293,6 +293,48 @@ export default function OpdQueuePage() {
                                         <p className="font-semibold flex items-center gap-2"><Calendar className="h-4 w-4"/> {appt.date}</p>
                                     </div>
                                 </div>
+                            ))}
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-xl"><History /> Prescription History</CardTitle>
+                            <CardDescription>Review your past treatment plans.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            {prescriptionHistoryData.map((item, index) => (
+                                <Collapsible key={index} className="border rounded-lg">
+                                    <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between">
+                                        <div className="text-left">
+                                            <p className="text-lg font-bold">{item.title}</p>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'}>{item.status}</Badge>
+                                                <p className="text-sm font-semibold text-muted-foreground">{item.date}</p>
+                                            </div>
+                                        </div>
+                                        <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                    </CollapsibleTrigger>
+                                    <CollapsibleContent className="p-4 border-t space-y-4">
+                                        <div>
+                                            <p className="font-semibold text-base">Prescribed by:</p>
+                                            <p className="text-muted-foreground">{item.doctor}</p>
+                                        </div>
+                                            <div>
+                                            <p className="font-semibold text-base">Summary:</p>
+                                            <p className="text-muted-foreground">{item.summary}</p>
+                                        </div>
+                                        <div>
+                                            <p className="font-semibold text-base">Medications in this plan:</p>
+                                            <ul className="list-disc list-inside text-muted-foreground">
+                                                {item.medicines.map(med => <li key={med}>{med}</li>)}
+                                            </ul>
+                                        </div>
+                                        <Button variant="outline" size="sm" className="w-full">
+                                            <FileText className="mr-2 h-4 w-4" /> View Full Prescription
+                                        </Button>
+                                    </CollapsibleContent>
+                                </Collapsible>
                             ))}
                         </CardContent>
                     </Card>
@@ -355,47 +397,6 @@ export default function OpdQueuePage() {
                     </CardFooter>
                 </Card>
             </div>
-             <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-xl"><History /> Prescription History</CardTitle>
-                    <CardDescription>Review your past treatment plans.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    {prescriptionHistoryData.map((item, index) => (
-                        <Collapsible key={index} className="border rounded-lg">
-                            <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between">
-                                <div className="text-left">
-                                    <p className="text-lg font-bold">{item.title}</p>
-                                    <div className="flex items-center gap-2 mt-1">
-                                        <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'}>{item.status}</Badge>
-                                        <p className="text-sm font-semibold text-muted-foreground">{item.date}</p>
-                                    </div>
-                                </div>
-                                <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                            </CollapsibleTrigger>
-                            <CollapsibleContent className="p-4 border-t space-y-4">
-                                <div>
-                                    <p className="font-semibold text-base">Prescribed by:</p>
-                                    <p className="text-muted-foreground">{item.doctor}</p>
-                                </div>
-                                    <div>
-                                    <p className="font-semibold text-base">Summary:</p>
-                                    <p className="text-muted-foreground">{item.summary}</p>
-                                </div>
-                                <div>
-                                    <p className="font-semibold text-base">Medications in this plan:</p>
-                                    <ul className="list-disc list-inside text-muted-foreground">
-                                        {item.medicines.map(med => <li key={med}>{med}</li>)}
-                                    </ul>
-                                </div>
-                                <Button variant="outline" size="sm" className="w-full">
-                                    <FileText className="mr-2 h-4 w-4" /> View Full Prescription
-                                </Button>
-                            </CollapsibleContent>
-                        </Collapsible>
-                    ))}
-                </CardContent>
-            </Card>
         </div>
     );
 }
