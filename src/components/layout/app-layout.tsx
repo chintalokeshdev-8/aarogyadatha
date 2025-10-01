@@ -106,7 +106,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <h1 className="text-xl font-bold">medibridge</h1>
               </Link>
           </header>
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24">
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-32">
               {children}
           </main>
       </div>
@@ -253,7 +253,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </>
         )}
       </header>
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-32">
           {children}
       </main>
       <footer className="fixed bottom-0 z-20 w-full bg-background border-t">
