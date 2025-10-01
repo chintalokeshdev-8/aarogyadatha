@@ -4,11 +4,13 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill } from "lucide-react";
+import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { cn } from '@/lib/utils';
 
 
 const queue = [
@@ -68,43 +70,64 @@ const otherAppointments = [
 
 const previousAppointments = [
     {
+        doctor: "Dr. Dokku Vasu Babu",
+        specialty: "Cardiologist",
+        date: "2024-08-05",
+        notes: "Consultation for post-viral fatigue and chest pain.",
+        prescriptions: [
+            {
+                title: "1st Follow-up Prescription",
+                status: "Completed",
+                date: "Aug 5, 2024 - Aug 18, 2024",
+                doctor: "Dr. Dokku Vasu Babu",
+                summary: "Initial tests and medication after consultation.",
+                medicines: ["Metoprolol 25mg", "Aspirin 81mg", "Vitamin B Complex"],
+                details: [
+                    { name: 'Echocardiogram', date: '2024-08-10', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Troponin-I', date: '2024-08-10', status: 'Abnormal', result: 'Completed' },
+                ]
+            },
+            {
+                title: "2nd Follow-up Prescription",
+                status: "Active",
+                date: "Aug 19, 2024 - Present",
+                doctor: "Dr. Dokku Vasu Babu",
+                summary: "Follow-up tests and revised medication.",
+                medicines: ["Atorvastatin 20mg", "Aspirin 81mg"],
+                 details: [
+                    { name: 'Troponin-I', date: '2024-08-18', status: 'Normal', result: 'Completed' },
+                    { name: 'Creatine Kinase', date: '2024-08-18', status: 'Normal', result: 'Completed' },
+                    { name: 'BNP (B-type Natriuretic Peptide)', date: '2024-08-18', status: 'Normal', result: 'Completed' },
+                ]
+            },
+            {
+                title: "Condition Status",
+                status: "Improved",
+                date: "As of Aug 19, 2024",
+                doctor: "Dr. Dokku Vasu Babu",
+                summary: "Patient showing significant improvement. Key cardiac markers have normalized.",
+                medicines: [],
+                 details: []
+            }
+        ]
+    },
+    {
         doctor: "Dr. Anjali",
         specialty: "General Physician",
         date: "2024-07-15",
         notes: "Consultation for seasonal flu.",
         prescriptions: [
-            {
+             {
                 title: "Initial Prescription",
                 status: "Completed",
-                date: "Jul 1, 2024 - Jul 14, 2024",
+                date: "Jul 15, 2024 - Jul 22, 2024",
                 doctor: "Dr. Anjali",
                 summary: "Initial viral infection treatment.",
-                medicines: ["Paracetamol 500mg", "Cetirizine 10mg"]
-            },
-            {
-                title: "1st Follow-up Prescription",
-                status: "Active",
-                date: "Jul 15, 2024 - Present",
-                doctor: "Dr. Anjali",
-                summary: "Follow-up for persistent cough.",
-                medicines: ["Cough Syrup", "Vitamin C"]
+                medicines: ["Paracetamol 500mg", "Cetirizine 10mg"],
+                details: []
             }
         ]
     },
-    {
-        doctor: "Dr. Subbamma",
-        specialty: "Dermatologist",
-        date: "2024-06-28",
-        notes: "Follow-up on skin rash. Advised to continue medication.",
-        prescriptions: []
-    },
-    {
-        doctor: "Dr. Ramesh Babu",
-        specialty: "Nephrologist",
-        date: "2024-05-20",
-        notes: "Regular kidney check-up. Reports were normal.",
-        prescriptions: []
-    }
 ];
 
 
@@ -150,6 +173,14 @@ const getStatusInfo = (status: string) => {
                 teluguStatus: "స్థితి అందుబాటులో లేదు",
                 teluguDetails: "దయచేసి తర్వాత ప్రయత్నించండి."
             };
+    }
+};
+
+const getReportStatusBadge = (status: string) => {
+    switch (status) {
+        case 'Abnormal': return 'destructive';
+        case 'Normal': return 'default';
+        default: return 'secondary';
     }
 };
 
@@ -285,63 +316,6 @@ export default function OpdQueuePage() {
                             </div>
                         </CardContent>
                     </Card>
-                    
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
-                            <CardDescription>Review your past consultations and prescriptions.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-3">
-                            {previousAppointments.map((appt, index) => (
-                                <Collapsible key={index} className="border rounded-lg">
-                                    <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
-                                        <div>
-                                            <p className="text-lg font-bold">{appt.doctor}</p>
-                                            <p className="text-sm font-semibold text-muted-foreground">{appt.specialty}</p>
-                                            <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> {appt.date}</div>
-                                            <p className="text-sm text-muted-foreground mt-2">{appt.notes}</p>
-                                        </div>
-                                        <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                                    </CollapsibleTrigger>
-                                    <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
-                                        <h4 className="font-bold text-base flex items-center gap-2"><FileText className="h-4 w-4" /> Prescription & Follow-up History</h4>
-                                        {appt.prescriptions.length > 0 ? (
-                                            <div className="space-y-3">
-                                                {appt.prescriptions.map((item, pIndex) => (
-                                                    <Collapsible key={pIndex} className="border rounded-lg bg-background">
-                                                        <CollapsibleTrigger className="w-full p-3 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
-                                                            <div>
-                                                                <p className="font-semibold">{item.title}</p>
-                                                                <div className="flex items-center gap-2 mt-1">
-                                                                    <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={item.status === 'Active' ? 'bg-green-100 text-green-800' : ''}>{item.status}</Badge>
-                                                                    <p className="text-xs font-medium text-muted-foreground">{item.date}</p>
-                                                                </div>
-                                                            </div>
-                                                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                                                        </CollapsibleTrigger>
-                                                        <CollapsibleContent className="p-3 border-t space-y-3">
-                                                            <div>
-                                                                <p className="font-semibold text-sm">Summary:</p>
-                                                                <p className="text-sm text-muted-foreground">{item.summary}</p>
-                                                            </div>
-                                                            <div>
-                                                                <p className="font-semibold text-sm">Medications:</p>
-                                                                <ul className="list-none text-muted-foreground text-sm space-y-1 mt-1">
-                                                                    {item.medicines.map(med => <li key={med} className="flex items-center gap-2"><Pill className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-medicines))'}}/>{med}</li>)}
-                                                                </ul>
-                                                            </div>
-                                                        </CollapsibleContent>
-                                                    </Collapsible>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <p className="text-sm text-muted-foreground text-center py-4">No prescriptions found for this appointment.</p>
-                                        )}
-                                    </CollapsibleContent>
-                                </Collapsible>
-                            ))}
-                        </CardContent>
-                    </Card>
                 </div>
 
                  <Card className="flex flex-col h-[70vh] lg:h-auto">
@@ -401,9 +375,83 @@ export default function OpdQueuePage() {
                     </CardFooter>
                 </Card>
             </div>
+             <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
+                    <CardDescription>Review your past consultations and prescriptions.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {previousAppointments.map((appt, index) => (
+                        <Collapsible key={index} className="border rounded-lg" defaultOpen={index === 0}>
+                            <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
+                                <div>
+                                    <p className="text-xl font-bold">{appt.doctor}</p>
+                                    <p className="text-base font-semibold text-muted-foreground">{appt.specialty}</p>
+                                    <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> {appt.date}</div>
+                                    <p className="text-base text-muted-foreground mt-2 font-medium">{appt.notes}</p>
+                                </div>
+                                <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
+                                <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription & Follow-up History</h4>
+                                {appt.prescriptions.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {appt.prescriptions.map((item, pIndex) => (
+                                            <div key={pIndex} className='p-4 border bg-background rounded-lg'>
+                                                <div className='mb-4'>
+                                                    <p className="font-bold text-lg">{item.title}</p>
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
+                                                        <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
+                                                    </div>
+                                                     <p className="text-sm text-muted-foreground mt-2">{item.summary}</p>
+                                                </div>
+
+                                                {item.medicines.length > 0 && (
+                                                    <div className='mb-4'>
+                                                        <h5 className="font-semibold text-base mb-2">Medications</h5>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {item.medicines.map(med => <Badge key={med} variant='outline' className='text-base py-1'>{med}</Badge>)}
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {item.details.length > 0 && (
+                                                     <div>
+                                                        <h5 className="font-semibold text-base mb-2">Details & Progress</h5>
+                                                        <Table>
+                                                            <TableHeader>
+                                                                <TableRow>
+                                                                    <TableHead>Test/Marker</TableHead>
+                                                                    <TableHead>Status</TableHead>
+                                                                    <TableHead>Result</TableHead>
+                                                                    <TableHead className="text-right">Action</TableHead>
+                                                                </TableRow>
+                                                            </TableHeader>
+                                                            <TableBody>
+                                                                {item.details.map((detail, dIndex) => (
+                                                                    <TableRow key={dIndex}>
+                                                                        <TableCell className="font-bold text-base">{detail.name}</TableCell>
+                                                                        <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
+                                                                        <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
+                                                                        <TableCell className="text-right"><Button variant="link" className="h-auto p-0">View</Button></TableCell>
+                                                                    </TableRow>
+                                                                ))}
+                                                            </TableBody>
+                                                        </Table>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-base text-muted-foreground text-center py-4">No prescriptions found for this appointment.</p>
+                                )}
+                            </CollapsibleContent>
+                        </Collapsible>
+                    ))}
+                </CardContent>
+            </Card>
         </div>
     );
 }
-
-    
-
