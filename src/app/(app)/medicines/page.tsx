@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, SlashCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -17,10 +17,60 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
 const initialMedicineSchedule = [
-    { name: "Paracetamol", teluguName: "పారాసిటమాల్", use: "For fever and pain relief", teluguUse: "జ్వరం మరియు నొప్పి నివారణకు", dosage: "500mg", time: "After Breakfast", teluguTime: "అల్పాహారం తర్వాత", taken: true, frequency: "3 times a day", alertTime: "9:00 AM" },
-    { name: "Vitamin D3", teluguName: "విటమిన్ డి3", use: "For bone health", teluguUse: "ఎముకల ఆరోగ్యానికి", dosage: "60000 IU", time: "After Lunch", teluguTime: "భోజనం తర్వాత", taken: true, frequency: "Once a week", alertTime: "1:00 PM" },
-    { name: "Metformin", teluguName: "మెట్‌ఫార్మిన్", use: "To control blood sugar", teluguUse: "రక్తంలో చక్కెరను నియంత్రించడానికి", dosage: "1000mg", time: "After Dinner", teluguTime: "రాత్రి భోజనం తర్వాత", taken: false, frequency: "Twice a day", alertTime: "9:00 PM" },
-    { name: "Omega-3", teluguName: "ఒమేగా-3", use: "For heart health", teluguUse: "గుండె ఆరోగ్యానికి", dosage: "1 capsule", time: "After Dinner", teluguTime: "రాత్రి భోజనం తర్వాత", taken: false, frequency: "Once a day", alertTime: "9:30 PM" },
+    { 
+        name: "Paracetamol", 
+        teluguName: "పారాసిటమాల్", 
+        use: "For fever and pain relief", 
+        teluguUse: "జ్వరం మరియు నొప్పి నివారణకు", 
+        dosage: "500mg", 
+        frequency: "3 times a day",
+        alerts: [
+            { time: "9:00 AM", status: "taken" },
+            { time: "1:00 PM", status: "taken" },
+            { time: "9:00 PM", status: "pending" },
+        ]
+    },
+    { 
+        name: "Vitamin D3", 
+        teluguName: "విటమిన్ డి3", 
+        use: "For bone health", 
+        teluguUse: "ఎముకల ఆరోగ్యానికి", 
+        dosage: "60000 IU", 
+        frequency: "Once a week",
+        alerts: [
+            { time: "1:00 PM", status: "taken" }
+        ]
+    },
+    { 
+        name: "Metformin", 
+        teluguName: "మెట్‌ఫార్మిన్", 
+        use: "To control blood sugar", 
+        teluguUse: "రక్తంలో చక్కెరను నియంత్రించడానికి", 
+        dosage: "1000mg", 
+        frequency: "Twice a day",
+        alerts: [
+            { time: "8:30 AM", status: "missed" },
+            { time: "8:30 PM", status: "pending" },
+        ]
+    },
+    { 
+        name: "Omega-3", 
+        teluguName: "ఒమేగా-3", 
+        use: "For heart health", 
+        teluguUse: "గుండె ఆరోగ్యానికి", 
+        dosage: "1 capsule", 
+        frequency: "Once a day",
+        alerts: [
+            { time: "9:30 PM", status: "pending" },
+        ]
+    },
+];
+
+const medicineHistory = [
+    { date: "Yesterday, Jul 16", medicine: "Paracetamol", status: "full" },
+    { date: "Yesterday, Jul 16", medicine: "Metformin", status: "partial" },
+    { date: "Tuesday, Jul 15", medicine: "Paracetamol", status: "full" },
+    { date: "Tuesday, Jul 15", medicine: "Metformin", status: "missed" },
 ];
 
 const medicineAssistanceItems = [
@@ -141,7 +191,6 @@ function MedicineForm({ medicine, onSave }: { medicine?: any; onSave: (med: any)
     const [name, setName] = useState(medicine?.name || '');
     const [dosage, setDosage] = useState(medicine?.dosage || '');
     const [frequency, setFrequency] = useState(medicine?.frequency || '');
-    const [time, setTime] = useState(medicine?.time || '');
     const { toast } = useToast();
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -151,12 +200,10 @@ function MedicineForm({ medicine, onSave }: { medicine?: any; onSave: (med: any)
             name,
             dosage,
             frequency,
-            time,
             use: medicine?.use || "User added medicine",
             teluguName: medicine?.teluguName || "",
             teluguUse: medicine?.teluguUse || "",
-            taken: medicine?.taken || false,
-            alertTime: medicine?.alertTime || "N/A"
+            alerts: medicine?.alerts || [{ time: "9:00 AM", status: "pending" }],
         };
         onSave(newMed);
         toast({
@@ -178,10 +225,6 @@ function MedicineForm({ medicine, onSave }: { medicine?: any; onSave: (med: any)
             <div className="space-y-2">
                 <Label htmlFor="med-frequency">Frequency</Label>
                 <Input id="med-frequency" value={frequency} onChange={(e) => setFrequency(e.target.value)} placeholder="e.g., Twice a day" />
-            </div>
-            <div className="space-y-2">
-                <Label htmlFor="med-time">Time</Label>
-                <Input id="med-time" value={time} onChange={(e) => setTime(e.target.value)} placeholder="e.g., After Breakfast" />
             </div>
             <DialogFooter>
                 <DialogClose asChild>
@@ -206,6 +249,25 @@ export default function MyMedicinesPage() {
         setEditingMedicine(null);
         setIsFormOpen(false);
     };
+    
+    const toggleAlertStatus = (medName: string, alertTime: string) => {
+        setMedicineSchedule(schedule =>
+            schedule.map(med => {
+                if (med.name === medName) {
+                    return {
+                        ...med,
+                        alerts: med.alerts.map(alert => {
+                            if (alert.time === alertTime) {
+                                return { ...alert, status: alert.status === 'taken' ? 'pending' : 'taken' };
+                            }
+                            return alert;
+                        }),
+                    };
+                }
+                return med;
+            })
+        );
+    };
 
     const openEditDialog = (med: any) => {
         setEditingMedicine(med);
@@ -217,6 +279,14 @@ export default function MyMedicinesPage() {
         setIsFormOpen(true);
     };
 
+    const getStatusIcon = (status: 'full' | 'partial' | 'missed') => {
+        switch (status) {
+            case 'full': return <CheckCircle className="h-5 w-5 text-green-500" />;
+            case 'partial': return <SlashCircle className="h-5 w-5 text-yellow-500" />;
+            case 'missed': return <XCircle className="h-5 w-5 text-red-500" />;
+        }
+    };
+
     return (
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <div className="space-y-8">
@@ -225,7 +295,7 @@ export default function MyMedicinesPage() {
                     <p className="text-muted-foreground">Your daily medication schedule and recovery plan.</p>
                 </div>
                 
-                <div className="grid lg:grid-cols-3 gap-8">
+                <div className="grid lg:grid-cols-3 gap-8 items-start">
                     <div className="lg:col-span-2 space-y-8">
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between">
@@ -240,38 +310,45 @@ export default function MyMedicinesPage() {
                             <CardContent>
                                 <div className="space-y-4">
                                     {medicineSchedule.map((med, index) => (
-                                        <div key={index} className={cn('p-4 rounded-lg flex items-center justify-between transition-all', med.taken ? 'bg-green-100/60 border border-green-200' : 'bg-muted/40')}>
-                                            <div className="flex items-start gap-4">
-                                                <div className="pt-1">
-                                                    <AlarmClock className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
-                                                </div>
-                                                <div>
-                                                    <div className="flex items-baseline gap-2">
-                                                        <p className="font-extrabold text-xl">{med.name}</p>
-                                                        <p className="font-bold text-lg text-muted-foreground">{med.teluguName}</p>
+                                        <div key={index} className='p-4 rounded-lg bg-muted/30 border'>
+                                            <div className="flex items-start justify-between">
+                                                <div className="flex items-start gap-4">
+                                                     <div className="pt-1">
+                                                        <AlarmClock className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
                                                     </div>
-                                                    <div className="font-semibold text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
-                                                        <Info className="h-4 w-4" />
-                                                        <div>
-                                                            <p>{med.use}</p>
-                                                            <p className="text-sm">{med.teluguUse}</p>
+                                                    <div>
+                                                        <div className="flex items-baseline gap-2">
+                                                            <p className="font-extrabold text-xl">{med.name}</p>
+                                                            <p className="font-bold text-lg text-muted-foreground">{med.teluguName}</p>
                                                         </div>
-                                                    </div>
-                                                    <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.time} ({med.teluguTime})</p>
-                                                    <div className="text-xs font-semibold mt-2 p-1 px-2.5 rounded-full inline-flex items-center gap-1.5" style={{backgroundColor: 'hsla(var(--nav-medicines)/0.1)', color: 'hsl(var(--nav-medicines))'}}>
-                                                        <Bell className="h-3 w-3"/>
-                                                        {med.alertTime} • {med.frequency}
+                                                        <div className="font-semibold text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
+                                                            <Info className="h-4 w-4" />
+                                                            <div>
+                                                                <p>{med.use}</p>
+                                                                <p className="text-sm">{med.teluguUse}</p>
+                                                            </div>
+                                                        </div>
+                                                        <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.frequency}</p>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="flex items-center space-x-3">
                                                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEditDialog(med)}>
                                                     <Pencil className="h-4 w-4 text-muted-foreground"/>
                                                 </Button>
-                                                <Label htmlFor={`med-${index}`} className="text-sm font-medium">{med.taken ? 'Taken' : 'Take'}</Label>
-                                                <Checkbox id={`med-${index}`} checked={med.taken} onCheckedChange={(checked) => {
-                                                    setMedicineSchedule(medicineSchedule.map(m => m.name === med.name ? {...m, taken: !!checked} : m))
-                                                }}/>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2 mt-4">
+                                                {med.alerts.map(alert => (
+                                                    <Badge 
+                                                        key={alert.time}
+                                                        onClick={() => toggleAlertStatus(med.name, alert.time)}
+                                                        className={cn("text-base px-3 py-1 cursor-pointer transition-colors", {
+                                                            "bg-green-100 text-green-800 hover:bg-green-200 border-green-200": alert.status === 'taken',
+                                                            "bg-red-100 text-red-800 hover:bg-red-200 border-red-200": alert.status === 'missed',
+                                                            "bg-muted text-muted-foreground hover:bg-muted/80 border": alert.status === 'pending'
+                                                        })}
+                                                    >
+                                                        {alert.time}
+                                                    </Badge>
+                                                ))}
                                             </div>
                                         </div>
                                     ))}
@@ -281,18 +358,22 @@ export default function MyMedicinesPage() {
 
                         <Card>
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2"><Award /> Weekly Progress</CardTitle>
-                                <CardDescription>Your adherence to medication and diet plan this week.</CardDescription>
+                                <CardTitle className="flex items-center gap-2"><History /> Medication History</CardTitle>
+                                <CardDescription>Your adherence record for the past few days.</CardDescription>
                             </CardHeader>
-                            <CardContent className="space-y-6">
-                                <div>
-                                    <div className="flex justify-between mb-1"><p>Medication</p><p className="font-semibold">90%</p></div>
-                                    <Progress value={90} className="h-2"/>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between mb-1"><p>Diet</p><p className="font-semibold">75%</p></div>
-                                    <Progress value={75} className="h-2"/>
-                                </div>
+                            <CardContent>
+                                {medicineHistory.map((item, index) => (
+                                    <div key={index} className="flex justify-between items-center p-3 border-b last:border-b-0">
+                                        <div>
+                                            <p className="font-semibold">{item.medicine}</p>
+                                            <p className="text-sm text-muted-foreground">{item.date}</p>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            {getStatusIcon(item.status as any)}
+                                            <span className="font-semibold capitalize">{item.status}</span>
+                                        </div>
+                                    </div>
+                                ))}
                             </CardContent>
                         </Card>
                     </div>
@@ -350,5 +431,3 @@ export default function MyMedicinesPage() {
         </Dialog>
     );
 }
-
-    
