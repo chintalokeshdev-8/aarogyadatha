@@ -81,7 +81,7 @@ const previousAppointments = [
                 status: "Completed",
                 date: "Aug 5, 2024 - Aug 18, 2024",
                 doctor: "Dr. Dokku Vasu Babu",
-                summary: "Initial tests and medication after consultation.",
+                summary: "Initial tests and medication after consultation for post-viral fatigue and chest pain. Patient advised to monitor symptoms and follow up with test results.",
                 medicines: ["Metoprolol 25mg", "Aspirin 81mg", "Vitamin B Complex"],
                 details: [
                     { name: 'Echocardiogram', date: '2024-08-10', status: 'Abnormal', result: 'Completed' },
@@ -93,7 +93,7 @@ const previousAppointments = [
                 status: "Active",
                 date: "Aug 19, 2024 - Present",
                 doctor: "Dr. Dokku Vasu Babu",
-                summary: "Follow-up tests and revised medication after Troponin-I levels showed improvement.",
+                summary: "Follow-up tests and revised medication after Troponin-I levels showed improvement. Patient feels less fatigue. BP is stable at 120/80 mmHg.",
                 medicines: ["Atorvastatin 20mg", "Aspirin 81mg"],
                  details: [
                     { name: 'Troponin-I', date: '2024-08-18', status: 'Normal', result: 'Completed' },
@@ -106,7 +106,7 @@ const previousAppointments = [
                 status: "Improved",
                 date: "As of Aug 19, 2024",
                 doctor: "Dr. Dokku Vasu Babu",
-                summary: "Patient showing significant improvement. Key cardiac markers have normalized. Final check-up scheduled.",
+                summary: "Patient showing significant improvement. Key cardiac markers have normalized. Final check-up scheduled to confirm full recovery.",
                 medicines: [],
                  details: []
             }
@@ -123,7 +123,7 @@ const previousAppointments = [
                 status: "Completed",
                 date: "Jul 15, 2024 - Jul 22, 2024",
                 doctor: "Dr. Anjali",
-                summary: "Initial viral infection treatment.",
+                summary: "Standard treatment for viral infection. Patient reported fever and cough. Prescribed rest and hydration.",
                 medicines: ["Paracetamol 500mg", "Cetirizine 10mg"],
                 details: []
             }
@@ -404,14 +404,13 @@ export default function OpdQueuePage() {
                                                             <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
                                                             <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
                                                         </div>
-                                                        <p className="text-sm text-muted-foreground mt-2">{item.summary}</p>
                                                     </div>
 
                                                     {item.medicines.length > 0 && (
                                                         <div className='mb-4'>
                                                             <h5 className="font-semibold text-base mb-2">Medications</h5>
                                                             <div className="flex flex-wrap gap-2">
-                                                                {item.medicines.map(med => <Badge key={med} variant='outline' className='text-base py-1'>{med}</Badge>)}
+                                                                {item.medicines.map(med => <Badge key={med} variant='outline'>{med}</Badge>)}
                                                             </div>
                                                         </div>
                                                     )}
@@ -427,10 +426,14 @@ export default function OpdQueuePage() {
                                                     <DialogHeader>
                                                         <DialogTitle>{item.title}</DialogTitle>
                                                         <DialogDescription>
-                                                            Details for prescription from {item.date}.
+                                                            Prescription from {item.date} by {item.doctor}.
                                                         </DialogDescription>
                                                     </DialogHeader>
-                                                    <div className="max-h-[60vh] overflow-y-auto">
+                                                    <div className="max-h-[60vh] overflow-y-auto p-1 space-y-4">
+                                                        <div>
+                                                            <h4 className='font-semibold mb-2'>Condition Summary</h4>
+                                                            <p className='text-sm text-muted-foreground'>{item.summary}</p>
+                                                        </div>
                                                         <Table>
                                                             <TableHeader>
                                                                 <TableRow>
@@ -469,3 +472,4 @@ export default function OpdQueuePage() {
     );
 
     
+
