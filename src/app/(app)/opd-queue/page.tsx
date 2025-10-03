@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X } from "lucide-react";
+import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X, PartyPopper } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -106,7 +106,7 @@ const previousAppointments = [
         initialDoctor: "Dr. Ramesh Babu",
         prescriptions: [
             {
-                title: "Initial Consultation",
+                title: "1st Follow-up",
                 status: "Completed",
                 date: "Jul 20, 2024 - Jul 27, 2024",
                 doctor: "Dr. Ramesh Babu",
@@ -117,7 +117,7 @@ const previousAppointments = [
                 ]
             },
             {
-                title: "1st Follow-up",
+                title: "2nd Follow-up",
                 status: "Improved",
                 date: "Jul 28, 2024 - Aug 04, 2024",
                 doctor: "Dr. Ramesh Babu",
@@ -136,7 +136,7 @@ const previousAppointments = [
         initialDoctor: "Ashok kumar chintha",
         prescriptions: [
             {
-                title: "1st Follow-up Prescription",
+                title: "1st Follow-up",
                 status: "Completed",
                 date: "Aug 5, 2024 - Aug 18, 2024",
                 doctor: "Ashok kumar chintha",
@@ -148,7 +148,7 @@ const previousAppointments = [
                 ]
             },
             {
-                title: "2nd Follow-up Prescription",
+                title: "2nd Follow-up",
                 status: "Completed",
                 date: "Aug 19, 2024 - Sep 02, 2024",
                 doctor: "Dr. Ramesh Babu",
@@ -178,7 +178,7 @@ const previousAppointments = [
         initialDoctor: "Dr. Anjali",
         prescriptions: [
              {
-                title: "Initial Prescription",
+                title: "1st Follow-up",
                 status: "Completed",
                 date: "Jul 15, 2024 - Jul 22, 2024",
                 doctor: "Dr. Anjali",
@@ -204,7 +204,7 @@ const previousAppointments = [
         initialDoctor: "Dr. Lakshmi Narasaiah",
         prescriptions: [
              {
-                title: "Initial Consultation",
+                title: "1st Follow-up",
                 status: "Completed",
                 date: "Jun 10, 2024 - Jun 24, 2024",
                 doctor: "Dr. Lakshmi Narasaiah",
@@ -215,7 +215,7 @@ const previousAppointments = [
                 ]
             },
             {
-                title: "1st Follow-up",
+                title: "2nd Follow-up",
                 status: "Completed",
                 date: "Jun 25, 2024 - Jul 09, 2024",
                 doctor: "Dr. G. Ravi Shankara Reddy",
@@ -529,40 +529,48 @@ export default function OpdQueuePage() {
                                     <div className="space-y-4">
                                         {appt.prescriptions.map((item, pIndex) => (
                                             <Dialog key={pIndex}>
-                                                <div className='p-4 border bg-background rounded-lg'>
-                                                    <div className='mb-4'>
-                                                        <p className="font-bold text-lg">{item.title}</p>
-                                                         <div className="text-sm text-muted-foreground">by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span></div>
-                                                        <div className="flex items-center gap-2 mt-1">
-                                                            <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
-                                                            <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                     {item.medicines.length > 0 && (
+                                                {item.title === 'Condition Status' && item.status === 'Resolved' ? (
+                                                     <div className='p-4 border bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-green-200 dark:border-green-800 rounded-lg text-center animate-pulse'>
+                                                        <Award className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-2"/>
+                                                        <p className="font-bold text-lg text-green-800 dark:text-green-300">Congratulations on your recovery!</p>
+                                                        <p className="text-sm text-green-700 dark:text-green-400/80">{item.summary}</p>
+                                                     </div>
+                                                ) : (
+                                                    <div className='p-4 border bg-background rounded-lg'>
                                                         <div className='mb-4'>
-                                                            <h5 className="font-semibold text-base mb-2">Medications</h5>
-                                                            <div className="flex flex-wrap gap-2">
-                                                                {item.medicines.map(med => <Badge key={med} variant='outline'>{med}</Badge>)}
+                                                            <p className="font-bold text-lg">{item.title}</p>
+                                                            <div className="text-sm text-muted-foreground">by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span></div>
+                                                            <div className="flex items-center gap-2 mt-1">
+                                                                <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
+                                                                <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
                                                             </div>
                                                         </div>
-                                                    )}
+                                                        
+                                                        {item.medicines.length > 0 && (
+                                                            <div className='mb-4'>
+                                                                <h5 className="font-semibold text-base mb-2">Medications</h5>
+                                                                <div className="flex flex-wrap gap-2">
+                                                                    {item.medicines.map(med => <Badge key={med} variant='outline'>{med}</Badge>)}
+                                                                </div>
+                                                            </div>
+                                                        )}
 
-                                                    <div className="flex items-center gap-2 mt-4">
-                                                        {(item.details.length > 0 || item.summary) && (
-                                                            <DialogTrigger asChild>
-                                                                <Button variant="link" className="p-0 h-auto">View Details</Button>
-                                                            </DialogTrigger>
-                                                        )}
-                                                        {item.title === 'Condition Status' && (
-                                                                <Link href="/appointments">
-                                                                <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
-                                                                    Book Second Opinion
-                                                                </Button>
-                                                            </Link>
-                                                        )}
+                                                        <div className="flex items-center gap-2 mt-4">
+                                                            {(item.details.length > 0 || item.summary) && (
+                                                                <DialogTrigger asChild>
+                                                                    <Button variant="link" className="p-0 h-auto">View Details</Button>
+                                                                </DialogTrigger>
+                                                            )}
+                                                            {item.title === 'Condition Status' && (
+                                                                    <Link href="/appointments">
+                                                                    <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
+                                                                        Book Second Opinion
+                                                                    </Button>
+                                                                </Link>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                )}
 
                                                 <DialogContent className="sm:max-w-xl">
                                                     <DialogHeader>
