@@ -383,7 +383,7 @@ export default function OpdQueuePage() {
                 </p>
             </div>
 
-            <Card className="p-4" style={{backgroundColor: 'hsla(var(--nav-chat)/0.1)', borderColor: 'hsla(var(--nav-chat)/0.2)'}}>
+            <Card className="p-4" style={{backgroundColor: 'hsla(var(--nav-chat)/0.05)', borderColor: 'hsla(var(--nav-chat)/0.2)'}}>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
                         <CardTitle className="flex items-center justify-center gap-2 text-base" style={{color: 'hsl(var(--nav-chat))'}}><User /> Your Token</CardTitle>
@@ -548,12 +548,17 @@ export default function OpdQueuePage() {
                     {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
                         <Collapsible key={index} className="border rounded-lg">
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
-                                <div className="flex-1">
-                                    <p className="text-xl font-bold">{appt.problem}</p>
-                                    <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
-                                    <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {format(new Date(appt.date), 'dd-MMM-yyyy')} by {appt.initialDoctor}</div>
+                                <div className="flex items-start gap-4">
+                                    <div className="text-4xl font-extrabold text-blue-500/50 dark:text-blue-400/50">
+                                        {index + 1}.
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="text-xl font-bold">{appt.problem}</p>
+                                        <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
+                                        <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {format(new Date(appt.date), 'dd-MMM-yyyy')} by {appt.initialDoctor}</div>
+                                    </div>
                                 </div>
-                                <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
+                                <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0 mt-1" />
                             </CollapsibleTrigger>
                             <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
                                 <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription & Follow-up History</h4>
@@ -665,5 +670,3 @@ export default function OpdQueuePage() {
         </div>
     );
 }
-
-    
