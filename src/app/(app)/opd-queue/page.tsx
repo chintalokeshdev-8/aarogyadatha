@@ -531,12 +531,12 @@ export default function OpdQueuePage() {
                                         {appt.prescriptions.map((item, pIndex) => (
                                             <Dialog key={pIndex}>
                                                 {item.title === 'Condition Status' && item.status === 'Resolved' ? (
-                                                     <div className='p-4 border bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/30 border-green-200 dark:border-green-800 rounded-lg text-center relative overflow-hidden'>
+                                                     <div className='p-4 border bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-800 rounded-lg text-center relative overflow-hidden'>
                                                         <FlowerFall />
                                                         <div className="relative z-10">
-                                                            <PartyPopper className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-2"/>
-                                                            <p className="font-bold text-lg text-green-800 dark:text-green-300">Congratulations on your recovery!</p>
-                                                            <p className="text-sm text-green-700 dark:text-green-400/80">{item.summary}</p>
+                                                            <PartyPopper className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-2"/>
+                                                            <p className="font-bold text-lg text-blue-800 dark:text-blue-300">Congratulations on your recovery!</p>
+                                                            <p className="text-sm text-blue-700 dark:text-blue-400/80">{item.summary}</p>
                                                         </div>
                                                      </div>
                                                 ) : (
