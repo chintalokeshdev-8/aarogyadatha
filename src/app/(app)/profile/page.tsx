@@ -14,6 +14,7 @@ import { GovIdIcon } from '@/components/icons/gov-id-icon';
 import Image from 'next/image';
 import { Input } from "@/components/ui/input";
 import { Search } from 'lucide-react';
+import { format } from "date-fns";
 
 const recentVisits = [
   { date: "2024-07-15", reason: "Fever & Cold", doctor: "Dr. Shashank" },
@@ -111,7 +112,7 @@ export default function ProfilePage() {
                                        <p className="font-semibold">{visit.reason}</p>
                                        <p className="text-sm text-muted-foreground">{visit.doctor}</p>
                                    </div>
-                                   <p className="text-sm font-medium">{visit.date}</p>
+                                   <p className="text-sm font-medium">{format(new Date(visit.date), 'dd-MMM-yyyy')}</p>
                                </li>
                              ))}
                            </ul>
@@ -126,7 +127,7 @@ export default function ProfilePage() {
                                <li key={index} className="flex justify-between items-center p-3 border-b last:border-b-0">
                                    <div>
                                        <p className="font-semibold">{report.name}</p>
-                                       <p className="text-sm text-muted-foreground">Date: {report.date}</p>
+                                       <p className="text-sm text-muted-foreground">Date: {format(new Date(report.date), 'dd-MMM-yyyy')}</p>
                                    </div>
                                    <Button variant="outline" size="sm"><FileDown className="mr-2 h-4 w-4" />Download</Button>
                                </li>
@@ -140,5 +141,3 @@ export default function ProfilePage() {
         </div>
     );
 }
-
-    

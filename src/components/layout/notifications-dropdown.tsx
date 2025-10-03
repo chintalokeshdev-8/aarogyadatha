@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Bell, Check, Clock } from 'lucide-react';
 import { notifications } from '@/lib/notifications';
-import { formatDistanceToNow } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
 
 export function NotificationsDropdown() {
@@ -53,7 +53,7 @@ export function NotificationsDropdown() {
                             <p className="text-sm text-muted-foreground">{notification.description}</p>
                             <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
                                 <Clock className="h-3 w-3" />
-                                {isClient ? formatDistanceToNow(notification.timestamp, { addSuffix: true }) : '...'}
+                                {isClient ? format(notification.timestamp, 'dd-MMM-yyyy') : '...'}
                             </p>
                         </div>
                         {!notification.read && <div className="mt-1 h-2 w-2 rounded-full bg-primary" />}

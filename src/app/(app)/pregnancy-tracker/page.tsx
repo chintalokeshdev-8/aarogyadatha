@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { PregnantLadyIcon } from "@/components/icons/pregnant-lady-icon";
+import { format } from "date-fns";
 
 const dietPlan = {
     breakfast: ["Oats with fruits", "2 boiled eggs"],
@@ -168,7 +169,7 @@ export default function PregnancyTrackerPage() {
                                 <div key={i} className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
                                    <div>
                                        <p className="font-semibold">{report.name}</p>
-                                       <p className="text-sm text-muted-foreground">{report.date}</p>
+                                       <p className="text-sm text-muted-foreground">{format(new Date(report.date), 'dd-MMM-yyyy')}</p>
                                    </div>
                                    <Button variant="ghost" size="icon">
                                         <View className="h-5 w-5" style={{color: 'hsl(var(--nav-appointments))'}}/>

@@ -52,7 +52,7 @@ const ReportTable = ({ reports, onAnalyze, onView }: { reports: any[], onAnalyze
             {reports.length > 0 ? reports.map((report, index) => (
                 <TableRow key={index} className='border-b'>
                     <TableCell className="font-medium">{report.testName}</TableCell>
-                    <TableCell>{report.date}</TableCell>
+                    <TableCell>{format(new Date(report.date), 'dd-MMM-yyyy')}</TableCell>
                     <TableCell>{report.doctor}</TableCell>
                     <TableCell>
                         <Badge variant="outline" className={getStatusBadgeClass(report.status)}>
@@ -171,7 +171,7 @@ const ReportViewer = ({ content }: { content: string }) => {
                     </div>
                     <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <strong>Date:</strong> {patientInfo['Date']}
+                        <strong>Date:</strong> {patientInfo['Date'] ? format(new Date(patientInfo['Date']), 'dd-MMM-yyyy') : 'N/A'}
                     </div>
                     {patientInfo['Doctor'] && (
                          <div className="flex items-center gap-2 col-span-1 sm:col-span-2">
@@ -638,7 +638,7 @@ export function LabReportsClient({
                                             )}
                                         >
                                             <CalendarIcon className="mr-2 h-4 w-4" />
-                                            {reportDate ? format(reportDate, "PPP") : <span>Filter by date</span>}
+                                            {reportDate ? format(reportDate, "dd-MMM-yyyy") : <span>Filter by date</span>}
                                         </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
@@ -681,7 +681,7 @@ export function LabReportsClient({
                 <DialogContent className="sm:max-w-2xl">
                     <DialogHeader>
                         <DialogTitle>View Report: {selectedReport?.testName}</DialogTitle>
-                        <DialogDescription>Date: {selectedReport?.date} | Ordered by: {selectedReport?.doctor}</DialogDescription>
+                        <DialogDescription>Date: {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''} | Ordered by: {selectedReport?.doctor}</DialogDescription>
                     </DialogHeader>
                     <div className="max-h-[70vh] overflow-y-auto p-1 space-y-4">
                         {reportImage && (
@@ -705,7 +705,7 @@ export function LabReportsClient({
                 <DialogContent className="sm:max-w-4xl">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2 text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}><Sparkles /> AI Report Analysis</DialogTitle>
-                        <DialogDescription>Analyzing: {selectedReport?.testName} from {selectedReport?.date}</DialogDescription>
+                        <DialogDescription>Analyzing: {selectedReport?.testName} from {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''}</DialogDescription>
                     </DialogHeader>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
                         <div className="space-y-4">

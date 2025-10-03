@@ -14,6 +14,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from 'next/image';
 import { OrganHealthDialog } from '@/components/layout/organ-health-dialog';
 import { organHealthData } from '@/lib/organ-health-data';
+import { format } from "date-fns";
 
 const measurementHistory = [
     { date: "2024-07-20", weight: "75 kg", bp: "120/80 mmHg", bmi: 24.5 },
@@ -568,7 +569,7 @@ export default function HealthTrackerPage() {
                         <TableBody>
                             {measurementHistory.map((entry, index) => (
                                 <TableRow key={index}>
-                                    <TableCell className="font-medium">{entry.date}</TableCell>
+                                    <TableCell className="font-medium">{format(new Date(entry.date), 'dd-MMM-yyyy')}</TableCell>
                                     <TableCell>{entry.weight}</TableCell>
                                     <TableCell>{entry.bp}</TableCell>
                                     <TableCell>
