@@ -515,7 +515,7 @@ export default function OpdQueuePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                        <Collapsible key={index} className="border rounded-lg" defaultOpen={index === 0}>
+                        <Collapsible key={index} className="border rounded-lg">
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                 <div className="flex items-start gap-4">
                                     <div className="text-4xl font-extrabold pt-1 w-12 text-center" style={{color: 'hsl(var(--nav-chat))'}}>{index + 1}.</div>
