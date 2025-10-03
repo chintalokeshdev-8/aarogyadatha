@@ -54,13 +54,13 @@ const previousAppointments = [
         problem: "Consultation for post-viral fatigue and chest pain.",
         specialty: "Cardiologist",
         date: "2024-08-05",
-        initialDoctor: "Dr. Dokku Vasu Babu",
+        initialDoctor: "Ashok kumar chintha",
         prescriptions: [
             {
                 title: "1st Follow-up Prescription",
                 status: "Completed",
                 date: "Aug 5, 2024 - Aug 18, 2024",
-                doctor: "Dr. Dokku Vasu Babu",
+                doctor: "Ashok kumar chintha",
                 summary: "Initial tests and medication after consultation for post-viral fatigue and chest pain. Patient advised to monitor symptoms and follow up with test results.",
                 medicines: ["Metoprolol 25mg", "Aspirin 81mg", "Vitamin B Complex"],
                 details: [
