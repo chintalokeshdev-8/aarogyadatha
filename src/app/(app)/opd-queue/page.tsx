@@ -107,7 +107,7 @@ const previousAppointments = [
         initialDoctor: "Dr. R.K. Reddy",
         prescriptions: [
             {
-                title: "Initial Diagnosis",
+                title: "1st Follow-up (Diagnosis)",
                 status: "Completed",
                 date: "Sep 15, 2021",
                 doctor: "Dr. R.K. Reddy",
@@ -119,7 +119,7 @@ const previousAppointments = [
                 ]
             },
             {
-                title: "6-Month Follow-up",
+                title: "2nd Follow-up (6-Month)",
                 status: "Completed",
                 date: "Mar 20, 2022",
                 doctor: "Dr. R.K. Reddy",
@@ -131,7 +131,7 @@ const previousAppointments = [
                 ]
             },
              {
-                title: "Annual Review - Year 2",
+                title: "3rd Follow-up (Annual Review)",
                 status: "Completed",
                 date: "Sep 25, 2023",
                 doctor: "Dr. Ramesh Babu",
@@ -143,7 +143,7 @@ const previousAppointments = [
                 ]
             },
              {
-                title: "Recent Follow-up - Year 3",
+                title: "4th Follow-up (Recent)",
                 status: "Active",
                 date: "Jul 10, 2024",
                 doctor: "Dr. Ramesh Babu",
@@ -153,6 +153,15 @@ const previousAppointments = [
                     { name: 'Ammonia Level Test', date: '2024-07-10', status: 'Abnormal', result: 'Completed' },
                     { name: 'Prothrombin Time (PT)', date: '2024-07-10', status: 'Abnormal', result: 'Completed' },
                 ]
+            },
+            {
+                title: "Liver Transplant Readiness",
+                status: "Action Required",
+                date: "Next Step",
+                doctor: "Transplant Team",
+                summary: "The medical team has determined that you are now a candidate for a liver transplant. The next step is to get a cost estimation and complete the pre-authorization process.",
+                medicines: [],
+                details: []
             }
         ]
     },
@@ -574,7 +583,7 @@ export default function OpdQueuePage() {
                                                             <p className="font-bold text-lg">{item.title}</p>
                                                             <div className="text-sm text-muted-foreground">by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span></div>
                                                             <div className="flex items-center gap-2 mt-1">
-                                                                <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
+                                                                <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
                                                                 <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
                                                             </div>
                                                         </div>
@@ -589,15 +598,15 @@ export default function OpdQueuePage() {
                                                         )}
 
                                                         <div className="flex items-center gap-2 mt-4">
-                                                            {(item.details.length > 0 || item.summary) && (
+                                                            {(item.details.length > 0 || item.summary) && item.title !== 'Liver Transplant Readiness' && (
                                                                 <DialogTrigger asChild>
                                                                     <Button variant="link" className="p-0 h-auto">View Details</Button>
                                                                 </DialogTrigger>
                                                             )}
-                                                            {item.title === 'Condition Status' && (
-                                                                    <Link href="/appointments">
-                                                                    <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
-                                                                        Book Second Opinion
+                                                            {item.title === 'Liver Transplant Readiness' && (
+                                                                <Link href="/surgery-care">
+                                                                    <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
+                                                                        Enquire for Transplant Estimate
                                                                     </Button>
                                                                 </Link>
                                                             )}
@@ -663,3 +672,4 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+
