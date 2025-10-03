@@ -516,13 +516,16 @@ export default function OpdQueuePage() {
                 <CardContent className="space-y-4">
                     {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
                         <Collapsible key={index} className="border rounded-lg" defaultOpen={index === 0}>
-                            <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left">
-                                <div>
-                                    <p className="text-xl font-bold">{appt.problem}</p>
-                                    <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
-                                    <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {appt.date} by {appt.initialDoctor}</div>
+                            <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
+                                <div className="flex items-start gap-4">
+                                    <div className="text-4xl font-extrabold text-muted-foreground pt-1 w-12 text-center">{index + 1}</div>
+                                    <div className="flex-1">
+                                        <p className="text-xl font-bold">{appt.problem}</p>
+                                        <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
+                                        <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {appt.date} by {appt.initialDoctor}</div>
+                                    </div>
                                 </div>
-                                <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
                             </CollapsibleTrigger>
                             <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
                                 <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription & Follow-up History</h4>
