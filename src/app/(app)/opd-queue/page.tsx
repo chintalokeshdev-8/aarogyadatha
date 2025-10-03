@@ -101,31 +101,57 @@ const previousAppointments = [
         ]
     },
     {
-        problem: "Jaundice",
+        problem: "Liver Cirrhosis",
         specialty: "Gastroenterologist",
-        date: "2024-07-20",
-        initialDoctor: "Dr. Ramesh Babu",
+        date: "2021-09-15",
+        initialDoctor: "Dr. R.K. Reddy",
         prescriptions: [
             {
-                title: "1st Follow-up",
+                title: "Initial Diagnosis",
                 status: "Completed",
-                date: "Jul 20, 2024 - Jul 27, 2024",
-                doctor: "Dr. Ramesh Babu",
-                summary: "Patient shows symptoms of Jaundice. Liver function tests ordered.",
-                medicines: ["Ursodeoxycholic acid"],
+                date: "Sep 15, 2021",
+                doctor: "Dr. R.K. Reddy",
+                summary: "Patient (age 30) presented with fatigue, jaundice, and abdominal swelling (ascites). Diagnosed with Liver Cirrhosis based on LFT and Ultrasound.",
+                medicines: ["Diuretics (Spironolactone)", "Beta-blockers (Propranolol)"],
                 details: [
-                    { name: 'Liver Function Test', date: '2024-07-21', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Liver Function Test', date: '2021-09-15', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Ultrasound Abdomen', date: '2021-09-16', status: 'Abnormal', result: 'Completed' },
                 ]
             },
             {
-                title: "2nd Follow-up",
-                status: "Improved",
-                date: "Jul 28, 2024 - Aug 04, 2024",
-                doctor: "Dr. Ramesh Babu",
-                summary: "Bilirubin levels are decreasing. Patient advised to continue medication and a strict diet.",
-                medicines: ["Continue Ursodeoxycholic acid", "Vitamin K supplements"],
+                title: "6-Month Follow-up",
+                status: "Completed",
+                date: "Mar 20, 2022",
+                doctor: "Dr. R.K. Reddy",
+                summary: "Ascites is under control. Patient reports feeling less fatigued. Endoscopy performed to check for varices.",
+                medicines: ["Continue current medication", "Lactulose syrup"],
                 details: [
-                    { name: 'Liver Function Test', date: '2024-07-28', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Upper GI Endoscopy', date: '2022-03-22', status: 'Abnormal', result: 'Completed' },
+                    { name: 'CT Scan (Abdomen)', date: '2022-03-22', status: 'Abnormal', result: 'Completed' },
+                ]
+            },
+             {
+                title: "Annual Review - Year 2",
+                status: "Completed",
+                date: "Sep 25, 2023",
+                doctor: "Dr. Ramesh Babu",
+                summary: "Condition is stable, but long-term prognosis discussed. Doctor mentioned that a liver transplant may be necessary in the future and advised to maintain a healthy lifestyle.",
+                medicines: ["Adjusted dosage of Diuretics", "Rifaximin"],
+                details: [
+                    { name: 'Liver Function Test', date: '2023-09-25', status: 'Abnormal', result: 'Completed' },
+                    { name: 'FibroScan', date: '2023-09-26', status: 'Abnormal', result: 'Completed' },
+                ]
+            },
+             {
+                title: "Recent Follow-up - Year 3",
+                status: "Active",
+                date: "Jul 10, 2024",
+                doctor: "Dr. Ramesh Babu",
+                summary: "Patient reports episodes of confusion (encephalopathy). Medication adjusted. Reinforcing the need for a liver transplant as a long-term solution. Referred to transplant team.",
+                medicines: ["Continue Lactulose and Rifaximin", "Add Vitamin K supplements"],
+                details: [
+                    { name: 'Ammonia Level Test', date: '2024-07-10', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Prothrombin Time (PT)', date: '2024-07-10', status: 'Abnormal', result: 'Completed' },
                 ]
             }
         ]
