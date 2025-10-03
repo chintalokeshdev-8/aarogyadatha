@@ -383,20 +383,20 @@ export default function OpdQueuePage() {
                 </p>
             </div>
 
-            <Card className="p-4" style={{backgroundColor: 'hsla(var(--nav-chat)/0.05)', borderColor: 'hsla(var(--nav-chat)/0.2)'}}>
+            <Card className="p-4" style={{backgroundColor: 'hsla(215, 80%, 95%, 1)', borderColor: 'hsla(215, 60%, 85%, 1)'}}>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
-                        <CardTitle className="flex items-center justify-center gap-2 text-base" style={{color: 'hsl(var(--nav-chat))'}}><User /> Your Token</CardTitle>
-                        <p className="text-4xl font-bold mt-2" style={{color: 'hsl(var(--nav-chat))'}}>#23</p>
-                        <div className="flex items-center justify-center gap-2 mt-1 text-xs" style={{color: 'hsla(var(--nav-chat)/0.8)'}}>
+                        <CardTitle className="flex items-center justify-center gap-2 text-base text-blue-800"><User /> Your Token</CardTitle>
+                        <p className="text-4xl font-bold mt-2 text-blue-800">#23</p>
+                        <div className="flex items-center justify-center gap-2 mt-1 text-xs text-blue-700">
                             <Clock className="w-3 h-3" />
                             <span className="font-semibold">Est. Wait: 5 mins</span>
                         </div>
                     </div>
-                    <div className="text-center border-l border-primary/10" style={{borderColor: 'hsla(var(--nav-chat)/0.2)'}}>
-                        <CardTitle className="text-base">Now Serving</CardTitle>
-                        <CardDescription className="text-xs">Patient with the doctor</CardDescription>
-                        <p className="text-4xl font-bold mt-2">#19</p>
+                    <div className="text-center border-l" style={{borderColor: 'hsla(215, 60%, 85%, 1)'}}>
+                        <CardTitle className="text-base text-blue-800">Now Serving</CardTitle>
+                        <CardDescription className="text-xs text-blue-700">Patient with the doctor</CardDescription>
+                        <p className="text-4xl font-bold mt-2 text-blue-800">#19</p>
                     </div>
                 </div>
             </Card>
@@ -549,7 +549,7 @@ export default function OpdQueuePage() {
                         <Collapsible key={index} className="border rounded-lg">
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                 <div className="flex items-start gap-4">
-                                    <div className="text-4xl font-extrabold text-blue-500/50 dark:text-blue-400/50">
+                                    <div className="text-4xl font-extrabold text-blue-800 dark:text-blue-300">
                                         {index + 1}.
                                     </div>
                                     <div className="flex-1">
