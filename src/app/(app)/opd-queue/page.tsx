@@ -383,77 +383,69 @@ export default function OpdQueuePage() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <Card className="border-primary/20" style={{backgroundColor: 'hsla(var(--nav-chat)/0.1)', borderColor: 'hsla(var(--nav-chat)/0.2)'}}>
-                    <CardHeader className="pb-2">
-                        <CardTitle className="flex items-center gap-2 text-base" style={{color: 'hsl(var(--nav-chat))'}}><User /> Your Token</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-center">
-                        <p className="text-4xl font-bold" style={{color: 'hsl(var(--nav-chat))'}}>#23</p>
+            <Card className="p-4" style={{backgroundColor: 'hsla(var(--nav-chat)/0.1)', borderColor: 'hsla(var(--nav-chat)/0.2)'}}>
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                        <CardTitle className="flex items-center justify-center gap-2 text-base" style={{color: 'hsl(var(--nav-chat))'}}><User /> Your Token</CardTitle>
+                        <p className="text-4xl font-bold mt-2" style={{color: 'hsl(var(--nav-chat))'}}>#23</p>
                         <div className="flex items-center justify-center gap-2 mt-1 text-xs" style={{color: 'hsla(var(--nav-chat)/0.8)'}}>
                             <Clock className="w-3 h-3" />
                             <span className="font-semibold">Est. Wait: 5 mins</span>
                         </div>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="pb-2">
+                    </div>
+                    <div className="text-center border-l border-primary/10" style={{borderColor: 'hsla(var(--nav-chat)/0.2)'}}>
                         <CardTitle className="text-base">Now Serving</CardTitle>
                         <CardDescription className="text-xs">Patient with the doctor</CardDescription>
-                    </CardHeader>
-                    <CardContent className="text-center">
-                        <p className="text-4xl font-bold">#19</p>
-                    </CardContent>
-                </Card>
-            </div>
+                        <p className="text-4xl font-bold mt-2">#19</p>
+                    </div>
+                </div>
+            </Card>
 
             <Card>
-                <CardHeader>
-                    <div className="flex flex-col sm:flex-row items-start gap-6">
-                        <Avatar className="h-24 w-24 border-4" style={{borderColor: 'hsl(var(--nav-chat))'}}>
-                            <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
-                            <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                            <CardTitle className="text-2xl">{appointmentDetails.doctor.name}</CardTitle>
-                            <CardDescription className="font-semibold text-base" style={{color: 'hsl(var(--nav-chat))'}}>{appointmentDetails.doctor.specialty}</CardDescription>
-                            
-                            <div className={`mt-4 flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
-                                <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
-                                <div className="flex-1">
-                                    <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
-                                        {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
-                                    </p>
-                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
-                                    <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
-                                </div>
-                                {currentStatusInfo.indicator && (
-                                    <span className="relative flex h-4 w-4 mt-1">
-                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                        <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
-                                    </span>
-                                )}
+                 <CardHeader className="flex flex-col sm:flex-row items-start gap-6">
+                    <Avatar className="h-24 w-24 border-4" style={{borderColor: 'hsl(var(--nav-chat))'}}>
+                        <AvatarImage src={appointmentDetails.doctor.avatar} data-ai-hint={appointmentDetails.doctor.dataAiHint} />
+                        <AvatarFallback>{appointmentDetails.doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                        <CardTitle className="text-2xl">{appointmentDetails.doctor.name}</CardTitle>
+                        <CardDescription className="font-semibold text-base" style={{color: 'hsl(var(--nav-chat))'}}>{appointmentDetails.doctor.specialty}</CardDescription>
+                        
+                        <div className={`mt-4 flex items-start gap-4 p-4 ${currentStatusInfo.color} rounded-lg border bg-background`}>
+                            <StatusIcon className={`h-6 w-6 ${currentStatusInfo.textColor} mt-1`}/>
+                            <div className="flex-1">
+                                <p className={`font-bold ${currentStatusInfo.textColor} flex items-center gap-2`}>
+                                    {appointmentDetails.status} ({currentStatusInfo.teluguStatus})
+                                </p>
+                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.details}</p>
+                                <p className={`text-sm ${currentStatusInfo.textColor}/80`}>{currentStatusInfo.teluguDetails}</p>
                             </div>
-                            
-                            <div className="mt-4 space-y-1 text-sm text-muted-foreground">
-                                <p className="flex items-center gap-2"><Award className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-chat))'}}/><strong>Successful Surgeries:</strong> {appointmentDetails.doctor.surgeries}</p>
-                                <p className="flex items-center gap-2"><Stethoscope className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-chat))'}}/><strong>Main Focus:</strong> {appointmentDetails.doctor.mainDealing}</p>
-                            </div>
-                             <div className="mt-4 space-y-2 text-sm">
-                                <p className="font-bold text-lg">{appointmentDetails.hospital.name}</p>
-                                <p className="flex items-start gap-2 text-muted-foreground"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {appointmentDetails.hospital.address}</p>
-                                <p className="flex items-center gap-2 text-muted-foreground"><Phone className="h-4 w-4"/> {appointmentDetails.hospital.phone}</p>
-                                <a href={appointmentDetails.hospital.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-chat))'}}>
-                                    <Globe className="h-4 w-4"/> Visit Website
-                                </a>
-                                <div className="flex gap-2 pt-2">
-                                    <Button variant="outline" size="sm">
-                                        <Share2 className="mr-2 h-4 w-4"/> Share Directions
-                                    </Button>
-                                    <Button variant="outline" size="sm">
-                                        <Map className="mr-2 h-4 w-4"/> View Location
-                                    </Button>
-                                </div>
+                            {currentStatusInfo.indicator && (
+                                <span className="relative flex h-4 w-4 mt-1">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-green-600"></span>
+                                </span>
+                            )}
+                        </div>
+                        
+                        <div className="mt-4 space-y-1 text-sm text-muted-foreground">
+                            <p className="flex items-center gap-2"><Award className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-chat))'}}/><strong>Successful Surgeries:</strong> {appointmentDetails.doctor.surgeries}</p>
+                            <p className="flex items-center gap-2"><Stethoscope className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-chat))'}}/><strong>Main Focus:</strong> {appointmentDetails.doctor.mainDealing}</p>
+                        </div>
+                            <div className="mt-4 space-y-2 text-sm">
+                            <p className="font-bold text-lg">{appointmentDetails.hospital.name}</p>
+                            <p className="flex items-start gap-2 text-muted-foreground"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {appointmentDetails.hospital.address}</p>
+                            <p className="flex items-center gap-2 text-muted-foreground"><Phone className="h-4 w-4"/> {appointmentDetails.hospital.phone}</p>
+                            <a href={appointmentDetails.hospital.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-chat))'}}>
+                                <Globe className="h-4 w-4"/> Visit Website
+                            </a>
+                            <div className="flex gap-2 pt-2">
+                                <Button variant="outline" size="sm">
+                                    <Share2 className="mr-2 h-4 w-4"/> Share Directions
+                                </Button>
+                                <Button variant="outline" size="sm">
+                                    <Map className="mr-2 h-4 w-4"/> View Location
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -493,7 +485,11 @@ export default function OpdQueuePage() {
              <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
-                    <CardDescription>Review your past consultations and prescriptions, grouped by health concern.</CardDescription>
+                     <CardDescription>
+                        Review your past consultations and prescriptions, grouped by health concern.
+                        <br />
+                        మీ గత సంప్రదింపులు మరియు ప్రిస్క్రిప్షన్‌లను, ఆరోగ్య సమస్యల వారీగా సమీక్షించండి.
+                    </CardDescription>
                     <div className="border-t mt-4 pt-4">
                         <div className="flex items-center justify-between mb-4">
                            <div className="flex items-center gap-2">
@@ -550,7 +546,7 @@ export default function OpdQueuePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                        <Collapsible key={index} className="border rounded-lg" defaultOpen={index === 0}>
+                        <Collapsible key={index} className="border rounded-lg">
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                 <div className="flex-1">
                                     <p className="text-xl font-bold">{appt.problem}</p>
@@ -669,3 +665,5 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+
+    
