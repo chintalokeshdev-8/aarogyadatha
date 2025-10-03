@@ -51,41 +51,41 @@ const appointmentDetails = {
 
 const previousAppointments = [
     {
-        problem: "Simple Fever",
+        problem: "Typhoid Fever",
         specialty: "General Physician",
         date: "2024-08-01",
         initialDoctor: "Dr. Anjali",
         prescriptions: [
             {
-                title: "Initial Consultation",
+                title: "1st Follow-up",
                 status: "Completed",
                 date: "Aug 1, 2024 - Aug 7, 2024",
                 doctor: "Dr. Anjali",
-                summary: "Patient presented with fever for 2 days. Basic tests ordered.",
+                summary: "Patient presented with high-grade fever for 3 days. Typhoid suspected, blood tests ordered.",
                 medicines: ["Paracetamol 650mg", "Azithromycin 500mg"],
                 details: [
                     { name: 'Complete Blood Picture', date: '2024-08-02', status: 'Normal', result: 'Completed' },
-                    { name: 'Malarial Parasite Test', date: '2024-08-02', status: 'Normal', result: 'Completed' },
-                ]
-            },
-            {
-                title: "1st Follow-up",
-                status: "Completed",
-                date: "Aug 8, 2024 - Aug 15, 2024",
-                doctor: "sathyam seelam",
-                summary: "Fever persists. Ruled out malaria and typhoid. Suspecting other viral causes.",
-                medicines: ["Continue Paracetamol", "Doxycycline 100mg"],
-                details: [
-                    { name: 'Dengue NS1 Antigen', date: '2024-08-09', status: 'Normal', result: 'Completed' },
+                    { name: 'Widal Test for Typhoid', date: '2024-08-02', status: 'Abnormal', result: 'Completed' },
                 ]
             },
             {
                 title: "2nd Follow-up",
                 status: "Completed",
+                date: "Aug 8, 2024 - Aug 15, 2024",
+                doctor: "sathyam seelam",
+                summary: "Fever persisting. Confirmed Typhoid. Antibiotic course adjusted.",
+                medicines: ["Cefixime 200mg", "Continue Paracetamol"],
+                details: [
+                    { name: 'Dengue NS1 Antigen', date: '2024-08-09', status: 'Normal', result: 'Completed' },
+                ]
+            },
+            {
+                title: "3rd Follow-up",
+                status: "Completed",
                 date: "Aug 16, 2024 - Aug 23, 2024",
                 doctor: "nageswarao seelam",
-                summary: "Patient recovering, fever subsiding. Continuing supportive treatment.",
-                medicines: ["Multivitamins", "Limcee"],
+                summary: "Patient recovering, fever has subsided. Advised to complete antibiotic course and take rest.",
+                medicines: ["Multivitamins", "Continue Cefixime"],
                 details: []
             },
             {
@@ -93,7 +93,7 @@ const previousAppointments = [
                 status: "Resolved",
                 date: "As of Aug 24, 2024",
                 doctor: "nageswarao seelam",
-                summary: "Patient has fully recovered from the fever. All vitals are stable. Congratulations on your recovery!",
+                summary: "Patient has fully recovered from Typhoid fever. All vitals are stable. Congratulations on your recovery!",
                 medicines: [],
                 details: []
             }
