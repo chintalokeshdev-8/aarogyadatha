@@ -51,6 +51,85 @@ const appointmentDetails = {
 
 const previousAppointments = [
     {
+        problem: "Simple Fever",
+        specialty: "General Physician",
+        date: "2024-08-01",
+        initialDoctor: "Dr. Anjali",
+        prescriptions: [
+            {
+                title: "Initial Consultation",
+                status: "Completed",
+                date: "Aug 1, 2024 - Aug 7, 2024",
+                doctor: "Dr. Anjali",
+                summary: "Patient presented with fever for 2 days. Basic tests ordered.",
+                medicines: ["Paracetamol 650mg", "Azithromycin 500mg"],
+                details: [
+                    { name: 'Complete Blood Picture', date: '2024-08-02', status: 'Normal', result: 'Completed' },
+                    { name: 'Malarial Parasite Test', date: '2024-08-02', status: 'Normal', result: 'Completed' },
+                ]
+            },
+            {
+                title: "1st Follow-up",
+                status: "Completed",
+                date: "Aug 8, 2024 - Aug 15, 2024",
+                doctor: "sathyam seelam",
+                summary: "Fever persists. Ruled out malaria and typhoid. Suspecting other viral causes.",
+                medicines: ["Continue Paracetamol", "Doxycycline 100mg"],
+                details: [
+                    { name: 'Dengue NS1 Antigen', date: '2024-08-09', status: 'Normal', result: 'Completed' },
+                ]
+            },
+            {
+                title: "2nd Follow-up",
+                status: "Completed",
+                date: "Aug 16, 2024 - Aug 23, 2024",
+                doctor: "nageswarao seelam",
+                summary: "Patient recovering, fever subsiding. Continuing supportive treatment.",
+                medicines: ["Multivitamins", "Limcee"],
+                details: []
+            },
+            {
+                title: "Condition Status",
+                status: "Resolved",
+                date: "As of Aug 24, 2024",
+                doctor: "nageswarao seelam",
+                summary: "Patient has fully recovered from the fever. All vitals are stable. Congratulations on your recovery!",
+                medicines: [],
+                details: []
+            }
+        ]
+    },
+    {
+        problem: "Jaundice",
+        specialty: "Gastroenterologist",
+        date: "2024-07-20",
+        initialDoctor: "Dr. Ramesh Babu",
+        prescriptions: [
+            {
+                title: "Initial Consultation",
+                status: "Completed",
+                date: "Jul 20, 2024 - Jul 27, 2024",
+                doctor: "Dr. Ramesh Babu",
+                summary: "Patient shows symptoms of Jaundice. Liver function tests ordered.",
+                medicines: ["Ursodeoxycholic acid"],
+                details: [
+                    { name: 'Liver Function Test', date: '2024-07-21', status: 'Abnormal', result: 'Completed' },
+                ]
+            },
+            {
+                title: "1st Follow-up",
+                status: "Improved",
+                date: "Jul 28, 2024 - Aug 04, 2024",
+                doctor: "Dr. Ramesh Babu",
+                summary: "Bilirubin levels are decreasing. Patient advised to continue medication and a strict diet.",
+                medicines: ["Continue Ursodeoxycholic acid", "Vitamin K supplements"],
+                details: [
+                    { name: 'Liver Function Test', date: '2024-07-28', status: 'Abnormal', result: 'Completed' },
+                ]
+            }
+        ]
+    },
+    {
         problem: "Post-viral fatigue & chest pain",
         specialty: "Cardiologist",
         date: "2024-08-05",
@@ -453,7 +532,7 @@ export default function OpdQueuePage() {
                                                 <div className='p-4 border bg-background rounded-lg'>
                                                     <div className='mb-4'>
                                                         <p className="font-bold text-lg">{item.title}</p>
-                                                         <div className="text-sm font-semibold text-muted-foreground">by {item.doctor}</div>
+                                                         <div className="text-sm text-muted-foreground">by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span></div>
                                                         <div className="flex items-center gap-2 mt-1">
                                                             <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '')}>{item.status}</Badge>
                                                             <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
@@ -489,7 +568,7 @@ export default function OpdQueuePage() {
                                                     <DialogHeader>
                                                         <DialogTitle>{item.title}</DialogTitle>
                                                         <DialogDescription>
-                                                            Follow-up from {item.date} by {item.doctor}.
+                                                            Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>.
                                                         </DialogDescription>
                                                     </DialogHeader>
                                                     <div className="max-h-[60vh] overflow-y-auto p-1 space-y-4">
@@ -543,8 +622,3 @@ export default function OpdQueuePage() {
         </div>
     );
 }
-
-    
-
-    
-
