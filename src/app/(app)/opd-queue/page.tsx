@@ -51,7 +51,7 @@ const appointmentDetails = {
 
 const previousAppointments = [
     {
-        problem: "Consultation for post-viral fatigue and chest pain.",
+        problem: "Post-viral fatigue & chest pain",
         specialty: "Cardiologist",
         date: "2024-08-05",
         initialDoctor: "Ashok kumar chintha",
@@ -93,7 +93,7 @@ const previousAppointments = [
         ]
     },
     {
-        problem: "Consultation for seasonal flu.",
+        problem: "Seasonal Flu",
         specialty: "General Physician",
         date: "2024-07-15",
         initialDoctor: "Dr. Anjali",
@@ -119,7 +119,7 @@ const previousAppointments = [
         ]
     },
      {
-        problem: "Orthopedic consultation for knee pain.",
+        problem: "Knee Pain",
         specialty: "Orthopedic Surgeon",
         date: "2024-06-10",
         initialDoctor: "Dr. Lakshmi Narasaiah",
@@ -547,3 +547,4 @@ export default function OpdQueuePage() {
     
 
     
+
