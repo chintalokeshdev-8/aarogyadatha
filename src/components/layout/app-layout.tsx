@@ -155,8 +155,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <Dialog>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                                    <Avatar className="h-10 w-10">
+                                <Button variant="ghost" className="relative h-12 w-12 rounded-full">
+                                    <Avatar className="h-12 w-12 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
