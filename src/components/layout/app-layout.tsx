@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Link from "next/link";
@@ -43,6 +44,7 @@ import { NotificationsDropdown } from "./notifications-dropdown";
 import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AnimatedActivityIcon } from "../icons/animated-activity-icon";
 
 
 const menuItems = [
@@ -52,7 +54,7 @@ const menuItems = [
   { href: "/opd-queue", label: "OP STATUS", telugu: "OP స్థితి", icon: MessageSquare, color: "hsl(var(--nav-chat))" },
   { href: "/lab-reports", label: "Diagnostics", telugu: "రిపోర్టులు", icon: TestTube, color: "hsl(var(--nav-diagnostics))" },
   { href: "/medicines", label: "Medicines", telugu: "మందులు", icon: Pill, color: "hsl(var(--nav-medicines))" },
-  { href: "/surgery-care", label: "Surgery Care", telugu: "సర్జరీ కేర్", icon: Briefcase, color: "hsl(var(--nav-appointments))" },
+  { href: "/surgery-care", label: "Surgery Care", telugu: "సర్జరీ కేర్", icon: Briefcase, color: "hsl(var(--nav-appointments))"},
   { href: "/blood-bank", label: "Blood Bank", telugu: "రక్త నిధి", icon: Droplets, color: "hsl(var(--nav-blood-bank))" },
   { href: "/health-tracker", label: "Health Tracker", telugu: "ఆరోగ్య ట్రాకర్", icon: Heart, color: "hsl(var(--nav-profile))" },
   { href: "/junior-doctors", label: "Jr. Doctors", telugu: "డాక్టర్లు", icon: Headset, color: "hsl(var(--nav-junior-doctors))" },
@@ -133,7 +135,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <>
                 <Link href="/" className="flex items-center gap-2">
                     <div className="p-1.5 bg-primary rounded-lg">
-                        <Activity className="w-6 h-6 text-primary-foreground" />
+                        <AnimatedActivityIcon className="w-6 h-6 text-primary-foreground" />
                     </div>
                     <h1 className="text-xl font-bold">medibridge</h1>
                 </Link>
