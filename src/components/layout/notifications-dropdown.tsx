@@ -30,7 +30,7 @@ export function NotificationsDropdown() {
           <div className="relative">
             <Bell className="h-6 w-6" />
             {notifications.some(n => !n.read) && (
-              <span className="absolute top-0 right-0 flex h-3 w-3">
+              <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-primary border-2 border-background"></span>
               </span>
             )}
