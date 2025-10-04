@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Link from "next/link";
@@ -118,7 +119,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/30">
-      <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-background border-b border-t-4 border-t-primary gap-4 h-16">
+      <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-background border-b border-t-4 border-t-primary gap-4 h-20">
         {showMobileSearch ? (
             <div className="flex items-center gap-2 w-full">
                 <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(false)}>
@@ -155,8 +156,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <Dialog>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="relative h-12 w-12 rounded-full">
-                                    <Avatar className="h-12 w-12 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                                <Button variant="ghost" className="relative h-16 w-16 rounded-full">
+                                    <Avatar className="h-16 w-16 border-4" style={{borderColor: 'darkgreen'}}>
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
