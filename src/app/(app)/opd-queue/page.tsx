@@ -379,12 +379,12 @@ export default function OpdQueuePage() {
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-chat))'}}>Appointments & History</h1>
                 <p className="text-muted-foreground mt-2">
-                    {today ? `Status for your appointments on ${today}.` : 'Loading date...'}
+                    {today ? `Status for your appointments on ${format(new Date(), 'dd-MMM-yyyy')}.` : 'Loading date...'}
                 </p>
             </div>
 
-            <Card className="p-4" style={{backgroundColor: 'hsla(215, 80%, 95%, 1)', borderColor: 'hsla(215, 60%, 85%, 1)'}}>
-                <div className="grid grid-cols-2 gap-4">
+            <Card className="p-4 bg-blue-50 border-blue-200">
+                <div className="flex justify-around items-center">
                     <div className="text-center">
                         <CardTitle className="flex items-center justify-center gap-2 text-base text-blue-800"><User /> Your Token</CardTitle>
                         <p className="text-4xl font-bold mt-2 text-blue-800">#23</p>
@@ -393,7 +393,7 @@ export default function OpdQueuePage() {
                             <span className="font-semibold">Est. Wait: 5 mins</span>
                         </div>
                     </div>
-                    <div className="text-center border-l" style={{borderColor: 'hsla(215, 60%, 85%, 1)'}}>
+                    <div className="text-center">
                         <CardTitle className="text-base text-blue-800">Now Serving</CardTitle>
                         <CardDescription className="text-xs text-blue-700">Patient with the doctor</CardDescription>
                         <p className="text-4xl font-bold mt-2 text-blue-800">#19</p>
@@ -501,8 +501,8 @@ export default function OpdQueuePage() {
                                 Clear Filters
                             </Button>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div className="relative sm:col-span-2 lg:col-span-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-center">
+                            <div className="relative lg:col-span-2">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                 <Input 
                                     placeholder="Search by reason, doctor, test..." 
@@ -549,7 +549,7 @@ export default function OpdQueuePage() {
                         <Collapsible key={index} className="border rounded-lg">
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                 <div className="flex items-start gap-4">
-                                    <div className="text-4xl font-extrabold text-blue-800 dark:text-blue-300">
+                                    <div className="text-5xl font-extrabold text-blue-800 dark:text-blue-300">
                                         {index + 1}.
                                     </div>
                                     <div className="flex-1">
