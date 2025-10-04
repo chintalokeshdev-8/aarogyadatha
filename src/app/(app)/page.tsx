@@ -26,6 +26,7 @@ const quickAccessItems = [
   { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', description: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
   { href: '/insurances', icon: GovIdIcon, label: 'My Health IDs', description: 'ఆరోగ్య ఐడి', color: 'hsl(var(--primary))' },
   { href: '/medicines', icon: Pill, label: 'My Medicines', description: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
+  { href: '/surgery-care', label: 'Surgery Care', telugu: 'సర్జరీ కేర్', icon: Stethoscope, color: 'hsl(var(--nav-appointments))'},
   { href: '/blood-bank', icon: Droplets, label: 'Blood Bank', description: 'రక్త నిధి', color: 'hsl(var(--nav-blood-bank))' },
   { href: '/health-tracker', label: 'Health Tracker', description: 'ఆరోగ్య ట్రాకర్', icon: Activity, color: 'hsl(var(--nav-profile))' },
   { href: '/junior-doctors', icon: Headset, label: '24/7 Jr. Doctors', description: 'ఉచిత సలహా', color: 'hsl(var(--nav-junior-doctors))' },
@@ -104,9 +105,9 @@ export default function DashboardPage() {
               </div>
               <div className="border-t border-primary-foreground/20 my-4"></div>
               <div className="grid md:grid-cols-2 gap-4">
-                  <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
-                       <p className="text-sm opacity-90 flex-1">
-                          Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records, benefits, and history in one place.
+                  <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col items-center justify-center gap-4 text-center">
+                       <p className="text-base opacity-90 flex-1 font-semibold">
+                          Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records.
                       </p>
                        <Link href="/insurances">
                         <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
@@ -114,8 +115,8 @@ export default function DashboardPage() {
                         </Button>
                     </Link>
                   </div>
-                   <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
-                       <p className="text-sm opacity-90 flex-1 italic font-semibold">
+                   <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col items-center justify-center gap-4 text-center">
+                       <p className="text-lg opacity-90 flex-1 italic font-bold">
                           "Right disease for the right doctor is 100% cure"
                       </p>
                       <Link href="/appointments">
