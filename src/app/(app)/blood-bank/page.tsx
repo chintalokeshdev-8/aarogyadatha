@@ -1,10 +1,10 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Droplets, MapPin, UserPlus, Loader2 } from "lucide-react";
+import { User, Droplets, MapPin, UserPlus, Loader2, Search } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Switch } from "@/components/ui/switch";
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 
 const bloodRequestsData = [
@@ -57,6 +58,9 @@ export default function BloodBankPage() {
     const [bloodRequests, setBloodRequests] = useState<any[]>([]);
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [selectedBloodType, setSelectedBloodType] = useState('All');
+    const [selectedCity, setSelectedCity] = useState('All');
+    const [filterTrigger, setFilterTrigger] = useState(0);
 
     const handleSubmit = (e: React.FormEvent, successMessage: string) => {
         e.preventDefault();
@@ -77,6 +81,15 @@ export default function BloodBankPage() {
             postedAtString: formatDistanceToNow(req.postedAt, { addSuffix: true })
         })));
     }, []);
+
+    const filteredBloodRequests = useMemo(() => {
+        return bloodRequests.filter(req => {
+            const bloodTypeMatch = selectedBloodType === 'All' || req.bloodType === selectedBloodType;
+            const cityMatch = selectedCity === 'All' || req.city === selectedCity;
+            return bloodTypeMatch && cityMatch;
+        });
+    }, [bloodRequests, selectedBloodType, selectedCity, filterTrigger]);
+
 
     return (
         <Card>
@@ -100,29 +113,34 @@ export default function BloodBankPage() {
                     <div className="mt-6">
                         <TabsContent value="find" className="mt-0">
                             <div className="space-y-4">
-                                <div className="grid sm:grid-cols-2 gap-4">
-                                    <Select>
-                                        <SelectTrigger>
+                                <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+                                    <Select value={selectedBloodType} onValueChange={setSelectedBloodType}>
+                                        <SelectTrigger className="md:col-span-2">
                                             <SelectValue placeholder="Filter by Blood Type" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {bloodGroups.map(bg => <SelectItem key={bg} value={bg}>{bg}</SelectItem>)}
                                         </SelectContent>
                                     </Select>
-                                    <Select>
-                                        <SelectTrigger>
+                                    <Select value={selectedCity} onValueChange={setSelectedCity}>
+                                        <SelectTrigger className="md:col-span-2">
                                             <SelectValue placeholder="Filter by City" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {cities.map(city => <SelectItem key={city} value={city}>{city}</SelectItem>)}
                                         </SelectContent>
                                     </Select>
+                                    <Button className="bg-green-600 hover:bg-green-700" onClick={() => setFilterTrigger(ft => ft + 1)}>
+                                        <Search className="mr-2 h-4 w-4" /> Go
+                                    </Button>
                                 </div>
                                 <div className="space-y-3 max-h-96 overflow-y-auto p-1">
-                                    {bloodRequests.length === 0 && (
-                                        <div className="text-center p-8 text-muted-foreground">Loading...</div>
+                                    {filteredBloodRequests.length === 0 && (
+                                        <div className="text-center p-8 text-muted-foreground">
+                                            {bloodRequests.length === 0 ? 'Loading...' : 'No donors match your criteria.'}
+                                        </div>
                                     )}
-                                    {bloodRequests.map((req, index) => (
+                                    {filteredBloodRequests.map((req, index) => (
                                         <Card key={index} className="p-4 shadow-sm">
                                             <div className="flex justify-between items-start">
                                                 <div>
@@ -137,7 +155,9 @@ export default function BloodBankPage() {
                                                     </div>
                                                 </div>
                                                 <div className="text-right">
-                                                    <Button className="bg-green-600 hover:bg-green-700">Contact</Button>
+                                                     <Link href="tel:8008334948">
+                                                        <Button className="bg-green-600 hover:bg-green-700">Contact</Button>
+                                                    </Link>
                                                     <p className="text-xs text-muted-foreground mt-2">
                                                         {req.postedAtString}
                                                     </p>
