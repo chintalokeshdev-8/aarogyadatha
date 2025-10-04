@@ -270,10 +270,10 @@ export default function MyMedicinesPage() {
                                 <div className="flex justify-between items-start">
                                     <div>
                                         <CardTitle className="text-xl">Current Prescription (Follow-up 2)</CardTitle>
-                                        <CardDescription className="flex items-center gap-2">
+                                        <div className="flex items-center gap-2 mt-1">
                                             <Badge className="bg-green-100 text-green-800">Active</Badge> 
-                                            <span>Started on Jul 15, 2024</span>
-                                        </CardDescription>
+                                            <CardDescription>Started on Jul 15, 2024</CardDescription>
+                                        </div>
                                     </div>
                                     <Button variant="outline" onClick={openAddDialog}>
                                         <PlusCircle className="mr-2 h-4 w-4" /> Add Medicine
