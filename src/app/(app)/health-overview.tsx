@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Users, HeartPulse, Pill } from 'lucide-react';
 import { getAllVisits } from '@/lib/appointments-data';
 import { format, isValid } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 const allVisits = getAllVisits();
 
@@ -40,6 +41,17 @@ const healthOverviewItems = {
   },
 };
 
+const getStatusBadgeClass = (status: string) => {
+    switch (status) {
+        case "Improving":
+            return "bg-green-100 text-green-800 border-green-200";
+        case "Ongoing":
+            return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        default:
+            return "bg-muted text-muted-foreground";
+    }
+};
+
 
 export function HealthOverview() {
     return (
@@ -70,8 +82,10 @@ export function HealthOverview() {
                                 <div key={index} className="p-3 border rounded-lg">
                                     <p className="font-semibold">{visit.reason}</p>
                                     <p className="text-sm text-muted-foreground">{visit.doctor}</p>
-                                    {isValid(visitDate) && (
+                                    {isValid(visitDate) ? (
                                         <p className="text-xs text-muted-foreground mt-1">{format(visitDate, 'dd-MMM-yyyy')}</p>
+                                    ) : (
+                                        <p className="text-xs text-muted-foreground mt-1">Date not available</p>
                                     )}
                                 </div>
                             )
@@ -106,7 +120,7 @@ export function HealthOverview() {
                                     <p className="font-semibold">{item.condition}</p>
                                     <p className="text-sm text-muted-foreground">Since: {item.since}</p>
                                 </div>
-                                <Badge variant="outline">{item.status}</Badge>
+                                <Badge variant="outline" className={getStatusBadgeClass(item.status)}>{item.status}</Badge>
                             </div>
                         ))}
                     </div>
