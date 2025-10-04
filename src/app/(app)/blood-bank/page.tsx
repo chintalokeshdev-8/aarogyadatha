@@ -18,30 +18,32 @@ import Link from 'next/link';
 
 
 const bloodRequestsData = [
-    { patientName: "lokesh chinta", bloodType: "O+", city: "guntur", contactInfo: "lokesh@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 5) },
-    { patientName: "venkatesh", bloodType: "A+", city: "hyderabad", contactInfo: "venky@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 30) },
-    { patientName: "surya", bloodType: "B-", city: "guntur", contactInfo: "surya@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 2) },
-    { patientName: "pavan", bloodType: "AB+", city: "vijayawada", contactInfo: "pavan@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 5) },
-    { patientName: "K. Srinivas", bloodType: "A-", city: "guntur", contactInfo: "srinivas.k@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 15) },
-    { patientName: "M. Devi", bloodType: "O-", city: "guntur", contactInfo: "devi.m@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 45) },
-    { patientName: "P. Kumar", bloodType: "B+", city: "hyderabad", contactInfo: "kumar.p@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 90) },
-    { patientName: "G. Lakshmi", bloodType: "A+", city: "vijayawada", contactInfo: "lakshmi.g@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 120) },
-    { patientName: "R. Prasad", bloodType: "O+", city: "guntur", contactInfo: "prasad.r@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 180) },
-    { patientName: "S. Rao", bloodType: "B-", city: "hyderabad", contactInfo: "rao.s@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 240) },
-    { patientName: "A. Reddy", bloodType: "AB-", city: "guntur", contactInfo: "reddy.a@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 300) },
-    { patientName: "N. Murthy", bloodType: "O+", city: "vijayawada", contactInfo: "murthy.n@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 8) },
-    { patientName: "T. Naidu", bloodType: "A+", city: "guntur", contactInfo: "naidu.t@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 10) },
-    { patientName: "V. Sharma", bloodType: "B+", city: "hyderabad", contactInfo: "sharma.v@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 12) },
-    { patientName: "Anil Varma", bloodType: "O-", city: "guntur", contactInfo: "anil.v@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 25) },
-    { patientName: "Sunitha Reddy", bloodType: "A-", city: "hyderabad", contactInfo: "sunitha.r@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 55) },
-    { patientName: "Rajesh Gupta", bloodType: "B+", city: "guntur", contactInfo: "rajesh.g@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 110) },
-    { patientName: "Priya Singh", bloodType: "AB+", city: "vijayawada", contactInfo: "priya.s@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 150) },
+    { id: 1, patientId: "PAT734", patientName: "lokesh chinta", bloodType: "O+", city: "guntur", contactInfo: "lokesh@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 5) },
+    { id: 2, patientId: "PAT735", patientName: "venkatesh", bloodType: "A+", city: "hyderabad", contactInfo: "venky@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 30) },
+    { id: 3, patientId: "PAT736", patientName: "surya", bloodType: "B-", city: "guntur", contactInfo: "surya@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 2) },
+    { id: 4, patientId: "PAT737", patientName: "pavan", bloodType: "AB+", city: "vijayawada", contactInfo: "pavan@email.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 5) },
+    { id: 5, patientId: "PAT738", patientName: "K. Srinivas", bloodType: "A-", city: "guntur", contactInfo: "srinivas.k@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 15) },
+    { id: 6, patientId: "PAT739", patientName: "M. Devi", bloodType: "O-", city: "guntur", contactInfo: "devi.m@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 45) },
+    { id: 7, patientId: "PAT740", patientName: "P. Kumar", bloodType: "B+", city: "hyderabad", contactInfo: "kumar.p@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 90) },
+    { id: 8, patientId: "PAT741", patientName: "G. Lakshmi", bloodType: "A+", city: "vijayawada", contactInfo: "lakshmi.g@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 120) },
+    { id: 9, patientId: "PAT742", patientName: "R. Prasad", bloodType: "O+", city: "guntur", contactInfo: "prasad.r@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 180) },
+    { id: 10, patientId: "PAT743", patientName: "S. Rao", bloodType: "B-", city: "hyderabad", contactInfo: "rao.s@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 240) },
+    { id: 11, patientId: "PAT744", patientName: "A. Reddy", bloodType: "AB-", city: "guntur", contactInfo: "reddy.a@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 300) },
+    { id: 12, patientId: "PAT745", patientName: "N. Murthy", bloodType: "O+", city: "vijayawada", contactInfo: "murthy.n@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 8) },
+    { id: 13, patientId: "PAT746", patientName: "T. Naidu", bloodType: "A+", city: "guntur", contactInfo: "naidu.t@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 10) },
+    { id: 14, patientId: "PAT747", patientName: "V. Sharma", bloodType: "B+", city: "hyderabad", contactInfo: "sharma.v@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 60 * 12) },
+    { id: 15, patientId: "PAT748", patientName: "Anil Varma", bloodType: "O-", city: "guntur", contactInfo: "anil.v@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 25) },
+    { id: 16, patientId: "PAT749", patientName: "Sunitha Reddy", bloodType: "A-", city: "hyderabad", contactInfo: "sunitha.r@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 55) },
+    { id: 17, patientId: "PAT750", patientName: "Rajesh Gupta", bloodType: "B+", city: "guntur", contactInfo: "rajesh.g@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 110) },
+    { id: 18, patientId: "PAT751", patientName: "Priya Singh", bloodType: "AB+", city: "vijayawada", contactInfo: "priya.s@example.com", postedAt: new Date(Date.now() - 1000 * 60 * 150) },
     ...Array.from({ length: 90 }, (_, i) => {
         const names = ["Ravi", "Suresh", "Mahesh", "Priya", "Lakshmi", "Sarala", "Gopi", "Krishna", "Ram", "Sita", "Anusha", "Kiran", "Madhu", "Naveen", "Deepa"];
         const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
         const cities = ["guntur", "hyderabad", "vijayawada", "mumbai", "bangalore"];
         const name = names[i % names.length] + ` ${i+1}`;
         return {
+            id: 19 + i,
+            patientId: `PAT${752+i}`,
             patientName: name,
             bloodType: bloodTypes[i % bloodTypes.length],
             city: cities[i % cities.length] === "guntur" && i % 2 === 0 ? "guntur" : cities[i % cities.length],
@@ -145,8 +147,9 @@ export default function BloodBankPage() {
                                             <div className="flex justify-between items-start">
                                                 <div>
                                                     <p className="font-extrabold text-lg flex items-center gap-2">
-                                                        <User className="h-4 w-4"/> {req.patientName}
+                                                        <User className="h-4 w-4"/> {req.id}. {req.patientName}
                                                     </p>
+                                                    <p className="text-sm text-muted-foreground ml-7">Patient ID: {req.patientId}</p>
                                                     <div className="flex items-center gap-4 mt-2">
                                                         <Badge variant="destructive" className="text-base font-bold px-3 py-1" style={{backgroundColor: 'hsl(var(--nav-blood-bank))'}}>{req.bloodType}</Badge>
                                                         <p className="text-sm text-muted-foreground flex items-center gap-2">
