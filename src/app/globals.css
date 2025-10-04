@@ -102,6 +102,19 @@
         }
     }
 
+    .animate-avatar-pulse {
+        animation: avatar-pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes avatar-pulse {
+        0%, 100% {
+            box-shadow: 0 0 0 0px hsl(var(--primary) / 0.3);
+        }
+        50% {
+            box-shadow: 0 0 0 4px hsl(var(--primary) / 0);
+        }
+    }
+
     .flower-fall-container {
         @apply absolute inset-0 overflow-hidden z-0;
     }
