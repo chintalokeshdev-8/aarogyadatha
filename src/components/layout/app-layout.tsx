@@ -35,6 +35,7 @@ import {
   Sparkles,
   Loader2,
   Send,
+  Stethoscope,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -59,7 +60,7 @@ const menuItems = [
   { href: "/opd-queue", label: "OP STATUS", telugu: "OP స్థితి", icon: MessageSquare, color: "hsl(var(--nav-chat))" },
   { href: "/lab-reports", label: "Diagnostics", telugu: "రిపోర్టులు", icon: TestTube, color: "hsl(var(--nav-diagnostics))" },
   { href: "/medicines", label: "Medicines", telugu: "మందులు", icon: Pill, color: "hsl(var(--nav-medicines))" },
-  { href: "/surgery-care", label: "Surgery Care", telugu: "సర్జరీ కేర్", icon: Briefcase, color: "hsl(var(--nav-appointments))"},
+  { href: '/surgery-care', label: 'Surgery Care', telugu: 'సర్జరీ కేర్', icon: Stethoscope, color: 'hsl(var(--nav-appointments))'},
   { href: "/blood-bank", label: "Blood Bank", telugu: "రక్త నిధి", icon: Droplets, color: "hsl(var(--nav-blood-bank))" },
   { href: "/health-tracker", label: "Health Tracker", telugu: "ఆరోగ్య ట్రాకర్", icon: Heart, color: "hsl(var(--nav-profile))" },
   { href: "/junior-doctors", label: "Jr. Doctors", telugu: "డాక్టర్లు", icon: Headset, color: "hsl(var(--nav-junior-doctors))" },
@@ -296,6 +297,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         <DropdownMenuItem className="p-3">
                                             <Shield className="mr-3 text-primary" />
                                             <span className="font-semibold">Insurances</span>
+                                        </DropdownMenuItem>
+                                    </Link>
+                                    <Link href="/blood-bank" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <Droplets className="mr-3 text-primary" />
+                                            <span className="font-semibold">Blood Bank</span>
                                         </DropdownMenuItem>
                                     </Link>
                                     <Link href="/settings" passHref>
