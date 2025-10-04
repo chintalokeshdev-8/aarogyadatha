@@ -89,7 +89,7 @@ const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, c
 export default function DashboardPage() {
   return (
     <div className="space-y-8">
-      <Card className="bg-primary text-primary-foreground">
+       <Card className="bg-primary text-primary-foreground">
           <CardContent className="p-6">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-4 text-center sm:text-left">
@@ -98,15 +98,16 @@ export default function DashboardPage() {
                           <AvatarFallback>CLB</AvatarFallback>
                       </Avatar>
                       <div>
-                          <h2 className="text-xl font-semibold">Chinta Lokesh Babu</h2>
-                          <p className="text-sm opacity-80">Patient ID: PAT001</p>
+                          <p className="text-sm opacity-80 font-semibold">S.No: 1</p>
+                          <h2 className="text-xl font-bold">Chinta Lokesh Babu</h2>
+                          <p className="text-sm opacity-80 font-semibold">Patient ID: PAT001</p>
                       </div>
                   </div>
               </div>
               <div className="border-t border-primary-foreground/20 my-4"></div>
               <div className="grid md:grid-cols-2 gap-4">
                   <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col items-center justify-center gap-4 text-center">
-                       <p className="text-base opacity-90 flex-1 font-semibold">
+                       <p className="font-bold text-lg">
                           Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records.
                       </p>
                        <Link href="/insurances">
@@ -116,7 +117,7 @@ export default function DashboardPage() {
                     </Link>
                   </div>
                    <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col items-center justify-center gap-4 text-center">
-                       <p className="text-lg opacity-90 flex-1 italic font-bold">
+                       <p className="text-lg italic font-bold">
                           "Right disease for the right doctor is 100% cure"
                       </p>
                       <Link href="/appointments">

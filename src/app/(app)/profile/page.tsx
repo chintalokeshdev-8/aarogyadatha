@@ -74,7 +74,9 @@ export default function ProfilePage() {
                     <AvatarFallback className="text-3xl">CL</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 text-center md:text-left">
+                    <p className="font-semibold text-muted-foreground">S.No: 1</p>
                     <h1 className="text-3xl font-bold">Chinta Lokesh Babu</h1>
+                    <p className="text-lg font-semibold text-muted-foreground">Patient ID: PAT001</p>
                     <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 mt-2 text-muted-foreground">
                         <div className="flex items-center gap-2"><User /> 27 years old</div>
                         <div className="flex items-center gap-2"><Heart /> Male</div>
@@ -107,9 +109,9 @@ export default function ProfilePage() {
                         <CardContent>
                            <ul className="space-y-4">
                              {recentVisits.map((visit, index) => (
-                               <li key={index} className="flex justify-between items-center p-3 bg-muted/40 rounded-lg">
+                               <li key={index} className="flex justify-between items-start p-3 bg-muted/40 rounded-lg">
                                    <div>
-                                       <p className="font-semibold">{visit.reason}</p>
+                                       <p className="font-semibold">{index + 1}. {visit.reason}</p>
                                        <p className="text-sm text-muted-foreground">{visit.doctor}</p>
                                    </div>
                                    <p className="text-sm font-medium">{format(new Date(visit.date), 'dd-MMM-yyyy')}</p>
