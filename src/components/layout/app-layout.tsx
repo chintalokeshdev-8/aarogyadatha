@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import Link from "next/link";
@@ -50,10 +49,10 @@ const menuItems = [
   { href: "/", label: "Home", telugu: "హోమ్", icon: LayoutGrid, color: "hsl(var(--nav-home))" },
   { href: "/symptom-checker", label: "AI Symptom Checker", telugu: "లక్షణాలు", icon: HeartPulse, color: "hsl(var(--nav-symptoms))" },
   { href: "/appointments", label: "Appointments", telugu: "నమోదులు", icon: CalendarCheck, color: "hsl(var(--nav-appointments))" },
-  { href: "/surgery-care", label: "Surgery Care", telugu: "సర్జరీ కేర్", icon: Briefcase, color: "hsl(var(--nav-appointments))" },
   { href: "/opd-queue", label: "OP STATUS", telugu: "OP స్థితి", icon: MessageSquare, color: "hsl(var(--nav-chat))" },
   { href: "/lab-reports", label: "Diagnostics", telugu: "రిపోర్టులు", icon: TestTube, color: "hsl(var(--nav-diagnostics))" },
   { href: "/medicines", label: "Medicines", telugu: "మందులు", icon: Pill, color: "hsl(var(--nav-medicines))" },
+  { href: "/surgery-care", label: "Surgery Care", telugu: "సర్జరీ కేర్", icon: Briefcase, color: "hsl(var(--nav-appointments))" },
   { href: "/blood-bank", label: "Blood Bank", telugu: "రక్త నిధి", icon: Droplets, color: "hsl(var(--nav-blood-bank))" },
   { href: "/health-tracker", label: "Health Tracker", telugu: "ఆరోగ్య ట్రాకర్", icon: Heart, color: "hsl(var(--nav-profile))" },
   { href: "/junior-doctors", label: "Jr. Doctors", telugu: "డాక్టర్లు", icon: Headset, color: "hsl(var(--nav-junior-doctors))" },
@@ -152,12 +151,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                             <Search className="h-5 w-5" />
                         </Button>
                     )}
-                    <NotificationsDropdown />
+                     <Button variant="ghost" className="h-auto w-auto flex flex-col items-center justify-center gap-1 p-2 rounded-lg relative">
+                        <NotificationsDropdown />
+                    </Button>
                     <Dialog>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="relative h-12 w-12 rounded-full">
-                                    <Avatar className="h-12 w-12 border-4" style={{borderColor: 'darkgreen'}}>
+                                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                                    <Avatar className="h-10 w-10 border-2" style={{borderColor: 'darkgreen'}}>
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
