@@ -120,75 +120,70 @@ export default function InsurancesPage() {
                                 <div className="flex gap-2">
                                      <Button variant="outline" onClick={() => setShowAbha(!showAbha)}>
                                         {showAbha ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
-                                        {showAbha ? "Hide Details" : "Show Details"}
+                                        {showAbha ? "Hide" : "Show"}
                                      </Button>
                                 </div>
                             </div>
                         </CardHeader>
                         {showAbha ? (
-                             <div className="border-2 rounded-lg p-6 relative bg-blue-50" style={{borderColor: 'hsl(var(--primary))'}}>
-                                <div className="flex justify-between items-start mb-4 sm:mb-12">
+                             <div className="border rounded-lg p-4 relative bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
+                                <div className="flex justify-between items-center mb-4">
                                     <div className="flex items-center gap-2">
-                                        <Image src="https://abdm.gov.in/assets/images/emblem_white_logo.svg" alt="National Health Authority" width={40} height={40} data-ai-hint="government logo" />
-                                        <p className="font-bold text-sm">National Health Authority</p>
+                                        <Image src="https://abdm.gov.in/assets/images/emblem_white_logo.svg" alt="National Health Authority" width={30} height={30} data-ai-hint="government logo" />
+                                        <p className="font-bold text-xs">National Health Authority</p>
                                     </div>
-                                    <Image src="https://abdm.gov.in/assets/images/abdm_logo.svg" alt="ABDM Logo" width={90} height={40} data-ai-hint="health mission logo" />
+                                    <Image src="https://abdm.gov.in/assets/images/abdm_logo.svg" alt="ABDM Logo" width={70} height={30} data-ai-hint="health mission logo" />
                                 </div>
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                                    <div className="space-y-4 md:col-span-2">
-                                        <div className="flex flex-col sm:flex-row items-center gap-4">
-                                            <Avatar className="h-24 w-24 border-4 border-white shadow-md">
+                                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                                    <div className="flex-1 space-y-3">
+                                        <div className="flex items-center gap-3">
+                                             <Avatar className="h-16 w-16 border-2 border-white shadow-md">
                                                 <AvatarImage src="/images/profile.jpg" />
-                                                <AvatarFallback className="text-3xl">CL</AvatarFallback>
+                                                <AvatarFallback className="text-xl">CL</AvatarFallback>
                                             </Avatar>
                                             <div>
-                                                <p className="text-sm text-muted-foreground">Name/పేరు</p>
-                                                <p className="text-2xl font-bold">Chinta Lokesh Babu</p>
-                                                <p className="text-xl font-semibold">చింతా లోకేష్ బాబు</p>
+                                                <p className="text-xs text-muted-foreground">Name/పేరు</p>
+                                                <p className="text-lg font-bold">Chinta Lokesh Babu</p>
                                             </div>
                                         </div>
 
                                         <div>
-                                            <p className="text-sm text-muted-foreground">ABHA number/అభా నెంబరు</p>
-                                            <p className="text-xl font-bold tracking-wider">24-0278-1857-2658</p>
+                                            <p className="text-xs text-muted-foreground">ABHA number/అభా నెంబరు</p>
+                                            <p className="text-base font-semibold tracking-wider">24-0278-1857-2658</p>
                                         </div>
-                                        <div>
-                                            <p className="text-sm text-muted-foreground">ABHA address/అభా చిరునామా</p>
-                                            <p className="text-lg font-semibold">chinta1997@abdm</p>
+                                         <div>
+                                            <p className="text-xs text-muted-foreground">ABHA address/అభా చిరునామా</p>
+                                            <p className="text-sm font-semibold">chinta1997@abdm</p>
                                         </div>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div>
-                                                <p className="text-sm text-muted-foreground">Gender/లింగము</p>
-                                                <p className="text-lg font-semibold">Male/మగ</p>
+                                        <div className="grid grid-cols-2 gap-2 text-sm">
+                                             <div>
+                                                <p className="text-xs text-muted-foreground">Gender/లింగము</p>
+                                                <p className="font-semibold">Male/మగ</p>
                                             </div>
                                             <div>
-                                                <p className="text-sm text-muted-foreground">Date of birth/పుట్టిన తేదీ</p>
-                                                <p className="text-lg font-semibold">01-01-1997</p>
-                                            </div>
-                                            <div>
-                                                <p className="text-sm text-muted-foreground">Mobile/చరవాణి</p>
-                                                <p className="text-lg font-semibold">8008334948</p>
+                                                <p className="text-xs text-muted-foreground">DOB/పుట్టిన తేదీ</p>
+                                                <p className="font-semibold">01-01-1997</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col items-center justify-center space-y-2">
-                                        <div className="bg-white p-2 rounded-lg border shadow-sm">
-                                            <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Commons_QR_code.png" alt="ABHA QR Code" width={150} height={150} data-ai-hint="qr code" />
+                                    <div className="flex flex-col items-center justify-center space-y-1">
+                                        <div className="bg-white p-1 rounded-md border shadow-sm">
+                                            <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Commons_QR_code.png" alt="ABHA QR Code" width={100} height={100} data-ai-hint="qr code" />
                                         </div>
-                                        <p className="text-sm font-medium">Scan QR to verify</p>
+                                        <p className="text-xs font-medium text-muted-foreground">Scan to verify</p>
                                     </div>
                                 </div>
-                                <div className="absolute top-4 right-4 flex gap-2">
-                                    <Button variant="outline"><Printer className="mr-2"/> Print</Button>
-                                    <Button><Download className="mr-2"/> Download</Button>
+                                <div className="mt-4 flex gap-2 justify-end">
+                                    <Button variant="outline" size="sm"><Printer className="mr-2 h-4 w-4"/> Print</Button>
+                                    <Button size="sm"><Download className="mr-2 h-4 w-4"/> Download</Button>
                                 </div>
                             </div>
                         ) : (
                             <div className="border-2 rounded-lg p-6 flex flex-col items-center justify-center text-center bg-muted/40 min-h-[200px]">
                                 <ShieldAlert className="h-10 w-10 text-muted-foreground mb-2"/>
                                 <h3 className="font-bold">ABHA Card Hidden</h3>
-                                <p className="text-sm text-muted-foreground">Click "Show Details" to view your card.</p>
+                                <p className="text-sm text-muted-foreground">Click "Show" to view your card.</p>
                             </div>
                         )}
                     </div>
@@ -224,5 +219,3 @@ export default function InsurancesPage() {
         </div>
     );
 }
-
-    
