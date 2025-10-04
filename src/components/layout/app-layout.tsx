@@ -32,6 +32,9 @@ import {
   Users,
   CheckCircle,
   Briefcase,
+  Sparkles,
+  Loader2,
+  Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -45,6 +48,8 @@ import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AnimatedActivityIcon } from "../icons/animated-activity-icon";
+import { askAiAssistant, AiAssistantOutput } from '@/ai/flows/ai-assistant';
+import { Textarea } from "../ui/textarea";
 
 
 const menuItems = [
@@ -68,6 +73,100 @@ const familyAccounts = [
     { name: "Chinta Ashok", avatar: "https://picsum.photos/seed/user4/100/100", fallback: "CA", isCurrentUser: false },
     { name: "Shiva Parvathi", avatar: "https://picsum.photos/seed/user5/100/100", fallback: "SP", isCurrentUser: false },
 ];
+
+interface ChatMessage {
+    role: 'user' | 'assistant';
+    content: string;
+}
+
+function AiAssistantDialog() {
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [conversation, setConversation] = React.useState<ChatMessage[]>([]);
+    const [input, setInput] = React.useState('');
+    const [isPending, startTransition] = React.useTransition();
+    const messagesEndRef = React.useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    React.useEffect(scrollToBottom, [conversation]);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!input.trim() || isPending) return;
+
+        const newConversation: ChatMessage[] = [...conversation, { role: 'user', content: input }];
+        setConversation(newConversation);
+        const question = input;
+        setInput('');
+
+        startTransition(async () => {
+            const result = await askAiAssistant({ question });
+            setConversation(prev => [...prev, { role: 'assistant', content: result.answer }]);
+        });
+    };
+    
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+                <Button className="fixed bottom-24 right-4 h-16 w-16 rounded-full shadow-lg z-30" style={{backgroundColor: 'hsl(var(--primary))'}}>
+                    <Sparkles className="h-8 w-8" />
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-2xl h-[80vh] flex flex-col">
+                <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2 text-primary"><Sparkles /> AI Assistant</DialogTitle>
+                    <DialogDescription>Ask anything about your health data.</DialogDescription>
+                </DialogHeader>
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/30 rounded-lg">
+                    {conversation.map((msg, index) => (
+                        <div key={index} className={cn("flex items-start gap-3", msg.role === 'user' ? 'justify-end' : 'justify-start')}>
+                            {msg.role === 'assistant' && (
+                                <Avatar className="h-8 w-8 border-2 border-primary">
+                                    <AvatarFallback><Sparkles className="h-4 w-4" /></AvatarFallback>
+                                </Avatar>
+                            )}
+                            <div className={cn("max-w-sm rounded-lg px-4 py-2", msg.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-background border')}>
+                                <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                            </div>
+                             {msg.role === 'user' && (
+                                <Avatar className="h-8 w-8 border-2 border-muted-foreground">
+                                   <AvatarImage src="/images/profile.jpg" />
+                                    <AvatarFallback>CL</AvatarFallback>
+                                </Avatar>
+                            )}
+                        </div>
+                    ))}
+                     {isPending && (
+                        <div className="flex items-start gap-3 justify-start">
+                            <Avatar className="h-8 w-8 border-2 border-primary">
+                               <AvatarFallback><Sparkles className="h-4 w-4" /></AvatarFallback>
+                            </Avatar>
+                            <div className="max-w-sm rounded-lg px-4 py-2 bg-background border flex items-center">
+                                <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                            </div>
+                        </div>
+                    )}
+                    <div ref={messagesEndRef} />
+                </div>
+                <form onSubmit={handleSubmit} className="flex items-center gap-2 pt-4">
+                    <Textarea
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="e.g., What was my last blood pressure reading?"
+                        className="flex-1 resize-none"
+                        rows={1}
+                        disabled={isPending}
+                    />
+                    <Button type="submit" size="icon" disabled={isPending || !input.trim()}>
+                        <Send className="h-4 w-4" />
+                    </Button>
+                </form>
+            </DialogContent>
+        </Dialog>
+    );
+}
 
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
@@ -258,6 +357,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-40">
           {children}
       </main>
+      <AiAssistantDialog />
       <footer className="fixed bottom-0 z-20 w-full bg-background border-t">
         <div className="relative">
             <div className="absolute top-0 left-0 h-full flex items-center pl-2 bg-gradient-to-r from-background to-transparent w-12 z-10">

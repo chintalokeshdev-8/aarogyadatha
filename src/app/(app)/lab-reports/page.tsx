@@ -1,23 +1,7 @@
 
 import { LabReportsClient } from './lab-reports-client';
-
-const labReports = [
-  { testName: "Complete Blood Count", date: "2024-07-15", doctor: "Dr. Rajesh Kumar", status: "Completed" },
-  { testName: "Liver Function Test", date: "2024-07-16", doctor: "Dr. Priya Sharma", status: "Completed" },
-  { testName: "Lipid Profile", date: "2024-06-20", doctor: "Dr. Rajesh Kumar", status: "Completed" },
-  { testName: "Thyroid Function Test", date: "2024-07-16", doctor: "Dr. Priya Sharma", status: "Processing" },
-  { testName: "Urinalysis", date: "2024-07-17", doctor: "Dr. Rajesh Kumar", status: "Pending" },
-  { testName: "HbA1c", date: "2024-06-20", doctor: "Dr. Rajesh Kumar", status: "Completed" },
-  { testName: "Complete Blood Count", date: "2024-04-10", doctor: "Dr. Rajesh Kumar", status: "Completed" },
-  { testName: "Liver Function Test", date: "2024-01-05", doctor: "Dr. Priya Sharma", status: "Completed" },
-];
-
-const imagingReports = [
-    { testName: "Chest X-Ray", date: "2024-07-10", doctor: "Dr. Rajesh Kumar", status: "Completed", type: "x-ray" },
-    { testName: "MRI Brain Scan", date: "2024-05-12", doctor: "Dr. Arjun Kumar", status: "Completed", type: "mri" },
-    { testName: "Abdominal Ultrasound", date: "2024-07-18", doctor: "Dr. Priya Sharma", status: "Processing", type: "x-ray" },
-    { testName: "CT Scan Abdomen", date: "2024-02-25", doctor: "Dr. Arjun Kumar", status: "Completed", type: "mri" },
-]
+import { labReports } from '@/lib/lab-reports-data';
+import { imagingReports } from '@/lib/imaging-reports-data';
 
 const diagnosticLabs = [
     { 
