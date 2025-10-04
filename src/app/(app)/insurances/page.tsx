@@ -120,34 +120,30 @@ export default function InsurancesPage() {
                                 <div className="flex gap-2">
                                      <Button variant="outline" onClick={() => setShowAbha(!showAbha)}>
                                         {showAbha ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
-                                        {showAbha ? "Hide Card" : "Show Card"}
+                                        {showAbha ? "Hide Details" : "Show Card"}
                                      </Button>
                                 </div>
                             </div>
                         </CardHeader>
                         {showAbha ? (
                              <div className="border rounded-lg p-4 bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
-                                <div className="flex justify-between items-start mb-4">
-                                    <div className="flex items-center gap-2">
-                                        <Image src="https://abdm.gov.in/assets/images/emblem_white_logo.svg" alt="National Health Authority" width={40} height={40} data-ai-hint="government logo" />
-                                        <p className="font-bold text-xs whitespace-nowrap">National Health Authority</p>
-                                    </div>
+                                <div className="flex justify-between items-start mb-2">
+                                    <p className="font-bold text-xs">National Health Authority</p>
                                 </div>
-                                
-                                <div className="flex flex-col sm:flex-row gap-4 items-center">
-                                    <div className="flex-1 space-y-3">
+                                <div className="flex flex-col sm:flex-row gap-4">
+                                    <div className="flex-1 space-y-2">
                                         <div className="flex items-center gap-4">
                                              <Avatar className="h-20 w-20 border-2 border-white shadow-md">
                                                 <AvatarImage src="/images/profile.jpg" />
                                                 <AvatarFallback className="text-2xl">CL</AvatarFallback>
                                             </Avatar>
                                             <div>
-                                                <p className="text-sm text-muted-foreground">Name/పేరు</p>
-                                                <p className="text-xl font-bold">Chinta Lokesh Babu</p>
+                                                <p className="text-xs text-muted-foreground">Name/పేరు</p>
+                                                <p className="text-lg font-bold">Chinta Lokesh Babu</p>
                                             </div>
                                         </div>
 
-                                        <div className="space-y-2">
+                                        <div className="space-y-1">
                                             <div>
                                                 <p className="text-xs text-muted-foreground">ABHA number/అభా నెంబరు</p>
                                                 <p className="text-base font-semibold tracking-wider">24-0278-1857-2658</p>
@@ -156,7 +152,7 @@ export default function InsurancesPage() {
                                                 <p className="text-xs text-muted-foreground">ABHA address/అభా చిరునామా</p>
                                                 <p className="text-sm font-semibold">chinta1997@abdm</p>
                                             </div>
-                                            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm pt-2">
+                                            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm pt-1">
                                                 <div>
                                                     <p className="text-xs text-muted-foreground">Gender/లింగము</p>
                                                     <p className="font-semibold">Male/మగ</p>
@@ -172,7 +168,7 @@ export default function InsurancesPage() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col items-center justify-center space-y-1 self-center">
+                                    <div className="flex flex-col items-center justify-center space-y-1 self-center pt-4 sm:pt-0">
                                         <div className="bg-white p-1 rounded-md border shadow-sm">
                                             <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Commons_QR_code.png" alt="ABHA QR Code" width={100} height={100} data-ai-hint="qr code" />
                                         </div>
@@ -224,5 +220,3 @@ export default function InsurancesPage() {
         </div>
     );
 }
-
-    
