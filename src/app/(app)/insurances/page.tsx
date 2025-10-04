@@ -120,22 +120,22 @@ export default function InsurancesPage() {
                                 <div className="flex gap-2">
                                      <Button variant="outline" onClick={() => setShowAbha(!showAbha)}>
                                         {showAbha ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
-                                        {showAbha ? "Hide" : "Show"}
+                                        {showAbha ? "Hide Details" : "Show Card"}
                                      </Button>
                                 </div>
                             </div>
                         </CardHeader>
                         {showAbha ? (
-                             <div className="border rounded-lg p-4 relative bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
+                            <div className="border rounded-lg p-4 relative bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
                                 <div className="flex justify-between items-center mb-4">
                                     <div className="flex items-center gap-2">
                                         <Image src="https://abdm.gov.in/assets/images/emblem_white_logo.svg" alt="National Health Authority" width={30} height={30} data-ai-hint="government logo" />
-                                        <p className="font-bold text-xs">National Health Authority</p>
+                                        <p className="font-bold text-xs whitespace-nowrap">National Health Authority</p>
                                     </div>
                                     <Image src="https://abdm.gov.in/assets/images/abdm_logo.svg" alt="ABDM Logo" width={70} height={30} data-ai-hint="health mission logo" />
                                 </div>
                                 
-                                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                                <div className="flex flex-col sm:flex-row gap-6 items-center">
                                     <div className="flex-1 space-y-3">
                                         <div className="flex items-center gap-3">
                                              <Avatar className="h-16 w-16 border-2 border-white shadow-md">
@@ -148,22 +148,24 @@ export default function InsurancesPage() {
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <p className="text-xs text-muted-foreground">ABHA number/అభా నెంబరు</p>
-                                            <p className="text-base font-semibold tracking-wider">24-0278-1857-2658</p>
-                                        </div>
-                                         <div>
-                                            <p className="text-xs text-muted-foreground">ABHA address/అభా చిరునామా</p>
-                                            <p className="text-sm font-semibold">chinta1997@abdm</p>
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2 text-sm">
-                                             <div>
-                                                <p className="text-xs text-muted-foreground">Gender/లింగము</p>
-                                                <p className="font-semibold">Male/మగ</p>
+                                        <div className="space-y-3">
+                                            <div>
+                                                <p className="text-xs text-muted-foreground">ABHA number/అభా నెంబరు</p>
+                                                <p className="text-base font-semibold tracking-wider">24-0278-1857-2658</p>
                                             </div>
                                             <div>
-                                                <p className="text-xs text-muted-foreground">DOB/పుట్టిన తేదీ</p>
-                                                <p className="font-semibold">01-01-1997</p>
+                                                <p className="text-xs text-muted-foreground">ABHA address/అభా చిరునామా</p>
+                                                <p className="text-sm font-semibold">chinta1997@abdm</p>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-3 text-sm">
+                                                <div>
+                                                    <p className="text-xs text-muted-foreground">Gender/లింగము</p>
+                                                    <p className="font-semibold">Male/మగ</p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs text-muted-foreground">DOB/పుట్టిన తేదీ</p>
+                                                    <p className="font-semibold">01-01-1997</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -176,14 +178,14 @@ export default function InsurancesPage() {
                                 </div>
                                 <div className="mt-4 flex gap-2 justify-end">
                                     <Button variant="outline" size="sm"><Printer className="mr-2 h-4 w-4"/> Print</Button>
-                                    <Button size="sm"><Download className="mr-2 h-4 w-4"/> Download</Button>
+                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}><Download className="mr-2 h-4 w-4"/> Download</Button>
                                 </div>
                             </div>
                         ) : (
                             <div className="border-2 rounded-lg p-6 flex flex-col items-center justify-center text-center bg-muted/40 min-h-[200px]">
                                 <ShieldAlert className="h-10 w-10 text-muted-foreground mb-2"/>
                                 <h3 className="font-bold">ABHA Card Hidden</h3>
-                                <p className="text-sm text-muted-foreground">Click "Show" to view your card.</p>
+                                <p className="text-sm text-muted-foreground">Click "Show Card" to view your ABHA details.</p>
                             </div>
                         )}
                     </div>
