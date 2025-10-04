@@ -91,7 +91,7 @@ export default function DashboardPage() {
       <Card className="bg-primary text-primary-foreground">
           <CardContent className="p-6">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 text-center sm:text-left">
                       <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
                           <AvatarImage src="/images/profile.jpg" />
                           <AvatarFallback>CLB</AvatarFallback>
@@ -100,10 +100,6 @@ export default function DashboardPage() {
                           <h2 className="text-xl font-semibold">Chinta Lokesh Babu</h2>
                           <p className="text-sm opacity-80">Patient ID: PAT001</p>
                       </div>
-                  </div>
-                  <div className="text-center rounded-lg bg-primary-foreground/10 px-4 py-2">
-                      <p className="font-bold text-lg">O+ Positive</p>
-                      <p className="text-sm opacity-80">Blood Group</p>
                   </div>
               </div>
               <div className="border-t border-primary-foreground/20 my-4"></div>
