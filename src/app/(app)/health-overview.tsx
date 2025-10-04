@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -5,17 +6,17 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Users, HeartPulse, Pill } from 'lucide-react';
+import { getAllVisits } from '@/lib/appointments-data';
+import { format, isValid } from 'date-fns';
+
+const allVisits = getAllVisits();
 
 const healthOverviewItems = {
   totalVisits: {
-    value: "12",
+    value: allVisits.length.toString(),
     label: "Total Visits",
     icon: Users,
-    data: [
-      { date: "2024-07-15", reason: "Fever & Cold", doctor: "Dr. Shashank" },
-      { date: "2024-06-20", reason: "Regular Checkup", doctor: "Dr. Siva Parvathi" },
-      { date: "2024-03-10", reason: "Stomach Pain", doctor: "Dr. Nageswarao" },
-    ]
+    data: allVisits
   },
   activeConditions: {
     value: "2",
@@ -63,13 +64,18 @@ export function HealthOverview() {
                         <DialogDescription>Your recent appointment history.</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-3 max-h-96 overflow-y-auto">
-                        {healthOverviewItems.totalVisits.data.map((visit, index) => (
-                            <div key={index} className="p-3 border rounded-lg">
-                                <p className="font-semibold">{visit.reason}</p>
-                                <p className="text-sm text-muted-foreground">{visit.doctor}</p>
-                                <p className="text-xs text-muted-foreground mt-1">{visit.date}</p>
-                            </div>
-                        ))}
+                        {healthOverviewItems.totalVisits.data.map((visit, index) => {
+                            const visitDate = new Date(visit.date);
+                            return (
+                                <div key={index} className="p-3 border rounded-lg">
+                                    <p className="font-semibold">{visit.reason}</p>
+                                    <p className="text-sm text-muted-foreground">{visit.doctor}</p>
+                                    {isValid(visitDate) && (
+                                        <p className="text-xs text-muted-foreground mt-1">{format(visitDate, 'dd-MMM-yyyy')}</p>
+                                    )}
+                                </div>
+                            )
+                        })}
                     </div>
                 </DialogContent>
             </Dialog>
@@ -130,7 +136,7 @@ export function HealthOverview() {
                         {healthOverviewItems.medications.data.map((med, index) => (
                             <div key={index} className="p-3 border rounded-lg">
                                 <p className="font-semibold">{med.name}</p>
-                                <p className="text-sm text-muted-foreground">{med.dosage} &bull; {med.frequency}</p>
+                                <p className="text-sm text-muted-foreground">{med.dosage} • {med.frequency}</p>
                             </div>
                         ))}
                     </div>
