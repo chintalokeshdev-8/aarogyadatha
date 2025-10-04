@@ -11,10 +11,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Bell, Check, Clock } from 'lucide-react';
+import { Bell, Clock } from 'lucide-react';
 import { notifications } from '@/lib/notifications';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format } from 'date-fns';
 import Link from 'next/link';
+import { cn } from '@/lib/utils';
 
 export function NotificationsDropdown() {
   const [isClient, setIsClient] = React.useState(false);
@@ -30,8 +31,12 @@ export function NotificationsDropdown() {
           <div className="relative">
             <Bell className="h-6 w-6" />
             {notifications.some(n => !n.read) && (
-              <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3">
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-primary border-2 border-background"></span>
+              <span className="absolute top-0 right-0 flex h-3 w-3">
+                  <span className={cn(
+                    "absolute -top-0.5 -right-0.5 inline-flex h-full w-full rounded-full bg-primary opacity-75",
+                    "animate-ping"
+                  )}></span>
+                  <span className="relative -top-0.5 -right-0.5 inline-flex rounded-full h-3 w-3 bg-primary border-2 border-background"></span>
               </span>
             )}
           </div>
@@ -56,7 +61,7 @@ export function NotificationsDropdown() {
                             <p className="text-sm text-muted-foreground">{notification.description}</p>
                             <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
                                 <Clock className="h-3 w-3" />
-                                {isClient ? format(notification.timestamp, 'dd-MMM-yyyy') : '...'}
+                                {isClient ? format(new Date(notification.timestamp), 'dd-MMM-yyyy') : '...'}
                             </p>
                         </div>
                         {!notification.read && <div className="mt-1 h-2 w-2 rounded-full bg-primary" />}

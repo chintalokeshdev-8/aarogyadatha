@@ -151,9 +151,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                             <Search className="h-5 w-5" />
                         </Button>
                     )}
-                     <Button variant="ghost" className="h-auto w-auto flex flex-col items-center justify-center gap-1 p-2 rounded-lg relative">
-                        <NotificationsDropdown />
-                    </Button>
+                    <NotificationsDropdown />
                     <Dialog>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
