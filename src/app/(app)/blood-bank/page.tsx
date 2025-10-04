@@ -275,7 +275,7 @@ export default function BloodBankPage() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-xl font-bold" style={{color: 'hsl(var(--nav-blood-bank))'}}>Blood Bank Contacts</CardTitle>
+                    <CardTitle className="text-xl font-bold" style={{color: 'hsl(var(--nav-blood-bank))'}}>Blood Bank Centers</CardTitle>
                     <CardDescription>Contact these blood banks directly for urgent needs.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
