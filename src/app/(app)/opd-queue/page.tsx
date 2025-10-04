@@ -123,23 +123,6 @@ export default function OpdQueuePage() {
     const [filterDoctor, setFilterDoctor] = useState('all');
     const [filterDate, setFilterDate] = useState<Date | undefined>();
 
-    const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-        { sender: 'clinic', message: "Welcome! Your token number is 23. The current patient is #19.", time: "10:30 AM" },
-        { sender: 'patient', message: "Okay, thank you!", time: "10:31 AM" },
-    ]);
-    const [chatInput, setChatInput] = useState('');
-
-    const handleSendMessage = (message: string) => {
-        if (!message.trim()) return;
-        const newMessage: ChatMessage = {
-            sender: 'patient',
-            message,
-            time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-        };
-        setChatMessages(prev => [...prev, newMessage]);
-        setChatInput('');
-    };
-
     useEffect(() => {
         setToday(new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
     }, []);
@@ -218,7 +201,7 @@ export default function OpdQueuePage() {
                 </div>
             </Card>
 
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-1 gap-8">
                 <Card>
                     <CardHeader>
                         <CardTitle>Live Queue</CardTitle>
@@ -243,48 +226,6 @@ export default function OpdQueuePage() {
                                     </Badge>
                                 </div>
                             ))}
-                        </div>
-                    </CardContent>
-                </Card>
-                 <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><MessageSquare /> Chat with Clinic</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex flex-col h-[380px]">
-                        <div className="flex-1 space-y-4 overflow-y-auto p-4 bg-muted/40 rounded-lg">
-                            {chatMessages.map((msg, index) => (
-                                <div key={index} className={cn("flex items-end gap-2", msg.sender === 'patient' ? 'justify-end' : 'justify-start')}>
-                                    {msg.sender === 'clinic' && (
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarFallback>C</AvatarFallback>
-                                        </Avatar>
-                                    )}
-                                    <div className={cn("max-w-[75%] rounded-lg px-3 py-2", msg.sender === 'patient' ? 'bg-primary text-primary-foreground' : 'bg-background')} style={msg.sender === 'patient' ? {backgroundColor: 'hsl(var(--nav-chat))'} : {}}>
-                                        <p className="text-sm">{msg.message}</p>
-                                        <p className="text-xs opacity-70 text-right mt-1">{msg.time}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className='mt-2'>
-                             <div className="flex flex-wrap gap-2 my-2">
-                                {quickReplies.map((reply, index) => (
-                                    <Button key={index} variant="outline" size="sm" className="text-xs h-auto py-1 px-2" onClick={() => handleSendMessage(reply)}>
-                                        {reply}
-                                    </Button>
-                                ))}
-                            </div>
-                            <div className="flex items-center gap-2 mt-2">
-                                <Input 
-                                    placeholder="Type your message..." 
-                                    value={chatInput}
-                                    onChange={(e) => setChatInput(e.target.value)}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleSendMessage(chatInput)}
-                                />
-                                <Button size="icon" onClick={() => handleSendMessage(chatInput)} style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
-                                    <Send className="h-4 w-4" />
-                                </Button>
-                            </div>
                         </div>
                     </CardContent>
                 </Card>
