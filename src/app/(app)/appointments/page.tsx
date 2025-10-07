@@ -8,9 +8,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2 } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { Badge } from '@/components/ui/badge';
 
 const hospitalsData: Record<string, { location: string; address: string; phone: string; website: string; }> = {
     "Apollo Hospital, Jubilee Hills": {
@@ -169,6 +170,7 @@ const doctors = [
         mainDealing: "Gastroenterology, Liver diseases",
         avatar: "https://picsum.photos/seed/doc16/100/100",
         dataAiHint: "male doctor senior",
+        recommended: true,
     },
     {
         name: "Dr. Anjali",
@@ -439,7 +441,15 @@ export default function AppointmentsPage() {
                                         <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1">
-                                        <h3 className="text-2xl font-bold">{doctor.name}</h3>
+                                        <div className="flex items-center gap-3">
+                                            <h3 className="text-2xl font-bold">{doctor.name}</h3>
+                                            {(doctor as any).recommended && (
+                                                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                                                    <Star className="h-3 w-3 mr-1" />
+                                                    Recommended
+                                                </Badge>
+                                            )}
+                                        </div>
                                         <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold">{doctor.specialty}</p>
                                         <p className="text-sm text-muted-foreground">{doctor.experience} experience</p>
                                         <p className="text-sm text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
