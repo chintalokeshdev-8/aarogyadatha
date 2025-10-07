@@ -119,7 +119,7 @@ const quickReplies = [
     "Can I get a water bottle?",
 ];
 
-function UploadDialog({ onUpload }: { onUpload: (fileName: string) => void }) {
+function UploadDialog({ onUpload, trigger }: { onUpload: (fileName: string) => void, trigger: React.ReactNode }) {
     const [fileName, setFileName] = useState('');
     const [isUploading, setIsUploading] = useState(false);
 
@@ -139,35 +139,40 @@ function UploadDialog({ onUpload }: { onUpload: (fileName: string) => void }) {
     };
 
     return (
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>Upload Prescription</DialogTitle>
-                <DialogDescription>
-                    Upload a photo or PDF of your paper prescription.
-                </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-                <Label htmlFor="prescription-file" className="text-right">
-                    Prescription File
-                </Label>
-                <div className="flex items-center gap-2">
-                    <Button asChild variant="outline" className="flex-1">
-                        <label htmlFor="file-upload" className="cursor-pointer">
-                            <Upload className="mr-2 h-4 w-4" />
-                            {fileName || 'Choose File'}
-                        </label>
-                    </Button>
-                    <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
+        <Dialog>
+            <DialogTrigger asChild>
+                {trigger}
+            </DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Upload Prescription</DialogTitle>
+                    <DialogDescription>
+                        Upload a photo or PDF of your paper prescription.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                    <Label htmlFor="prescription-file" className="text-right">
+                        Prescription File
+                    </Label>
+                    <div className="flex items-center gap-2">
+                        <Button asChild variant="outline" className="flex-1">
+                            <label htmlFor="file-upload" className="cursor-pointer">
+                                <Upload className="mr-2 h-4 w-4" />
+                                {fileName || 'Choose File'}
+                            </label>
+                        </Button>
+                        <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
+                    </div>
+                    {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
                 </div>
-                {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
-            </div>
-            <DialogFooter>
-                <Button onClick={handleUpload} disabled={!fileName || isUploading} style={{ backgroundColor: 'hsl(var(--nav-chat))' }}>
-                    {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
-                    {isUploading ? 'Uploading...' : 'Upload'}
-                </Button>
-            </DialogFooter>
-        </DialogContent>
+                <DialogFooter>
+                    <Button onClick={handleUpload} disabled={!fileName || isUploading} style={{ backgroundColor: 'hsl(var(--nav-chat))' }}>
+                        {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
+                        {isUploading ? 'Uploading...' : 'Upload'}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 }
 
@@ -423,7 +428,7 @@ export default function OpdQueuePage() {
                                 {appt.prescriptions.length > 0 ? (
                                     <div className="space-y-4">
                                         {appt.prescriptions.map((item, pIndex) => (
-                                            <Dialog key={pIndex}>
+                                            <div key={pIndex}>
                                                 {item.title === 'Condition Status' && item.status === 'Resolved' ? (
                                                      <div className='p-4 border bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-800 rounded-lg text-center relative overflow-hidden'>
                                                         <FlowerFall />
@@ -454,75 +459,80 @@ export default function OpdQueuePage() {
                                                         )}
 
                                                         <div className="flex items-center gap-2 mt-4">
-                                                             <DialogTrigger asChild>
-                                                                <Button variant="outline" size="sm">
-                                                                    <View className="mr-2 h-4 w-4" /> View Details
-                                                                </Button>
-                                                            </DialogTrigger>
-                                                            <DialogTrigger asChild>
-                                                                <Button variant="outline" size="sm">
-                                                                    <Upload className="mr-2 h-4 w-4" /> Upload
-                                                                </Button>
-                                                            </DialogTrigger>
+                                                             <Dialog>
+                                                                <DialogTrigger asChild>
+                                                                    <Button variant="outline" size="sm">
+                                                                        <View className="mr-2 h-4 w-4" /> View Details
+                                                                    </Button>
+                                                                </DialogTrigger>
+                                                                <DialogContent className="sm:max-w-xl">
+                                                                    <DialogHeader>
+                                                                        <DialogTitle>{item.title}</DialogTitle>
+                                                                        <DialogDescription>
+                                                                            Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>.
+                                                                        </DialogDescription>
+                                                                    </DialogHeader>
+                                                                    <div className="max-h-[70vh] overflow-y-auto p-1 space-y-4">
+                                                                        {item.prescriptionImage && (
+                                                                            <Image 
+                                                                                src={item.prescriptionImage} 
+                                                                                alt={`Prescription for ${item.title}`}
+                                                                                width={800} 
+                                                                                height={1100}
+                                                                                data-ai-hint={item.dataAiHint || 'medical prescription'}
+                                                                                className="rounded-lg border"
+                                                                            />
+                                                                        )}
+                                                                        {item.summary && (
+                                                                            <div>
+                                                                                <h4 className='font-semibold mb-2'>Condition Summary</h4>
+                                                                                <p className='text-sm text-muted-foreground'>{item.summary}</p>
+                                                                            </div>
+                                                                        )}
+                                                                        {item.details.length > 0 && (
+                                                                            <Table>
+                                                                                <TableHeader>
+                                                                                    <TableRow>
+                                                                                        <TableHead>Test/Marker</TableHead>
+                                                                                        <TableHead>Status</TableHead>
+                                                                                        <TableHead>Result</TableHead>
+                                                                                    </TableRow>
+                                                                                </TableHeader>
+                                                                                <TableBody>
+                                                                                    {item.details.map((detail, dIndex) => (
+                                                                                        <TableRow key={dIndex}>
+                                                                                            <TableCell className="font-bold">{detail.name}</TableCell>
+                                                                                            <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
+                                                                                            <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
+                                                                                        </TableRow>
+                                                                                    ))}
+                                                                                </TableBody>
+                                                                            </Table>
+                                                                        )}
+                                                                    </div>
+                                                                    <DialogFooter className="sm:justify-end gap-2">
+                                                                        <Button variant="outline">
+                                                                            <Printer className="mr-2 h-4 w-4" /> Print
+                                                                        </Button>
+                                                                        <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
+                                                                            <Download className="mr-2 h-4 w-4" /> Download
+                                                                        </Button>
+                                                                    </DialogFooter>
+                                                                </DialogContent>
+                                                            </Dialog>
+
+                                                            <UploadDialog 
+                                                                onUpload={(fileName) => { console.log('Uploaded', fileName)}} 
+                                                                trigger={
+                                                                    <Button variant="outline" size="sm">
+                                                                        <Upload className="mr-2 h-4 w-4" /> Upload
+                                                                    </Button>
+                                                                }
+                                                            />
                                                         </div>
                                                     </div>
                                                 )}
-
-                                                <DialogContent className="sm:max-w-xl">
-                                                    <DialogHeader>
-                                                        <DialogTitle>{item.title}</DialogTitle>
-                                                        <DialogDescription>
-                                                            Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>.
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-                                                    <div className="max-h-[70vh] overflow-y-auto p-1 space-y-4">
-                                                        {item.prescriptionImage && (
-                                                             <Image 
-                                                                src={item.prescriptionImage} 
-                                                                alt={`Prescription for ${item.title}`}
-                                                                width={800} 
-                                                                height={1100}
-                                                                data-ai-hint={item.dataAiHint || 'medical prescription'}
-                                                                className="rounded-lg border"
-                                                            />
-                                                        )}
-                                                        {item.summary && (
-                                                            <div>
-                                                                <h4 className='font-semibold mb-2'>Condition Summary</h4>
-                                                                <p className='text-sm text-muted-foreground'>{item.summary}</p>
-                                                            </div>
-                                                        )}
-                                                        {item.details.length > 0 && (
-                                                            <Table>
-                                                                <TableHeader>
-                                                                    <TableRow>
-                                                                        <TableHead>Test/Marker</TableHead>
-                                                                        <TableHead>Status</TableHead>
-                                                                        <TableHead>Result</TableHead>
-                                                                    </TableRow>
-                                                                </TableHeader>
-                                                                <TableBody>
-                                                                    {item.details.map((detail, dIndex) => (
-                                                                        <TableRow key={dIndex}>
-                                                                            <TableCell className="font-bold">{detail.name}</TableCell>
-                                                                            <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
-                                                                            <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
-                                                                        </TableRow>
-                                                                    ))}
-                                                                </TableBody>
-                                                            </Table>
-                                                        )}
-                                                    </div>
-                                                     <DialogFooter className="sm:justify-end gap-2">
-                                                        <Button variant="outline">
-                                                            <Printer className="mr-2 h-4 w-4" /> Print
-                                                        </Button>
-                                                        <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
-                                                            <Download className="mr-2 h-4 w-4" /> Download
-                                                        </Button>
-                                                    </DialogFooter>
-                                                </DialogContent>
-                                            </Dialog>
+                                            </div>
                                         ))}
                                     </div>
                                 ) : (
