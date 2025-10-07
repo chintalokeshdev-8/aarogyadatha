@@ -497,7 +497,8 @@ export default function OpdQueuePage() {
                                                         <div className="flex items-center gap-2 mt-4">
                                                              <Dialog>
                                                                 <DialogTrigger asChild>
-                                                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
+                                                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-chat))'}} className="relative">
+                                                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-md bg-primary opacity-75" style={{backgroundColor: 'hsl(var(--nav-chat))'}}/>
                                                                         <View className="mr-2 h-4 w-4" /> View Details
                                                                     </Button>
                                                                 </DialogTrigger>
@@ -568,8 +569,7 @@ export default function OpdQueuePage() {
 
                                                            <UploadDialog
                                                                 trigger={
-                                                                    <Button variant="outline" size="sm" className="relative">
-                                                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-md bg-primary opacity-75" style={{backgroundColor: 'hsl(var(--nav-chat))'}}/>
+                                                                    <Button variant="outline" size="sm">
                                                                         <Upload className="mr-2 h-4 w-4" /> Upload
                                                                     </Button>
                                                                 }
