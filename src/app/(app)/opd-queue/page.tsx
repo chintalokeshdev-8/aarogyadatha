@@ -485,19 +485,10 @@ export default function OpdQueuePage() {
                                                             </div>
                                                         </div>
                                                         
-                                                        {item.medicines.length > 0 && (
-                                                            <div className='mb-4'>
-                                                                <h5 className="font-semibold text-base mb-2">Medications</h5>
-                                                                <div className="flex flex-wrap gap-2">
-                                                                    {item.medicines.map(med => <Badge key={med} variant='outline'>{med}</Badge>)}
-                                                                </div>
-                                                            </div>
-                                                        )}
-
-                                                        <div className="flex items-center gap-2 mt-4">
+                                                        <div className="flex items-center gap-2">
                                                              <Dialog>
                                                                 <DialogTrigger asChild>
-                                                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-chat))'}} className="relative">
+                                                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
                                                                         <View className="mr-2 h-4 w-4" /> View Details
                                                                     </Button>
                                                                 </DialogTrigger>
@@ -508,54 +499,65 @@ export default function OpdQueuePage() {
                                                                             Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>.
                                                                         </DialogDescription>
                                                                     </DialogHeader>
-                                                                    <div className="max-h-[70vh] overflow-y-auto p-1 space-y-4">
-                                                                         {item.prescriptionImages && item.prescriptionImages.length > 0 && (
-                                                                            <div className="mb-6">
-                                                                                <h4 className='font-semibold mb-2'>Prescription Images</h4>
-                                                                                <div className="flex flex-wrap gap-4">
-                                                                                    {item.prescriptionImages.map((img: any, imgIndex: number) => (
-                                                                                        <div key={imgIndex} className="cursor-pointer" onClick={() => setZoomedImage(img.url)}>
-                                                                                            <Image 
-                                                                                                src={img.url} 
-                                                                                                alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
-                                                                                                width={150}
-                                                                                                height={210}
-                                                                                                data-ai-hint={img.dataAiHint}
-                                                                                                className="rounded-lg border hover:opacity-80 transition-opacity"
-                                                                                            />
-                                                                                        </div>
-                                                                                    ))}
-                                                                                </div>
-                                                                            </div>
-                                                                        )}
+                                                                    <div className="max-h-[70vh] overflow-y-auto p-1 space-y-6">
                                                                         {item.summary && (
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2'>Condition Summary</h4>
                                                                                 <p className='text-sm text-muted-foreground'>{item.summary}</p>
                                                                             </div>
                                                                         )}
-                                                                        {item.details.length > 0 && (
-                                                                            <Table>
-                                                                                <TableHeader>
-                                                                                    <TableRow>
-                                                                                        <TableHead>Test/Marker</TableHead>
-                                                                                        <TableHead>Status</TableHead>
-                                                                                        <TableHead>Result</TableHead>
-                                                                                    </TableRow>
-                                                                                </TableHeader>
-                                                                                <TableBody>
-                                                                                    {item.details.map((detail, dIndex) => (
-                                                                                        <TableRow key={dIndex}>
-                                                                                            <TableCell className="font-bold">{detail.name}</TableCell>
-                                                                                            <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
-                                                                                            <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
-                                                                                        </TableRow>
+                                                                        {item.medicines && item.medicines.length > 0 && (
+                                                                            <div>
+                                                                                <h4 className='font-semibold mb-2'>Medications</h4>
+                                                                                <div className="flex flex-wrap gap-2">
+                                                                                    {item.medicines.map((med: string) => <Badge key={med} variant='outline'>{med}</Badge>)}
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+                                                                        {item.prescriptionImages && item.prescriptionImages.length > 0 && (
+                                                                            <div>
+                                                                                <h4 className='font-semibold mb-2'>Prescription Images</h4>
+                                                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                                                                    {item.prescriptionImages.map((img: any, imgIndex: number) => (
+                                                                                        <div key={imgIndex} className="cursor-pointer" onClick={() => setZoomedImage(img.url)}>
+                                                                                            <Image 
+                                                                                                src={img.url} 
+                                                                                                alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
+                                                                                                width={200}
+                                                                                                height={280}
+                                                                                                data-ai-hint={img.dataAiHint}
+                                                                                                className="rounded-lg border hover:opacity-80 transition-opacity w-full h-auto"
+                                                                                            />
+                                                                                        </div>
                                                                                     ))}
-                                                                                </TableBody>
-                                                                            </Table>
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+                                                                        {item.details && item.details.length > 0 && (
+                                                                            <div>
+                                                                                <h4 className='font-semibold mb-2'>Test Results</h4>
+                                                                                <Table>
+                                                                                    <TableHeader>
+                                                                                        <TableRow>
+                                                                                            <TableHead>Test/Marker</TableHead>
+                                                                                            <TableHead>Status</TableHead>
+                                                                                            <TableHead>Result</TableHead>
+                                                                                        </TableRow>
+                                                                                    </TableHeader>
+                                                                                    <TableBody>
+                                                                                        {item.details.map((detail, dIndex) => (
+                                                                                            <TableRow key={dIndex}>
+                                                                                                <TableCell className="font-bold">{detail.name}</TableCell>
+                                                                                                <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
+                                                                                                <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
+                                                                                            </TableRow>
+                                                                                        ))}
+                                                                                    </TableBody>
+                                                                                </Table>
+                                                                            </div>
                                                                         )}
                                                                     </div>
-                                                                    <DialogFooter className="sm:justify-end gap-2">
+                                                                    <DialogFooter className="sm:justify-end gap-2 pt-4">
                                                                         <Button variant="outline">
                                                                             <Printer className="mr-2 h-4 w-4" /> Print
                                                                         </Button>
@@ -615,3 +617,5 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+
+    
