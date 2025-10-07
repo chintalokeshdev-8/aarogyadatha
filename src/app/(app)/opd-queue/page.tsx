@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, Loader2, XCircleIcon } from "lucide-react";
+import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, Loader2, XCircleIcon, ImageIcon, File as FileIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -564,13 +564,27 @@ export default function OpdQueuePage() {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                    <div className="p-6 pt-4 flex gap-2 justify-end border-t mt-auto">
+                                                                    <div className="p-6 pt-4 flex-wrap flex gap-2 justify-end border-t mt-auto">
                                                                         <Button variant="outline">
                                                                             <Printer className="mr-2 h-4 w-4" /> Print
                                                                         </Button>
-                                                                        <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
-                                                                            <Download className="mr-2 h-4 w-4" /> Download
-                                                                        </Button>
+                                                                        <Dialog>
+                                                                            <DialogTrigger asChild>
+                                                                                <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
+                                                                                    <Download className="mr-2 h-4 w-4" /> Download
+                                                                                </Button>
+                                                                            </DialogTrigger>
+                                                                            <DialogContent className="sm:max-w-xs">
+                                                                                <DialogHeader>
+                                                                                    <DialogTitle>Download Report</DialogTitle>
+                                                                                    <DialogDescription>Choose a format to download.</DialogDescription>
+                                                                                </DialogHeader>
+                                                                                <div className="flex flex-col gap-2">
+                                                                                    <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}><FileIcon className="mr-2 h-4 w-4" /> Download as PDF</Button>
+                                                                                    <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Download as Image</Button>
+                                                                                </div>
+                                                                            </DialogContent>
+                                                                        </Dialog>
                                                                     </div>
                                                                 </DialogContent>
                                                             </Dialog>
@@ -626,3 +640,4 @@ export default function OpdQueuePage() {
     );
 }
 
+    

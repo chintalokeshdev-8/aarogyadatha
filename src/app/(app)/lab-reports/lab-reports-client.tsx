@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock, Filter, X } from "lucide-react";
+import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock, Filter, X, Image as ImageIcon, File as FileIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -75,9 +75,12 @@ const ReportTable = ({ reports, onAnalyze, onView }: { reports: any[], onAnalyze
                                     <DialogContent className='sm:max-w-md'>
                                         <DialogHeader>
                                             <DialogTitle>Download Report</DialogTitle>
-                                            <DialogDescription>This action will download a PDF of the report.</DialogDescription>
+                                            <DialogDescription>Choose a format to download your report.</DialogDescription>
                                         </DialogHeader>
-                                        <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>Download PDF</Button>
+                                        <div className="flex flex-col gap-2">
+                                            <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}><FileIcon className="mr-2 h-4 w-4" /> Download as PDF</Button>
+                                            <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Download as Image</Button>
+                                        </div>
                                     </DialogContent>
                                 </Dialog>
                                 <Button variant="outline" size="icon" className="h-8 w-8 border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(report)}>
@@ -669,7 +672,7 @@ export function LabReportsClient({
                                      <ReportTable reports={filteredLabReports} onAnalyze={handleAnalyze} onView={handleView} />
                                 </TabsContent>
                                 <TabsContent value="imaging" className="mt-4">
-                                    <ReportTable reports={filteredImagingReports} onAnalyze={handleAnalyze} onView={handleView} />
+                                    <ReportTable reports={filteredImagingReports} onAnalyze={handleView} onView={handleView} />
                                 </TabsContent>
                             </Tabs>
                         </CardContent>
@@ -780,5 +783,7 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
 
     
