@@ -5,14 +5,14 @@ import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, Loader2 } from "lucide-react";
+import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, Loader2, XCircleIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Link from 'next/link';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
@@ -171,12 +171,12 @@ function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { on
                     </div>
                     {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
                 </div>
-                <DialogFooter>
-                    <Button onClick={handleUpload} disabled={!fileName || isUploading} style={{ backgroundColor: 'hsl(var(--nav-chat))' }}>
+                <div className="p-6 pt-0">
+                    <Button onClick={handleUpload} disabled={!fileName || isUploading} className="w-full" style={{ backgroundColor: 'hsl(var(--nav-chat))' }}>
                         {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
                         {isUploading ? 'Uploading...' : 'Upload'}
                     </Button>
-                </DialogFooter>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -443,10 +443,10 @@ export default function OpdQueuePage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                        <Collapsible key={index} className="border rounded-lg">
+                        <Collapsible key={index} className="border rounded-lg bg-background">
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                 <div className="flex items-start gap-4">
-                                    <div className="text-5xl font-extrabold text-blue-800 dark:text-blue-300">
+                                    <div className="text-5xl font-extrabold" style={{ color: 'hsl(var(--nav-chat))' }}>
                                         {index + 1}.
                                     </div>
                                     <div className="flex-1">
@@ -475,13 +475,12 @@ export default function OpdQueuePage() {
                                                 ) : (
                                                     <div className='p-4 border bg-background rounded-lg'>
                                                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-                                                            <div className="font-bold text-lg">
-                                                                {item.title}
-                                                                <div className="text-sm text-muted-foreground font-normal">
-                                                                    <span>by </span><span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>
-                                                                    <span className="mx-2">|</span>
-                                                                    <span>{item.date}</span>
-                                                                </div>
+                                                            <div className="font-bold text-lg flex items-baseline gap-x-2 flex-wrap">
+                                                                <span>{item.title}</span>
+                                                                <span className="text-sm text-muted-foreground font-normal">by</span>
+                                                                <span className="font-bold text-base" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>
+                                                                <span className="text-sm text-muted-foreground font-normal">on</span>
+                                                                <span className="font-semibold text-base">{item.date}</span>
                                                             </div>
                                                             <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn('w-fit', item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
                                                         </div>
@@ -504,7 +503,7 @@ export default function OpdQueuePage() {
                                                                         
                                                                         {item.prescriptionImages && item.prescriptionImages.length > 0 && (
                                                                             <div>
-                                                                                <h4 className='font-semibold mb-2'>Prescription Images</h4>
+                                                                                <h4 className='font-semibold mb-2 text-base'>Prescription Images</h4>
                                                                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                                                                     {item.prescriptionImages.map((img: any, imgIndex: number) => (
                                                                                         <div key={imgIndex} className="cursor-pointer group relative" onClick={() => setZoomedImage(img.url)}>
@@ -525,25 +524,25 @@ export default function OpdQueuePage() {
                                                                             </div>
                                                                         )}
                                                                         
-                                                                        {item.summary && (
+                                                                        {item.medicines && item.medicines.length > 0 && (
                                                                             <div>
-                                                                                <h4 className='font-semibold mb-2'>Condition Summary</h4>
-                                                                                <p className='text-sm text-muted-foreground'>{item.summary}</p>
+                                                                                <h4 className='font-semibold mb-2 text-base'>Medications</h4>
+                                                                                <div className="flex flex-wrap gap-2">
+                                                                                    {item.medicines.map((med: string) => <Badge key={med} variant='secondary' className="text-sm">{med}</Badge>)}
+                                                                                </div>
                                                                             </div>
                                                                         )}
                                                                         
-                                                                        {item.medicines && item.medicines.length > 0 && (
+                                                                        {item.summary && (
                                                                             <div>
-                                                                                <h4 className='font-semibold mb-2'>Medications</h4>
-                                                                                <div className="flex flex-wrap gap-2">
-                                                                                    {item.medicines.map((med: string) => <Badge key={med} variant='outline'>{med}</Badge>)}
-                                                                                </div>
+                                                                                <h4 className='font-semibold mb-2 text-base'>Condition Summary</h4>
+                                                                                <p className='text-sm text-muted-foreground'>{item.summary}</p>
                                                                             </div>
                                                                         )}
                                                                         
                                                                         {item.details && item.details.length > 0 && (
                                                                             <div>
-                                                                                <h4 className='font-semibold mb-2'>Test Results</h4>
+                                                                                <h4 className='font-semibold mb-2 text-base'>Test Results</h4>
                                                                                 <Table>
                                                                                     <TableHeader>
                                                                                         <TableRow>
@@ -565,14 +564,14 @@ export default function OpdQueuePage() {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                    <DialogFooter className="sm:justify-end gap-2 pt-4 border-t mt-auto">
+                                                                    <div className="p-6 pt-4 flex gap-2 justify-end border-t mt-auto">
                                                                         <Button variant="outline">
                                                                             <Printer className="mr-2 h-4 w-4" /> Print
                                                                         </Button>
                                                                         <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
                                                                             <Download className="mr-2 h-4 w-4" /> Download
                                                                         </Button>
-                                                                    </DialogFooter>
+                                                                    </div>
                                                                 </DialogContent>
                                                             </Dialog>
 
@@ -605,14 +604,20 @@ export default function OpdQueuePage() {
 
              {zoomedImage && (
                 <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
-                    <DialogContent className="max-w-5xl h-[90vh] flex items-center justify-center p-0 bg-transparent border-0">
-                        <Image
-                            src={zoomedImage}
-                            alt="Zoomed Prescription"
-                            fill={true}
-                            style={{objectFit: "contain"}}
-                            className="p-4"
-                        />
+                    <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 border-0">
+                         <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm">
+                            <DialogTitle>Prescription Viewer</DialogTitle>
+                            <DialogDescription>Full-size view of the prescription.</DialogDescription>
+                        </DialogHeader>
+                        <div className="flex-1 relative bg-muted/20">
+                            <Image
+                                src={zoomedImage}
+                                alt="Zoomed Prescription"
+                                fill={true}
+                                style={{objectFit: "contain"}}
+                                className="p-4"
+                            />
+                        </div>
                     </DialogContent>
                 </Dialog>
             )}
@@ -620,3 +625,4 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+
