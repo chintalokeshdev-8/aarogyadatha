@@ -498,7 +498,6 @@ export default function OpdQueuePage() {
                                                              <Dialog>
                                                                 <DialogTrigger asChild>
                                                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-chat))'}} className="relative">
-                                                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-md bg-primary opacity-75" style={{backgroundColor: 'hsl(var(--nav-chat))'}}/>
                                                                         <View className="mr-2 h-4 w-4" /> View Details
                                                                     </Button>
                                                                 </DialogTrigger>
