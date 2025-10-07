@@ -196,7 +196,7 @@ export default function OpdQueuePage() {
             prescriptions: appt.prescriptions.map(p => ({
                 ...p,
                 // Ensure prescriptionImages is always an array
-                prescriptionImages: Array.isArray(p.prescriptionImage) ? p.prescriptionImage : (p.prescriptionImage ? [{ url: p.prescriptionImage, dataAiHint: p.dataAiHint || 'medical prescription' }] : [])
+                prescriptionImages: Array.isArray(p.prescriptionImages) ? p.prescriptionImages : (p.prescriptionImage ? [{ url: p.prescriptionImage, dataAiHint: p.dataAiHint || 'medical prescription' }] : [])
             }))
         }))
     );
@@ -497,7 +497,7 @@ export default function OpdQueuePage() {
                                                         <div className="flex items-center gap-2 mt-4">
                                                              <Dialog>
                                                                 <DialogTrigger asChild>
-                                                                    <Button variant="outline" size="sm">
+                                                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
                                                                         <View className="mr-2 h-4 w-4" /> View Details
                                                                     </Button>
                                                                 </DialogTrigger>
@@ -568,7 +568,8 @@ export default function OpdQueuePage() {
 
                                                            <UploadDialog
                                                                 trigger={
-                                                                    <Button variant="outline" size="sm">
+                                                                    <Button variant="outline" size="sm" className="relative">
+                                                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-md bg-primary opacity-75" style={{backgroundColor: 'hsl(var(--nav-chat))'}}/>
                                                                         <Upload className="mr-2 h-4 w-4" /> Upload
                                                                     </Button>
                                                                 }
@@ -604,8 +605,8 @@ export default function OpdQueuePage() {
                         <Image
                             src={zoomedImage}
                             alt="Zoomed Prescription"
-                            layout="fill"
-                            objectFit="contain"
+                            fill={true}
+                            style={{objectFit: "contain"}}
                             className="p-4"
                         />
                     </DialogContent>
