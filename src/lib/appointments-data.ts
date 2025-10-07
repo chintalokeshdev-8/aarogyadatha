@@ -13,6 +13,8 @@ export const previousAppointments = [
                 doctor: "Dr. Anjali",
                 summary: "Patient presented with high-grade fever for 3 days. Typhoid suspected, blood tests ordered.",
                 medicines: ["Paracetamol 650mg", "Azithromycin 500mg"],
+                prescriptionImage: "https://picsum.photos/seed/rx1/800/1100",
+                dataAiHint: "medical prescription",
                 details: [
                     { name: 'Complete Blood Picture', date: '2024-08-02', status: 'Normal', result: 'Completed' },
                     { name: 'Widal Test for Typhoid', date: '2024-08-02', status: 'Abnormal', result: 'Completed' },
@@ -25,6 +27,8 @@ export const previousAppointments = [
                 doctor: "sathyam seelam",
                 summary: "Fever persisting. Confirmed Typhoid. Antibiotic course adjusted.",
                 medicines: ["Cefixime 200mg", "Continue Paracetamol"],
+                prescriptionImage: "https://picsum.photos/seed/rx2/800/1100",
+                dataAiHint: "medical prescription",
                 details: [
                     { name: 'Dengue NS1 Antigen', date: '2024-08-09', status: 'Normal', result: 'Completed' },
                 ]
@@ -36,6 +40,8 @@ export const previousAppointments = [
                 doctor: "nageswarao seelam",
                 summary: "Patient recovering, fever has subsided. Advised to complete antibiotic course and take rest.",
                 medicines: ["Multivitamins", "Continue Cefixime"],
+                prescriptionImage: "https://picsum.photos/seed/rx3/800/1100",
+                dataAiHint: "medical prescription",
                 details: []
             },
             {
@@ -45,6 +51,8 @@ export const previousAppointments = [
                 doctor: "nageswarao seelam",
                 summary: "Patient has fully recovered from Typhoid fever. All vitals are stable. Congratulations on your recovery!",
                 medicines: [],
+                prescriptionImage: "",
+                dataAiHint: "",
                 details: []
             }
         ]
@@ -62,6 +70,8 @@ export const previousAppointments = [
                 doctor: "Dr. R.K. Reddy",
                 summary: "Patient (age 30) presented with fatigue, jaundice, and abdominal swelling (ascites). Diagnosed with Liver Cirrhosis based on LFT and Ultrasound.",
                 medicines: ["Diuretics (Spironolactone)", "Beta-blockers (Propranolol)"],
+                prescriptionImage: "https://picsum.photos/seed/rx4/800/1100",
+                dataAiHint: "medical prescription",
                 details: [
                     { name: 'Liver Function Test', date: '2021-09-15', status: 'Abnormal', result: 'Completed' },
                     { name: 'Ultrasound Abdomen', date: '2021-09-16', status: 'Abnormal', result: 'Completed' },
@@ -74,6 +84,8 @@ export const previousAppointments = [
                 doctor: "Dr. R.K. Reddy",
                 summary: "Ascites is under control. Patient reports feeling less fatigued. Endoscopy performed to check for varices.",
                 medicines: ["Continue current medication", "Lactulose syrup"],
+                prescriptionImage: "https://picsum.photos/seed/rx5/800/1100",
+                dataAiHint: "medical prescription",
                 details: [
                     { name: 'Upper GI Endoscopy', date: '2022-03-22', status: 'Abnormal', result: 'Completed' },
                     { name: 'CT Scan (Abdomen)', date: '2022-03-22', status: 'Abnormal', result: 'Completed' },
@@ -86,6 +98,8 @@ export const previousAppointments = [
                 doctor: "Dr. Ramesh Babu",
                 summary: "Condition is stable, but long-term prognosis discussed. Doctor mentioned that a liver transplant may be necessary in the future and advised to maintain a healthy lifestyle.",
                 medicines: ["Adjusted dosage of Diuretics", "Rifaximin"],
+                prescriptionImage: "https://picsum.photos/seed/rx6/800/1100",
+                dataAiHint: "medical prescription",
                 details: [
                     { name: 'Liver Function Test', date: '2023-09-25', status: 'Abnormal', result: 'Completed' },
                     { name: 'FibroScan', date: '2023-09-26', status: 'Abnormal', result: 'Completed' },
@@ -98,6 +112,8 @@ export const previousAppointments = [
                 doctor: "Dr. Ramesh Babu",
                 summary: "Patient reports episodes of confusion (encephalopathy). Medication adjusted. Reinforcing the need for a liver transplant as a long-term solution. Referred to transplant team.",
                 medicines: ["Continue Lactulose and Rifaximin", "Add Vitamin K supplements"],
+                prescriptionImage: "https://picsum.photos/seed/rx7/800/1100",
+                dataAiHint: "medical prescription",
                 details: [
                     { name: 'Ammonia Level Test', date: '2024-07-10', status: 'Abnormal', result: 'Completed' },
                     { name: 'Prothrombin Time (PT)', date: '2024-07-10', status: 'Abnormal', result: 'Completed' },
@@ -110,6 +126,8 @@ export const previousAppointments = [
                 doctor: "Transplant Team",
                 summary: "The medical team has determined that you are now a candidate for a liver transplant. The next step is to get a cost estimation and complete the pre-authorization process.",
                 medicines: [],
+                prescriptionImage: "",
+                dataAiHint: "",
                 details: []
             }
         ]
@@ -127,6 +145,8 @@ export const previousAppointments = [
                 doctor: "Ashok kumar chintha",
                 summary: "Initial tests and medication after consultation for post-viral fatigue and chest pain. Patient advised to monitor symptoms and follow up with test results.",
                 medicines: ["Metoprolol 25mg", "Aspirin 81mg", "Vitamin B Complex"],
+                prescriptionImage: "https://picsum.photos/seed/rx8/800/1100",
+                dataAiHint: "medical prescription",
                 details: [
                     { name: 'Echocardiogram', date: '2024-08-10', status: 'Abnormal', result: 'Completed' },
                     { name: 'Troponin-I', date: '2024-08-10', status: 'Abnormal', result: 'Completed' },
@@ -139,6 +159,8 @@ export const previousAppointments = [
                 doctor: "Dr. Ramesh Babu",
                 summary: "Follow-up tests and revised medication after Troponin-I levels showed improvement. Patient feels less fatigue. BP is stable at 120/80 mmHg.",
                 medicines: ["Atorvastatin 20mg", "Aspirin 81mg"],
+                prescriptionImage: "https://picsum.photos/seed/rx9/800/1100",
+                dataAiHint: "medical prescription",
                  details: [
                     { name: 'Troponin-I', date: '2024-08-18', status: 'Normal', result: 'Completed' },
                     { name: 'Creatine Kinase', date: '2024-08-18', status: 'Normal', result: 'Completed' },
@@ -152,6 +174,8 @@ export const previousAppointments = [
                 doctor: "Dr. Anjali",
                 summary: "Patient showing significant improvement. Key cardiac markers have normalized. Final check-up scheduled to confirm full recovery.",
                 medicines: [],
+                prescriptionImage: "",
+                dataAiHint: "",
                  details: []
             }
         ]
@@ -169,6 +193,8 @@ export const previousAppointments = [
                 doctor: "Dr. Anjali",
                 summary: "Standard treatment for viral infection. Patient reported fever and cough. Prescribed rest and hydration.",
                 medicines: ["Paracetamol 500mg", "Cetirizine 10mg"],
+                prescriptionImage: "https://picsum.photos/seed/rx10/800/1100",
+                dataAiHint: "medical prescription",
                 details: []
             },
             {
@@ -178,6 +204,8 @@ export const previousAppointments = [
                 doctor: "Dr. Anjali",
                 summary: "Symptoms resolved after one week of treatment. Patient advised to continue monitoring for any recurring issues.",
                 medicines: [],
+                prescriptionImage: "",
+                dataAiHint: "",
                  details: []
             }
         ]
@@ -195,6 +223,8 @@ export const previousAppointments = [
                 doctor: "Dr. Lakshmi Narasaiah",
                 summary: "Patient Sreenu reported mild to moderate knee pain after a minor fall. Advised rest and anti-inflammatory medication. X-Ray ordered.",
                 medicines: ["Ibuprofen 400mg", "Glucosamine"],
+                prescriptionImage: "https://picsum.photos/seed/rx11/800/1100",
+                dataAiHint: "medical prescription",
                 details: [
                      { name: 'Knee X-Ray', date: '2024-06-11', status: 'Normal', result: 'Completed' },
                 ]
@@ -206,6 +236,8 @@ export const previousAppointments = [
                 doctor: "Dr. G. Ravi Shankara Reddy",
                 summary: "Pain persists. Since X-Ray was normal, a course of physiotherapy was recommended to strengthen the knee.",
                 medicines: ["Continue Ibuprofen as needed"],
+                prescriptionImage: "https://picsum.photos/seed/rx12/800/1100",
+                dataAiHint: "medical prescription",
                 details: []
             }
         ]

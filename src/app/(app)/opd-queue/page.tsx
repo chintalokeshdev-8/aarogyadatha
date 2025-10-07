@@ -2,9 +2,10 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X, PartyPopper, MessageSquare } from "lucide-react";
+import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FlowerFall } from '@/components/ui/flower-fall';
 import { previousAppointments } from '@/lib/appointments-data';
+import { Label } from '@/components/ui/label';
 
 
 const queue = [
@@ -117,11 +119,65 @@ const quickReplies = [
     "Can I get a water bottle?",
 ];
 
+function UploadDialog({ onUpload }: { onUpload: (fileName: string) => void }) {
+    const [fileName, setFileName] = useState('');
+    const [isUploading, setIsUploading] = useState(false);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            setFileName(event.target.files[0].name);
+        }
+    };
+
+    const handleUpload = () => {
+        setIsUploading(true);
+        setTimeout(() => {
+            onUpload(fileName);
+            setIsUploading(false);
+            setFileName('');
+        }, 1500);
+    };
+
+    return (
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Upload Prescription</DialogTitle>
+                <DialogDescription>
+                    Upload a photo or PDF of your paper prescription.
+                </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+                <Label htmlFor="prescription-file" className="text-right">
+                    Prescription File
+                </Label>
+                <div className="flex items-center gap-2">
+                    <Button asChild variant="outline" className="flex-1">
+                        <label htmlFor="file-upload" className="cursor-pointer">
+                            <Upload className="mr-2 h-4 w-4" />
+                            {fileName || 'Choose File'}
+                        </label>
+                    </Button>
+                    <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
+                </div>
+                {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
+            </div>
+            <DialogFooter>
+                <Button onClick={handleUpload} disabled={!fileName || isUploading} style={{ backgroundColor: 'hsl(var(--nav-chat))' }}>
+                    {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
+                    {isUploading ? 'Uploading...' : 'Upload'}
+                </Button>
+            </DialogFooter>
+        </DialogContent>
+    );
+}
+
 export default function OpdQueuePage() {
     const [today, setToday] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [filterDoctor, setFilterDoctor] = useState('all');
     const [filterDate, setFilterDate] = useState<Date | undefined>();
+    const [prescriptionFile, setPrescriptionFile] = useState('');
+
 
     useEffect(() => {
         setToday(new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
@@ -398,18 +454,16 @@ export default function OpdQueuePage() {
                                                         )}
 
                                                         <div className="flex items-center gap-2 mt-4">
-                                                            {(item.details.length > 0 || item.summary) && item.title !== 'Liver Transplant Readiness' && (
-                                                                <DialogTrigger asChild>
-                                                                    <Button variant="link" className="p-0 h-auto">View Details</Button>
-                                                                </DialogTrigger>
-                                                            )}
-                                                            {item.title === 'Liver Transplant Readiness' && (
-                                                                <Link href="/surgery-care">
-                                                                    <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
-                                                                        Enquire for Transplant Estimate
-                                                                    </Button>
-                                                                </Link>
-                                                            )}
+                                                             <DialogTrigger asChild>
+                                                                <Button variant="outline" size="sm">
+                                                                    <View className="mr-2 h-4 w-4" /> View Details
+                                                                </Button>
+                                                            </DialogTrigger>
+                                                            <DialogTrigger asChild>
+                                                                <Button variant="outline" size="sm">
+                                                                    <Upload className="mr-2 h-4 w-4" /> Upload
+                                                                </Button>
+                                                            </DialogTrigger>
                                                         </div>
                                                     </div>
                                                 )}
@@ -421,7 +475,17 @@ export default function OpdQueuePage() {
                                                             Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>.
                                                         </DialogDescription>
                                                     </DialogHeader>
-                                                    <div className="max-h-[60vh] overflow-y-auto p-1 space-y-4">
+                                                    <div className="max-h-[70vh] overflow-y-auto p-1 space-y-4">
+                                                        {item.prescriptionImage && (
+                                                             <Image 
+                                                                src={item.prescriptionImage} 
+                                                                alt={`Prescription for ${item.title}`}
+                                                                width={800} 
+                                                                height={1100}
+                                                                data-ai-hint={item.dataAiHint || 'medical prescription'}
+                                                                className="rounded-lg border"
+                                                            />
+                                                        )}
                                                         {item.summary && (
                                                             <div>
                                                                 <h4 className='font-semibold mb-2'>Condition Summary</h4>
@@ -435,7 +499,6 @@ export default function OpdQueuePage() {
                                                                         <TableHead>Test/Marker</TableHead>
                                                                         <TableHead>Status</TableHead>
                                                                         <TableHead>Result</TableHead>
-                                                                        <TableHead className="text-right">Action</TableHead>
                                                                     </TableRow>
                                                                 </TableHeader>
                                                                 <TableBody>
@@ -444,17 +507,20 @@ export default function OpdQueuePage() {
                                                                             <TableCell className="font-bold">{detail.name}</TableCell>
                                                                             <TableCell><Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge></TableCell>
                                                                             <TableCell><Badge variant="outline">{detail.result}</Badge></TableCell>
-                                                                            <TableCell className="text-right">
-                                                                                <DialogTrigger asChild>
-                                                                                    <Button variant="link" className="h-auto p-0">View</Button>
-                                                                                </DialogTrigger>
-                                                                            </TableCell>
                                                                         </TableRow>
                                                                     ))}
                                                                 </TableBody>
                                                             </Table>
                                                         )}
                                                     </div>
+                                                     <DialogFooter className="sm:justify-end gap-2">
+                                                        <Button variant="outline">
+                                                            <Printer className="mr-2 h-4 w-4" /> Print
+                                                        </Button>
+                                                        <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
+                                                            <Download className="mr-2 h-4 w-4" /> Download
+                                                        </Button>
+                                                    </DialogFooter>
                                                 </DialogContent>
                                             </Dialog>
                                         ))}
