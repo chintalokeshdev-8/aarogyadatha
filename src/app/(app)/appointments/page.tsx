@@ -96,6 +96,12 @@ const hospitalsData = {
         address: "Mangalagiri Road, NRI Hospital Campus, Chinakakani, Mangalagiri",
         phone: "N/A",
         website: "#"
+    },
+    "Sravani Hospital, Guntur": {
+        location: "Guntur",
+        address: "Gunturvari Thota Main Rd, Pottur Vari Thota, Guntur, Andhra Pradesh 522001",
+        phone: "099661 77014",
+        website: "#"
     }
 };
 
@@ -161,6 +167,16 @@ const doctors = [
         dataAiHint: "male doctor glasses",
     },
     {
+        name: "Dr. Posani Srinivasarao",
+        specialty: "Gastroenterologist",
+        experience: "20 years",
+        hospital: "Sravani Hospital, Guntur",
+        surgeries: "1000+ Endoscopies",
+        mainDealing: "Gastroenterology, Liver diseases",
+        avatar: "https://picsum.photos/seed/doc16/100/100",
+        dataAiHint: "male doctor senior",
+    },
+    {
         name: "Dr. Anjali",
         specialty: "General Physician",
         experience: "10 years",
@@ -221,6 +237,16 @@ const doctors = [
         dataAiHint: "female doctor professional",
     },
     {
+        name: "Dr. Murali",
+        specialty: "Cardiologist",
+        experience: "10 years",
+        hospital: "Sravani Hospital, Guntur",
+        surgeries: "300+ Angioplasties",
+        mainDealing: "Interventional Cardiology.",
+        avatar: "https://picsum.photos/seed/doc17/100/100",
+        dataAiHint: "male doctor portrait",
+    },
+    {
         name: "Dr. V. Sasikala",
         specialty: "Intensivist",
         experience: "10 years",
@@ -238,6 +264,16 @@ const doctors = [
         surgeries: "500+ successful deliveries",
         mainDealing: "High-risk pregnancy and infertility.",
         avatar: "https://picsum.photos/seed/doc7/100/100",
+        dataAiHint: "female doctor professional",
+    },
+    {
+        name: "Dr. Sunitha",
+        specialty: "Neurologist",
+        experience: "8 years",
+        hospital: "Sravani Hospital, Guntur",
+        surgeries: "N/A",
+        mainDealing: "Stroke and Epilepsy management.",
+        avatar: "https://picsum.photos/seed/doc18/100/100",
         dataAiHint: "female doctor professional",
     },
     {
@@ -442,9 +478,3 @@ export default function AppointmentsPage() {
         </div>
     );
 }
-
-    
-
-    
-
-    
