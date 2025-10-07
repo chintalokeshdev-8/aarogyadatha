@@ -2,13 +2,14 @@
 'use client';
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, AlertCircle, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) => {
+const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) {
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - (percentage / 100) * circumference;
@@ -40,7 +41,8 @@ const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, c
             <div className="absolute">{children}</div>
         </div>
     );
-};
+}), { ssr: false });
+
 
 const getTrendIcon = (trend: 'stable' | 'improving' | 'declining') => {
     switch(trend) {

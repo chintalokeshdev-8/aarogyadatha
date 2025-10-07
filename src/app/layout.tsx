@@ -3,12 +3,12 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { Poppins } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import Script from 'next/script';
 
 const poppins = Poppins({ 
   subsets: ['latin'], 
   weight: ['400', '600', '800'],
-  variable: '--font-poppins' 
+  variable: '--font-poppins',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -33,8 +33,6 @@ export default function RootLayout({
             {children}
             <Toaster />
         </ThemeProvider>
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js" defer></Script>
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js" defer></Script>
       </body>
     </html>
   );
