@@ -195,7 +195,6 @@ export default function OpdQueuePage() {
             ...appt,
             prescriptions: appt.prescriptions.map(p => ({
                 ...p,
-                // Ensure prescriptionImages is always an array
                 prescriptionImages: Array.isArray(p.prescriptionImages) ? p.prescriptionImages : (p.prescriptionImage ? [{ url: p.prescriptionImage, dataAiHint: p.dataAiHint || 'medical prescription' }] : [])
             }))
         }))
@@ -476,11 +475,11 @@ export default function OpdQueuePage() {
                                                      </div>
                                                 ) : (
                                                     <div className='p-4 border bg-background rounded-lg'>
-                                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                                                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                                                             <div>
                                                                 <p className="font-bold text-lg">{item.title}</p>
                                                                 <div className="text-sm text-muted-foreground">
-                                                                    by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>
+                                                                    <span>by </span><span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>
                                                                     <span className="mx-2">|</span>
                                                                     <span>{item.date}</span>
                                                                 </div>
@@ -495,20 +494,21 @@ export default function OpdQueuePage() {
                                                                         <View className="mr-2 h-4 w-4" /> View Details
                                                                     </Button>
                                                                 </DialogTrigger>
-                                                                <DialogContent className="sm:max-w-4xl">
-                                                                    <DialogHeader>
+                                                                <DialogContent className="sm:max-w-4xl max-h-[90vh]">
+                                                                     <DialogHeader>
                                                                         <DialogTitle>{item.title}</DialogTitle>
                                                                         <DialogDescription>
                                                                             Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>.
                                                                         </DialogDescription>
                                                                     </DialogHeader>
-                                                                    <div className="max-h-[70vh] overflow-y-auto p-1 space-y-6">
+                                                                    <div className="overflow-y-auto p-1 space-y-6">
                                                                         {item.summary && (
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2'>Condition Summary</h4>
                                                                                 <p className='text-sm text-muted-foreground'>{item.summary}</p>
                                                                             </div>
                                                                         )}
+                                                                        
                                                                         {item.medicines && item.medicines.length > 0 && (
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2'>Medications</h4>
@@ -517,25 +517,30 @@ export default function OpdQueuePage() {
                                                                                 </div>
                                                                             </div>
                                                                         )}
+
                                                                         {item.prescriptionImages && item.prescriptionImages.length > 0 && (
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2'>Prescription Images</h4>
                                                                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                                                                     {item.prescriptionImages.map((img: any, imgIndex: number) => (
-                                                                                        <div key={imgIndex} className="cursor-pointer" onClick={() => setZoomedImage(img.url)}>
+                                                                                        <div key={imgIndex} className="cursor-pointer group relative" onClick={() => setZoomedImage(img.url)}>
                                                                                             <Image 
                                                                                                 src={img.url} 
                                                                                                 alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
                                                                                                 width={200}
                                                                                                 height={280}
                                                                                                 data-ai-hint={img.dataAiHint}
-                                                                                                className="rounded-lg border hover:opacity-80 transition-opacity w-full h-auto object-cover"
+                                                                                                className="rounded-lg border group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
                                                                                             />
+                                                                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                                                <Search className="text-white h-8 w-8" />
+                                                                                            </div>
                                                                                         </div>
                                                                                     ))}
                                                                                 </div>
                                                                             </div>
                                                                         )}
+                                                                        
                                                                         {item.details && item.details.length > 0 && (
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2'>Test Results</h4>
@@ -560,7 +565,10 @@ export default function OpdQueuePage() {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                    <DialogFooter className="sm:justify-end gap-2 pt-4">
+                                                                    <DialogFooter className="sm:justify-end gap-2 pt-4 border-t">
+                                                                        <DialogClose asChild>
+                                                                            <Button variant="secondary">Close</Button>
+                                                                        </DialogClose>
                                                                         <Button variant="outline">
                                                                             <Printer className="mr-2 h-4 w-4" /> Print
                                                                         </Button>
@@ -600,19 +608,21 @@ export default function OpdQueuePage() {
 
              {zoomedImage && (
                 <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
-                    <DialogContent className="max-w-5xl h-[90vh] flex items-center justify-center p-2 sm:p-4">
+                    <DialogContent className="max-w-5xl h-[90vh] flex items-center justify-center p-0 bg-transparent border-0">
                         <DialogClose asChild>
-                            <Button variant="ghost" size="icon" className="absolute top-2 right-2 z-10 bg-background/50 hover:bg-background/80">
+                            <Button variant="ghost" size="icon" className="absolute top-2 right-2 z-50 bg-background/50 hover:bg-background/80 rounded-full h-10 w-10">
                                 <X className="h-6 w-6" />
                             </Button>
                         </DialogClose>
-                        <Image
-                            src={zoomedImage}
-                            alt="Zoomed Prescription"
-                            fill={true}
-                            style={{objectFit: "contain"}}
-                            className="p-4"
-                        />
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Image
+                              src={zoomedImage}
+                              alt="Zoomed Prescription"
+                              fill={true}
+                              style={{objectFit: "contain"}}
+                              className="p-4"
+                          />
+                        </div>
                     </DialogContent>
                 </Dialog>
             )}
@@ -620,7 +630,3 @@ export default function OpdQueuePage() {
         </div>
     );
 }
-
-    
-
-    
