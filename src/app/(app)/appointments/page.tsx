@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,7 +12,7 @@ import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 
-const hospitalsData = {
+const hospitalsData: Record<string, { location: string; address: string; phone: string; website: string; }> = {
     "Apollo Hospital, Jubilee Hills": {
         location: "Hyderabad",
         address: "Rd Number 72, opposite Bharatiya Vidya Bhavan School, Film Nagar, Jubilee Hills, Hyderabad, Telangana 500033",
@@ -91,12 +91,6 @@ const hospitalsData = {
         phone: "N/A",
         website: "#"
     },
-    "American Oncology Insititute": {
-        location: "Mangalagiri",
-        address: "Mangalagiri Road, NRI Hospital Campus, Chinakakani, Mangalagiri",
-        phone: "N/A",
-        website: "#"
-    },
     "Sravani Hospital, Guntur": {
         location: "Guntur",
         address: "Gunturvari Thota Main Rd, Pottur Vari Thota, Guntur, Andhra Pradesh 522001",
@@ -158,7 +152,7 @@ const doctors = [
     },
      {
         name: "Dr. Gondi Siva Rama Krishna",
-        specialty: "Consultant Nephrologist",
+        specialty: "Nephrologist",
         experience: "15 years",
         hospital: "Guntur Kidney & Multispeciality Hospital",
         surgeries: "N/A",
@@ -278,7 +272,7 @@ const doctors = [
     },
     {
         name: "Dr. K. Sai Mounica Reddy",
-        specialty: "General Physician & Diabetalogist",
+        specialty: "General Physician",
         experience: "6 years",
         hospital: "Guntur Kidney & Multispeciality Hospital",
         surgeries: "N/A",
@@ -290,14 +284,23 @@ const doctors = [
 
 const departments = [
     { value: "all", label: "All Departments", icon: StethoscopeIcon },
-    { value: "cardiology", label: "Cardiology", icon: HeartPulse },
-    { value: "orthopedics", label: "Orthopedics", icon: Bone },
-    { value: "neurology", label: "Neurology", icon: Brain },
-    { value: "gynaecology", label: "Gynaecology", icon: Baby },
-    { value: "pediatrics", label: "Pediatrics", icon: Baby },
-    { value: "dermatology", label: "Dermatology", icon: Leaf },
-    { value: "general", label: "General Physician", icon: StethoscopeIcon },
+    { value: "Cardiologist", label: "Cardiology", icon: HeartPulse },
+    { value: "Orthopedic Surgeon", label: "Orthopedics", icon: Bone },
+    { value: "Orthopaedics", label: "Orthopedics", icon: Bone },
+    { value: "Neurologist", label: "Neurology", icon: Brain },
+    { value: "Gynaecologist", label: "Gynaecology", icon: Baby },
+    { value: "Pediatrician", label: "Pediatrics", icon: Baby },
+    { value: "Dermatologist", label: "Dermatology", icon: Leaf },
+    { value: "General Physician", label: "General Physician", icon: StethoscopeIcon },
+    { value: "Gastroenterologist", label: "Gastroenterology", icon: StethoscopeIcon },
+    { value: "Nephrologist", label: "Nephrology", icon: StethoscopeIcon },
+    { value: "Urologist", label: "Urology", icon: StethoscopeIcon },
+    { value: "Intensivist", label: "Intensivist", icon: StethoscopeIcon },
+    { value: "General Surgeon", label: "General Surgery", icon: StethoscopeIcon },
 ];
+
+const uniqueDepartments = Array.from(new Map(departments.map(item => [item.label, item])).values());
+
 
 const hospitals = [
     "All Hospitals",
@@ -312,6 +315,30 @@ export default function AppointmentsPage() {
     const [bookingDoctor, setBookingDoctor] = useState<string | null>(null);
     const [isSharing, setIsSharing] = useState(false);
 
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedDepartment, setSelectedDepartment] = useState('all');
+    const [selectedHospital, setSelectedHospital] = useState('All Hospitals');
+    const [selectedLocation, setSelectedLocation] = useState('all');
+    const [filteredDoctors, setFilteredDoctors] = useState(doctors);
+
+    const handleFilter = () => {
+        const lowercasedQuery = searchQuery.toLowerCase();
+        const filtered = doctors.filter(doctor => {
+            const nameMatch = doctor.name.toLowerCase().includes(lowercasedQuery);
+            const hospitalMatch = doctor.hospital.toLowerCase().includes(lowercasedQuery);
+            const searchMatch = nameMatch || hospitalMatch;
+
+            const departmentMatch = selectedDepartment === 'all' || doctor.specialty === selectedDepartment;
+            
+            const hospitalFilterMatch = selectedHospital === 'All Hospitals' || doctor.hospital === selectedHospital;
+
+            const hospitalDetails = hospitalsData[doctor.hospital];
+            const locationMatch = selectedLocation === 'all' || (hospitalDetails && hospitalDetails.location === selectedLocation);
+
+            return searchMatch && departmentMatch && hospitalFilterMatch && locationMatch;
+        });
+        setFilteredDoctors(filtered);
+    };
 
     const handleViewProfile = (doctor: any) => {
         setSelectedDoctor(doctor);
@@ -353,14 +380,19 @@ export default function AppointmentsPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                     <div className="relative md:col-span-2">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input placeholder="Doctor or hospital..." className="pl-10" />
+                        <Input 
+                            placeholder="Doctor or hospital..." 
+                            className="pl-10" 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
                     </div>
-                    <Select defaultValue="all">
+                    <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
                         <SelectTrigger>
                             <SelectValue placeholder="Select Department" />
                         </SelectTrigger>
                         <SelectContent>
-                            {departments.map(dep => (
+                            {uniqueDepartments.map(dep => (
                                 <SelectItem key={dep.value} value={dep.value}>
                                     <div className="flex items-center gap-2">
                                         <dep.icon className="h-4 w-4" />
@@ -370,7 +402,7 @@ export default function AppointmentsPage() {
                             ))}
                         </SelectContent>
                     </Select>
-                    <Select>
+                    <Select value={selectedHospital} onValueChange={setSelectedHospital}>
                         <SelectTrigger>
                             <SelectValue placeholder="Select Hospital" />
                         </SelectTrigger>
@@ -378,7 +410,7 @@ export default function AppointmentsPage() {
                             {hospitals.map(h => <SelectItem key={h} value={h}>{h}</SelectItem>)}
                         </SelectContent>
                     </Select>
-                    <Select>
+                     <Select value={selectedLocation} onValueChange={setSelectedLocation}>
                          <SelectTrigger>
                             <div className="flex items-center gap-2">
                                <MapPin className="h-4 w-4" />
@@ -386,18 +418,17 @@ export default function AppointmentsPage() {
                             </div>
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="hyderabad">Hyderabad</SelectItem>
-                             <SelectItem value="guntur">Guntur</SelectItem>
-                            <SelectItem value="mumbai">Mumbai</SelectItem>
-                            <SelectItem value="bangalore">Bangalore</SelectItem>
+                            <SelectItem value="all">All Locations</SelectItem>
+                            <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                             <SelectItem value="Guntur">Guntur</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Button className="md:col-start-5" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>Go</Button>
+                    <Button className="md:col-start-5" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handleFilter}>Go</Button>
                 </div>
             </Card>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {doctors.map((doctor, index) => {
+                {filteredDoctors.map((doctor, index) => {
                     const isBooking = bookingDoctor === doctor.name;
                     return (
                         <Card key={index} className="transition-shadow hover:shadow-md">
@@ -478,3 +509,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
