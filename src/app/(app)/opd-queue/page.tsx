@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { User, Clock, Bell, Send, Stethoscope, Briefcase, Plane, MapPin, Phone, Globe, Share2, Map, Award, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Search, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import Link from 'next/link';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
@@ -474,10 +474,10 @@ export default function OpdQueuePage() {
                                                      </div>
                                                 ) : (
                                                     <div className='p-4 border bg-background rounded-lg'>
-                                                         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-                                                            <div>
-                                                                <p className="font-bold text-lg">{item.title}</p>
-                                                                <div className="text-sm text-muted-foreground">
+                                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                                                            <div className="font-bold text-lg">
+                                                                {item.title}
+                                                                <div className="text-sm text-muted-foreground font-normal">
                                                                     <span>by </span><span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>
                                                                     <span className="mx-2">|</span>
                                                                     <span>{item.date}</span>
@@ -524,7 +524,7 @@ export default function OpdQueuePage() {
                                                                                 </div>
                                                                             </div>
                                                                         )}
-
+                                                                        
                                                                         {item.summary && (
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2'>Condition Summary</h4>
@@ -572,9 +572,6 @@ export default function OpdQueuePage() {
                                                                         <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
                                                                             <Download className="mr-2 h-4 w-4" /> Download
                                                                         </Button>
-                                                                        <DialogClose asChild>
-                                                                            <Button variant="secondary">Close</Button>
-                                                                        </DialogClose>
                                                                     </DialogFooter>
                                                                 </DialogContent>
                                                             </Dialog>
@@ -609,20 +606,13 @@ export default function OpdQueuePage() {
              {zoomedImage && (
                 <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
                     <DialogContent className="max-w-5xl h-[90vh] flex items-center justify-center p-0 bg-transparent border-0">
-                        <DialogClose asChild>
-                            <Button variant="ghost" size="icon" className="absolute top-2 right-2 z-50 bg-background/50 hover:bg-background/80 rounded-full h-10 w-10">
-                                <X className="h-6 w-6" />
-                            </Button>
-                        </DialogClose>
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Image
-                              src={zoomedImage}
-                              alt="Zoomed Prescription"
-                              fill={true}
-                              style={{objectFit: "contain"}}
-                              className="p-4"
-                          />
-                        </div>
+                        <Image
+                            src={zoomedImage}
+                            alt="Zoomed Prescription"
+                            fill={true}
+                            style={{objectFit: "contain"}}
+                            className="p-4"
+                        />
                     </DialogContent>
                 </Dialog>
             )}
