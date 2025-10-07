@@ -476,13 +476,16 @@ export default function OpdQueuePage() {
                                                      </div>
                                                 ) : (
                                                     <div className='p-4 border bg-background rounded-lg'>
-                                                        <div className='mb-4'>
-                                                            <p className="font-bold text-lg">{item.title}</p>
-                                                            <div className="text-sm text-muted-foreground">by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span></div>
-                                                            <div className="flex items-center gap-2 mt-1">
-                                                                <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn(item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
-                                                                <p className="text-sm font-medium text-muted-foreground">{item.date}</p>
+                                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                                                            <div>
+                                                                <p className="font-bold text-lg">{item.title}</p>
+                                                                <div className="text-sm text-muted-foreground">
+                                                                    by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>
+                                                                    <span className="mx-2">|</span>
+                                                                    <span>{item.date}</span>
+                                                                </div>
                                                             </div>
+                                                            <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn('w-fit', item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
                                                         </div>
                                                         
                                                         <div className="flex items-center gap-2">
@@ -517,7 +520,7 @@ export default function OpdQueuePage() {
                                                                         {item.prescriptionImages && item.prescriptionImages.length > 0 && (
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2'>Prescription Images</h4>
-                                                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                                                                     {item.prescriptionImages.map((img: any, imgIndex: number) => (
                                                                                         <div key={imgIndex} className="cursor-pointer" onClick={() => setZoomedImage(img.url)}>
                                                                                             <Image 
@@ -526,7 +529,7 @@ export default function OpdQueuePage() {
                                                                                                 width={200}
                                                                                                 height={280}
                                                                                                 data-ai-hint={img.dataAiHint}
-                                                                                                className="rounded-lg border hover:opacity-80 transition-opacity w-full h-auto"
+                                                                                                className="rounded-lg border hover:opacity-80 transition-opacity w-full h-auto object-cover"
                                                                                             />
                                                                                         </div>
                                                                                     ))}
@@ -617,5 +620,7 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+
+    
 
     
