@@ -133,7 +133,6 @@ function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { on
     const handleUpload = () => {
         setIsUploading(true);
         setTimeout(() => {
-            // Simulate adding a new prescription image
             const newImage = {
                 url: `https://picsum.photos/seed/newrx${Date.now()}/800/1100`,
                 dataAiHint: 'medical prescription document',
@@ -141,7 +140,7 @@ function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { on
             onUpload(appointmentId, prescriptionId, newImage);
             setIsUploading(false);
             setFileName('');
-            setIsDialogOpen(false); // Close the dialog after upload
+            setIsDialogOpen(false); 
         }, 1500);
     };
 
@@ -494,14 +493,38 @@ export default function OpdQueuePage() {
                                                                         <View className="mr-2 h-4 w-4" /> View Details
                                                                     </Button>
                                                                 </DialogTrigger>
-                                                                <DialogContent className="sm:max-w-4xl max-h-[90vh]">
-                                                                     <DialogHeader>
+                                                                <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col">
+                                                                    <DialogHeader>
                                                                         <DialogTitle>{item.title}</DialogTitle>
                                                                         <DialogDescription>
                                                                             Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>.
                                                                         </DialogDescription>
                                                                     </DialogHeader>
-                                                                    <div className="overflow-y-auto p-1 space-y-6">
+                                                                    <div className="overflow-y-auto p-1 space-y-6 flex-1">
+                                                                        
+                                                                        {item.prescriptionImages && item.prescriptionImages.length > 0 && (
+                                                                            <div>
+                                                                                <h4 className='font-semibold mb-2'>Prescription Images</h4>
+                                                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                                                                    {item.prescriptionImages.map((img: any, imgIndex: number) => (
+                                                                                        <div key={imgIndex} className="cursor-pointer group relative" onClick={() => setZoomedImage(img.url)}>
+                                                                                            <Image 
+                                                                                                src={img.url} 
+                                                                                                alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
+                                                                                                width={150}
+                                                                                                height={210}
+                                                                                                data-ai-hint={img.dataAiHint}
+                                                                                                className="rounded-lg border group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
+                                                                                            />
+                                                                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                                                                                                <Search className="text-white h-6 w-6" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    ))}
+                                                                                </div>
+                                                                            </div>
+                                                                        )}
+
                                                                         {item.summary && (
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2'>Condition Summary</h4>
@@ -514,29 +537,6 @@ export default function OpdQueuePage() {
                                                                                 <h4 className='font-semibold mb-2'>Medications</h4>
                                                                                 <div className="flex flex-wrap gap-2">
                                                                                     {item.medicines.map((med: string) => <Badge key={med} variant='outline'>{med}</Badge>)}
-                                                                                </div>
-                                                                            </div>
-                                                                        )}
-
-                                                                        {item.prescriptionImages && item.prescriptionImages.length > 0 && (
-                                                                            <div>
-                                                                                <h4 className='font-semibold mb-2'>Prescription Images</h4>
-                                                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                                                                    {item.prescriptionImages.map((img: any, imgIndex: number) => (
-                                                                                        <div key={imgIndex} className="cursor-pointer group relative" onClick={() => setZoomedImage(img.url)}>
-                                                                                            <Image 
-                                                                                                src={img.url} 
-                                                                                                alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
-                                                                                                width={200}
-                                                                                                height={280}
-                                                                                                data-ai-hint={img.dataAiHint}
-                                                                                                className="rounded-lg border group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
-                                                                                            />
-                                                                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                                                <Search className="text-white h-8 w-8" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    ))}
                                                                                 </div>
                                                                             </div>
                                                                         )}
@@ -565,16 +565,16 @@ export default function OpdQueuePage() {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                    <DialogFooter className="sm:justify-end gap-2 pt-4 border-t">
-                                                                        <DialogClose asChild>
-                                                                            <Button variant="secondary">Close</Button>
-                                                                        </DialogClose>
+                                                                    <DialogFooter className="sm:justify-end gap-2 pt-4 border-t mt-auto">
                                                                         <Button variant="outline">
                                                                             <Printer className="mr-2 h-4 w-4" /> Print
                                                                         </Button>
                                                                         <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}>
                                                                             <Download className="mr-2 h-4 w-4" /> Download
                                                                         </Button>
+                                                                        <DialogClose asChild>
+                                                                            <Button variant="secondary">Close</Button>
+                                                                        </DialogClose>
                                                                     </DialogFooter>
                                                                 </DialogContent>
                                                             </Dialog>
