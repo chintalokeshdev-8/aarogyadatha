@@ -254,7 +254,12 @@ export const getAllVisits = () => {
   );
 
   // Sort by date descending
-  allVisits.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  allVisits.sort((a, b) => {
+      // Handle "Next Step" or other non-date strings
+      if (isNaN(new Date(a.date).getTime())) return 1;
+      if (isNaN(new Date(b.date).getTime())) return -1;
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
+  });
   
   return allVisits;
 };

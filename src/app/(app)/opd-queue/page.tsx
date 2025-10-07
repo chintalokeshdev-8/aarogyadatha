@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import Link from 'next/link';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
@@ -20,7 +20,7 @@ import { format } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FlowerFall } from '@/components/ui/flower-fall';
-import { previousAppointments } from '@/lib/appointments-data';
+import { previousAppointments as initialAppointmentsData } from '@/lib/appointments-data';
 import { Label } from '@/components/ui/label';
 
 
@@ -119,9 +119,10 @@ const quickReplies = [
     "Can I get a water bottle?",
 ];
 
-function UploadDialog({ onUpload, trigger }: { onUpload: (fileName: string) => void, trigger: React.ReactNode }) {
+function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { onUpload: (appointmentId: number, prescriptionId: number, newImage: { url: string; dataAiHint: string }) => void, trigger: React.ReactNode, appointmentId: number, prescriptionId: number }) {
     const [fileName, setFileName] = useState('');
     const [isUploading, setIsUploading] = useState(false);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -132,15 +133,21 @@ function UploadDialog({ onUpload, trigger }: { onUpload: (fileName: string) => v
     const handleUpload = () => {
         setIsUploading(true);
         setTimeout(() => {
-            onUpload(fileName);
+            // Simulate adding a new prescription image
+            const newImage = {
+                url: `https://picsum.photos/seed/newrx${Date.now()}/800/1100`,
+                dataAiHint: 'medical prescription document',
+            };
+            onUpload(appointmentId, prescriptionId, newImage);
             setIsUploading(false);
             setFileName('');
+            setIsDialogOpen(false); // Close the dialog after upload
         }, 1500);
     };
 
     return (
-        <Dialog>
-            <DialogTrigger asChild>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild onClick={() => setIsDialogOpen(true)}>
                 {trigger}
             </DialogTrigger>
             <DialogContent>
@@ -156,12 +163,12 @@ function UploadDialog({ onUpload, trigger }: { onUpload: (fileName: string) => v
                     </Label>
                     <div className="flex items-center gap-2">
                         <Button asChild variant="outline" className="flex-1">
-                            <label htmlFor="file-upload" className="cursor-pointer">
+                            <label htmlFor={`file-upload-${appointmentId}-${prescriptionId}`} className="cursor-pointer">
                                 <Upload className="mr-2 h-4 w-4" />
                                 {fileName || 'Choose File'}
                             </label>
                         </Button>
-                        <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
+                        <input id={`file-upload-${appointmentId}-${prescriptionId}`} type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
                     </div>
                     {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
                 </div>
@@ -181,7 +188,18 @@ export default function OpdQueuePage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterDoctor, setFilterDoctor] = useState('all');
     const [filterDate, setFilterDate] = useState<Date | undefined>();
-    const [prescriptionFile, setPrescriptionFile] = useState('');
+    const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+
+    const [appointments, setAppointments] = useState(() => 
+        initialAppointmentsData.map(appt => ({
+            ...appt,
+            prescriptions: appt.prescriptions.map(p => ({
+                ...p,
+                // Ensure prescriptionImages is always an array
+                prescriptionImages: Array.isArray(p.prescriptionImage) ? p.prescriptionImage : (p.prescriptionImage ? [{ url: p.prescriptionImage, dataAiHint: p.dataAiHint || 'medical prescription' }] : [])
+            }))
+        }))
+    );
 
 
     useEffect(() => {
@@ -190,46 +208,66 @@ export default function OpdQueuePage() {
     
     const allDoctors = useMemo(() => {
         const doctors = new Set<string>();
-        previousAppointments.forEach(appt => {
+        appointments.forEach(appt => {
             doctors.add(appt.initialDoctor);
             appt.prescriptions.forEach(p => doctors.add(p.doctor));
         });
         return ['all', ...Array.from(doctors)];
-    }, []);
+    }, [appointments]);
 
     const filteredAppointments = useMemo(() => {
-    const lowercasedSearchTerm = searchTerm.toLowerCase();
-    
-    return previousAppointments.filter(appt => {
-        const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor || appt.prescriptions.some(p => p.doctor === filterDoctor);
-        const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
+        const lowercasedSearchTerm = searchTerm.toLowerCase();
+        
+        return appointments.filter(appt => {
+            const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor || appt.prescriptions.some(p => p.doctor === filterDoctor);
+            const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
 
-        if (!searchTerm) {
-            return doctorMatch && dateMatch;
-        }
+            if (!searchTerm) {
+                return doctorMatch && dateMatch;
+            }
 
-        const keywordMatch = 
-            appt.problem.toLowerCase().includes(lowercasedSearchTerm) ||
-            appt.initialDoctor.toLowerCase().includes(lowercasedSearchTerm) ||
-            appt.specialty.toLowerCase().includes(lowercasedSearchTerm) ||
-            appt.date.toLowerCase().includes(lowercasedSearchTerm) ||
-            appt.prescriptions.some(p => 
-                p.title.toLowerCase().includes(lowercasedSearchTerm) ||
-                p.doctor.toLowerCase().includes(lowercasedSearchTerm) ||
-                p.summary.toLowerCase().includes(lowercasedSearchTerm) ||
-                p.medicines.some(m => m.toLowerCase().includes(lowercasedSearchTerm)) ||
-                p.details.some(d => d.name.toLowerCase().includes(lowercasedSearchTerm))
-            );
+            const keywordMatch = 
+                appt.problem.toLowerCase().includes(lowercasedSearchTerm) ||
+                appt.initialDoctor.toLowerCase().includes(lowercasedSearchTerm) ||
+                appt.specialty.toLowerCase().includes(lowercasedSearchTerm) ||
+                appt.date.toLowerCase().includes(lowercasedSearchTerm) ||
+                appt.prescriptions.some(p => 
+                    p.title.toLowerCase().includes(lowercasedSearchTerm) ||
+                    p.doctor.toLowerCase().includes(lowercasedSearchTerm) ||
+                    p.summary.toLowerCase().includes(lowercasedSearchTerm) ||
+                    (p.medicines && p.medicines.some(m => m.toLowerCase().includes(lowercasedSearchTerm))) ||
+                    (p.details && p.details.some(d => d.name.toLowerCase().includes(lowercasedSearchTerm)))
+                );
 
-        return keywordMatch && doctorMatch && dateMatch;
-    });
-}, [previousAppointments, searchTerm, filterDoctor, filterDate]);
+            return keywordMatch && doctorMatch && dateMatch;
+        });
+    }, [appointments, searchTerm, filterDoctor, filterDate]);
 
 
     const clearFilters = () => {
         setSearchTerm('');
         setFilterDoctor('all');
         setFilterDate(undefined);
+    };
+
+    const handleUploadPrescription = (appointmentId: number, prescriptionId: number, newImage: { url: string; dataAiHint: string }) => {
+        setAppointments(prevAppointments => {
+            return prevAppointments.map((appt, apptIndex) => {
+                if (apptIndex === appointmentId) {
+                    const newPrescriptions = appt.prescriptions.map((p, pIndex) => {
+                        if (pIndex === prescriptionId) {
+                            return {
+                                ...p,
+                                prescriptionImages: [...p.prescriptionImages, newImage]
+                            };
+                        }
+                        return p;
+                    });
+                    return { ...appt, prescriptions: newPrescriptions };
+                }
+                return appt;
+            });
+        });
     };
 
     const currentStatusInfo = getStatusInfo(appointmentDetails.status);
@@ -342,8 +380,6 @@ export default function OpdQueuePage() {
                     </div>
                 </CardHeader>
             </Card>
-
-             
 
              <Card>
                 <CardHeader>
@@ -465,7 +501,7 @@ export default function OpdQueuePage() {
                                                                         <View className="mr-2 h-4 w-4" /> View Details
                                                                     </Button>
                                                                 </DialogTrigger>
-                                                                <DialogContent className="sm:max-w-xl">
+                                                                <DialogContent className="sm:max-w-4xl">
                                                                     <DialogHeader>
                                                                         <DialogTitle>{item.title}</DialogTitle>
                                                                         <DialogDescription>
@@ -473,15 +509,24 @@ export default function OpdQueuePage() {
                                                                         </DialogDescription>
                                                                     </DialogHeader>
                                                                     <div className="max-h-[70vh] overflow-y-auto p-1 space-y-4">
-                                                                        {item.prescriptionImage && (
-                                                                            <Image 
-                                                                                src={item.prescriptionImage} 
-                                                                                alt={`Prescription for ${item.title}`}
-                                                                                width={800} 
-                                                                                height={1100}
-                                                                                data-ai-hint={item.dataAiHint || 'medical prescription'}
-                                                                                className="rounded-lg border"
-                                                                            />
+                                                                         {item.prescriptionImages && item.prescriptionImages.length > 0 && (
+                                                                            <div className="mb-6">
+                                                                                <h4 className='font-semibold mb-2'>Prescription Images</h4>
+                                                                                <div className="flex flex-wrap gap-4">
+                                                                                    {item.prescriptionImages.map((img: any, imgIndex: number) => (
+                                                                                        <div key={imgIndex} className="cursor-pointer" onClick={() => setZoomedImage(img.url)}>
+                                                                                            <Image 
+                                                                                                src={img.url} 
+                                                                                                alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
+                                                                                                width={150}
+                                                                                                height={210}
+                                                                                                data-ai-hint={img.dataAiHint}
+                                                                                                className="rounded-lg border hover:opacity-80 transition-opacity"
+                                                                                            />
+                                                                                        </div>
+                                                                                    ))}
+                                                                                </div>
+                                                                            </div>
                                                                         )}
                                                                         {item.summary && (
                                                                             <div>
@@ -521,13 +566,15 @@ export default function OpdQueuePage() {
                                                                 </DialogContent>
                                                             </Dialog>
 
-                                                            <UploadDialog 
-                                                                onUpload={(fileName) => { console.log('Uploaded', fileName)}} 
+                                                           <UploadDialog
                                                                 trigger={
                                                                     <Button variant="outline" size="sm">
                                                                         <Upload className="mr-2 h-4 w-4" /> Upload
                                                                     </Button>
                                                                 }
+                                                                appointmentId={index}
+                                                                prescriptionId={pIndex}
+                                                                onUpload={handleUploadPrescription}
                                                             />
                                                         </div>
                                                     </div>
@@ -545,8 +592,26 @@ export default function OpdQueuePage() {
                     )}
                 </CardContent>
             </Card>
+
+             {zoomedImage && (
+                <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
+                    <DialogContent className="max-w-5xl h-[90vh] flex items-center justify-center p-2 sm:p-4">
+                        <DialogClose asChild>
+                            <Button variant="ghost" size="icon" className="absolute top-2 right-2 z-10 bg-background/50 hover:bg-background/80">
+                                <X className="h-6 w-6" />
+                            </Button>
+                        </DialogClose>
+                        <Image
+                            src={zoomedImage}
+                            alt="Zoomed Prescription"
+                            layout="fill"
+                            objectFit="contain"
+                            className="p-4"
+                        />
+                    </DialogContent>
+                </Dialog>
+            )}
+
         </div>
     );
 }
-
-    
