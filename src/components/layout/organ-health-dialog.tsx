@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, AlertCircle, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { Skeleton } from '../ui/skeleton';
+
 
 const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) {
     const radius = (size - strokeWidth) / 2;
@@ -41,7 +43,7 @@ const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress
             <div className="absolute">{children}</div>
         </div>
     );
-}), { ssr: false });
+}), { ssr: false, loading: () => <Skeleton className="h-20 w-20 rounded-full" /> });
 
 
 const getTrendIcon = (trend: 'stable' | 'improving' | 'declining') => {
