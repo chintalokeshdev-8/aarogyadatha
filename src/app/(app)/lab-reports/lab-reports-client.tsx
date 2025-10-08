@@ -10,7 +10,7 @@ import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
 import { analyzeReport, ReportAnalysisInput, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -464,11 +464,11 @@ export function LabReportsClient({
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <CardFooter className="p-0 pt-4">
+                                                <DialogFooter>
                                                     <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
                                                         {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...</> : 'Send to Lab'}
                                                     </Button>
-                                                </CardFooter>
+                                                </DialogFooter>
                                             </DialogContent>
                                         </Dialog>
                                     </div>
@@ -600,3 +600,5 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    

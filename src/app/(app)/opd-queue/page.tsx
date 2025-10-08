@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import Link from 'next/link';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
@@ -174,18 +174,18 @@ function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { on
                     </div>
                     {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
                 </div>
-                <div className="p-6 pt-0">
+                <DialogFooter>
                     <Button onClick={handleUpload} disabled={!fileName || isUploading} className="w-full" style={{ backgroundColor: 'hsl(var(--nav-chat))' }}>
                         {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
                         {isUploading ? 'Uploading...' : 'Upload'}
                     </Button>
-                </div>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
 }
 
-function ReportAnalysisDialog({ report, trigger }: { report: any, trigger: React.ReactNode }) {
+function ReportAnalysisDialog({ report, trigger, children }: { report: any, trigger?: React.ReactNode, children?: React.ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
     const [analysisResult, setAnalysisResult] = useState<ReportAnalysisOutput | null>(null);
     const [isPending, startTransition] = useTransition();
@@ -210,7 +210,7 @@ function ReportAnalysisDialog({ report, trigger }: { report: any, trigger: React
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild onClick={handleOpen}>
-                {trigger}
+                {trigger || children}
             </DialogTrigger>
             <DialogContent className="sm:max-w-4xl">
                 <DialogHeader>
@@ -273,6 +273,65 @@ function ReportAnalysisDialog({ report, trigger }: { report: any, trigger: React
                         )}
                     </div>
                 </div>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
+function ViewReportDialog({ report, trigger, children }: { report: any; trigger?: React.ReactNode; children?: React.ReactNode }) {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild onClick={() => setIsOpen(true)}>
+                {trigger || children}
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-2xl">
+                <DialogHeader>
+                    <DialogTitle>View Report: {report.name}</DialogTitle>
+                    <DialogDescription>
+                        From {report.labName} on {format(new Date(report.date), 'dd-MMM-yyyy')}
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
+                    {report.reportImage ? (
+                         <div className="bg-muted/30 p-2 rounded-lg">
+                             <Image
+                                src={report.reportImage.url}
+                                alt={`Report for ${report.name}`}
+                                width={800}
+                                height={1100}
+                                data-ai-hint={report.reportImage.dataAiHint}
+                                className="rounded-md border w-full h-auto object-contain"
+                            />
+                         </div>
+                    ) : (
+                        <div className="h-64 flex items-center justify-center bg-muted/30 rounded-lg">
+                            <p className="text-muted-foreground">No image available for this report.</p>
+                        </div>
+                    )}
+                </div>
+                <DialogFooter className="pt-4 border-t">
+                    <ReportAnalysisDialog report={report}>
+                        <Button variant="outline" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10">
+                            <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
+                        </Button>
+                    </ReportAnalysisDialog>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="outline"><Download className="mr-2 h-4 w-4" /></Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-xs">
+                            <DialogHeader>
+                                <DialogTitle>Download Report</DialogTitle>
+                                <DialogDescription>Choose a format to download.</DialogDescription>
+                            </DialogHeader>
+                            <div className="flex flex-col gap-2">
+                                <Button style={{ backgroundColor: 'hsl(var(--nav-chat))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
+                                <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
@@ -589,7 +648,7 @@ export default function OpdQueuePage() {
                                                                     </Button>
                                                                 </DialogTrigger>
                                                                 <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0">
-                                                                    <DialogHeader className="p-6 pb-0">
+                                                                    <DialogHeader className="p-6 pb-4">
                                                                         <DialogTitle>{item.title}</DialogTitle>
                                                                         <DialogDescription>
                                                                             Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-chat))'}}>{item.doctor}</span>.
@@ -637,7 +696,7 @@ export default function OpdQueuePage() {
                                                                         )}
                                                                         
                                                                         {item.details && item.details.length > 0 && (
-                                                                            <div>
+                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2 text-base'>Test Results</h4>
                                                                                 <div className="space-y-2">
                                                                                     {item.details.map((detail, dIndex) => (
@@ -646,35 +705,22 @@ export default function OpdQueuePage() {
                                                                                                 <p className="font-bold">{detail.name}</p>
                                                                                                 <Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge>
                                                                                             </div>
-                                                                                            <div className="flex items-center gap-2 self-end sm:self-center">
-                                                                                                <ReportAnalysisDialog 
-                                                                                                    report={detail}
-                                                                                                    trigger={
-                                                                                                        <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10">
-                                                                                                            <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
-                                                                                                        </Button>
-                                                                                                    }
-                                                                                                />
-                                                                                                 <Dialog>
-                                                                                                    <DialogTrigger asChild><Button variant="outline" size="sm"><Download className="mr-2 h-4 w-4" /></Button></DialogTrigger>
-                                                                                                    <DialogContent className="sm:max-w-xs">
-                                                                                                        <DialogHeader>
-                                                                                                            <DialogTitle>Download Report</DialogTitle>
-                                                                                                            <DialogDescription>Choose a format to download.</DialogDescription>
-                                                                                                        </DialogHeader>
-                                                                                                        <div className="flex flex-col gap-2">
-                                                                                                            <Button style={{backgroundColor: 'hsl(var(--nav-chat))'}}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
-                                                                                                            <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
-                                                                                                        </div>
-                                                                                                    </DialogContent>
-                                                                                                </Dialog>
-                                                                                            </div>
+                                                                                            <ViewReportDialog report={detail}>
+                                                                                                <Button variant="outline" size="sm">
+                                                                                                    <View className="mr-2 h-4 w-4" /> View Report
+                                                                                                </Button>
+                                                                                            </ViewReportDialog>
                                                                                         </div>
                                                                                     ))}
                                                                                 </div>
                                                                             </div>
                                                                         )}
                                                                     </div>
+                                                                     <DialogFooter className="p-6 pt-4 border-t">
+                                                                        <DialogClose asChild>
+                                                                            <Button type="button" variant="secondary">Close</Button>
+                                                                        </DialogClose>
+                                                                    </DialogFooter>
                                                                 </DialogContent>
                                                             </Dialog>
 
@@ -708,10 +754,16 @@ export default function OpdQueuePage() {
              {zoomedImage && (
                 <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
                     <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 border-0">
-                         <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm">
-                            <DialogTitle>Prescription Viewer</DialogTitle>
-                            <DialogDescription>Full-size view of the prescription.</DialogDescription>
-                        </DialogHeader>
+                         <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm flex-row items-center justify-between">
+                            <div>
+                                <DialogTitle>Prescription Viewer</DialogTitle>
+                                <DialogDescription>Full-size view of the prescription.</DialogDescription>
+                            </div>
+                            <DialogClose className="relative right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                                <X className="h-6 w-6" />
+                                <span className="sr-only">Close</span>
+                            </DialogClose>
+                         </DialogHeader>
                         <div className="flex-1 relative bg-muted/20">
                             <Image
                                 src={zoomedImage}
@@ -728,3 +780,5 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+
+    

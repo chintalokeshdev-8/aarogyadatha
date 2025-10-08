@@ -17,8 +17,8 @@ export const previousAppointments = [
                     { url: "https://picsum.photos/seed/rx1/800/1100", dataAiHint: "medical prescription" }
                 ],
                 details: [
-                    { name: 'Complete Blood Picture', date: '2024-08-02', status: 'Normal', result: 'Completed' },
-                    { name: 'Widal Test for Typhoid', date: '2024-08-02', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Complete Blood Picture', date: '2024-08-02', status: 'Normal', labName: 'Yoda Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report1/800/1100', dataAiHint: 'lab report' } },
+                    { name: 'Widal Test for Typhoid', date: '2024-08-02', status: 'Abnormal', labName: 'Yoda Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report2/800/1100', dataAiHint: 'lab report' } },
                 ]
             },
             {
@@ -29,10 +29,11 @@ export const previousAppointments = [
                 summary: "Fever persisting. Confirmed Typhoid. Antibiotic course adjusted.",
                 medicines: ["Cefixime 200mg", "Continue Paracetamol"],
                 prescriptionImages: [
-                     { url: "https://picsum.photos/seed/rx2/800/1100", dataAiHint: "medical prescription" }
+                     { url: "https://picsum.photos/seed/rx2/800/1100", dataAiHint: "medical prescription" },
+                     { url: "https://picsum.photos/seed/rx2-2/800/1100", dataAiHint: "doctor notes" }
                 ],
                 details: [
-                    { name: 'Dengue NS1 Antigen', date: '2024-08-09', status: 'Normal', result: 'Completed' },
+                    { name: 'Dengue NS1 Antigen', date: '2024-08-09', status: 'Normal', labName: 'Apollo Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report3/800/1100', dataAiHint: 'lab report' } },
                 ]
             },
             {
@@ -43,7 +44,9 @@ export const previousAppointments = [
                 summary: "Patient recovering, fever has subsided. Advised to complete antibiotic course and take rest.",
                 medicines: ["Multivitamins", "Continue Cefixime"],
                 prescriptionImages: [
-                    { url: "https://picsum.photos/seed/rx3/800/1100", dataAiHint: "medical prescription" }
+                    { url: "https://picsum.photos/seed/rx3/800/1100", dataAiHint: "medical prescription" },
+                    { url: "https://picsum.photos/seed/rx3-2/800/1100", dataAiHint: "doctor notes" },
+                    { url: "https://picsum.photos/seed/rx3-3/800/1100", dataAiHint: "health chart" }
                 ],
                 details: []
             },
@@ -76,8 +79,8 @@ export const previousAppointments = [
                     { url: "https://picsum.photos/seed/rx4/800/1100", dataAiHint: "medical prescription" }
                 ],
                 details: [
-                    { name: 'Liver Function Test', date: '2021-09-15', status: 'Abnormal', result: 'Completed' },
-                    { name: 'Ultrasound Abdomen', date: '2021-09-16', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Liver Function Test', date: '2021-09-15', status: 'Abnormal', labName: 'Vijaya Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report4/800/1100', dataAiHint: 'lab report' } },
+                    { name: 'Ultrasound Abdomen', date: '2021-09-16', status: 'Abnormal', labName: 'Vijaya Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report5/800/1100', dataAiHint: 'ultrasound image' } },
                 ]
             },
             {
@@ -92,8 +95,8 @@ export const previousAppointments = [
                     { url: "https://picsum.photos/seed/rx5-2/800/1100", dataAiHint: "lab report" }
                 ],
                 details: [
-                    { name: 'Upper GI Endoscopy', date: '2022-03-22', status: 'Abnormal', result: 'Completed' },
-                    { name: 'CT Scan (Abdomen)', date: '2022-03-22', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Upper GI Endoscopy', date: '2022-03-22', status: 'Abnormal', labName: 'Yashoda Hospitals Lab', reportImage: { url: 'https://picsum.photos/seed/report6/800/1100', dataAiHint: 'endoscopy image' } },
+                    { name: 'CT Scan (Abdomen)', date: '2022-03-22', status: 'Abnormal', labName: 'Yashoda Hospitals Lab', reportImage: { url: 'https://picsum.photos/seed/report7/800/1100', dataAiHint: 'ct scan' } },
                 ]
             },
              {
@@ -107,8 +110,8 @@ export const previousAppointments = [
                      { url: "https://picsum.photos/seed/rx6/800/1100", dataAiHint: "medical prescription" }
                 ],
                 details: [
-                    { name: 'Liver Function Test', date: '2023-09-25', status: 'Abnormal', result: 'Completed' },
-                    { name: 'FibroScan', date: '2023-09-26', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Liver Function Test', date: '2023-09-25', status: 'Abnormal', labName: 'Dr. Lal PathLabs', reportImage: { url: 'https://picsum.photos/seed/report8/800/1100', dataAiHint: 'lab report' } },
+                    { name: 'FibroScan', date: '2023-09-26', status: 'Abnormal', labName: 'Dr. Lal PathLabs', reportImage: { url: 'https://picsum.photos/seed/report9/800/1100', dataAiHint: 'scan report' } },
                 ]
             },
              {
@@ -124,8 +127,8 @@ export const previousAppointments = [
                     { url: "https://picsum.photos/seed/rx7-3/800/1100", dataAiHint: "health chart" }
                 ],
                 details: [
-                    { name: 'Ammonia Level Test', date: '2024-07-10', status: 'Abnormal', result: 'Completed' },
-                    { name: 'Prothrombin Time (PT)', date: '2024-07-10', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Ammonia Level Test', date: '2024-07-10', status: 'Abnormal', labName: 'Yoda Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report10/800/1100', dataAiHint: 'lab report' } },
+                    { name: 'Prothrombin Time (PT)', date: '2024-07-10', status: 'Abnormal', labName: 'Yoda Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report11/800/1100', dataAiHint: 'lab report' } },
                 ]
             },
             {
@@ -157,8 +160,8 @@ export const previousAppointments = [
                     { url: "https://picsum.photos/seed/rx8/800/1100", dataAiHint: "medical prescription" }
                 ],
                 details: [
-                    { name: 'Echocardiogram', date: '2024-08-10', status: 'Abnormal', result: 'Completed' },
-                    { name: 'Troponin-I', date: '2024-08-10', status: 'Abnormal', result: 'Completed' },
+                    { name: 'Echocardiogram', date: '2024-08-10', status: 'Abnormal', labName: 'Apollo Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report12/800/1100', dataAiHint: 'echo report' } },
+                    { name: 'Troponin-I', date: '2024-08-10', status: 'Abnormal', labName: 'Apollo Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report13/800/1100', dataAiHint: 'lab report' } },
                 ]
             },
             {
@@ -172,9 +175,9 @@ export const previousAppointments = [
                     { url: "https://picsum.photos/seed/rx9/800/1100", dataAiHint: "medical prescription" }
                 ],
                  details: [
-                    { name: 'Troponin-I', date: '2024-08-18', status: 'Normal', result: 'Completed' },
-                    { name: 'Creatine Kinase', date: '2024-08-18', status: 'Normal', result: 'Completed' },
-                    { name: 'BNP (B-type Natriuretic Peptide)', date: '2024-08-18', status: 'Normal', result: 'Completed' },
+                    { name: 'Troponin-I', date: '2024-08-18', status: 'Normal', labName: 'Yoda Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report14/800/1100', dataAiHint: 'lab report' } },
+                    { name: 'Creatine Kinase', date: '2024-08-18', status: 'Normal', labName: 'Yoda Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report15/800/1100', dataAiHint: 'lab report' } },
+                    { name: 'BNP (B-type Natriuretic Peptide)', date: '2024-08-18', status: 'Normal', labName: 'Yoda Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report16/800/1100', dataAiHint: 'lab report' } },
                 ]
             },
             {
@@ -236,7 +239,7 @@ export const previousAppointments = [
                     { url: "https://picsum.photos/seed/rx11/800/1100", dataAiHint: "medical prescription" }
                 ],
                 details: [
-                     { name: 'Knee X-Ray', date: '2024-06-11', status: 'Normal', result: 'Completed' },
+                     { name: 'Knee X-Ray', date: '2024-06-11', status: 'Normal', labName: 'Apollo Diagnostics', reportImage: { url: 'https://picsum.photos/seed/report17/800/1100', dataAiHint: 'xray image' } },
                 ]
             },
             {
@@ -274,3 +277,6 @@ export const getAllVisits = () => {
   
   return allVisits;
 };
+
+    
+    
