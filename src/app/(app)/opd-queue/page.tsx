@@ -25,6 +25,7 @@ import { Label } from '@/components/ui/label';
 import { analyzeReport, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { dummyReportData } from '@/lib/dummy-report-data';
 import { Textarea } from '@/components/ui/textarea';
+import { Separator } from '@/components/ui/separator';
 
 
 const queue = [
@@ -122,10 +123,13 @@ const quickReplies = [
     "Can I get a water bottle?",
 ];
 
-function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { onUpload: (appointmentId: number, prescriptionId: number, newImage: { url: string; dataAiHint: string }) => void, trigger: React.ReactNode, appointmentId: number, prescriptionId: number }) {
+function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { onUpload: (appointmentId: number, prescriptionId: number, newImage: { url: string; dataAiHint: string }, labName: string, reportDate: Date) => void, trigger: React.ReactNode, appointmentId: number, prescriptionId: number }) {
     const [fileName, setFileName] = useState('');
     const [isUploading, setIsUploading] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [labName, setLabName] = useState('');
+    const [reportDate, setReportDate] = useState<Date | undefined>();
+
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -134,15 +138,18 @@ function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { on
     };
 
     const handleUpload = () => {
+        if (!reportDate) return;
         setIsUploading(true);
         setTimeout(() => {
             const newImage = {
                 url: `https://picsum.photos/seed/newrx${Date.now()}/800/1100`,
                 dataAiHint: 'medical prescription document',
             };
-            onUpload(appointmentId, prescriptionId, newImage);
+            onUpload(appointmentId, prescriptionId, newImage, labName, reportDate);
             setIsUploading(false);
             setFileName('');
+            setLabName('');
+            setReportDate(undefined);
             setIsDialogOpen(false); 
         }, 1500);
     };
@@ -154,28 +161,57 @@ function UploadDialog({ onUpload, trigger, appointmentId, prescriptionId }: { on
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Upload Prescription</DialogTitle>
+                    <DialogTitle>Upload Prescription or Report</DialogTitle>
                     <DialogDescription>
-                        Upload a photo or PDF of your paper prescription.
+                        Upload a photo or PDF of your paper document. Add the lab name and date.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
-                    <Label htmlFor="prescription-file" className="text-right">
-                        Prescription File
-                    </Label>
-                    <div className="flex items-center gap-2">
-                        <Button asChild variant="outline" className="flex-1">
-                            <label htmlFor={`file-upload-${appointmentId}-${prescriptionId}`} className="cursor-pointer">
-                                <Upload className="mr-2 h-4 w-4" />
-                                {fileName || 'Choose File'}
-                            </label>
-                        </Button>
-                        <input id={`file-upload-${appointmentId}-${prescriptionId}`} type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
+                    <div className="space-y-2">
+                        <Label htmlFor="lab-name">Lab/Clinic Name</Label>
+                        <Input id="lab-name" value={labName} onChange={(e) => setLabName(e.target.value)} placeholder="e.g., Yoda Diagnostics" />
                     </div>
-                    {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
+                     <div className="space-y-2">
+                        <Label>Report Date</Label>
+                         <Popover>
+                            <PopoverTrigger asChild>
+                            <Button
+                                variant={"outline"}
+                                className={cn(
+                                "w-full justify-start text-left font-normal",
+                                !reportDate && "text-muted-foreground"
+                                )}
+                            >
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {reportDate ? format(reportDate, "PPP") : <span>Pick a date</span>}
+                            </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0">
+                            <CalendarComponent
+                                mode="single"
+                                selected={reportDate}
+                                onSelect={setReportDate}
+                                initialFocus
+                            />
+                            </PopoverContent>
+                        </Popover>
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="prescription-file">File</Label>
+                        <div className="flex items-center gap-2">
+                            <Button asChild variant="outline" className="flex-1">
+                                <label htmlFor={`file-upload-${appointmentId}-${prescriptionId}`} className="cursor-pointer">
+                                    <Upload className="mr-2 h-4 w-4" />
+                                    {fileName || 'Choose File'}
+                                </label>
+                            </Button>
+                            <input id={`file-upload-${appointmentId}-${prescriptionId}`} type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
+                        </div>
+                        {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
+                    </div>
                 </div>
                 <DialogFooter>
-                    <Button onClick={handleUpload} disabled={!fileName || isUploading} className="w-full" style={{ backgroundColor: 'hsl(var(--nav-chat))' }}>
+                    <Button onClick={handleUpload} disabled={!fileName || !reportDate || !labName || isUploading} className="w-full" style={{ backgroundColor: 'hsl(var(--nav-chat))' }}>
                         {isUploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
                         {isUploading ? 'Uploading...' : 'Upload'}
                     </Button>
@@ -310,15 +346,15 @@ function ViewReportDialog({ report, trigger, children }: { report: any; trigger?
                         </div>
                     )}
                 </div>
-                <DialogFooter className="pt-4 border-t">
+                <DialogFooter className="pt-4 border-t flex-col sm:flex-row gap-2">
                     <ReportAnalysisDialog report={report}>
-                        <Button variant="outline" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10">
+                        <Button variant="outline" className="w-full sm:w-auto border-primary/50 text-primary hover:text-primary hover:bg-primary/10">
                             <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
                         </Button>
                     </ReportAnalysisDialog>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button variant="outline"><Download className="mr-2 h-4 w-4" /></Button>
+                            <Button variant="outline" className="w-full sm:w-auto"><Download className="mr-2 h-4 w-4" />Download</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-xs">
                             <DialogHeader>
@@ -341,7 +377,7 @@ export default function OpdQueuePage() {
     const [today, setToday] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [filterDoctor, setFilterDoctor] = useState('all');
-    const [filterDate, setFilterDate] = useState<Date | undefined>();
+    const [filterDate, setFilterDate] = useState<Date>();
     const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
     const [appointments, setAppointments] = useState(() => 
@@ -403,16 +439,28 @@ export default function OpdQueuePage() {
         setFilterDate(undefined);
     };
 
-    const handleUploadPrescription = (appointmentId: number, prescriptionId: number, newImage: { url: string; dataAiHint: string }) => {
+    const handleUpload = (appointmentId: number, prescriptionId: number, newImage: { url: string; dataAiHint: string }, labName: string, reportDate: Date) => {
         setAppointments(prevAppointments => {
             return prevAppointments.map((appt, apptIndex) => {
                 if (apptIndex === appointmentId) {
                     const newPrescriptions = appt.prescriptions.map((p, pIndex) => {
                         if (pIndex === prescriptionId) {
-                            return {
-                                ...p,
-                                prescriptionImages: [...p.prescriptionImages, newImage]
-                            };
+                            // Check if it's a prescription image or a report
+                            if(p.prescriptionImages){
+                                return {
+                                    ...p,
+                                    prescriptionImages: [...p.prescriptionImages, newImage]
+                                };
+                            } else { // This part is for adding new test results
+                                 const newDetails = [...p.details, {
+                                     name: "Uploaded Report",
+                                     date: format(reportDate, 'yyyy-MM-dd'),
+                                     status: 'Pending Review',
+                                     labName: labName,
+                                     reportImage: newImage,
+                                 }];
+                                 return {...p, details: newDetails};
+                            }
                         }
                         return p;
                     });
@@ -676,6 +724,7 @@ export default function OpdQueuePage() {
                                                                                         </div>
                                                                                     ))}
                                                                                 </div>
+                                                                                <Separator className="my-4" />
                                                                             </div>
                                                                         )}
                                                                         
@@ -685,6 +734,7 @@ export default function OpdQueuePage() {
                                                                                 <div className="flex flex-wrap gap-2">
                                                                                     {item.medicines.map((med: string) => <Badge key={med} variant='secondary' className="text-sm">{med}</Badge>)}
                                                                                 </div>
+                                                                                 <Separator className="my-4" />
                                                                             </div>
                                                                         )}
                                                                         
@@ -692,6 +742,7 @@ export default function OpdQueuePage() {
                                                                             <div>
                                                                                 <h4 className='font-semibold mb-2 text-base'>Condition Summary</h4>
                                                                                 <p className='text-sm text-muted-foreground'>{item.summary}</p>
+                                                                                 <Separator className="my-4" />
                                                                             </div>
                                                                         )}
                                                                         
@@ -716,10 +767,8 @@ export default function OpdQueuePage() {
                                                                             </div>
                                                                         )}
                                                                     </div>
-                                                                     <DialogFooter className="p-6 pt-4 border-t">
-                                                                        <DialogClose asChild>
-                                                                            <Button type="button" variant="secondary">Close</Button>
-                                                                        </DialogClose>
+                                                                    <DialogFooter className="p-6 pt-4 border-t">
+                                                                        
                                                                     </DialogFooter>
                                                                 </DialogContent>
                                                             </Dialog>
@@ -732,7 +781,7 @@ export default function OpdQueuePage() {
                                                                 }
                                                                 appointmentId={index}
                                                                 prescriptionId={pIndex}
-                                                                onUpload={handleUploadPrescription}
+                                                                onUpload={handleUpload}
                                                             />
                                                         </div>
                                                     </div>
@@ -755,10 +804,8 @@ export default function OpdQueuePage() {
                 <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
                     <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 border-0">
                          <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm flex-row items-center justify-between">
-                            <div>
-                                <DialogTitle>Prescription Viewer</DialogTitle>
-                                <DialogDescription>Full-size view of the prescription.</DialogDescription>
-                            </div>
+                            <DialogTitle>Prescription Viewer</DialogTitle>
+                            <DialogDescription>Full-size view of the prescription.</DialogDescription>
                             <DialogClose className="relative right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
                                 <X className="h-6 w-6" />
                                 <span className="sr-only">Close</span>
@@ -780,5 +827,3 @@ export default function OpdQueuePage() {
         </div>
     );
 }
-
-    
