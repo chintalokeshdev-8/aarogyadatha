@@ -97,11 +97,11 @@ const diagnosticLabs = [
 
 export default function DiagnosticsPage() {
     return (
-      &lt;LabReportsClient
+      <LabReportsClient
         labReports={labReports}
         imagingReports={imagingReports}
         diagnosticLabs={diagnosticLabs}
         dummyReportData={dummyReportData}
-      /&gt;
+      />
     );
 }
