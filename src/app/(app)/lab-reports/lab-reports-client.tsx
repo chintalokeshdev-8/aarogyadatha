@@ -250,31 +250,6 @@ export function LabReportsClient({
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [openLab, setOpenLab] = useState<string | null>(diagnosticLabs.length > 0 ? diagnosticLabs[0].name : null);
 
-    // Filters for reports
-    const [reportSearchTerm, setReportSearchTerm] = useState('');
-    const [reportDoctor, setReportDoctor] = useState('all');
-    const [reportStatus, setReportStatus] = useState('all');
-    const [reportDate, setReportDate] = useState<Date | undefined>();
-
-    const allDoctors = useMemo(() => {
-        const doctors = new Set<string>();
-        [...labReports, ...imagingReports].forEach(r => doctors.add(r.doctor));
-        return ['all', ...Array.from(doctors)];
-    }, [labReports, imagingReports]);
-
-    const filterReports = (reports: any[]) => {
-        return reports.filter(report => {
-            const searchTermMatch = report.testName.toLowerCase().includes(reportSearchTerm.toLowerCase());
-            const doctorMatch = reportDoctor === 'all' || report.doctor === reportDoctor;
-            const statusMatch = reportStatus === 'all' || report.status === reportStatus;
-            const dateMatch = !reportDate || format(new Date(report.date), 'yyyy-MM-dd') === format(reportDate, 'yyyy-MM-dd');
-            return searchTermMatch && doctorMatch && statusMatch && dateMatch;
-        });
-    };
-
-    const filteredLabReports = useMemo(() => filterReports(labReports), [labReports, reportSearchTerm, reportDoctor, reportStatus, reportDate]);
-    const filteredImagingReports = useMemo(() => filterReports(imagingReports), [imagingReports, reportSearchTerm, reportDoctor, reportStatus, reportDate]);
-
     const testCategories = useMemo(() => {
         const categories = new Set<string>();
         diagnosticLabs.forEach(lab => {
@@ -354,331 +329,173 @@ export function LabReportsClient({
             .filter(lab => lab.tests.length > 0);
     }, [diagnosticLabs, searchTerm, selectedCategory]);
 
-    const clearFilters = () => {
-        setReportSearchTerm('');
-        setReportDoctor('all');
-        setReportStatus('all');
-        setReportDate(undefined);
-    };
-
     return (
         <div className="space-y-8">
              <div>
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics + Reports</h1>
-                <p className="text-muted-foreground">Find diagnostic labs and view your reports.</p>
+                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics</h1>
+                <p className="text-muted-foreground">Find diagnostic labs and book tests.</p>
             </div>
-            <Tabs defaultValue="diagnostics" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 border p-0 h-auto" style={{borderColor: 'hsl(var(--nav-diagnostics))'}}>
-                    <TabsTrigger value="diagnostics" className="data-[state=active]:bg-[hsl(var(--nav-diagnostics))] data-[state=active]:text-white rounded-none border-r" >Find Diagnostics</TabsTrigger>
-                    <TabsTrigger value="reports" className="data-[state=active]:bg-[hsl(var(--nav-diagnostics))] data-[state=active]:text-white rounded-none">My Reports</TabsTrigger>
-                </TabsList>
-                <TabsContent value="diagnostics" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Find a Lab</CardTitle>
-                            <CardDescription>Search for diagnostic labs near you.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                    <Input 
-                                        placeholder="Search by lab name..." 
-                                        className="pl-10"
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                    />
+            <Card>
+                <CardHeader>
+                    <CardTitle>Find a Lab</CardTitle>
+                    <CardDescription>Search for diagnostic labs near you.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input 
+                                placeholder="Search by lab name..." 
+                                className="pl-10"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                        <Select onValueChange={setSelectedCategory} defaultValue="All">
+                            <SelectTrigger>
+                                <div className="flex items-center gap-2">
+                                    <TestTube className="h-4 w-4" />
+                                    <SelectValue placeholder="Filter by Test Type" />
                                 </div>
-                                <Select onValueChange={setSelectedCategory} defaultValue="All">
-                                    <SelectTrigger>
-                                        <div className="flex items-center gap-2">
-                                            <TestTube className="h-4 w-4" />
-                                            <SelectValue placeholder="Filter by Test Type" />
-                                        </div>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {testCategories.map(category => (
-                                            <SelectItem key={category} value={category}>{category}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <Select>
-                                    <SelectTrigger>
-                                        <div className="flex items-center gap-2">
-                                            <MapPin className="h-4 w-4" />
-                                            <SelectValue placeholder="Location" />
-                                        </div>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="guntur">Guntur</SelectItem>
-                                        <SelectItem value="hyderabad">Hyderabad</SelectItem>
-                                        <SelectItem value="vijayawada">Vijayawada</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="space-y-4">
-                                {filteredLabs.map(lab => (
-                                    <Collapsible 
-                                        key={lab.name} 
-                                        open={openLab === lab.name}
-                                        onOpenChange={() => setOpenLab(openLab === lab.name ? null : lab.name)}
-                                        className="border rounded-lg"
-                                    >
-                                        <CollapsibleTrigger asChild>
-                                            <div className="w-full p-4 flex justify-between items-center hover:bg-muted/50 transition-colors cursor-pointer">
-                                                <div className="flex items-center gap-4">
-                                                     <Avatar className="h-12 w-12 border">
-                                                        <AvatarImage src={lab.logo} data-ai-hint={lab.dataAiHint} />
-                                                        <AvatarFallback>{lab.name.substring(0, 2)}</AvatarFallback>
-                                                    </Avatar>
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            <p className="font-bold text-lg text-left">{lab.name}</p>
-                                                            {lab.recommended && (
-                                                                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
-                                                                    <Star className="h-3 w-3 mr-1" />
-                                                                    Recommended
-                                                                </Badge>
-                                                            )}
-                                                        </div>
-                                                        <p className="text-sm text-muted-foreground text-left flex items-center gap-1"><MapPin className="h-3 w-3" /> {lab.location}</p>
-                                                    </div>
-                                                </div>
-                                                <Button variant="ghost" size="sm" className="w-9 p-0">
-                                                    {openLab === lab.name ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-                                                    <span className="sr-only">Toggle</span>
-                                                </Button>
-                                            </div>
-                                        </CollapsibleTrigger>
-                                        <CollapsibleContent className="p-4 border-t">
-                                            <div className="space-y-4 mb-6">
-                                                <h4 className="font-semibold text-base">Lab Information</h4>
-                                                <div className="space-y-2 text-sm text-muted-foreground">
-                                                    <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {lab.address}</p>
-                                                    <p className="flex items-center gap-2"><Phone className="h-4 w-4"/> {lab.phone}</p>
-                                                    <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {lab.hours}</p>
-                                                    <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-diagnostics))'}}>
-                                                        <Globe className="h-4 w-4"/> Visit Website
-                                                    </a>
-                                                </div>
-                                                <div className="flex gap-2 pt-2">
-                                                    <Button variant="outline" size="sm" onClick={() => handleAction(() => {})}>
-                                                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Share2 className="mr-2 h-4 w-4"/>} Share Directions
-                                                    </Button>
-                                                    <Button variant="outline" size="sm" onClick={() => handleAction(() => {})}>
-                                                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Map className="mr-2 h-4 w-4"/>} View Location
-                                                    </Button>
-                                                </div>
-                                            </div>
-
-                                            <div className="p-4 border rounded-lg bg-muted/30 mb-6">
-                                                <h4 className="font-semibold text-base mb-2">Have a Prescription?</h4>
-                                                <p className="text-sm text-muted-foreground mb-4">Upload your prescription to get exact prices from the lab reception.</p>
-                                                <Dialog>
-                                                    <DialogTrigger asChild>
-                                                        <Button variant="outline" className="w-full sm:w-auto bg-background">
-                                                            <Upload className="mr-2 h-4 w-4" /> Upload Test Prescription
-                                                        </Button>
-                                                    </DialogTrigger>
-                                                    <DialogContent className="sm:max-w-[425px]">
-                                                        <DialogHeader>
-                                                            <DialogTitle>Upload for {lab.name}</DialogTitle>
-                                                            <DialogDescription>
-                                                                Upload your test prescription to get an accurate price quote.
-                                                            </DialogDescription>
-                                                        </DialogHeader>
-                                                        <div className="grid gap-4 py-4">
-                                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                                <Label htmlFor="prescription-file" className="text-right">File</Label>
-                                                                <div className="col-span-3">
-                                                                    <Button asChild variant="outline">
-                                                                        <label htmlFor="prescription-upload" className="cursor-pointer w-full">
-                                                                            <Upload className="mr-2 h-4 w-4" />
-                                                                            {prescriptionFileName || 'Choose File'}
-                                                                        </label>
-                                                                    </Button>
-                                                                    <input id="prescription-upload" type="file" className="hidden" onChange={handlePrescriptionFileChange} accept="image/*,.pdf" />
-                                                                    {prescriptionFileName && <p className="text-xs text-muted-foreground mt-2">{prescriptionFileName}</p>}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <CardFooter className="p-0 pt-4">
-                                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
-                                                                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...</> : 'Send to Lab'}
-                                                            </Button>
-                                                        </CardFooter>
-                                                    </DialogContent>
-                                                </Dialog>
-                                            </div>
-                                            
-                                            <div>
-                                                 <h4 className="font-semibold text-base mb-4">Available Tests</h4>
-                                                {lab.tests.map((test: any) => (
-                                                     <div key={test.name} className="p-4 flex flex-col sm:flex-row justify-between sm:items-center border-t first:border-t-0">
-                                                        <div className="mb-4 sm:mb-0">
-                                                            <p className="font-semibold">{test.name}</p>
-                                                            <Badge variant="outline" className="mt-1">{test.category}</Badge>
-                                                        </div>
-                                                        <div className="flex items-center gap-4">
-                                                            <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>₹{test.price}</p>
-                                                            <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
-                                                                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Booking...</> : 'Book Now'}
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </CollapsibleContent>
-                                    </Collapsible>
+                            </SelectTrigger>
+                            <SelectContent>
+                                {testCategories.map(category => (
+                                    <SelectItem key={category} value={category}>{category}</SelectItem>
                                 ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-                <TabsContent value="reports" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                                <div>
-                                    <CardTitle>My Reports</CardTitle>
-                                    <CardDescription>View, download, and analyze your medical test results.</CardDescription>
+                            </SelectContent>
+                        </Select>
+                        <Select>
+                            <SelectTrigger>
+                                <div className="flex items-center gap-2">
+                                    <MapPin className="h-4 w-4" />
+                                    <SelectValue placeholder="Location" />
                                 </div>
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} className="mt-4 sm:mt-0">
-                                            <Upload className="mr-2 h-4 w-4" />
-                                            Upload Report
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[425px]">
-                                        <DialogHeader>
-                                            <DialogTitle>Upload New Report</DialogTitle>
-                                            <DialogDescription>
-                                                Add a new medical document to your records. You can upload an image or PDF file.
-                                            </DialogDescription>
-                                        </DialogHeader>
-                                        <div className="grid gap-4 py-4">
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="report-type" className="text-right">Type</Label>
-                                                <Select>
-                                                    <SelectTrigger id="report-type" className="col-span-3">
-                                                        <SelectValue placeholder="Select report type" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="lab">Lab Report</SelectItem>
-                                                        <SelectItem value="imaging">Imaging</SelectItem>
-                                                        <SelectItem value="prescription">Prescription</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="report-name" className="text-right">Name</Label>
-                                                <Input id="report-name" placeholder="e.g., Complete Blood Count" className="col-span-3" />
-                                            </div>
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="report-file" className="text-right">File</Label>
-                                                <div className="col-span-3">
-                                                    <Button asChild variant="outline">
-                                                        <label htmlFor="file-upload" className="cursor-pointer w-full">
-                                                            <Upload className="mr-2 h-4 w-4" />
-                                                            {fileName || 'Choose File'}
-                                                        </label>
-                                                    </Button>
-                                                    <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} accept="image/*,.pdf" />
-                                                    {fileName && <p className="text-xs text-muted-foreground mt-2">{fileName}</p>}
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="guntur">Guntur</SelectItem>
+                                <SelectItem value="hyderabad">Hyderabad</SelectItem>
+                                <SelectItem value="vijayawada">Vijayawada</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="space-y-4">
+                        {filteredLabs.map(lab => (
+                            <Collapsible 
+                                key={lab.name} 
+                                open={openLab === lab.name}
+                                onOpenChange={() => setOpenLab(openLab === lab.name ? null : lab.name)}
+                                className="border rounded-lg"
+                            >
+                                <CollapsibleTrigger asChild>
+                                    <div className="w-full p-4 flex justify-between items-center hover:bg-muted/50 transition-colors cursor-pointer">
+                                        <div className="flex items-center gap-4">
+                                             <Avatar className="h-12 w-12 border">
+                                                <AvatarImage src={lab.logo} data-ai-hint={lab.dataAiHint} />
+                                                <AvatarFallback>{lab.name.substring(0, 2)}</AvatarFallback>
+                                            </Avatar>
+                                            <div>
+                                                <div className="flex items-center gap-2">
+                                                    <p className="font-bold text-lg text-left">{lab.name}</p>
+                                                    {lab.recommended && (
+                                                        <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                                                            <Star className="h-3 w-3 mr-1" />
+                                                            Recommended
+                                                        </Badge>
+                                                    )}
                                                 </div>
+                                                <p className="text-sm text-muted-foreground text-left flex items-center gap-1"><MapPin className="h-3 w-3" /> {lab.location}</p>
                                             </div>
                                         </div>
-                                        <CardFooter className="p-0 pt-4">
-                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
-                                                {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</> : 'Save Report'}
-                                            </Button>
-                                        </CardFooter>
-                                    </DialogContent>
-                                </Dialog>
-                            </div>
-                             <div className="border-t mt-4 pt-4">
-                                <div className="flex items-center gap-2 mb-4">
-                                    <Filter className="h-5 w-5"/>
-                                    <h3 className="text-lg font-semibold">Filters</h3>
-                                </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                                    <div className="relative lg:col-span-2">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                        <Input 
-                                            placeholder="Search by report name..." 
-                                            className="pl-10"
-                                            value={reportSearchTerm}
-                                            onChange={(e) => setReportSearchTerm(e.target.value)}
-                                        />
-                                    </div>
-                                    <Select value={reportDoctor} onValueChange={setReportDoctor}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Filter by Doctor" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {allDoctors.map(doc => <SelectItem key={doc} value={doc}>{doc === 'all' ? 'All Doctors' : doc}</SelectItem>)}
-                                        </SelectContent>
-                                    </Select>
-                                    <Select value={reportStatus} onValueChange={setReportStatus}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Filter by Status" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="all">All Statuses</SelectItem>
-                                            <SelectItem value="Completed">Completed</SelectItem>
-                                            <SelectItem value="Processing">Processing</SelectItem>
-                                            <SelectItem value="Pending">Pending</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                      <Popover>
-                                        <PopoverTrigger asChild>
-                                        <Button
-                                            variant={"outline"}
-                                            className={cn(
-                                            "justify-start text-left font-normal",
-                                            !reportDate && "text-muted-foreground"
-                                            )}
-                                        >
-                                            <CalendarIcon className="mr-2 h-4 w-4" />
-                                            {reportDate ? format(reportDate, "dd-MMM-yyyy") : <span>Filter by date</span>}
+                                        <Button variant="ghost" size="sm" className="w-9 p-0">
+                                            {openLab === lab.name ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                                            <span className="sr-only">Toggle</span>
                                         </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0">
-                                        <CalendarComponent
-                                            mode="single"
-                                            selected={reportDate}
-                                            onSelect={setReportDate}
-                                            initialFocus
-                                        />
-                                        </PopoverContent>
-                                    </Popover>
-                                </div>
-                                <div className='flex justify-end mt-2'>
-                                     <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2">
-                                        <X className='mr-2 h-4 w-4' />
-                                        Clear Filters
-                                    </Button>
-                                </div>
-                            </div>
-                        </CardHeader>
-                        <CardContent>
-                           <Tabs defaultValue="lab" className="w-full">
-                                <TabsList>
-                                    <TabsTrigger value="lab" className="flex items-center gap-2"><TestTube className="h-4 w-4"/> Lab Reports</TabsTrigger>
-                                    <TabsTrigger value="imaging" className="flex items-center gap-2"><Scan className="h-4 w-4"/> Imaging</TabsTrigger>
-                                </TabsList>
-                                <TabsContent value="lab" className="mt-4">
-                                     <ReportTable reports={filteredLabReports} onAnalyze={handleAnalyze} onView={handleView} />
-                                </TabsContent>
-                                <TabsContent value="imaging" className="mt-4">
-                                    <ReportTable reports={filteredImagingReports} onAnalyze={handleView} onView={handleView} />
-                                </TabsContent>
-                            </Tabs>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-            </Tabs>
+                                    </div>
+                                </CollapsibleTrigger>
+                                <CollapsibleContent className="p-4 border-t">
+                                    <div className="space-y-4 mb-6">
+                                        <h4 className="font-semibold text-base">Lab Information</h4>
+                                        <div className="space-y-2 text-sm text-muted-foreground">
+                                            <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {lab.address}</p>
+                                            <p className="flex items-center gap-2"><Phone className="h-4 w-4"/> {lab.phone}</p>
+                                            <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {lab.hours}</p>
+                                            <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-diagnostics))'}}>
+                                                <Globe className="h-4 w-4"/> Visit Website
+                                            </a>
+                                        </div>
+                                        <div className="flex gap-2 pt-2">
+                                            <Button variant="outline" size="sm" onClick={() => handleAction(() => {})}>
+                                                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Share2 className="mr-2 h-4 w-4"/>} Share Directions
+                                            </Button>
+                                            <Button variant="outline" size="sm" onClick={() => handleAction(() => {})}>
+                                                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Map className="mr-2 h-4 w-4"/>} View Location
+                                            </Button>
+                                        </div>
+                                    </div>
+
+                                    <div className="p-4 border rounded-lg bg-muted/30 mb-6">
+                                        <h4 className="font-semibold text-base">Have a Prescription?</h4>
+                                        <p className="text-sm text-muted-foreground mb-4">Upload your prescription to get exact prices from the lab reception.</p>
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button variant="outline" className="w-full sm:w-auto bg-background">
+                                                    <Upload className="mr-2 h-4 w-4" /> Upload Test Prescription
+                                                </Button>
+                                            </DialogTrigger>
+                                            <DialogContent className="sm:max-w-[425px]">
+                                                <DialogHeader>
+                                                    <DialogTitle>Upload for {lab.name}</DialogTitle>
+                                                    <DialogDescription>
+                                                        Upload your test prescription to get an accurate price quote.
+                                                    </DialogDescription>
+                                                </DialogHeader>
+                                                <div className="grid gap-4 py-4">
+                                                    <div className="grid grid-cols-4 items-center gap-4">
+                                                        <Label htmlFor="prescription-file" className="text-right">File</Label>
+                                                        <div className="col-span-3">
+                                                            <Button asChild variant="outline">
+                                                                <label htmlFor="prescription-upload" className="cursor-pointer w-full">
+                                                                    <Upload className="mr-2 h-4 w-4" />
+                                                                    {prescriptionFileName || 'Choose File'}
+                                                                </label>
+                                                            </Button>
+                                                            <input id="prescription-upload" type="file" className="hidden" onChange={handlePrescriptionFileChange} accept="image/*,.pdf" />
+                                                            {prescriptionFileName && <p className="text-xs text-muted-foreground mt-2">{prescriptionFileName}</p>}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <CardFooter className="p-0 pt-4">
+                                                    <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
+                                                        {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...</> : 'Send to Lab'}
+                                                    </Button>
+                                                </CardFooter>
+                                            </DialogContent>
+                                        </Dialog>
+                                    </div>
+                                    
+                                    <div>
+                                         <h4 className="font-semibold text-base mb-4">Available Tests</h4>
+                                        {lab.tests.map((test: any) => (
+                                             <div key={test.name} className="p-4 flex flex-col sm:flex-row justify-between sm:items-center border-t first:border-t-0">
+                                                <div className="mb-4 sm:mb-0">
+                                                    <p className="font-semibold">{test.name}</p>
+                                                    <Badge variant="outline" className="mt-1">{test.category}</Badge>
+                                                </div>
+                                                <div className="flex items-center gap-4">
+                                                    <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>₹{test.price}</p>
+                                                    <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})} disabled={isSubmitting}>
+                                                        {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Booking...</> : 'Book Now'}
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </CollapsibleContent>
+                            </Collapsible>
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
             
             <Dialog open={isViewOpen} onOpenChange={setViewOpen}>
                 <DialogContent className="sm:max-w-2xl">
@@ -783,7 +600,3 @@ export function LabReportsClient({
         </div>
     );
 }
-
-    
-
-    
