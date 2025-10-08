@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useTransition, useMemo } from 'react';
+import React, { useState, useTransition, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +10,7 @@ import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { analyzeReport, ReportAnalysisInput, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -247,7 +247,14 @@ export function LabReportsClient({
     // Filters for diagnostics
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
-    const [openLab, setOpenLab] = useState<string | null>(diagnosticLabs.length > 0 ? diagnosticLabs[0].name : null);
+    const [openLab, setOpenLab] = useState<string | null>(null);
+
+    // Defer setting initial state for Collapsible to client-side only
+    useEffect(() => {
+        if (diagnosticLabs.length > 0) {
+            setOpenLab(diagnosticLabs[0].name);
+        }
+    }, [diagnosticLabs]);
 
     const testCategories = useMemo(() => {
         const categories = new Set<string>();
@@ -632,6 +639,8 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
 
     
 
