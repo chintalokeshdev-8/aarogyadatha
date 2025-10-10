@@ -24,7 +24,7 @@ const quickAccessItems = [
   { href: '/opd-queue', icon: MessageSquare, label: 'OP STATUS', description: 'OP స్థితి', color: 'hsl(var(--nav-chat))' },
   { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', description: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
   { href: '/medicines', icon: Pill, label: 'My Medicines', description: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
-  { href: '/insurances', icon: Shield, label: 'Insurances', description: 'భీమా', color: 'hsl(var(--primary))' },
+  { href: '/insurances', icon: Shield, label: 'Insurances', description: 'భీమా', color: 'hsl(var(--nav-profile))' },
   { href: '/surgery-care', label: 'Surgery Care', telugu: 'సర్జరీ కేర్', icon: Stethoscope, color: 'hsl(var(--nav-appointments))'},
   { href: '/blood-bank', icon: Droplets, label: 'Blood Bank', description: 'రక్త నిధి', color: 'hsl(var(--nav-blood-bank))' },
   { href: '/health-tracker', label: 'Health Tracker', description: 'ఆరోగ్య ట్రాకర్', icon: Activity, color: 'hsl(var(--nav-profile))' },
@@ -93,7 +93,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3">
           {quickAccessItems.map((item) => (
             <Link key={item.href} href={item.href} passHref>
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center text-center p-2">
+              <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center text-center p-2 border-2">
                 <div className="p-2 rounded-full mb-2" style={{backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
                     <item.icon className="h-6 w-6" style={{color: item.color}} />
                 </div>
