@@ -747,9 +747,9 @@ export default function AppointmentsPage() {
             </div>
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
-                    <TabsTrigger value="history">Appointments History</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 rounded-lg border bg-transparent p-0">
+                    <TabsTrigger value="find-doctor" className="rounded-l-md rounded-r-none border-r data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Find a Doctor</TabsTrigger>
+                    <TabsTrigger value="history" className="rounded-r-md rounded-l-none data-[state=active]:bg-primary/10 data-[state=active]:text-primary data-[state=active]:shadow-none">Appointments History</TabsTrigger>
                 </TabsList>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
@@ -1138,3 +1138,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
