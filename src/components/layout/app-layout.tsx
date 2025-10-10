@@ -51,22 +51,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { AnimatedActivityIcon } from "../icons/animated-activity-icon";
 import { askAiAssistant, AiAssistantOutput } from '@/ai/flows/ai-assistant';
 import { Textarea } from "../ui/textarea";
+import { allMenuItems, type MenuItem } from "@/lib/nav-config";
 
-
-const menuItems = [
-  { href: "/", label: "Home", telugu: "హోమ్", icon: LayoutGrid, color: "hsl(var(--nav-home))" },
-  { href: "/symptom-checker", label: "AI Symptom Checker", telugu: "లక్షణాలు", icon: HeartPulse, color: "hsl(var(--nav-symptoms))" },
-  { href: "/appointments", label: "Appointments", telugu: "నమోదులు", icon: CalendarCheck, color: "hsl(var(--nav-appointments))" },
-  { href: "/opd-queue", label: "OP STATUS", telugu: "OP స్థితి", icon: MessageSquare, color: "hsl(var(--nav-chat))" },
-  { href: "/lab-reports", label: "Diagnostics", telugu: "రిపోర్టులు", icon: TestTube, color: "hsl(var(--nav-diagnostics))" },
-  { href: "/medicines", label: "Medicines", telugu: "మందులు", icon: Pill, color: "hsl(var(--nav-medicines))" },
-  { href: '/surgery-care', label: 'Surgery Care', telugu: 'సర్జరీ కేర్', icon: Stethoscope, color: 'hsl(var(--nav-appointments))'},
-  { href: "/blood-bank", label: "Blood Bank", telugu: "రక్త నిధి", icon: Droplets, color: "hsl(var(--nav-blood-bank))" },
-  { href: "/health-tracker", label: "Health Tracker", telugu: "ఆరోగ్య ట్రాకర్", icon: Heart, color: "hsl(var(--nav-profile))" },
-  { href: "/junior-doctors", label: "Jr. Doctors", telugu: "డాక్టర్లు", icon: Headset, color: "hsl(var(--nav-junior-doctors))" },
-  { href: "/pregnancy-tracker", label: "Pregnancy Care", telugu: "గర్భం", icon: PregnantLadyIcon, color: "hsl(var(--nav-appointments))" },
-  { href: "/emergency", label: "Emergency", telugu: "తక్షణ సహాయం", icon: Siren, color: "hsl(var(--destructive))" },
-];
 
 const familyAccounts = [
     { name: "Chinta Lokesh Babu", avatar: "/images/profile.jpg", fallback: "CL", isCurrentUser: true },
@@ -176,10 +162,20 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [isClient, setIsClient] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const isMobile = useIsMobile();
+  const [visibleMenuItems, setVisibleMenuItems] = React.useState<MenuItem[]>([]);
 
 
   React.useEffect(() => {
     setIsClient(true);
+    const savedNavSettings = localStorage.getItem('navSettings');
+    if (savedNavSettings) {
+        const settings = JSON.parse(savedNavSettings);
+        const enabledItems = allMenuItems.filter(item => settings[item.id] !== false);
+        setVisibleMenuItems(enabledItems);
+    } else {
+        // Default visible items if no settings are saved
+        setVisibleMenuItems(allMenuItems.filter(item => item.defaultVisible));
+    }
   }, []);
 
 
@@ -392,13 +388,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
             <ScrollArea className="w-full" viewportRef={viewportRef}>
                 <nav className="flex w-max py-1 px-12 justify-center">
-                    {menuItems.map((item, index) => {
+                    {visibleMenuItems.map((item, index) => {
                         const isActive = isClient && pathname === item.href;
                         const isSpecial = item.label === 'Emergency' || item.label === 'Blood Bank';
                         const specialColor = item.label === 'Emergency' ? 'hsl(var(--destructive))' : 'hsl(var(--nav-blood-bank))';
 
                         return (
-                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < menuItems.length - 1) && "border-r pr-2 mr-2", item.href === '/profile' ? 'hidden' : '')}>
+                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < visibleMenuItems.length - 1) && "border-r pr-2 mr-2", item.href === '/profile' ? 'hidden' : '')}>
                                <div className={cn(
                                    "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-24 py-1",
                                    isActive ? "scale-105" : "scale-100",

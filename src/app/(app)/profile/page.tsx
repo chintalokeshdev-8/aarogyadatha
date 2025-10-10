@@ -1,11 +1,12 @@
 
+
 'use client';
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Mail, MapPin, Shield, FileDown, Pencil, ShieldAlert, Users, Eye, EyeOff, Hospital, Link2, Download, Printer, Loader2, Heart, Droplets, User, Phone } from "lucide-react";
+import { Mail, MapPin, Shield, FileDown, Pencil, ShieldAlert, Users, Eye, EyeOff, Hospital, Link2, Download, Printer, Loader2, Heart, Droplets, User, Phone, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
@@ -15,6 +16,9 @@ import Image from 'next/image';
 import { Input } from "@/components/ui/input";
 import { Search } from 'lucide-react';
 import { format } from "date-fns";
+import { Switch } from "@/components/ui/switch";
+import { allMenuItems, type MenuItem } from "@/lib/nav-config";
+import { useToast } from "@/hooks/use-toast";
 
 const recentVisits = [
   { date: "2024-07-15", reason: "Fever & Cold", doctor: "Dr. Shashank" },
@@ -54,6 +58,63 @@ const networkHospitals = [
     address: "Mangalagiri Road, Nri Hospital Campus, Chinakakani, Guntur, Andhra Pradesh",
   },
 ];
+
+function CustomizeNavigationCard() {
+    const [navSettings, setNavSettings] = useState<Record<string, boolean>>({});
+    const [isClient, setIsClient] = useState(false);
+    const { toast } = useToast();
+
+    useEffect(() => {
+        setIsClient(true);
+        const savedSettings = localStorage.getItem('navSettings');
+        if (savedSettings) {
+            setNavSettings(JSON.parse(savedSettings));
+        } else {
+            const defaultSettings: Record<string, boolean> = {};
+            allMenuItems.forEach(item => {
+                defaultSettings[item.id] = item.defaultVisible;
+            });
+            setNavSettings(defaultSettings);
+        }
+    }, []);
+
+    const handleToggle = (id: string, isEnabled: boolean) => {
+        const newSettings = { ...navSettings, [id]: isEnabled };
+        setNavSettings(newSettings);
+        localStorage.setItem('navSettings', JSON.stringify(newSettings));
+        toast({
+            title: "Navigation Updated",
+            description: "Your changes have been saved. Refresh to see the new navigation bar.",
+        });
+    };
+
+    if (!isClient) {
+        return null; 
+    }
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2"><Settings style={{color: 'hsl(var(--nav-profile))'}} /> Customize Navigation</CardTitle>
+                <CardDescription>Choose which icons appear in the bottom navigation bar for quick access. Changes will apply on next page load.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {allMenuItems.filter(item => item.customizable).map(item => (
+                    <div key={item.id} className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
+                        <div className="flex items-center gap-3">
+                            <item.icon className="h-5 w-5" style={{ color: item.color }} />
+                            <p className="font-semibold">{item.label}</p>
+                        </div>
+                        <Switch
+                            checked={navSettings[item.id] !== false}
+                            onCheckedChange={(checked) => handleToggle(item.id, checked)}
+                        />
+                    </div>
+                ))}
+            </CardContent>
+        </Card>
+    );
+}
 
 
 export default function ProfilePage() {
@@ -102,6 +163,7 @@ export default function ProfilePage() {
                         <h2 className="text-xl font-semibold mb-4">Health Overview</h2>
                         <HealthOverview />
                     </section>
+                    <CustomizeNavigationCard />
                 </div>
                 <div className="space-y-8">
                     <Card>
