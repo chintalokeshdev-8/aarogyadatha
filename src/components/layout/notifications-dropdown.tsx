@@ -50,7 +50,7 @@ export function NotificationsDropdown() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <div className="max-h-96 overflow-y-auto">
-            {notifications.map((notification) => (
+            {notifications.slice(0, 4).map((notification) => (
                 <Link href={notification.href} key={notification.id} passHref>
                     <DropdownMenuItem className="flex items-start gap-3 p-3 cursor-pointer">
                         <div className={`mt-1 p-1.5 rounded-full ${notification.read ? 'bg-muted' : 'bg-primary/10'}`}>
@@ -70,9 +70,11 @@ export function NotificationsDropdown() {
             ))}
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="justify-center font-semibold text-primary">
-            View all notifications
-        </DropdownMenuItem>
+        <Link href="/notifications" passHref>
+            <DropdownMenuItem className="justify-center font-semibold text-primary">
+                View all notifications
+            </DropdownMenuItem>
+        </Link>
       </DropdownMenuContent>
     </DropdownMenu>
   );

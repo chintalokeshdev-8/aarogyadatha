@@ -1,5 +1,5 @@
 
-import { CalendarCheck, FileText, Pill, Settings } from 'lucide-react';
+import { CalendarCheck, FileText, Pill, Settings, Heart, TestTube, MessageSquare } from 'lucide-react';
 
 export const notifications = [
     {
@@ -10,6 +10,7 @@ export const notifications = [
         read: false,
         icon: Settings,
         href: '/profile',
+        category: 'Settings'
     },
     {
         id: '1',
@@ -19,6 +20,7 @@ export const notifications = [
         read: false,
         icon: CalendarCheck,
         href: '/opd-queue',
+        category: 'Appointments'
     },
     {
         id: '2',
@@ -28,6 +30,7 @@ export const notifications = [
         read: false,
         icon: FileText,
         href: '/lab-reports',
+        category: 'Reports'
     },
     {
         id: '3',
@@ -37,6 +40,7 @@ export const notifications = [
         read: true,
         icon: Pill,
         href: '/medicines',
+        category: 'Medications'
     },
      {
         id: '4',
@@ -46,5 +50,36 @@ export const notifications = [
         read: true,
         icon: CalendarCheck,
         href: '/opd-queue',
+        category: 'Appointments'
+    },
+    {
+        id: '6',
+        title: 'New Message from Clinic',
+        description: 'Dr. Ramesh Babu\'s clinic sent you a message regarding your follow-up.',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3),
+        read: true,
+        icon: MessageSquare,
+        href: '/opd-queue',
+        category: 'Appointments'
+    },
+    {
+        id: '7',
+        title: 'Test Results Uploaded',
+        description: 'Your Liver Function Test results have been added to your record.',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 4),
+        read: true,
+        icon: TestTube,
+        href: '/lab-reports',
+        category: 'Reports'
+    },
+    {
+        id: '8',
+        title: 'Health Tracker Summary',
+        description: 'You met your activity goals for 5 days last week. Keep it up!',
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5),
+        read: true,
+        icon: Heart,
+        href: '/health-tracker',
+        category: 'General'
     }
 ];

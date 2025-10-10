@@ -41,6 +41,7 @@
     --nav-blood-bank: 0 70% 45%;
     --nav-profile: 150 70% 35%;
     --nav-emergency: 130 85% 28%;
+    --nav-notifications: 145 75% 32%;
   }
 
   .dark {
@@ -79,6 +80,7 @@
     --nav-blood-bank: 0 70% 40%;
     --nav-profile: 150 60% 45%;
     --nav-emergency: 130 75% 38%;
+    --nav-notifications: 145 65% 42%;
   }
 }
 
