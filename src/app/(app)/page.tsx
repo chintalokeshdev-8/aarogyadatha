@@ -90,15 +90,15 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <section>
         <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">Quick Access</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3">
           {quickAccessItems.map((item) => (
             <Link key={item.href} href={item.href} passHref>
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center text-center p-4">
-                <div className="p-3 rounded-full mb-3" style={{backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
-                    <item.icon className="h-8 w-8" style={{color: item.color}} />
+              <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center text-center p-2">
+                <div className="p-2 rounded-full mb-2" style={{backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
+                    <item.icon className="h-6 w-6" style={{color: item.color}} />
                 </div>
-                <p className="font-bold text-base leading-tight">{item.label}</p>
-                <p className="text-sm text-muted-foreground whitespace-normal">{item.description}</p>
+                <p className="font-bold text-sm leading-tight">{item.label}</p>
+                <p className="text-xs text-muted-foreground whitespace-normal">{item.description}</p>
               </Card>
             </Link>
           ))}
