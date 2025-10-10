@@ -5,7 +5,7 @@ import React, { useState, useTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -215,6 +215,8 @@ export default function MyMedicinesPage() {
     const [medicineSchedule, setMedicineSchedule] = useState(initialMedicineSchedule);
     const [editingMedicine, setEditingMedicine] = useState<any | null>(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [zoomedImage, setZoomedImage] = useState<{url: string, name: string} | null>(null);
+
 
     const handleSaveMedicine = (med: any) => {
         if (editingMedicine) {
@@ -301,7 +303,15 @@ export default function MyMedicinesPage() {
                                                     <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.frequency}</p>
                                                 </div>
                                                 <div className="flex flex-col items-end gap-2">
-                                                     <Image src={med.image} alt={med.name} width={64} height={64} data-ai-hint={med.dataAiHint} className="rounded-md border-2 border-background" />
+                                                     <div 
+                                                        className="relative group cursor-pointer"
+                                                        onClick={() => setZoomedImage({url: med.image, name: med.name})}
+                                                     >
+                                                        <Image src={med.image} alt={med.name} width={64} height={64} data-ai-hint={med.dataAiHint} className="rounded-md border-2 border-background group-hover:opacity-80 transition-opacity" />
+                                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                                                            <Search className="text-white h-6 w-6" />
+                                                        </div>
+                                                     </div>
                                                      <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2" onClick={() => openEditDialog(med)}>
                                                         <Pencil className="h-4 w-4 text-muted-foreground"/>
                                                     </Button>
@@ -419,6 +429,32 @@ export default function MyMedicinesPage() {
                 </DialogHeader>
                 <MedicineForm medicine={editingMedicine} onSave={handleSaveMedicine} />
             </DialogContent>
+            
+            {zoomedImage && (
+                <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
+                    <DialogContent className="max-w-md flex flex-col p-0 border-0">
+                         <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm flex-row items-center justify-between">
+                            <DialogTitle>{zoomedImage.name}</DialogTitle>
+                            <DialogClose className="relative right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                                <X className="h-6 w-6" />
+                                <span className="sr-only">Close</span>
+                            </DialogClose>
+                         </DialogHeader>
+                        <div className="flex-1 relative bg-muted/20 flex items-center justify-center p-4">
+                            <Image
+                                src={zoomedImage.url}
+                                alt={`Enlarged view of ${zoomedImage.name}`}
+                                width={400}
+                                height={400}
+                                style={{objectFit: "contain"}}
+                                className="rounded-lg"
+                            />
+                        </div>
+                    </DialogContent>
+                </Dialog>
+            )}
         </Dialog>
     );
 }
+
+    
