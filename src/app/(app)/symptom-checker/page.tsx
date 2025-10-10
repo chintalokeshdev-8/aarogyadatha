@@ -127,19 +127,6 @@ export default function SymptomCheckerPage() {
                 <p className="text-muted-foreground mt-2">Describe your symptoms to get intelligent health guidance.</p>
             </div>
             
-            <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/40">
-                <CardContent className="p-4 flex items-start gap-4">
-                    <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-1 flex-shrink-0" />
-                    <div>
-                        <h3 className="font-bold text-yellow-800 dark:text-yellow-300">Disclaimer (గమనిక)</h3>
-                        <div className="text-sm text-yellow-700 dark:text-yellow-400/80 space-y-1 mt-1">
-                           <p>This is for first-aid guidance only, not a medical diagnosis. Always consult a doctor.</p>
-                           <p>ఇది ప్రథమ చికిత్స కోసం మాత్రమే, వైద్య నిర్ధారణ కాదు. ఎల్లప్పుడూ వైద్యుడిని సంప్రదించండి.</p>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
-
             <Card>
                 <CardHeader>
                     <CardTitle>1. Select Common Symptoms</CardTitle>
@@ -223,6 +210,19 @@ export default function SymptomCheckerPage() {
                     </CardFooter>
                 </Card>
             )}
+
+            <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/40">
+                <CardContent className="p-4 flex items-start gap-4">
+                    <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-1 flex-shrink-0" />
+                    <div>
+                        <h3 className="font-bold text-yellow-800 dark:text-yellow-300">Disclaimer (గమనిక)</h3>
+                        <div className="text-sm text-yellow-700 dark:text-yellow-400/80 space-y-1 mt-1">
+                           <p>This is for first-aid guidance only, not a medical diagnosis. Always consult a doctor.</p>
+                           <p>ఇది ప్రథమ చికిత్స కోసం మాత్రమే, వైద్య నిర్ధారణ కాదు. ఎల్లప్పుడూ వైద్యుడిని సంప్రదించండి.</p>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
 
             <div className="p-4 sticky bottom-20">
                     <Button onClick={handleSubmit} disabled={isPending || (selectedSymptoms.length === 0 && customSymptom.trim() === '')} className="w-full h-12 text-lg font-bold" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
