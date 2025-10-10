@@ -24,7 +24,7 @@ import { dummyReportData } from '@/lib/dummy-report-data';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
-import { FlowerFall } from '@/components/ui/flower-fall';
+import { FlowerFall } from '@/components/ui/flower_fall';
 import { analyzeReport, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -742,7 +742,7 @@ export default function AppointmentsPage() {
     return (
         <div className="space-y-8">
             <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find & Manage Appointments</h1>
+                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find &amp; Manage Appointments</h1>
                 <p className="text-muted-foreground mt-2">Find the right doctor for your needs and review your history.</p>
             </div>
 
@@ -917,7 +917,7 @@ export default function AppointmentsPage() {
                         <CardContent>
                              <div className="grid md:grid-cols-2 gap-6">
                                 {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                                    <Collapsible key={index} defaultOpen className="border rounded-lg bg-background">
+                                    <Collapsible key={index} className="border rounded-lg bg-background">
                                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                             <div className="flex-1">
                                                 <p className="text-xl font-bold">{appt.problem}</p>
@@ -927,7 +927,7 @@ export default function AppointmentsPage() {
                                             <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0 mt-1" />
                                         </CollapsibleTrigger>
                                         <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
-                                            <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription & Follow-up History</h4>
+                                            <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription &amp; Follow-up History</h4>
                                             {appt.prescriptions.length > 0 ? (
                                                 <div className="space-y-4">
                                                     {appt.prescriptions.map((item, pIndex) => (
