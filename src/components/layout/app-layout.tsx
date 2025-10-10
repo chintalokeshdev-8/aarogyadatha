@@ -166,7 +166,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
   const [visibleMenuItems, setVisibleMenuItems] = React.useState<MenuItem[]>([]);
   const [navSettings, setNavSettings] = React.useState<Record<string, boolean>>({});
-  const { toast } = useToast();
 
   React.useEffect(() => {
     setIsClient(true);
@@ -191,10 +190,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     const newSettings = { ...navSettings, [id]: isEnabled };
     setNavSettings(newSettings);
     localStorage.setItem('navSettings', JSON.stringify(newSettings));
-    toast({
-        title: "Navigation Updated",
-        description: "Your changes will be applied on the next page load.",
-    });
+    // The toast is removed as per user request.
+    // The user will see the new notification in the alerts dropdown.
+    
     // Optimistically update the visible menu items for instant feedback
     const finalVisibleItems = allMenuItems.filter(item => newSettings[item.id] !== false);
     setVisibleMenuItems(finalVisibleItems);
@@ -248,7 +246,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <Switch
               checked={navSettings[item.id] === undefined ? item.defaultVisible : navSettings[item.id]}
               onCheckedChange={(checked) => handleToggle(item.id, checked)}
-              className="h-5 w-9 data-[state=checked]:bg-green-500"
           />
       </DropdownMenuItem>
     );

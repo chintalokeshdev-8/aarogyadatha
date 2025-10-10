@@ -1,7 +1,16 @@
 
-import { CalendarCheck, FileText, Pill } from 'lucide-react';
+import { CalendarCheck, FileText, Pill, Settings } from 'lucide-react';
 
 export const notifications = [
+    {
+        id: '5',
+        title: 'Navigation Updated',
+        description: 'Your changes will be applied on the next page load.',
+        timestamp: new Date(),
+        read: false,
+        icon: Settings,
+        href: '/profile',
+    },
     {
         id: '1',
         title: 'Appointment Reminder',
