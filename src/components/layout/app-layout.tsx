@@ -168,15 +168,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     setIsClient(true);
     const savedNavSettings = localStorage.getItem('navSettings');
+    let finalVisibleItems: MenuItem[];
     if (savedNavSettings) {
         const settings = JSON.parse(savedNavSettings);
-        const enabledItems = allMenuItems.filter(item => settings[item.id] !== false);
-        setVisibleMenuItems(enabledItems);
+        finalVisibleItems = allMenuItems.filter(item => settings[item.id] !== false);
     } else {
         // Default visible items if no settings are saved
-        setVisibleMenuItems(allMenuItems.filter(item => item.defaultVisible));
+        finalVisibleItems = allMenuItems.filter(item => item.defaultVisible);
     }
-  }, []);
+    setVisibleMenuItems(finalVisibleItems);
+  }, [pathname]); // Rerun on path change to allow settings to apply
 
 
   const handleScrollRight = () => {

@@ -84,7 +84,7 @@ function CustomizeNavigationCard() {
         localStorage.setItem('navSettings', JSON.stringify(newSettings));
         toast({
             title: "Navigation Updated",
-            description: "Your changes have been saved. Refresh to see the new navigation bar.",
+            description: "Your changes have been saved. Refresh the page to see them.",
         });
     };
 
@@ -106,7 +106,7 @@ function CustomizeNavigationCard() {
                             <p className="font-semibold">{item.label}</p>
                         </div>
                         <Switch
-                            checked={navSettings[item.id] !== false}
+                            checked={navSettings[item.id] === undefined ? item.defaultVisible : navSettings[item.id]}
                             onCheckedChange={(checked) => handleToggle(item.id, checked)}
                         />
                     </div>
