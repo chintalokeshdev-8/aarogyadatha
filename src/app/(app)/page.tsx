@@ -129,7 +129,23 @@ export default function DashboardPage() {
               </div>
           </CardContent>
       </Card>
-
+      
+      <section>
+        <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">Quick Access</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {quickAccessItems.map((item) => (
+            <Link key={item.href} href={item.href} passHref>
+              <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center text-center p-4">
+                <div className="p-3 rounded-full mb-3" style={{backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
+                    <item.icon className="h-8 w-8" style={{color: item.color}} />
+                </div>
+                <p className="font-bold text-base leading-tight">{item.label}</p>
+                <p className="text-sm text-muted-foreground whitespace-normal">{item.description}</p>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </section>
 
        <Card>
           <CardHeader>
@@ -161,24 +177,6 @@ export default function DashboardPage() {
               ))}
           </CardContent>
       </Card>
-
-
-      <section>
-        <h2 className="text-xl font-semibold mb-4">Quick Access</h2>
-        <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
-          {quickAccessItems.map((item) => (
-            <Link key={item.href} href={item.href} passHref>
-              <Card className="text-center p-2 hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center aspect-square">
-                <div className="p-2 rounded-full mb-2" style={{backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
-                    <item.icon className="h-8 w-8" style={{color: item.color}} />
-                </div>
-                <p className="font-bold text-xs leading-tight">{item.label}</p>
-                <p className="text-xs text-muted-foreground whitespace-normal">{item.description}</p>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </section>
       
       <div className="grid md:grid-cols-2 gap-8">
         <section>
