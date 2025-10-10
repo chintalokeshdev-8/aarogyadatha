@@ -305,6 +305,24 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             <span className="font-semibold">Blood Bank</span>
                                         </DropdownMenuItem>
                                     </Link>
+                                    <Link href="/surgery-care" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <Stethoscope className="mr-3 text-primary" />
+                                            <span className="font-semibold">Surgery Care</span>
+                                        </DropdownMenuItem>
+                                    </Link>
+                                    <Link href="/health-tracker" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <Heart className="mr-3 text-primary" />
+                                            <span className="font-semibold">Health Tracker</span>
+                                        </DropdownMenuItem>
+                                    </Link>
+                                    <Link href="/pregnancy-tracker" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <PregnantLadyIcon className="mr-3 text-primary" />
+                                            <span className="font-semibold">Pregnancy Care</span>
+                                        </DropdownMenuItem>
+                                    </Link>
                                     <Link href="/settings" passHref>
                                         <DropdownMenuItem className="p-3">
                                             <Settings className="mr-3 text-primary" />
