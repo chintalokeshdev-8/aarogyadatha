@@ -52,6 +52,8 @@ import { AnimatedActivityIcon } from "../icons/animated-activity-icon";
 import { askAiAssistant, AiAssistantOutput } from '@/ai/flows/ai-assistant';
 import { Textarea } from "../ui/textarea";
 import { allMenuItems, type MenuItem } from "@/lib/nav-config";
+import { Switch } from "../ui/switch";
+import { useToast } from "@/hooks/use-toast";
 
 
 const familyAccounts = [
@@ -163,21 +165,40 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const isMobile = useIsMobile();
   const [visibleMenuItems, setVisibleMenuItems] = React.useState<MenuItem[]>([]);
-
+  const [navSettings, setNavSettings] = React.useState<Record<string, boolean>>({});
+  const { toast } = useToast();
 
   React.useEffect(() => {
     setIsClient(true);
     const savedNavSettings = localStorage.getItem('navSettings');
-    let finalVisibleItems: MenuItem[];
+    let settings: Record<string, boolean>;
     if (savedNavSettings) {
-        const settings = JSON.parse(savedNavSettings);
-        finalVisibleItems = allMenuItems.filter(item => settings[item.id] !== false);
+        settings = JSON.parse(savedNavSettings);
     } else {
-        // Default visible items if no settings are saved
-        finalVisibleItems = allMenuItems.filter(item => item.defaultVisible);
+        settings = {};
+        allMenuItems.forEach(item => {
+            settings[item.id] = item.defaultVisible;
+        });
     }
+    setNavSettings(settings);
+
+    const finalVisibleItems = allMenuItems.filter(item => settings[item.id] !== false);
     setVisibleMenuItems(finalVisibleItems);
+
   }, [pathname]); // Rerun on path change to allow settings to apply
+
+  const handleToggle = (id: string, isEnabled: boolean) => {
+    const newSettings = { ...navSettings, [id]: isEnabled };
+    setNavSettings(newSettings);
+    localStorage.setItem('navSettings', JSON.stringify(newSettings));
+    toast({
+        title: "Navigation Updated",
+        description: "Your changes will be applied on the next page load.",
+    });
+    // Optimistically update the visible menu items for instant feedback
+    const finalVisibleItems = allMenuItems.filter(item => newSettings[item.id] !== false);
+    setVisibleMenuItems(finalVisibleItems);
+  };
 
 
   const handleScrollRight = () => {
@@ -214,6 +235,25 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
 
   const showMobileSearch = isMobile && isSearchOpen;
+  
+  const getCustomizableItem = (id: string) => {
+    const item = allMenuItems.find(i => i.id === id);
+    if (!item || !item.customizable) return null;
+    return (
+      <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="p-3 justify-between">
+          <div className="flex items-center gap-3">
+              <item.icon className="mr-0 text-primary" style={{color: item.color}}/>
+              <span className="font-semibold">{item.label}</span>
+          </div>
+          <Switch
+              checked={navSettings[item.id] === undefined ? item.defaultVisible : navSettings[item.id]}
+              onCheckedChange={(checked) => handleToggle(item.id, checked)}
+              className="h-5 w-9 data-[state=checked]:bg-green-500"
+          />
+      </DropdownMenuItem>
+    );
+  };
+
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/30">
@@ -302,24 +342,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             <span className="font-semibold">Blood Bank</span>
                                         </DropdownMenuItem>
                                     </Link>
-                                    <Link href="/surgery-care" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <Stethoscope className="mr-3 text-primary" />
-                                            <span className="font-semibold">Surgery Care</span>
-                                        </DropdownMenuItem>
-                                    </Link>
-                                    <Link href="/health-tracker" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <Heart className="mr-3 text-primary" />
-                                            <span className="font-semibold">Health Tracker</span>
-                                        </DropdownMenuItem>
-                                    </Link>
-                                    <Link href="/pregnancy-tracker" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <PregnantLadyIcon className="mr-3 text-primary" />
-                                            <span className="font-semibold">Pregnancy Care</span>
-                                        </DropdownMenuItem>
-                                    </Link>
+                                    
+                                    {getCustomizableItem('surgery')}
+                                    {getCustomizableItem('healthTracker')}
+                                    {getCustomizableItem('pregnancy')}
+                                    
                                     <Link href="/settings" passHref>
                                         <DropdownMenuItem className="p-3">
                                             <Settings className="mr-3 text-primary" />
