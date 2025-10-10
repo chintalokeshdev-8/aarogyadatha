@@ -285,27 +285,27 @@ export default function MyMedicinesPage() {
                                 <div className="space-y-4">
                                     {medicineSchedule.map((med, index) => (
                                         <div key={index} className='p-4 rounded-lg bg-muted/30 border'>
-                                            <div className="flex items-start justify-between">
-                                                <div className="flex items-start gap-4">
-                                                    <Image src={med.image} alt={med.name} width={64} height={64} data-ai-hint={med.dataAiHint} className="rounded-md border-2 border-background" />
-                                                    <div>
-                                                        <div className="flex items-baseline gap-2">
-                                                            <p className="font-extrabold text-xl">{med.name}</p>
-                                                            <p className="font-bold text-lg text-muted-foreground">{med.teluguName}</p>
-                                                        </div>
-                                                        <div className="font-semibold text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
-                                                            <Info className="h-4 w-4" />
-                                                            <div>
-                                                                <p>{med.use}</p>
-                                                                <p className="text-sm">{med.teluguUse}</p>
-                                                            </div>
-                                                        </div>
-                                                        <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.frequency}</p>
+                                            <div className="flex items-start justify-between gap-4">
+                                                <div className='flex-1'>
+                                                    <div className="flex items-baseline gap-2">
+                                                        <p className="font-extrabold text-xl">{med.name}</p>
+                                                        <p className="font-bold text-lg text-muted-foreground">{med.teluguName}</p>
                                                     </div>
+                                                    <div className="font-semibold text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
+                                                        <Info className="h-4 w-4" />
+                                                        <div>
+                                                            <p>{med.use}</p>
+                                                            <p className="text-sm">{med.teluguUse}</p>
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.frequency}</p>
                                                 </div>
-                                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEditDialog(med)}>
-                                                    <Pencil className="h-4 w-4 text-muted-foreground"/>
-                                                </Button>
+                                                <div className="flex flex-col items-end gap-2">
+                                                     <Image src={med.image} alt={med.name} width={64} height={64} data-ai-hint={med.dataAiHint} className="rounded-md border-2 border-background" />
+                                                     <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2" onClick={() => openEditDialog(med)}>
+                                                        <Pencil className="h-4 w-4 text-muted-foreground"/>
+                                                    </Button>
+                                                </div>
                                             </div>
                                             <div className="flex flex-wrap gap-2 mt-4">
                                                 {med.alerts.map(alert => (
@@ -422,5 +422,3 @@ export default function MyMedicinesPage() {
         </Dialog>
     );
 }
-
-    
