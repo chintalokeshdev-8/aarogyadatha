@@ -54,7 +54,7 @@ export default function InsurancesPage() {
     return (
         <div className="max-w-4xl mx-auto space-y-8">
             <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>Health Insurance</h1>
+                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>Insurances</h1>
                 <p className="text-muted-foreground mt-2">Manage your insurance policies and network hospitals.</p>
             </div>
             
