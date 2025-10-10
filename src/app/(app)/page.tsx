@@ -93,8 +93,8 @@ export default function DashboardPage() {
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-3">
           {quickAccessItems.map((item) => (
             <Link key={item.href} href={item.href} passHref>
-              <Card className="hover:bg-muted/50 transition-colors cursor-pointer h-full flex flex-col items-center justify-center text-center p-2 border-2">
-                <div className="p-2 rounded-full mb-2" style={{backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
+              <Card className="hover:shadow-md transition-colors cursor-pointer h-full flex flex-col items-center justify-center text-center p-2 border-2" style={{ backgroundColor: `${item.color.replace(')', ' / 0.1)')}`}}>
+                <div className="p-2 rounded-full mb-2">
                     <item.icon className="h-6 w-6" style={{color: item.color}} />
                 </div>
                 <p className="font-bold text-sm leading-tight">{item.label}</p>
