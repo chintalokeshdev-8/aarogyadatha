@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { medicineSchedule as initialMedicineSchedule, medicineHistoryData } from '@/lib/medicines-data';
+import Image from 'next/image';
 
 
 
@@ -286,9 +287,7 @@ export default function MyMedicinesPage() {
                                         <div key={index} className='p-4 rounded-lg bg-muted/30 border'>
                                             <div className="flex items-start justify-between">
                                                 <div className="flex items-start gap-4">
-                                                     <div className="pt-1">
-                                                        <AlarmClock className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
-                                                    </div>
+                                                    <Image src={med.image} alt={med.name} width={64} height={64} data-ai-hint={med.dataAiHint} className="rounded-md border-2 border-background" />
                                                     <div>
                                                         <div className="flex items-baseline gap-2">
                                                             <p className="font-extrabold text-xl">{med.name}</p>

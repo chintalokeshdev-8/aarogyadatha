@@ -1,3 +1,4 @@
+
 export const medicineSchedule = [
     { 
         name: "Paracetamol", 
@@ -6,6 +7,8 @@ export const medicineSchedule = [
         teluguUse: "జ్వరం మరియు నొప్పి నివారణకు", 
         dosage: "500mg", 
         frequency: "3 times a day",
+        image: "https://picsum.photos/seed/paracetamol/100/100",
+        dataAiHint: "white tablet",
         alerts: [
             { time: "9:00 AM", status: "taken" },
             { time: "1:00 PM", status: "taken" },
@@ -19,6 +22,8 @@ export const medicineSchedule = [
         teluguUse: "ఎముకల ఆరోగ్యానికి", 
         dosage: "60000 IU", 
         frequency: "Once a week",
+        image: "https://picsum.photos/seed/vitamind/100/100",
+        dataAiHint: "yellow softgel",
         alerts: [
             { time: "1:00 PM", status: "taken" }
         ]
@@ -30,6 +35,8 @@ export const medicineSchedule = [
         teluguUse: "రక్తంలో చక్కెరను నియంత్రించడానికి", 
         dosage: "1000mg", 
         frequency: "Twice a day",
+        image: "https://picsum.photos/seed/metformin/100/100",
+        dataAiHint: "white pill",
         alerts: [
             { time: "8:30 AM", status: "missed" },
             { time: "8:30 PM", status: "pending" },
@@ -42,6 +49,8 @@ export const medicineSchedule = [
         teluguUse: "గుండె ఆరోగ్యానికి", 
         dosage: "1 capsule", 
         frequency: "Once a day",
+        image: "https://picsum.photos/seed/omega3/100/100",
+        dataAiHint: "fish oil capsule",
         alerts: [
             { time: "9:30 PM", status: "pending" },
         ]
