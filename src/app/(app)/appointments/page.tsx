@@ -26,6 +26,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
 import { FlowerFall } from '@/components/ui/flower-fall';
 import { analyzeReport, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
 const hospitalsData: Record<string, { location: string; address: string; phone: string; website: string; }> = {
@@ -745,102 +746,326 @@ export default function AppointmentsPage() {
                 <p className="text-muted-foreground mt-2">Find the right doctor for your needs and review your history.</p>
             </div>
 
-            <Card className="p-4 shadow-sm">
-                <CardHeader className="p-2 pt-0">
-                    <CardTitle>Find a Doctor</CardTitle>
-                </CardHeader>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-                    <div className="relative md:col-span-2">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input 
-                            placeholder="Doctor or hospital..." 
-                            className="pl-10" 
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
-                    <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select Department" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {uniqueDepartments.map(dep => (
-                                <SelectItem key={dep.value} value={dep.value}>
-                                    <div className="flex items-center gap-2">
-                                        <dep.icon className="h-4 w-4" />
-                                        {dep.label}
-                                    </div>
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    <Select value={selectedHospital} onValueChange={setSelectedHospital}>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select Hospital" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {hospitals.map(h => <SelectItem key={h} value={h}>{h}</SelectItem>)}
-                        </SelectContent>
-                    </Select>
-                     <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-                         <SelectTrigger>
-                            <div className="flex items-center gap-2">
-                               <MapPin className="h-4 w-4" />
-                               <SelectValue placeholder="Location" />
-                            </div>
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Locations</SelectItem>
-                            <SelectItem value="Hyderabad">Hyderabad</SelectItem>
-                             <SelectItem value="Guntur">Guntur</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Button className="md:col-start-5" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handleFilter}>Go</Button>
-                </div>
-            </Card>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {filteredDoctors.map((doctor, index) => {
-                    const isBooking = bookingDoctor === doctor.name;
-                    return (
-                        <Card key={index} className="transition-shadow hover:shadow-md">
-                            <CardContent className="p-6">
-                                <div className="flex flex-col sm:flex-row gap-6">
-                                    <Avatar className="h-28 w-28 border-4" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
-                                        <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
-                                        <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-3">
-                                            <h3 className="text-2xl font-bold">{doctor.name}</h3>
-                                            {(doctor as any).recommended && (
-                                                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
-                                                    <Star className="h-3 w-3 mr-1" />
-                                                    Recommended
-                                                </Badge>
-                                            )}
+            <Tabs defaultValue="find-doctor" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
+                    <TabsTrigger value="history">Appointments History</TabsTrigger>
+                </TabsList>
+                <TabsContent value="find-doctor" className="mt-6">
+                    <div className="space-y-6">
+                        <Card className="p-4 shadow-sm">
+                            <CardHeader className="p-2 pt-0">
+                                <CardTitle>Find a Doctor</CardTitle>
+                            </CardHeader>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+                                <div className="relative md:col-span-2">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                    <Input 
+                                        placeholder="Doctor or hospital..." 
+                                        className="pl-10" 
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                </div>
+                                <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Department" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {uniqueDepartments.map(dep => (
+                                            <SelectItem key={dep.value} value={dep.value}>
+                                                <div className="flex items-center gap-2">
+                                                    <dep.icon className="h-4 w-4" />
+                                                    {dep.label}
+                                                </div>
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <Select value={selectedHospital} onValueChange={setSelectedHospital}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select Hospital" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {hospitals.map(h => <SelectItem key={h} value={h}>{h}</SelectItem>)}
+                                    </SelectContent>
+                                </Select>
+                                 <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+                                     <SelectTrigger>
+                                        <div className="flex items-center gap-2">
+                                           <MapPin className="h-4 w-4" />
+                                           <SelectValue placeholder="Location" />
                                         </div>
-                                        <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold">{doctor.specialty}</p>
-                                        <p className="text-sm text-muted-foreground">{doctor.experience} experience</p>
-                                        <p className="text-sm text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All Locations</SelectItem>
+                                        <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                                         <SelectItem value="Guntur">Guntur</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Button className="md:col-start-5" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handleFilter}>Go</Button>
+                            </div>
+                        </Card>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {filteredDoctors.map((doctor, index) => {
+                                const isBooking = bookingDoctor === doctor.name;
+                                return (
+                                    <Card key={index} className="transition-shadow hover:shadow-md">
+                                        <CardContent className="p-6">
+                                            <div className="flex flex-col sm:flex-row gap-6">
+                                                <Avatar className="h-28 w-28 border-4" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
+                                                    <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
+                                                    <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                                </Avatar>
+                                                <div className="flex-1">
+                                                    <div className="flex items-center gap-3">
+                                                        <h3 className="text-2xl font-bold">{doctor.name}</h3>
+                                                        {(doctor as any).recommended && (
+                                                            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                                                                <Star className="h-3 w-3 mr-1" />
+                                                                Recommended
+                                                            </Badge>
+                                                        )}
+                                                    </div>
+                                                    <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold">{doctor.specialty}</p>
+                                                    <p className="text-sm text-muted-foreground">{doctor.experience} experience</p>
+                                                    <p className="text-sm text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
+                                                </div>
+                                            </div>
+                                            <div className="mt-4 space-y-3 text-sm">
+                                                <p><strong className="font-semibold">Successful Surgeries:</strong> {doctor.surgeries}</p>
+                                                <p><strong className="font-semibold">Main Focus:</strong> {doctor.mainDealing}</p>
+                                            </div>
+                                             <div className="mt-6 flex justify-end gap-2">
+                                                <Button variant="outline" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
+                                                <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
+                                                    {isBooking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                                    {isBooking ? 'Booking...' : 'Book Appointment'}
+                                                </Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </TabsContent>
+                <TabsContent value="history" className="mt-6">
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
+                             <CardDescription>
+                                Review your past consultations and prescriptions, grouped by health concern.
+                                <br />
+                                మీ గత సంప్రదింపులు మరియు ప్రిస్క్రిప్షన్‌లను, ఆరోగ్య సమస్యల వారీగా సమీక్షించండి.
+                            </CardDescription>
+                            <div className="border-t mt-4 pt-4">
+                                <div className="flex items-center justify-between mb-4">
+                                   <div className="flex items-center gap-2">
+                                        <Filter className="h-5 w-5"/>
+                                        <h3 className="text-lg font-semibold">Filters</h3>
                                     </div>
-                                </div>
-                                <div className="mt-4 space-y-3 text-sm">
-                                    <p><strong className="font-semibold">Successful Surgeries:</strong> {doctor.surgeries}</p>
-                                    <p><strong className="font-semibold">Main Focus:</strong> {doctor.mainDealing}</p>
-                                </div>
-                                 <div className="mt-6 flex justify-end gap-2">
-                                    <Button variant="outline" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
-                                    <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
-                                        {isBooking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                        {isBooking ? 'Booking...' : 'Book Appointment'}
+                                     <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2">
+                                        <X className='mr-2 h-4 w-4' />
+                                        Clear Filters
                                     </Button>
                                 </div>
-                            </CardContent>
-                        </Card>
-                    )
-                })}
-            </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-center">
+                                    <div className="relative lg:col-span-2">
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        <Input 
+                                            placeholder="Search by reason, doctor, test..." 
+                                            className="pl-10"
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                        />
+                                    </div>
+                                    <Select value={filterDoctor} onValueChange={setFilterDoctor}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Filter by Doctor" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {allDoctors.map(doc => <SelectItem key={doc} value={doc}>{doc === 'all' ? 'All Doctors' : doc}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                            "justify-start text-left font-normal",
+                                            !filterDate && "text-muted-foreground"
+                                            )}
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {filterDate ? format(filterDate, "dd-MMM-yyyy") : <span>Filter by date</span>}
+                                        </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                        <CalendarComponent
+                                            mode="single"
+                                            selected={filterDate}
+                                            onSelect={setFilterDate}
+                                            initialFocus
+                                        />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                             <div className="grid md:grid-cols-2 gap-6">
+                                {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
+                                    <Collapsible key={index} defaultOpen className="border rounded-lg bg-background">
+                                        <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
+                                            <div className="flex-1">
+                                                <p className="text-xl font-bold">{appt.problem}</p>
+                                                <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
+                                                <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {format(new Date(appt.date), 'dd-MMM-yyyy')} by {appt.initialDoctor}</div>
+                                            </div>
+                                            <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0 mt-1" />
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
+                                            <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription & Follow-up History</h4>
+                                            {appt.prescriptions.length > 0 ? (
+                                                <div className="space-y-4">
+                                                    {appt.prescriptions.map((item, pIndex) => (
+                                                        <div key={pIndex}>
+                                                            {item.title === 'Condition Status' && item.status === 'Resolved' ? (
+                                                                 <div className='p-4 border bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-800 rounded-lg text-center relative overflow-hidden'>
+                                                                    <FlowerFall />
+                                                                    <div className="relative z-10">
+                                                                        <PartyPopper className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-2"/>
+                                                                        <p className="font-bold text-lg text-blue-800 dark:text-blue-300">Congratulations on your recovery!</p>
+                                                                        <p className="text-sm text-blue-700 dark:text-blue-400/80">{item.summary}</p>
+                                                                    </div>
+                                                                 </div>
+                                                            ) : (
+                                                                <div className='p-4 border bg-background rounded-lg'>
+                                                                    <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
+                                                                            <div className="font-bold text-base flex items-baseline gap-x-2 flex-wrap">
+                                                                                <span>{item.title}</span>
+                                                                                <span className="text-sm text-muted-foreground font-normal">by</span>
+                                                                                <span className="font-bold text-base" style={{color: 'hsl(var(--nav-appointments))'}}>{item.doctor}</span>
+                                                                                <span className="text-sm text-muted-foreground font-normal">on</span>
+                                                                                <span className="font-semibold text-base">{item.date}</span>
+                                                                            </div>
+                                                                        <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn('w-fit', item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
+                                                                    </div>
+                                                                    
+                                                                    <div className="flex items-center gap-2">
+                                                                         <Dialog>
+                                                                            <DialogTrigger asChild>
+                                                                                <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
+                                                                                    <View className="mr-2 h-4 w-4" /> View Details
+                                                                                </Button>
+                                                                            </DialogTrigger>
+                                                                            <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0">
+                                                                                <DialogHeader className="p-6 pb-4">
+                                                                                    <DialogTitle>{item.title}</DialogTitle>
+                                                                                    <DialogDescription>
+                                                                                        Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{item.doctor}</span>.
+                                                                                    </DialogDescription>
+                                                                                </DialogHeader>
+                                                                                <div className="overflow-y-auto px-6 pb-6 space-y-6 flex-1">
+                                                                                    
+                                                                                    {item.prescriptionImages && item.prescriptionImages.length > 0 && (
+                                                                                        <div>
+                                                                                            <h4 className='font-semibold mb-2 text-base'>Prescription Images</h4>
+                                                                                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                                                                                {item.prescriptionImages.map((img: any, imgIndex: number) => (
+                                                                                                    <div key={imgIndex} className="cursor-pointer group relative" onClick={() => setZoomedImage(img.url)}>
+                                                                                                        <Image 
+                                                                                                            src={img.url} 
+                                                                                                            alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
+                                                                                                            width={150}
+                                                                                                            height={210}
+                                                                                                            data-ai-hint={img.dataAiHint}
+                                                                                                            className="rounded-lg border group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
+                                                                                                        />
+                                                                                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                                                                                                            <Search className="text-white h-6 w-6" />
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                ))}
+                                                                                            </div>
+                                                                                            <Separator className="my-4" />
+                                                                                        </div>
+                                                                                    )}
+                                                                                    
+                                                                                    {item.medicines && item.medicines.length > 0 && (
+                                                                                        <div>
+                                                                                            <h4 className='font-semibold mb-2 text-base'>Medications</h4>
+                                                                                            <div className="flex flex-wrap gap-2">
+                                                                                                {item.medicines.map((med: string) => <Badge key={med} variant='secondary' className="text-sm">{med}</Badge>)}
+                                                                                            </div>
+                                                                                             <Separator className="my-4" />
+                                                                                        </div>
+                                                                                    )}
+                                                                                    
+                                                                                    {item.summary && (
+                                                                                        <div>
+                                                                                            <h4 className='font-semibold mb-2 text-base'>Condition Summary</h4>
+                                                                                            <p className='text-sm text-muted-foreground'>{item.summary}</p>
+                                                                                             <Separator className="my-4" />
+                                                                                        </div>
+                                                                                    )}
+                                                                                    
+                                                                                    {item.details && item.details.length > 0 && (
+                                                                                         <div>
+                                                                                            <h4 className='font-semibold mb-2 text-base'>Test Results</h4>
+                                                                                            <div className="space-y-2">
+                                                                                                {item.details.map((detail, dIndex) => (
+                                                                                                    <div key={dIndex} className="p-3 border rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                                                                                        <div className='mb-2 sm:mb-0'>
+                                                                                                            <p className="font-bold">{detail.name}</p>
+                                                                                                            <Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge>
+                                                                                                        </div>
+                                                                                                        <ViewReportDialog report={detail}>
+                                                                                                            <Button variant="outline" size="sm">
+                                                                                                                <View className="mr-2 h-4 w-4" /> View Report
+                                                                                                            </Button>
+                                                                                                        </ViewReportDialog>
+                                                                                                    </div>
+                                                                                                ))}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
+                                                                            </DialogContent>
+                                                                        </Dialog>
+
+                                                                       <UploadDialog
+                                                                            trigger={
+                                                                                <Button variant="outline" size="sm">
+                                                                                    <Upload className="mr-2 h-4 w-4" /> Upload
+                                                                                </Button>
+                                                                            }
+                                                                            appointmentId={index}
+                                                                            prescriptionId={pIndex}
+                                                                            onUpload={handleUpload}
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : (
+                                                <p className="text-base text-muted-foreground text-center py-4">No prescriptions found for this appointment.</p>
+                                            )}
+                                        </CollapsibleContent>
+                                    </Collapsible>
+                                )) : (
+                                    <div className="md:col-span-2 text-center p-8 text-muted-foreground">No appointments match your filters.</div>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+            </Tabs>
+            
 
             <Dialog open={isProfileOpen} onOpenChange={setProfileOpen}>
                 <DialogContent className="sm:max-w-2xl">
@@ -885,221 +1110,6 @@ export default function AppointmentsPage() {
                     )}
                 </DialogContent>
             </Dialog>
-
-             <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
-                     <CardDescription>
-                        Review your past consultations and prescriptions, grouped by health concern.
-                        <br />
-                        మీ గత సంప్రదింపులు మరియు ప్రిస్క్రిప్షన్‌లను, ఆరోగ్య సమస్యల వారీగా సమీక్షించండి.
-                    </CardDescription>
-                    <div className="border-t mt-4 pt-4">
-                        <div className="flex items-center justify-between mb-4">
-                           <div className="flex items-center gap-2">
-                                <Filter className="h-5 w-5"/>
-                                <h3 className="text-lg font-semibold">Filters</h3>
-                            </div>
-                             <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2">
-                                <X className='mr-2 h-4 w-4' />
-                                Clear Filters
-                            </Button>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-center">
-                            <div className="relative lg:col-span-2">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                <Input 
-                                    placeholder="Search by reason, doctor, test..." 
-                                    className="pl-10"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                            </div>
-                            <Select value={filterDoctor} onValueChange={setFilterDoctor}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Filter by Doctor" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {allDoctors.map(doc => <SelectItem key={doc} value={doc}>{doc === 'all' ? 'All Doctors' : doc}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                    "justify-start text-left font-normal",
-                                    !filterDate && "text-muted-foreground"
-                                    )}
-                                >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {filterDate ? format(filterDate, "dd-MMM-yyyy") : <span>Filter by date</span>}
-                                </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0">
-                                <CalendarComponent
-                                    mode="single"
-                                    selected={filterDate}
-                                    onSelect={setFilterDate}
-                                    initialFocus
-                                />
-                                </PopoverContent>
-                            </Popover>
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                        <Collapsible key={index} className="border rounded-lg bg-background">
-                            <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
-                                <div className="flex items-start gap-4">
-                                    <div className="text-5xl font-extrabold" style={{ color: 'hsl(var(--nav-appointments))' }}>
-                                        {index + 1}.
-                                    </div>
-                                    <div className="flex-1">
-                                        <p className="text-xl font-bold">{appt.problem}</p>
-                                        <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
-                                        <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {format(new Date(appt.date), 'dd-MMM-yyyy')} by {appt.initialDoctor}</div>
-                                    </div>
-                                </div>
-                                <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0 mt-1" />
-                            </CollapsibleTrigger>
-                            <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
-                                <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription & Follow-up History</h4>
-                                {appt.prescriptions.length > 0 ? (
-                                    <div className="space-y-4">
-                                        {appt.prescriptions.map((item, pIndex) => (
-                                            <div key={pIndex}>
-                                                {item.title === 'Condition Status' && item.status === 'Resolved' ? (
-                                                     <div className='p-4 border bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-800 rounded-lg text-center relative overflow-hidden'>
-                                                        <FlowerFall />
-                                                        <div className="relative z-10">
-                                                            <PartyPopper className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-2"/>
-                                                            <p className="font-bold text-lg text-blue-800 dark:text-blue-300">Congratulations on your recovery!</p>
-                                                            <p className="text-sm text-blue-700 dark:text-blue-400/80">{item.summary}</p>
-                                                        </div>
-                                                     </div>
-                                                ) : (
-                                                    <div className='p-4 border bg-background rounded-lg'>
-                                                        <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
-                                                                <div className="font-bold text-base flex items-baseline gap-x-2 flex-wrap">
-                                                                    <span>{item.title}</span>
-                                                                    <span className="text-sm text-muted-foreground font-normal">by</span>
-                                                                    <span className="font-bold text-base" style={{color: 'hsl(var(--nav-appointments))'}}>{item.doctor}</span>
-                                                                    <span className="text-sm text-muted-foreground font-normal">on</span>
-                                                                    <span className="font-semibold text-base">{item.date}</span>
-                                                                </div>
-                                                            <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn('w-fit', item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
-                                                        </div>
-                                                        
-                                                        <div className="flex items-center gap-2">
-                                                             <Dialog>
-                                                                <DialogTrigger asChild>
-                                                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
-                                                                        <View className="mr-2 h-4 w-4" /> View Details
-                                                                    </Button>
-                                                                </DialogTrigger>
-                                                                <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0">
-                                                                    <DialogHeader className="p-6 pb-4">
-                                                                        <DialogTitle>{item.title}</DialogTitle>
-                                                                        <DialogDescription>
-                                                                            Follow-up from {item.date} by <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{item.doctor}</span>.
-                                                                        </DialogDescription>
-                                                                    </DialogHeader>
-                                                                    <div className="overflow-y-auto px-6 pb-6 space-y-6 flex-1">
-                                                                        
-                                                                        {item.prescriptionImages && item.prescriptionImages.length > 0 && (
-                                                                            <div>
-                                                                                <h4 className='font-semibold mb-2 text-base'>Prescription Images</h4>
-                                                                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                                                                    {item.prescriptionImages.map((img: any, imgIndex: number) => (
-                                                                                        <div key={imgIndex} className="cursor-pointer group relative" onClick={() => setZoomedImage(img.url)}>
-                                                                                            <Image 
-                                                                                                src={img.url} 
-                                                                                                alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
-                                                                                                width={150}
-                                                                                                height={210}
-                                                                                                data-ai-hint={img.dataAiHint}
-                                                                                                className="rounded-lg border group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
-                                                                                            />
-                                                                                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-                                                                                                <Search className="text-white h-6 w-6" />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    ))}
-                                                                                </div>
-                                                                                <Separator className="my-4" />
-                                                                            </div>
-                                                                        )}
-                                                                        
-                                                                        {item.medicines && item.medicines.length > 0 && (
-                                                                            <div>
-                                                                                <h4 className='font-semibold mb-2 text-base'>Medications</h4>
-                                                                                <div className="flex flex-wrap gap-2">
-                                                                                    {item.medicines.map((med: string) => <Badge key={med} variant='secondary' className="text-sm">{med}</Badge>)}
-                                                                                </div>
-                                                                                 <Separator className="my-4" />
-                                                                            </div>
-                                                                        )}
-                                                                        
-                                                                        {item.summary && (
-                                                                            <div>
-                                                                                <h4 className='font-semibold mb-2 text-base'>Condition Summary</h4>
-                                                                                <p className='text-sm text-muted-foreground'>{item.summary}</p>
-                                                                                 <Separator className="my-4" />
-                                                                            </div>
-                                                                        )}
-                                                                        
-                                                                        {item.details && item.details.length > 0 && (
-                                                                             <div>
-                                                                                <h4 className='font-semibold mb-2 text-base'>Test Results</h4>
-                                                                                <div className="space-y-2">
-                                                                                    {item.details.map((detail, dIndex) => (
-                                                                                        <div key={dIndex} className="p-3 border rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                                                                                            <div className='mb-2 sm:mb-0'>
-                                                                                                <p className="font-bold">{detail.name}</p>
-                                                                                                <Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge>
-                                                                                            </div>
-                                                                                            <ViewReportDialog report={detail}>
-                                                                                                <Button variant="outline" size="sm">
-                                                                                                    <View className="mr-2 h-4 w-4" /> View Report
-                                                                                                </Button>
-                                                                                            </ViewReportDialog>
-                                                                                        </div>
-                                                                                    ))}
-                                                                                </div>
-                                                                            </div>
-                                                                        )}
-                                                                    </div>
-                                                                </DialogContent>
-                                                            </Dialog>
-
-                                                           <UploadDialog
-                                                                trigger={
-                                                                    <Button variant="outline" size="sm">
-                                                                        <Upload className="mr-2 h-4 w-4" /> Upload
-                                                                    </Button>
-                                                                }
-                                                                appointmentId={index}
-                                                                prescriptionId={pIndex}
-                                                                onUpload={handleUpload}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <p className="text-base text-muted-foreground text-center py-4">No prescriptions found for this appointment.</p>
-                                )}
-                            </CollapsibleContent>
-                        </Collapsible>
-                    )) : (
-                        <div className="text-center p-8 text-muted-foreground">No appointments match your filters.</div>
-                    )}
-                </CardContent>
-            </Card>
 
              {zoomedImage && (
                 <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
