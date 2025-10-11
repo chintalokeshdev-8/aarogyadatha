@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogFooter } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -986,11 +986,11 @@ export default function AppointmentsPage() {
                                                     </div>
                                                      <Badge variant="outline" className="mt-1 border-green-500 text-green-600 text-xs">Promo: MEDIBRIDGE</Badge>
                                                 </div>
-                                                <div className="flex w-full sm:w-auto justify-end gap-2">
+                                                <div className="flex w-full sm:w-auto shrink-0 gap-2">
                                                     <Button variant="outline" className="flex-1 sm:flex-auto" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
                                                     <Button className="flex-1 sm:flex-auto" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
                                                         {isBooking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                                        {isBooking ? 'Booking...' : 'Book'}
+                                                        {isBooking ? 'Booking...' : 'Book Appointment'}
                                                     </Button>
                                                 </div>
                                             </div>
