@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -954,7 +954,7 @@ export default function AppointmentsPage() {
                                     <Card key={index} className="transition-shadow hover:shadow-md">
                                         <CardContent className="p-4">
                                             <div className="flex flex-row gap-4">
-                                                <Avatar className="h-24 w-24 border-4 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
+                                                <Avatar className="h-20 w-20 border-4 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
                                                     <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
                                                     <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                                 </Avatar>
@@ -1344,3 +1344,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
