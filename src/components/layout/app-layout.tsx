@@ -219,7 +219,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   
   if (!isClient) {
     return (
-      <div className="flex flex-col min-h-screen bg-muted/30">
+      <div className="flex flex-col min-h-screen">
           <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-primary text-primary-foreground gap-4 h-16">
               <Link href="/" className="flex items-center gap-2">
                   <div className="p-1.5 bg-primary-foreground rounded-lg">
@@ -228,7 +228,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <h1 className="text-xl font-bold">medibridge</h1>
               </Link>
           </header>
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-40">
+          <main className="flex-1 pb-40">
               {children}
           </main>
       </div>
@@ -257,7 +257,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-muted/30">
+    <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-primary text-primary-foreground gap-4 h-20">
         {showMobileSearch ? (
             <div className="flex items-center gap-2 w-full">
@@ -275,19 +275,19 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <div className="p-1.5 bg-primary-foreground rounded-lg">
                         <AnimatedActivityIcon className="w-6 h-6 text-primary" />
                     </div>
-                    <h1 className="text-xl font-bold">medibridge</h1>
+                    <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
                 </Link>
 
                 <div className="hidden md:block flex-1 max-w-xl">
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input placeholder="Search for doctors, medicines, reports..." className="pl-10 bg-primary-foreground/20 placeholder:text-primary-foreground/70 text-primary-foreground" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/70" />
+                        <Input placeholder="Search for doctors, medicines, reports..." className="pl-10 bg-primary/80 border-primary-foreground/30 placeholder:text-primary-foreground/70 text-primary-foreground" />
                     </div>
                 </div>
 
                 <div className="flex items-center gap-2">
                     {isMobile && (
-                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full" onClick={() => setIsSearchOpen(true)}>
+                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setIsSearchOpen(true)}>
                             <Search className="h-5 w-5" />
                         </Button>
                     )}
@@ -296,7 +296,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                                    <Avatar className="h-10 w-10 border-2 border-primary-foreground">
+                                    <Avatar className="h-10 w-10 border-2 border-primary-foreground/50">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback className="bg-primary-foreground text-primary">CL</AvatarFallback>
                                     </Avatar>
@@ -390,8 +390,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </>
         )}
       </header>
-      <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-40">
+      <main className="flex-1 bg-muted/40 relative">
+        <div className="absolute top-0 left-0 w-full h-40 bg-primary -z-10"></div>
+        <div className="p-4 sm:p-6 lg:p-8 pb-40">
           {children}
+        </div>
       </main>
       <AiAssistantDialog />
       <footer className="fixed bottom-0 z-20 w-full bg-background border-t">
