@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { Skeleton } from '../ui/skeleton';
 import { Button } from '../ui/button';
 import Link from 'next/link';
-import { format } from 'date-fns';
+import { format } from "date-fns";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { generateOrganDietPlan, AiOrganDietPlanOutput } from '@/ai/flows/ai-organ-diet';
@@ -81,7 +81,9 @@ function OrganDietPlanGenerator({ organ }: { organ: any }) {
             const result = await generateOrganDietPlan({
                 organName: organ.name,
                 condition: organ.condition,
-                medications: activeMedications
+                medications: activeMedications,
+                height: '175 cm',
+                weight: '75 kg'
             });
             setDietPlan(result);
         });
@@ -90,9 +92,8 @@ function OrganDietPlanGenerator({ organ }: { organ: any }) {
     return (
         <div className="space-y-4 pt-4">
             {!dietPlan && !isPending && (
-                <div className="text-center p-4 bg-muted/40 rounded-lg">
-                    <p className="font-semibold text-sm">Get a personalized diet plan based on ICMR guidelines to support your {organ.name} health.</p>
-                     <Button onClick={handleGeneratePlan} className="w-full mt-4" style={{ backgroundColor: organ.color }}>
+                 <div className="text-center p-4 bg-muted/40 rounded-lg border">
+                     <Button onClick={handleGeneratePlan} className="w-full" style={{ backgroundColor: organ.color }}>
                         <Sparkles className="mr-2 h-4 w-4" /> Get AI Diet Plan
                     </Button>
                 </div>
