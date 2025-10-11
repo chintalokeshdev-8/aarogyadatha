@@ -164,7 +164,7 @@ export default function DashboardPage() {
                       <div className="p-3 rounded-full mb-1 bg-primary/10">
                         <item.icon className="h-7 w-7" style={{ color: item.color }} />
                       </div>
-                      <p className="font-semibold text-sm leading-tight">{item.label}</p>
+                      <p className="font-semibold text-sm leading-tight text-foreground">{item.label}</p>
                     </div>
                   </Link>
                 ))}
