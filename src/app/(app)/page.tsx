@@ -147,7 +147,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <section className="-mt-16">
+      <section className="-mt-28">
         <Card>
           <CardHeader>
             <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>

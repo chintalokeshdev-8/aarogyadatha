@@ -391,7 +391,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         )}
       </header>
       <main className="flex-1 bg-muted/40 relative">
-        <div className="absolute top-0 left-0 w-full h-40 bg-primary -z-10"></div>
+        <div className="absolute top-0 left-0 w-full h-52 bg-primary -z-10"></div>
         <div className="p-4 sm:p-6 lg:p-8 pb-40">
           {children}
         </div>
