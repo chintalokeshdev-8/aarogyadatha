@@ -70,7 +70,6 @@ export default function BloodBankPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedBloodType, setSelectedBloodType] = useState('All');
     const [selectedCity, setSelectedCity] = useState('All');
-    const [filterTrigger, setFilterTrigger] = useState(0);
 
     const handleSubmit = (e: React.FormEvent, successMessage: string) => {
         e.preventDefault();
@@ -95,10 +94,10 @@ export default function BloodBankPage() {
     const filteredBloodRequests = useMemo(() => {
         return bloodRequests.filter(req => {
             const bloodTypeMatch = selectedBloodType === 'All' || req.bloodType === selectedBloodType;
-            const cityMatch = selectedCity === 'All' || req.city === selectedCity;
+            const cityMatch = selectedCity === 'All' || req.city.toLowerCase() === selectedCity.toLowerCase();
             return bloodTypeMatch && cityMatch;
         });
-    }, [bloodRequests, selectedBloodType, selectedCity, filterTrigger]);
+    }, [bloodRequests, selectedBloodType, selectedCity]);
 
 
     return (
@@ -124,26 +123,23 @@ export default function BloodBankPage() {
                         <div className="mt-6">
                             <TabsContent value="find" className="mt-0">
                                 <div className="space-y-4">
-                                    <div className="grid sm:grid-cols-2 md:grid-cols-5 gap-4">
+                                    <div className="grid sm:grid-cols-2 gap-4">
                                         <Select value={selectedBloodType} onValueChange={setSelectedBloodType}>
-                                            <SelectTrigger className="md:col-span-2">
+                                            <SelectTrigger>
                                                 <SelectValue placeholder="Filter by Blood Type" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {bloodGroups.map(bg => <SelectItem key={bg} value={bg}>{bg}</SelectItem>)}
+                                                {bloodGroups.map(bg => <SelectItem key={bg} value={bg}>{bg === 'All' ? 'All Blood Types' : bg}</SelectItem>)}
                                             </SelectContent>
                                         </Select>
                                         <Select value={selectedCity} onValueChange={setSelectedCity}>
-                                            <SelectTrigger className="md:col-span-2">
+                                            <SelectTrigger>
                                                 <SelectValue placeholder="Filter by City" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {cities.map(city => <SelectItem key={city} value={city}>{city}</SelectItem>)}
+                                                {cities.map(city => <SelectItem key={city} value={city}>{city === 'All' ? 'All Cities' : city}</SelectItem>)}
                                             </SelectContent>
                                         </Select>
-                                        <Button className="bg-green-600 hover:bg-green-700" onClick={() => setFilterTrigger(ft => ft + 1)}>
-                                            <Search className="mr-2 h-4 w-4" /> Go
-                                        </Button>
                                     </div>
                                     <div className="space-y-3 max-h-96 overflow-y-auto p-1">
                                         {filteredBloodRequests.length === 0 && (
@@ -301,5 +297,7 @@ export default function BloodBankPage() {
 
     
 
+
+    
 
     
