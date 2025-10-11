@@ -149,28 +149,22 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <section>
         <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">Quick Access</h2>
-        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 gap-2">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-y-6 gap-x-4">
           {quickAccessItems.map((item) => (
             <Link key={item.href} href={item.href} passHref>
-              <Card 
-                className="hover:shadow-md transition-shadow cursor-pointer h-full flex flex-col items-center justify-center text-center p-2 border-2"
-                style={{
-                  backgroundColor: item.color.replace(')', ' / 0.1)'),
-                  borderColor: item.color,
-                  borderWidth: '2px'
-                }}
+              <div 
+                className="transition-transform hover:scale-105 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-2"
               >
-                <div className="p-1 rounded-full mb-1">
-                    <item.icon className="h-5 w-5" style={{color: item.color}} />
+                <div className="p-3 rounded-full mb-1 bg-primary/10">
+                    <item.icon className="h-7 w-7" style={{color: item.color}} />
                 </div>
-                <p className="font-bold text-[11px] leading-tight text-foreground">{item.label}</p>
-                <p className="text-[10px] text-foreground/80 whitespace-normal">{item.description}</p>
-              </Card>
+                <p className="font-semibold text-sm leading-tight text-foreground">{item.label}</p>
+              </div>
             </Link>
           ))}
         </div>
       </section>
-
+      
       <Separator />
 
       <section>
@@ -199,7 +193,7 @@ export default function DashboardPage() {
               </CardContent>
           </Card>
       </section>
-      
+
       <Separator />
 
       <div className="space-y-2">
