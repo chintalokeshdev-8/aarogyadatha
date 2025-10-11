@@ -127,6 +127,7 @@ const doctors = [
         mainDealing: "Complex angioplasty and valve replacements.",
         avatar: "https://picsum.photos/seed/doc1/100/100",
         dataAiHint: "male doctor portrait",
+        opFee: 800,
     },
     {
         name: "Dr. Lakshmi Narasaiah",
@@ -137,6 +138,7 @@ const doctors = [
         mainDealing: "Knee and hip replacements.",
         avatar: "https://picsum.photos/seed/doc2/100/100",
         dataAiHint: "female doctor",
+        opFee: 700,
     },
      {
         name: "Dr. Ramesh Babu",
@@ -147,6 +149,7 @@ const doctors = [
         mainDealing: "Chronic kidney disease and dialysis.",
         avatar: "https://picsum.photos/seed/doc8/100/100",
         dataAiHint: "male doctor professional",
+        opFee: 1000,
     },
     {
         name: "Dr. Padmavathi",
@@ -157,6 +160,7 @@ const doctors = [
         mainDealing: "High-risk pregnancies and IVF.",
         avatar: "https://picsum.photos/seed/doc9/100/100",
         dataAiHint: "female doctor professional",
+        opFee: 1200,
     },
     {
         name: "Dr. Rupa",
@@ -167,6 +171,7 @@ const doctors = [
         mainDealing: "Epilepsy and stroke treatment.",
         avatar: "https://picsum.photos/seed/doc3/100/100",
         dataAiHint: "female doctor professional",
+        opFee: 900,
     },
      {
         name: "Dr. Gondi Siva Rama Krishna",
@@ -177,6 +182,7 @@ const doctors = [
         mainDealing: "Nephrology and kidney diseases.",
         avatar: "https://picsum.photos/seed/doc15/100/100",
         dataAiHint: "male doctor glasses",
+        opFee: 850,
     },
     {
         name: "Dr. Posani Srinivasarao",
@@ -188,6 +194,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc16/100/100",
         dataAiHint: "male doctor senior",
         recommended: true,
+        opFee: 1500,
     },
     {
         name: "Dr. Anjali",
@@ -198,6 +205,7 @@ const doctors = [
         mainDealing: "General health check-ups and infectious diseases.",
         avatar: "https://picsum.photos/seed/doc4/100/100",
         dataAiHint: "female doctor smile",
+        opFee: 500,
     },
      {
         name: "Dr. Srinivas",
@@ -208,6 +216,7 @@ const doctors = [
         mainDealing: "Laparoscopic and general surgery.",
         avatar: "https://picsum.photos/seed/doc10/100/100",
         dataAiHint: "male doctor serious",
+        opFee: 750,
     },
     {
         name: "Dr. Anusha",
@@ -218,6 +227,7 @@ const doctors = [
         mainDealing: "Child care and vaccinations.",
         avatar: "https://picsum.photos/seed/doc5/100/100",
         dataAiHint: "female doctor glasses",
+        opFee: 600,
     },
     {
         name: "Dr. V. Venkata Naidu",
@@ -228,6 +238,7 @@ const doctors = [
         mainDealing: "Urology, advanced surgical procedures, and successful kidney transplants.",
         avatar: "https://picsum.photos/seed/doc11/100/100",
         dataAiHint: "male doctor experienced",
+        opFee: 1100,
     },
     {
         name: "Dr. G. Ravi Shankara Reddy",
@@ -238,6 +249,7 @@ const doctors = [
         mainDealing: "Orthopaedic consultations and treatments.",
         avatar: "https://picsum.photos/seed/doc14/100/100",
         dataAiHint: "male doctor professional",
+        opFee: 650,
     },
     {
         name: "Dr. Subbamma",
@@ -248,6 +260,7 @@ const doctors = [
         mainDealing: "Acne treatment and skin rejuvenation.",
         avatar: "https://picsum.photos/seed/doc6/100/100",
         dataAiHint: "female doctor professional",
+        opFee: 550,
     },
     {
         name: "Dr. Murali",
@@ -258,6 +271,7 @@ const doctors = [
         mainDealing: "Interventional Cardiology.",
         avatar: "https://picsum.photos/seed/doc17/100/100",
         dataAiHint: "male doctor portrait",
+        opFee: 800,
     },
     {
         name: "Dr. V. Sasikala",
@@ -268,6 +282,7 @@ const doctors = [
         mainDealing: "Critical care and intensive medical treatment.",
         avatar: "https://picsum.photos/seed/doc12/100/100",
         dataAiHint: "female doctor serious",
+        opFee: 950,
     },
     {
         name: "Dr. Jaya Lakshmi",
@@ -278,6 +293,7 @@ const doctors = [
         mainDealing: "High-risk pregnancy and infertility.",
         avatar: "https://picsum.photos/seed/doc7/100/100",
         dataAiHint: "female doctor professional",
+        opFee: 850,
     },
     {
         name: "Dr. Sunitha",
@@ -288,6 +304,7 @@ const doctors = [
         mainDealing: "Stroke and Epilepsy management.",
         avatar: "https://picsum.photos/seed/doc18/100/100",
         dataAiHint: "female doctor professional",
+        opFee: 700,
     },
     {
         name: "Dr. K. Sai Mounica Reddy",
@@ -298,6 +315,7 @@ const doctors = [
         mainDealing: "Diabetes management and general health.",
         avatar: "https://picsum.photos/seed/doc13/100/100",
         dataAiHint: "female doctor glasses",
+        opFee: 450,
     },
 ];
 
@@ -931,6 +949,7 @@ export default function AppointmentsPage() {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {filteredDoctors.map((doctor, index) => {
                                 const isBooking = bookingDoctor === doctor.name;
+                                const discountedFee = doctor.opFee * 0.5;
                                 return (
                                     <Card key={index} className="transition-shadow hover:shadow-md">
                                         <CardContent className="p-6">
@@ -958,12 +977,22 @@ export default function AppointmentsPage() {
                                                 <p><strong className="font-semibold">Successful Surgeries:</strong> {doctor.surgeries}</p>
                                                 <p><strong className="font-semibold">Main Focus:</strong> {doctor.mainDealing}</p>
                                             </div>
-                                             <div className="mt-6 flex justify-end gap-2">
-                                                <Button variant="outline" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
-                                                <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
-                                                    {isBooking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                                    {isBooking ? 'Booking...' : 'Book Appointment'}
-                                                </Button>
+                                             <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                                                <div className="text-center sm:text-left">
+                                                    <p className="text-sm font-semibold">Consultation Fee</p>
+                                                    <div className="flex items-baseline gap-2">
+                                                        <p className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{discountedFee}</p>
+                                                        <p className="line-through text-muted-foreground">₹{doctor.opFee}</p>
+                                                    </div>
+                                                     <Badge variant="outline" className="mt-1 border-green-500 text-green-600">Promo: MEDIBRIDGE</Badge>
+                                                </div>
+                                                <div className="flex justify-end gap-2">
+                                                    <Button variant="outline" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
+                                                    <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
+                                                        {isBooking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                                        {isBooking ? 'Booking...' : 'Book Appointment'}
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </CardContent>
                                     </Card>
@@ -1084,7 +1113,7 @@ export default function AppointmentsPage() {
                                                                         <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn('w-fit mt-2 sm:mt-0', item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
                                                                     </div>
                                                                     
-                                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                                    <div className="flex items-center gap-2 flex-wrap overflow-x-auto pb-2">
                                                                          <Dialog>
                                                                             <DialogTrigger asChild>
                                                                                 <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
@@ -1246,6 +1275,14 @@ export default function AppointmentsPage() {
                                             <Globe className="h-4 w-4"/> Visit Website
                                         </a>
                                     </div>
+                                </div>
+                                <div className="p-4 rounded-lg bg-muted/50">
+                                    <h4 className="font-semibold text-lg mb-2">Consultation Fee</h4>
+                                    <div className="flex items-baseline gap-2">
+                                        <p className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{selectedDoctor.opFee * 0.5}</p>
+                                        <p className="line-through text-muted-foreground text-xl">₹{selectedDoctor.opFee}</p>
+                                    </div>
+                                    <Badge variant="outline" className="mt-2 border-green-500 text-green-600">Promo Code: MEDIBRIDGE (50% OFF)</Badge>
                                 </div>
                                 <div className="flex justify-end gap-2">
                                     <Button variant="outline" onClick={() => handleShare(selectedDoctor)} disabled={isSharing}>
