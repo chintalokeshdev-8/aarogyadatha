@@ -4,7 +4,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { User, Droplets, MapPin, UserPlus, Loader2, Search, Phone } from "lucide-react";
+import { User, Droplets, MapPin, UserPlus, Loader2, Search, Phone, Filter, X } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -68,8 +68,26 @@ export default function BloodBankPage() {
     const [bloodRequests, setBloodRequests] = useState(bloodRequestsData.map(req => ({ ...req, postedAtString: '' })));
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    
+    // States for filter dropdowns
     const [selectedBloodType, setSelectedBloodType] = useState('All');
     const [selectedCity, setSelectedCity] = useState('All');
+
+    // States for applied filters
+    const [appliedBloodType, setAppliedBloodType] = useState('All');
+    const [appliedCity, setAppliedCity] = useState('All');
+
+    const handleApplyFilters = () => {
+        setAppliedBloodType(selectedBloodType);
+        setAppliedCity(selectedCity);
+    };
+
+    const handleClearFilters = () => {
+        setSelectedBloodType('All');
+        setSelectedCity('All');
+        setAppliedBloodType('All');
+        setAppliedCity('All');
+    };
 
     const handleSubmit = (e: React.FormEvent, successMessage: string) => {
         e.preventDefault();
@@ -93,11 +111,11 @@ export default function BloodBankPage() {
 
     const filteredBloodRequests = useMemo(() => {
         return bloodRequests.filter(req => {
-            const bloodTypeMatch = selectedBloodType === 'All' || req.bloodType === selectedBloodType;
-            const cityMatch = selectedCity === 'All' || req.city.toLowerCase() === selectedCity.toLowerCase();
+            const bloodTypeMatch = appliedBloodType === 'All' || req.bloodType === appliedBloodType;
+            const cityMatch = appliedCity === 'All' || req.city.toLowerCase() === appliedCity.toLowerCase();
             return bloodTypeMatch && cityMatch;
         });
-    }, [bloodRequests, selectedBloodType, selectedCity]);
+    }, [bloodRequests, appliedBloodType, appliedCity]);
 
 
     return (
@@ -123,23 +141,32 @@ export default function BloodBankPage() {
                         <div className="mt-6">
                             <TabsContent value="find" className="mt-0">
                                 <div className="space-y-4">
-                                    <div className="grid sm:grid-cols-2 gap-4">
-                                        <Select value={selectedBloodType} onValueChange={setSelectedBloodType}>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Filter by Blood Type" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {bloodGroups.map(bg => <SelectItem key={bg} value={bg}>{bg === 'All' ? 'All Blood Types' : bg}</SelectItem>)}
-                                            </SelectContent>
-                                        </Select>
-                                        <Select value={selectedCity} onValueChange={setSelectedCity}>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Filter by City" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {cities.map(city => <SelectItem key={city} value={city}>{city === 'All' ? 'All Cities' : city}</SelectItem>)}
-                                            </SelectContent>
-                                        </Select>
+                                     <div className="p-4 border rounded-lg">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <h3 className="font-semibold flex items-center gap-2"><Filter className="h-5 w-5" /> Filters</h3>
+                                            <Button variant="ghost" onClick={handleClearFilters} className="text-sm h-auto p-1">
+                                                <X className="h-4 w-4 mr-1" /> Clear
+                                            </Button>
+                                        </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                            <Select value={selectedBloodType} onValueChange={setSelectedBloodType}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Blood Type" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {bloodGroups.map(bg => <SelectItem key={bg} value={bg}>{bg === 'All' ? 'All Blood Types' : bg}</SelectItem>)}
+                                                </SelectContent>
+                                            </Select>
+                                            <Select value={selectedCity} onValueChange={setSelectedCity}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="City" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {cities.map(city => <SelectItem key={city} value={city}>{city === 'All' ? 'All Cities' : city}</SelectItem>)}
+                                                </SelectContent>
+                                            </Select>
+                                            <Button onClick={handleApplyFilters} style={{backgroundColor: 'hsl(var(--nav-blood-bank))'}}>Go</Button>
+                                        </div>
                                     </div>
                                     <div className="space-y-3 max-h-96 overflow-y-auto p-1">
                                         {filteredBloodRequests.length === 0 && (
@@ -297,6 +324,8 @@ export default function BloodBankPage() {
 
     
 
+
+    
 
     
 
