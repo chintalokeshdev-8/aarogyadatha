@@ -65,7 +65,7 @@ const bloodBankContacts = [
 ];
 
 export default function BloodBankPage() {
-    const [bloodRequests, setBloodRequests] = useState<any[]>([]);
+    const [bloodRequests, setBloodRequests] = useState(bloodRequestsData.map(req => ({ ...req, postedAtString: '' })));
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedBloodType, setSelectedBloodType] = useState('All');
@@ -148,7 +148,7 @@ export default function BloodBankPage() {
                                     <div className="space-y-3 max-h-96 overflow-y-auto p-1">
                                         {filteredBloodRequests.length === 0 && (
                                             <div className="text-center p-8 text-muted-foreground">
-                                                {bloodRequests.length === 0 ? 'Loading...' : 'No donors match your criteria.'}
+                                                {bloodRequests.some(r => r.postedAtString === '') ? 'Loading...' : 'No donors match your criteria.'}
                                             </div>
                                         )}
                                         {filteredBloodRequests.map((req, index) => (
@@ -298,5 +298,8 @@ export default function BloodBankPage() {
             </Card>
         </div>
     );
+
+    
+
 
     
