@@ -147,7 +147,7 @@ export default function DashboardPage() {
 
   return (
     <div className="relative">
-      <div className="absolute top-0 left-0 w-full h-52 bg-primary -z-10 -mt-8"></div>
+      <div className="absolute top-0 left-0 w-full h-52 bg-primary -z-10 rounded-b-[3rem]"></div>
       <div className="space-y-8">
         <section className="-mt-16">
           <Card>
