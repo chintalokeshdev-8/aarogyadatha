@@ -62,6 +62,7 @@ const networkHospitals = [
 function CustomizeNavigationCard() {
     const [navSettings, setNavSettings] = useState<Record<string, boolean>>({});
     const [isClient, setIsClient] = useState(false);
+    const { toast } = useToast();
 
     useEffect(() => {
         setIsClient(true);
@@ -81,8 +82,10 @@ function CustomizeNavigationCard() {
         const newSettings = { ...navSettings, [id]: isEnabled };
         setNavSettings(newSettings);
         localStorage.setItem('navSettings', JSON.stringify(newSettings));
-        // The toast is removed as per user request.
-        // A new notification will be added to the static list to inform the user.
+        toast({
+            title: "Navigation Updated",
+            description: "Changes will apply on the next page load.",
+        });
     };
 
     if (!isClient) {
