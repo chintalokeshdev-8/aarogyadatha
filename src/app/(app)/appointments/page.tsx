@@ -9,8 +9,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -583,6 +584,82 @@ function ViewReportDialog({ report, trigger, children }: { report: any; trigger?
     );
 }
 
+function FollowUpForm({ onSave, onCancel, appointmentId, existingFollowUp }: { onSave: (apptId: number, followUp: any) => void; onCancel: () => void; appointmentId: number; existingFollowUp?: any }) {
+    const { toast } = useToast();
+    const [title, setTitle] = useState(existingFollowUp?.title || '');
+    const [doctor, setDoctor] = useState(existingFollowUp?.doctor || '');
+    const [date, setDate] = useState(existingFollowUp?.date || '');
+    const [status, setStatus] = useState(existingFollowUp?.status || 'Active');
+    const [summary, setSummary] = useState(existingFollowUp?.summary || '');
+    const [medicines, setMedicines] = useState(existingFollowUp?.medicines?.join(', ') || '');
+    
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        const newFollowUp = {
+            title,
+            doctor,
+            date,
+            status,
+            summary,
+            medicines: medicines.split(',').map(m => m.trim()).filter(m => m),
+            prescriptionImages: existingFollowUp?.prescriptionImages || [],
+            details: existingFollowUp?.details || [],
+        };
+        onSave(appointmentId, newFollowUp);
+        toast({
+            title: `Follow-up ${existingFollowUp ? 'Updated' : 'Added'}`,
+            description: "Your changes have been saved successfully.",
+        });
+        onCancel();
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+                <Label htmlFor="fu-title">Follow-up Title</Label>
+                <Input id="fu-title" value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g., 2nd Follow-up" required />
+            </div>
+             <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label htmlFor="fu-doctor">Doctor</Label>
+                    <Input id="fu-doctor" value={doctor} onChange={e => setDoctor(e.target.value)} placeholder="e.g., Dr. Anjali" required />
+                </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="fu-date">Date Range</Label>
+                    <Input id="fu-date" value={date} onChange={e => setDate(e.target.value)} placeholder="e.g., Aug 8, 2024 - Aug 15, 2024" required />
+                </div>
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="fu-status">Status</Label>
+                 <Select value={status} onValueChange={setStatus}>
+                    <SelectTrigger id="fu-status">
+                        <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="Completed">Completed</SelectItem>
+                        <SelectItem value="Improved">Improved</SelectItem>
+                        <SelectItem value="Resolved">Resolved</SelectItem>
+                        <SelectItem value="Action Required">Action Required</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor="fu-summary">Summary</Label>
+                <Textarea id="fu-summary" value={summary} onChange={e => setSummary(e.target.value)} placeholder="Enter a brief summary of the consultation." />
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor="fu-medicines">Medicines (comma-separated)</Label>
+                <Input id="fu-medicines" value={medicines} onChange={e => setMedicines(e.target.value)} placeholder="e.g., Paracetamol, Cetirizine" />
+            </div>
+            <DialogFooter>
+                <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
+                <Button type="submit" style={{ backgroundColor: 'hsl(var(--nav-appointments))' }}>Save Changes</Button>
+            </DialogFooter>
+        </form>
+    );
+}
+
 export default function AppointmentsPage() {
     const [selectedDoctor, setSelectedDoctor] = useState<any | null>(null);
     const [isProfileOpen, setProfileOpen] = useState(false);
@@ -603,6 +680,9 @@ export default function AppointmentsPage() {
     const [filterDoctor, setFilterDoctor] = useState('all');
     const [filterDate, setFilterDate] = useState<Date>();
     const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [editingFollowUp, setEditingFollowUp] = useState<{apptIndex: number, pIndex?: number} | null>(null);
+
 
     const [appointments, setAppointments] = useState(() => 
         initialAppointmentsData.map(appt => ({
@@ -613,6 +693,39 @@ export default function AppointmentsPage() {
             }))
         }))
     );
+    
+    const handleSaveFollowUp = (apptIndex: number, followUp: any) => {
+        setAppointments(prev => prev.map((appt, i) => {
+            if (i === apptIndex) {
+                let newPrescriptions;
+                if(editingFollowUp && editingFollowUp.pIndex !== undefined) {
+                    // Editing existing
+                     newPrescriptions = appt.prescriptions.map((p, p_idx) => p_idx === editingFollowUp.pIndex ? followUp : p);
+                } else {
+                    // Adding new
+                    newPrescriptions = [...appt.prescriptions, followUp];
+                }
+                return { ...appt, prescriptions: newPrescriptions };
+            }
+            return appt;
+        }));
+    };
+    
+    const handleDeleteFollowUp = (apptIndex: number, pIndex: number) => {
+        setAppointments(prev => prev.map((appt, i) => {
+            if (i === apptIndex) {
+                const newPrescriptions = appt.prescriptions.filter((_, p_idx) => p_idx !== pIndex);
+                return { ...appt, prescriptions: newPrescriptions };
+            }
+            return appt;
+        }));
+        toast({ title: "Follow-up Deleted", description: "The entry has been removed from your history." });
+    };
+
+    const handleOpenForm = (apptIndex: number, pIndex?: number) => {
+        setEditingFollowUp({ apptIndex, pIndex });
+        setIsFormOpen(true);
+    };
 
 
     const handleFilter = () => {
@@ -683,7 +796,7 @@ export default function AppointmentsPage() {
                 return doctorMatch && dateMatch;
             }
 
-            const serialNumber = (apptIndex + 1).toString();
+            const serialNumber = (filteredAppointments.indexOf(appt) + 1).toString();
             const serialMatch = serialNumber === lowercasedSearchTerm;
 
             const keywordMatch = 
@@ -693,7 +806,7 @@ export default function AppointmentsPage() {
                 appt.specialty.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.date.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.prescriptions.some((p, pIndex) => {
-                    const subSerialNumber = `${apptIndex + 1}.${pIndex + 1}`;
+                    const subSerialNumber = `${filteredAppointments.indexOf(appt) + 1}.${pIndex + 1}`;
                     return (
                         subSerialNumber === lowercasedSearchTerm ||
                         p.title.toLowerCase().includes(lowercasedSearchTerm) ||
@@ -864,9 +977,9 @@ export default function AppointmentsPage() {
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
                              <CardDescription>
-                                Review your past consultations and prescriptions, grouped by health concern.
+                                Review and manage your past consultations and prescriptions.
                                 <br />
-                                మీ గత సంప్రదింపులు మరియు ప్రిస్క్రిప్షన్‌లను, ఆరోగ్య సమస్యల వారీగా సమీక్షించండి.
+                                మీ గత సంప్రదింపులు మరియు ప్రిస్క్రిప్షన్‌లను సమీక్షించండి మరియు నిర్వహించండి.
                             </CardDescription>
                             <div className="border-t mt-4 pt-4">
                                 <div className="flex items-center justify-between mb-4">
@@ -925,7 +1038,7 @@ export default function AppointmentsPage() {
                         <CardContent>
                              <div className="grid grid-cols-1 gap-6">
                                 {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                                    <Collapsible key={index} className="border rounded-lg bg-background">
+                                    <Collapsible key={index} defaultOpen className="border rounded-lg bg-background">
                                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                             <div className="flex-1 flex items-start gap-3">
                                                 <span className="text-2xl font-bold text-blue-900 dark:text-blue-400">{filteredAppointments.indexOf(appt) + 1})</span>
@@ -938,7 +1051,12 @@ export default function AppointmentsPage() {
                                             <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0 mt-1" />
                                         </CollapsibleTrigger>
                                         <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
-                                            <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription &amp; Follow-up History</h4>
+                                            <div className="flex justify-between items-center">
+                                                <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription &amp; Follow-up History</h4>
+                                                <Button size="sm" onClick={() => handleOpenForm(index)}>
+                                                    <PlusCircle className="mr-2 h-4 w-4" /> Add Follow-up
+                                                </Button>
+                                            </div>
                                             {appt.prescriptions.length > 0 ? (
                                                 <div className="space-y-4">
                                                     {appt.prescriptions.map((item, pIndex) => (
@@ -966,7 +1084,7 @@ export default function AppointmentsPage() {
                                                                         <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn('w-fit mt-2 sm:mt-0', item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
                                                                     </div>
                                                                     
-                                                                    <div className="flex items-center gap-2">
+                                                                    <div className="flex items-center gap-2 flex-wrap">
                                                                          <Dialog>
                                                                             <DialogTrigger asChild>
                                                                                 <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
@@ -1058,6 +1176,28 @@ export default function AppointmentsPage() {
                                                                             prescriptionId={pIndex}
                                                                             onUpload={handleUpload}
                                                                         />
+                                                                        <Button variant="outline" size="sm" onClick={() => handleOpenForm(index, pIndex)}>
+                                                                            <Pencil className="mr-2 h-4 w-4" /> Edit
+                                                                        </Button>
+                                                                        <AlertDialog>
+                                                                            <AlertDialogTrigger asChild>
+                                                                                <Button variant="outline" size="sm" className="text-destructive border-destructive/50 hover:bg-destructive/10 hover:text-destructive">
+                                                                                    <Trash2 className="mr-2 h-4 w-4" /> Delete
+                                                                                </Button>
+                                                                            </AlertDialogTrigger>
+                                                                            <AlertDialogContent>
+                                                                                <AlertDialogHeader>
+                                                                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                                <AlertDialogDescription>
+                                                                                    This action cannot be undone. This will permanently delete the follow-up entry for "{item.title}".
+                                                                                </AlertDialogDescription>
+                                                                                </AlertDialogHeader>
+                                                                                <AlertDialogFooter>
+                                                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                                <AlertDialogAction onClick={() => handleDeleteFollowUp(index, pIndex)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                                                                                </AlertDialogFooter>
+                                                                            </AlertDialogContent>
+                                                                        </AlertDialog>
                                                                     </div>
                                                                 </div>
                                                             )}
@@ -1065,7 +1205,7 @@ export default function AppointmentsPage() {
                                                     ))}
                                                 </div>
                                             ) : (
-                                                <p className="text-base text-muted-foreground text-center py-4">No prescriptions found for this appointment.</p>
+                                                <p className="text-base text-muted-foreground text-center py-4">No follow-ups recorded for this issue yet. Click "Add Follow-up" to start.</p>
                                             )}
                                         </CollapsibleContent>
                                     </Collapsible>
@@ -1123,41 +1263,47 @@ export default function AppointmentsPage() {
                 </DialogContent>
             </Dialog>
 
-             {zoomedImage && (
-                <Dialog open={!!zoomedImage} onOpenChange={() => setZoomedImage(null)}>
-                    <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 border-0">
-                         <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm flex-row items-center justify-between">
-                            <DialogTitle>Prescription Viewer</DialogTitle>
-                            <DialogDescription>Full-size view of the prescription.</DialogDescription>
-                            <DialogClose className="relative right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-                                <X className="h-6 w-6" />
-                                <span className="sr-only">Close</span>
-                            </DialogClose>
-                         </DialogHeader>
-                        <div className="flex-1 relative bg-muted/20">
-                            <Image
-                                src={zoomedImage}
-                                alt="Zoomed Prescription"
-                                fill={true}
-                                style={{objectFit: "contain"}}
-                                className="p-4"
-                            />
-                        </div>
-                    </DialogContent>
-                </Dialog>
-            )}
+             <Dialog open={zoomedImage !== null} onOpenChange={() => setZoomedImage(null)}>
+                <DialogContent className="max-w-5xl h-[90vh] flex flex-col p-0 border-0">
+                     <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm flex-row items-center justify-between">
+                        <DialogTitle>Prescription Viewer</DialogTitle>
+                        <DialogDescription>Full-size view of the prescription.</DialogDescription>
+                        <DialogClose className="relative right-0 top-0 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                            <X className="h-6 w-6" />
+                            <span className="sr-only">Close</span>
+                        </DialogClose>
+                     </DialogHeader>
+                    <div className="flex-1 relative bg-muted/20">
+                        <Image
+                            src={zoomedImage || ''}
+                            alt="Zoomed Prescription"
+                            fill={true}
+                            style={{objectFit: "contain"}}
+                            className="p-4"
+                        />
+                    </div>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>{editingFollowUp?.pIndex !== undefined ? 'Edit Follow-up' : 'Add New Follow-up'}</DialogTitle>
+                        <DialogDescription>
+                            {editingFollowUp?.pIndex !== undefined ? 'Update the details for this entry.' : `Add a new follow-up for "${appointments[editingFollowUp?.apptIndex || 0]?.problem}".`}
+                        </DialogDescription>
+                    </DialogHeader>
+                    {editingFollowUp && (
+                        <FollowUpForm
+                            appointmentId={editingFollowUp.apptIndex}
+                            existingFollowUp={editingFollowUp.pIndex !== undefined ? appointments[editingFollowUp.apptIndex].prescriptions[editingFollowUp.pIndex] : undefined}
+                            onSave={handleSaveFollowUp}
+                            onCancel={() => setIsFormOpen(false)}
+                        />
+                    )}
+                </DialogContent>
+            </Dialog>
 
         </div>
     );
 }
-
-    
-
-    
-
-    
-
-    
-
-
-    
