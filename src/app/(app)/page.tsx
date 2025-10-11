@@ -173,60 +173,7 @@ export default function DashboardPage() {
 
       <Separator />
 
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold text-center sm:text-left">App Updates & Health Tips</h2>
-        <Carousel
-            setApi={setApi}
-            plugins={[plugin.current]}
-            className="w-full"
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.reset}
-        >
-            <CarouselContent>
-                {carouselSlides.map((slide, index) => (
-                    <CarouselItem key={index}>
-                        <div 
-                            className={cn("rounded-lg p-6 flex items-center justify-center text-center min-h-[220px] border relative overflow-hidden", slide.textColor)}
-                            style={{ 
-                                backgroundImage: `url(${slide.bgImage})`, 
-                                backgroundSize: 'cover', 
-                                backgroundPosition: 'center' 
-                            }}
-                        >
-                            <div className="absolute inset-0 bg-black/50 z-0"></div>
-                             <div className="space-y-4 z-10">
-                                <p className="font-bold text-2xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
-                                <Link href={slide.href}>
-                                    <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
-                                        <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80" />
-            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80" />
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-10">
-                {carouselSlides.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => api?.scrollTo(index)}
-                        className={cn(
-                            "h-2 w-2 rounded-full transition-all bg-white/50",
-                            current === index + 1 ? "w-4 bg-white" : "hover:bg-white/80"
-                        )}
-                        aria-label={`Go to slide ${index + 1}`}
-                    />
-                ))}
-            </div>
-        </Carousel>
-      </div>
-      
-      <Separator />
-
-       <Card>
+      <Card>
           <CardHeader>
               <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--primary))'}}><Heart style={{color: 'hsl(var(--primary))'}}/>Organ Health Overview</CardTitle>
                 <div className="text-sm text-muted-foreground">
@@ -257,6 +204,62 @@ export default function DashboardPage() {
           </CardContent>
       </Card>
       
+      <Separator />
+
+      <div className="space-y-2">
+        <h2 className="text-xl font-semibold text-center sm:text-left">App Updates & Health Tips</h2>
+        <Carousel
+            setApi={setApi}
+            plugins={[plugin.current]}
+            className="w-full border rounded-lg overflow-hidden"
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
+        >
+            <CarouselContent>
+                {carouselSlides.map((slide, index) => (
+                    <CarouselItem key={index}>
+                        <div 
+                            className={cn("p-6 flex items-center justify-center text-center min-h-[220px] relative", slide.textColor)}
+                        >
+                            <Image
+                                src={slide.bgImage}
+                                alt={slide.title}
+                                layout="fill"
+                                objectFit="cover"
+                                className="absolute inset-0 z-0"
+                                data-ai-hint="abstract background"
+                            />
+                            <div className="absolute inset-0 bg-black/50 z-10"></div>
+                             <div className="space-y-4 z-20 flex flex-col items-center justify-center h-full">
+                                <p className="font-bold text-2xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
+                                <Link href={slide.href}>
+                                    <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
+                                        <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
+                                    </Button>
+                                </Link>
+                            </div>
+                        </div>
+                    </CarouselItem>
+                ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-30 bg-background/50 hover:bg-background/80" />
+            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-30 bg-background/50 hover:bg-background/80" />
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-30">
+                {carouselSlides.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => api?.scrollTo(index)}
+                        className={cn(
+                            "h-2 w-2 rounded-full transition-all bg-white/50",
+                            current === index + 1 ? "w-4 bg-white" : "hover:bg-white/80"
+                        )}
+                        aria-label={`Go to slide ${index + 1}`}
+                    />
+                ))}
+            </div>
+        </Carousel>
+      </div>
+
       <Separator />
 
       <div className="grid md:grid-cols-2 gap-8">
@@ -291,5 +294,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
