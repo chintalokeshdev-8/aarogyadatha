@@ -163,8 +163,8 @@ export default function DashboardPage() {
                 <div className="p-1 rounded-full mb-1">
                     <item.icon className="h-5 w-5" style={{color: item.color}} />
                 </div>
-                <p className="font-bold text-[11px] leading-tight" style={{color: item.color}}>{item.label}</p>
-                <p className="text-[10px] text-muted-foreground whitespace-normal">{item.description}</p>
+                <p className="font-bold text-[11px] leading-tight text-foreground">{item.label}</p>
+                <p className="text-[10px] text-foreground/80 whitespace-normal">{item.description}</p>
               </Card>
             </Link>
           ))}
