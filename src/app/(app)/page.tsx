@@ -63,7 +63,7 @@ const carouselSlides = [
         buttonIcon: CheckCircle,
         href: "/appointments",
         textColor: "text-white",
-        bgImage: "https://picsum.photos/seed/slideNew1/800/400"
+        bgColor: "bg-blue-500",
     },
     {
         title: "Daily Health Tip: Stay hydrated by drinking at least 8 glasses of water throughout the day!",
@@ -71,7 +71,7 @@ const carouselSlides = [
         buttonIcon: Leaf,
         href: "/health-tracker",
         textColor: "text-white",
-        bgImage: "https://picsum.photos/seed/slide2/800/400"
+        bgColor: "bg-green-500",
     },
     {
         title: "New Feature: Link your Aarogyasri & ABHA ID to manage all health records in one place.",
@@ -79,7 +79,7 @@ const carouselSlides = [
         buttonIcon: Link2,
         href: "/insurances#gov-health-ids",
         textColor: "text-white",
-        bgImage: "https://picsum.photos/seed/slide3/800/400"
+        bgColor: "bg-indigo-500",
     },
     {
         title: "Limited Time Offer: Get 20% off on all master health checkups this month!",
@@ -87,7 +87,7 @@ const carouselSlides = [
         buttonIcon: TestTube,
         href: "/lab-reports",
         textColor: "text-white",
-        bgImage: "https://picsum.photos/seed/slide4/800/400"
+        bgColor: "bg-purple-500",
     },
 ];
 
@@ -223,17 +223,8 @@ export default function DashboardPage() {
                   {carouselSlides.map((slide, index) => (
                       <CarouselItem key={index}>
                           <div 
-                              className={cn("p-6 flex items-center justify-center text-center min-h-[220px] relative", slide.textColor)}
+                              className={cn("p-6 flex items-center justify-center text-center min-h-[220px] relative", slide.textColor, slide.bgColor)}
                           >
-                              <Image
-                                  src={slide.bgImage}
-                                  alt={slide.title}
-                                  fill
-                                  style={{objectFit:"cover"}}
-                                  className="absolute inset-0 z-0"
-                                  data-ai-hint="abstract background"
-                              />
-                              <div className="absolute inset-0 bg-black/50 z-10"></div>
                                <div className="space-y-4 z-20 flex flex-col items-center justify-center h-full">
                                   <p className="font-bold text-2xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
                                   <Link href={slide.href}>
@@ -316,3 +307,5 @@ export default function DashboardPage() {
       </div>
   );
 }
+
+    
