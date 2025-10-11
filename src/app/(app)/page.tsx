@@ -63,8 +63,8 @@ const carouselSlides = [
         buttonIcon: CheckCircle,
         href: "/appointments",
         color: "bg-blue-50 border-blue-200",
-        textColor: "text-blue-900",
-        image: { src: "https://picsum.photos/seed/slide1/400/300", "dataAiHint": "doctor stethoscope" }
+        textColor: "text-white",
+        bgImage: "https://picsum.photos/seed/slide1/800/400"
     },
     {
         title: "Daily Health Tip: Stay hydrated by drinking at least 8 glasses of water throughout the day!",
@@ -72,8 +72,8 @@ const carouselSlides = [
         buttonIcon: Leaf,
         href: "/health-tracker",
         color: "bg-green-50 border-green-200",
-        textColor: "text-green-900",
-        image: { src: "https://picsum.photos/seed/slide2/400/300", "dataAiHint": "glass water" }
+        textColor: "text-white",
+        bgImage: "https://picsum.photos/seed/slide2/800/400"
     },
     {
         title: "New Feature: Link your Aarogyasri & ABHA ID to manage all health records in one place.",
@@ -81,8 +81,8 @@ const carouselSlides = [
         buttonIcon: Link2,
         href: "/insurances#gov-health-ids",
         color: "bg-indigo-50 border-indigo-200",
-        textColor: "text-indigo-900",
-        image: { src: "https://picsum.photos/seed/slide3/400/300", "dataAiHint": "digital health card" }
+        textColor: "text-white",
+        bgImage: "https://picsum.photos/seed/slide3/800/400"
     },
     {
         title: "Limited Time Offer: Get 20% off on all master health checkups this month!",
@@ -90,8 +90,8 @@ const carouselSlides = [
         buttonIcon: TestTube,
         href: "/lab-reports",
         color: "bg-purple-50 border-purple-200",
-        textColor: "text-purple-900",
-        image: { src: "https://picsum.photos/seed/slide4/400/300", "dataAiHint": "lab test tubes" }
+        textColor: "text-white",
+        bgImage: "https://picsum.photos/seed/slide4/800/400"
     },
 ];
 
@@ -189,37 +189,37 @@ export default function DashboardPage() {
             <CarouselContent>
                 {carouselSlides.map((slide, index) => (
                     <CarouselItem key={index}>
-                        <div className={cn("rounded-lg p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left min-h-[220px] border", slide.color, slide.textColor)}>
-                             <div className="flex-1 space-y-4">
-                                <p className="font-bold text-xl">{slide.title}</p>
+                        <div 
+                            className={cn("rounded-lg p-6 flex flex-col items-center justify-center gap-6 text-center min-h-[220px] border relative overflow-hidden", slide.textColor)}
+                            style={{ 
+                                backgroundImage: `url(${slide.bgImage})`, 
+                                backgroundSize: 'cover', 
+                                backgroundPosition: 'center' 
+                            }}
+                        >
+                            <div className="absolute inset-0 bg-black/50 z-0"></div>
+                             <div className="flex-1 space-y-4 z-10">
+                                <p className="font-bold text-2xl drop-shadow-md">{slide.title}</p>
                                 <Link href={slide.href}>
-                                    <Button variant="outline" className="bg-background/70 hover:bg-background font-bold shrink-0 border-current">
+                                    <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
                                         <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
                                     </Button>
                                 </Link>
                             </div>
-                            <Image
-                                src={slide.image.src}
-                                alt={slide.title}
-                                width={150}
-                                height={150}
-                                data-ai-hint={slide.image.dataAiHint}
-                                className="rounded-lg shadow-md w-32 h-32 md:w-40 md:h-40 object-cover"
-                            />
                         </div>
                     </CarouselItem>
                 ))}
             </CarouselContent>
             <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80" />
             <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80" />
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-10">
                 {carouselSlides.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => api?.scrollTo(index)}
                         className={cn(
-                            "h-2 w-2 rounded-full transition-all bg-background/50",
-                            current === index + 1 ? "w-4 bg-background" : "hover:bg-background/80"
+                            "h-2 w-2 rounded-full transition-all bg-white/50",
+                            current === index + 1 ? "w-4 bg-white" : "hover:bg-white/80"
                         )}
                         aria-label={`Go to slide ${index + 1}`}
                     />
