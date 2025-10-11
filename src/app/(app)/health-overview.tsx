@@ -55,7 +55,7 @@ const getStatusBadgeClass = (status: string) => {
 
 export function HealthOverview() {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Dialog>
                 <DialogTrigger asChild>
                     <Card className="p-4 cursor-pointer hover:bg-muted/50 transition-colors">
@@ -102,7 +102,7 @@ export function HealthOverview() {
                                 <div className="p-3 bg-muted/50 rounded-full">
                                     <HeartPulse className="h-6 w-6" style={{color: 'hsl(var(--nav-profile))'}} />
                                 </div>
-                                <p className="text-lg font-bold">Active Conditions</p>
+                                <p className="text-lg font-bold">Conditions</p>
                             </div>
                             <p className="text-3xl font-extrabold">{healthOverviewItems.activeConditions.value}</p>
                         </div>

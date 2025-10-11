@@ -91,40 +91,6 @@ const carouselSlides = [
     },
 ];
 
-const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) => {
-    const radius = (size - strokeWidth) / 2;
-    const circumference = radius * 2 * Math.PI;
-    const offset = circumference - (percentage / 100) * circumference;
-
-    return (
-        <div className="relative flex items-center justify-center" style={{width: size, height: size}}>
-            <svg width={size} height={size} className="transform -rotate-90">
-                <circle
-                    className="text-muted/30"
-                    stroke="currentColor"
-                    fill="transparent"
-                    strokeWidth={strokeWidth}
-                    r={radius}
-                    cx={size/2}
-                    cy={size/2}
-                />
-                <circle
-                    stroke={color || "hsl(var(--primary))"}
-                    fill="transparent"
-                    strokeWidth={strokeWidth}
-                    strokeDasharray={circumference}
-                    strokeDashoffset={offset}
-                    strokeLinecap="round"
-                    r={radius}
-                    cx={size/2}
-                    cy={size/2}
-                />
-            </svg>
-            <div className="absolute">{children}</div>
-        </div>
-    );
-};
-
 export default function DashboardPage() {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
@@ -149,37 +115,6 @@ export default function DashboardPage() {
     <div className="relative">
       <div className="absolute top-0 left-0 w-full h-52 bg-primary -z-10 rounded-b-[3rem]"></div>
       <div className="space-y-8">
-        <section className="-mt-16">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-center sm:text-left">Organ Health Overview</CardTitle>
-            </CardHeader>
-            <CardContent className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 p-4">
-                {organHealthData.map((organ) => (
-                    <OrganHealthDialog key={organ.name} organ={organ}>
-                      <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
-                          <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
-                              <Image
-                                  src={organ.image}
-                                  alt={organ.name}
-                                  width={40}
-                                  height={40}
-                                  data-ai-hint={organ.dataAiHint}
-                                  className="rounded-full object-cover"
-                              />
-                          </CircularProgress>
-                          <p className="mt-2 text-sm font-bold">{organ.name}</p>
-                          <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
-                          <p className="text-xs text-muted-foreground">Healthy</p>
-                      </Card>
-                    </OrganHealthDialog>
-                ))}
-            </CardContent>
-          </Card>
-        </section>
-
-        <Separator />
-        
         <section>
           <Card>
             <CardHeader>
@@ -200,6 +135,20 @@ export default function DashboardPage() {
                   </Link>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <Separator />
+        
+        <section>
+          <Card>
+            <CardHeader>
+                <CardTitle className="text-xl font-semibold text-center sm:text-left">Organ Health Overview</CardTitle>
+            </CardHeader>
+            <CardContent className="p-4">
+               <p className="text-sm text-muted-foreground mb-4">A summary of your key organ health based on recent reports.</p>
+               <HealthOverview />
             </CardContent>
           </Card>
         </section>
@@ -261,35 +210,28 @@ export default function DashboardPage() {
 
         <Separator />
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <section>
-            <h2 className="text-xl font-semibold mb-4">Health Overview</h2>
-            <HealthOverview />
-          </section>
+        <section>
+          <h2 className="text-xl font-semibold mb-4">Medicine Assistance</h2>
+          <div className="space-y-4">
+            {medicineAssistanceItems.map((item) => (
+               <Link key={item.title} href={item.href} passHref>
+                  <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                      <CardContent className="p-4 flex items-center gap-4">
+                          <div className="bg-primary/10 p-3 rounded-full">
+                              <item.icon className="h-6 w-6 text-primary" />
+                          </div>
+                          <div className="flex-1">
+                              <h3 className="font-semibold">{item.title}</h3>
+                              <p className="text-sm text-muted-foreground">{item.description}</p>
 
-          <section>
-            <h2 className="text-xl font-semibold mb-4">Medicine Assistance</h2>
-            <div className="space-y-4">
-              {medicineAssistanceItems.map((item) => (
-                 <Link key={item.title} href={item.href} passHref>
-                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                        <CardContent className="p-4 flex items-center gap-4">
-                            <div className="bg-primary/10 p-3 rounded-full">
-                                <item.icon className="h-6 w-6 text-primary" />
-                            </div>
-                            <div className="flex-1">
-                                <h3 className="font-semibold">{item.title}</h3>
-                                <p className="text-sm text-muted-foreground">{item.description}</p>
-
-                            </div>
-                            <Button size="sm" variant="ghost" style={{color: 'hsl(var(--nav-medicines))'}}>{item.buttonText}</Button>
-                        </CardContent>
-                    </Card>
-                </Link>
-              ))}
-            </div>
-          </section>
-        </div>
+                          </div>
+                          <Button size="sm" variant="ghost" style={{color: 'hsl(var(--nav-medicines))'}}>{item.buttonText}</Button>
+                      </CardContent>
+                  </Card>
+              </Link>
+            ))}
+          </div>
+        </section>
         
         <Separator />
 
