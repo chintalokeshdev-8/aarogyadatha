@@ -4,6 +4,7 @@ import React from "react";
 export const organHealthData = [
     {
       name: "Heart",
+      condition: "Mildly reduced Ejection Fraction",
       healthScore: 85,
       status: "Needs Monitoring",
       sourceOfAnalysis: "Based on: Echocardiogram from Aug 2024 showing mildly reduced Ejection Fraction (50%) and elevated Troponin-I.",
@@ -20,6 +21,7 @@ export const organHealthData = [
     },
     {
       name: "Liver",
+      condition: "Liver Cirrhosis",
       healthScore: null,
       status: "Needs Critical Attention",
       sourceOfAnalysis: "Based on: Doctor's notes mentioning 'episodes of confusion (encephalopathy)', diagnosis of Liver Cirrhosis, and referral to transplant team.",
@@ -36,6 +38,7 @@ export const organHealthData = [
     },
     {
       name: "Kidneys",
+      condition: "Healthy",
       healthScore: 90,
       status: "Good",
       sourceOfAnalysis: "Based on: Your recent Urinalysis and Serum Creatinine levels, which are in the normal range.",
@@ -50,6 +53,7 @@ export const organHealthData = [
     },
     {
       name: "Lungs",
+      condition: "Healthy",
       healthScore: 92,
       status: "Good",
       sourceOfAnalysis: "Based on: Your recent Chest X-Ray, which was clear.",
@@ -63,6 +67,7 @@ export const organHealthData = [
     },
     {
       name: "Brain",
+      condition: "Healthy",
       healthScore: 98,
       status: "Healthy",
       sourceOfAnalysis: "Based on: Your MRI Brain Scan from May 2024, which showed no abnormalities.",
@@ -76,6 +81,7 @@ export const organHealthData = [
     },
     {
         name: "Stomach (Gut)",
+        condition: "Healthy",
         healthScore: 93,
         status: "Healthy",
         sourceOfAnalysis: "Based on: Your recent CT Scan of the abdomen and Upper GI Endoscopy, which were normal.",

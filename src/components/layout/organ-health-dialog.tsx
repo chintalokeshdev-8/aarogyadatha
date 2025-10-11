@@ -1,17 +1,22 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState, useTransition } from 'react';
 import dynamic from 'next/dynamic';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertCircle, TrendingUp, TrendingDown, Minus, Info, FileText, Calendar } from "lucide-react";
+import { CheckCircle2, AlertCircle, TrendingUp, TrendingDown, Minus, Info, FileText, Calendar, Utensils, Sparkles, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from 'next/image';
 import { Skeleton } from '../ui/skeleton';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { format } from 'date-fns';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { generateOrganDietPlan, AiOrganDietPlanOutput } from '@/ai/flows/ai-organ-diet';
+import { Separator } from '../ui/separator';
+
 
 const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number | null, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) {
     if (percentage === null) {
@@ -64,6 +69,70 @@ const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress
         </div>
     );
 }), { ssr: false, loading: () => <Skeleton className="h-20 w-20 rounded-full" /> });
+
+function OrganDietPlanGenerator({ organ }: { organ: any }) {
+    const [isPending, startTransition] = useTransition();
+    const [dietPlan, setDietPlan] = useState<AiOrganDietPlanOutput | null>(null);
+
+    const handleGeneratePlan = () => {
+        startTransition(async () => {
+            const result = await generateOrganDietPlan({
+                organName: organ.name,
+                condition: organ.condition
+            });
+            setDietPlan(result);
+        });
+    };
+
+    return (
+        <div className="space-y-4 pt-4">
+            {!dietPlan && !isPending && (
+                <div className="text-center p-4 bg-muted/40 rounded-lg">
+                    <p className="font-semibold text-sm">Get a personalized diet plan based on ICMR guidelines to support your {organ.name} health.</p>
+                     <Button onClick={handleGeneratePlan} className="w-full mt-4" style={{ backgroundColor: organ.color }}>
+                        <Sparkles className="mr-2 h-4 w-4" /> Get AI Diet Plan
+                    </Button>
+                </div>
+            )}
+             {isPending && (
+                <div className="flex flex-col items-center justify-center h-40">
+                    <Loader2 className="h-8 w-8 animate-spin mb-2" style={{color: organ.color}}/>
+                    <p className="font-semibold">Generating your diet plan...</p>
+                    <p className="text-sm text-muted-foreground">The AI is analyzing your profile.</p>
+                </div>
+            )}
+            {dietPlan && (
+                <div className="space-y-4">
+                    {dietPlan.plan.map((meal, index) => (
+                        <Card key={index} className="bg-background">
+                            <CardHeader className='p-4'>
+                                <CardTitle className="text-base">{meal.meal}</CardTitle>
+                            </CardHeader>
+                            <CardContent className='p-4 pt-0'>
+                                <ul className="list-disc list-inside text-muted-foreground space-y-1 mb-3 text-sm">
+                                    {meal.items.map((item, i) => <li key={i}>{item}</li>)}
+                                </ul>
+                                <p className="text-xs font-semibold italic p-2 rounded-lg bg-muted/50 border">
+                                    <strong>Reason:</strong> {meal.reason}
+                                </p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                    <Card>
+                        <CardHeader className='p-4'>
+                            <CardTitle className="text-base">General Advice</CardTitle>
+                        </CardHeader>
+                        <CardContent className='p-4 pt-0'>
+                            <ul className="list-disc list-inside text-muted-foreground space-y-1 text-sm">
+                                {dietPlan.generalAdvice.map((item, i) => <li key={i}>{item}</li>)}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                </div>
+            )}
+        </div>
+    );
+}
 
 const getStatusClass = (status: string) => {
     if (status.toLowerCase().includes('healthy') || status.toLowerCase().includes('good')) return "bg-green-100 text-green-800";
@@ -142,6 +211,25 @@ export function OrganHealthDialog({ organ, children }: { organ: any, children: R
                            ))}
                         </ul>
                     </div>
+                    
+                    <Separator />
+                    
+                    <Collapsible>
+                        <CollapsibleTrigger className="w-full">
+                            <div className="flex items-center justify-between font-semibold">
+                               <div className="flex items-center gap-2">
+                                 <Utensils className="h-4 w-4" style={{color: organ.color}} /> AI-Generated Diet Plan
+                               </div>
+                               <Button variant="ghost" size="sm" className='text-xs'>
+                                   Show
+                               </Button>
+                            </div>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                            <OrganDietPlanGenerator organ={organ} />
+                        </CollapsibleContent>
+                    </Collapsible>
+
 
                     {organ.status === 'Needs Critical Attention' && (
                          <div className="pt-4 border-t">
