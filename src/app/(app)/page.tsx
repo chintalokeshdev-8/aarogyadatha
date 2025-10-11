@@ -121,7 +121,7 @@ export default function DashboardPage() {
                 <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 {quickAccessItems.map((item) => (
                   <Link key={item.href} href={item.href} passHref>
                     <div
