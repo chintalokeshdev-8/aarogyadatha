@@ -173,36 +173,32 @@ export default function DashboardPage() {
 
       <Separator />
 
-      <Card>
-          <CardHeader>
-              <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--primary))'}}><Heart style={{color: 'hsl(var(--primary))'}}/>Organ Health Overview</CardTitle>
-                <div className="text-sm text-muted-foreground">
-                    <p>A summary of your key organ health based on recent reports.</p>
-                    <p>మీ గత నివేదికల(Reports) ప్రకారం, మీ ముఖ్య అవయవాల ఆరోగ్య స్థితి యొక్క సారాంశం ఇది.</p>
-                </div>
-          </CardHeader>
-          <CardContent className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2">
-              {organHealthData.map((organ) => (
-                  <OrganHealthDialog key={organ.name} organ={organ}>
-                    <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
-                        <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
-                            <Image
-                                src={organ.image}
-                                alt={organ.name}
-                                width={40}
-                                height={40}
-                                data-ai-hint={organ.dataAiHint}
-                                className="rounded-full object-cover"
-                            />
-                        </CircularProgress>
-                        <p className="mt-2 text-sm font-bold">{organ.name}</p>
-                        <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
-                        <p className="text-xs text-muted-foreground">Healthy</p>
-                    </Card>
-                  </OrganHealthDialog>
-              ))}
-          </CardContent>
-      </Card>
+      <section>
+          <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">Organ Health Overview</h2>
+          <Card>
+              <CardContent className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 p-4">
+                  {organHealthData.map((organ) => (
+                      <OrganHealthDialog key={organ.name} organ={organ}>
+                        <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
+                            <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
+                                <Image
+                                    src={organ.image}
+                                    alt={organ.name}
+                                    width={40}
+                                    height={40}
+                                    data-ai-hint={organ.dataAiHint}
+                                    className="rounded-full object-cover"
+                                />
+                            </CircularProgress>
+                            <p className="mt-2 text-sm font-bold">{organ.name}</p>
+                            <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
+                            <p className="text-xs text-muted-foreground">Healthy</p>
+                        </Card>
+                      </OrganHealthDialog>
+                  ))}
+              </CardContent>
+          </Card>
+      </section>
       
       <Separator />
 
@@ -224,8 +220,8 @@ export default function DashboardPage() {
                             <Image
                                 src={slide.bgImage}
                                 alt={slide.title}
-                                layout="fill"
-                                objectFit="cover"
+                                fill
+                                style={{objectFit:"cover"}}
                                 className="absolute inset-0 z-0"
                                 data-ai-hint="abstract background"
                             />
@@ -242,8 +238,7 @@ export default function DashboardPage() {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-30 bg-background/50 hover:bg-background/80" />
-            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-30 bg-background/50 hover:bg-background/80" />
+            
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-30">
                 {carouselSlides.map((_, index) => (
                     <button
@@ -291,6 +286,32 @@ export default function DashboardPage() {
           </div>
         </section>
       </div>
+      
+      <Separator />
+
+      <section className="text-center py-8">
+        <h2 className="text-2xl font-bold mb-4">Download The App</h2>
+        <div className="flex justify-center gap-4">
+          <Link href="https://play.google.com/store" target="_blank" rel="noopener noreferrer">
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+              alt="Get it on Google Play"
+              width={180}
+              height={60}
+              data-ai-hint="google play badge"
+            />
+          </Link>
+          <Link href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer">
+            <Image
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/640px-Download_on_the_App_Store_Badge.svg.png"
+              alt="Download on the App Store"
+              width={160}
+              height={60}
+              data-ai-hint="app store badge"
+            />
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
