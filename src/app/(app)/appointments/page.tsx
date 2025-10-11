@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -919,10 +920,13 @@ export default function AppointmentsPage() {
                                 {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
                                     <Collapsible key={index} className="border rounded-lg bg-background">
                                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
-                                            <div className="flex-1">
-                                                <p className="text-xl font-bold">{appt.problem}</p>
-                                                <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
-                                                <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {format(new Date(appt.date), 'dd-MMM-yyyy')} by {appt.initialDoctor}</div>
+                                            <div className="flex-1 flex items-start gap-3">
+                                                <span className="text-2xl font-bold text-blue-900 dark:text-blue-400">{index + 1}.</span>
+                                                <div>
+                                                    <p className="text-xl font-bold">{appt.problem}</p>
+                                                    <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
+                                                    <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2"><Calendar className="h-4 w-4"/> First seen: {format(new Date(appt.date), 'dd-MMM-yyyy')} by {appt.initialDoctor}</div>
+                                                </div>
                                             </div>
                                             <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0 mt-1" />
                                         </CollapsibleTrigger>
@@ -945,6 +949,7 @@ export default function AppointmentsPage() {
                                                                 <div className='p-4 border bg-background rounded-lg'>
                                                                     <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
                                                                             <div className="font-bold text-base flex items-baseline gap-x-2 flex-wrap">
+                                                                                <span className="text-lg font-bold text-blue-900 dark:text-blue-400">{index + 1}.{pIndex + 1}.</span>
                                                                                 <span>{item.title}</span>
                                                                                 <span className="text-sm text-muted-foreground font-normal">by</span>
                                                                                 <span className="font-bold text-base" style={{color: 'hsl(var(--nav-appointments))'}}>{item.doctor}</span>
@@ -1138,3 +1143,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
