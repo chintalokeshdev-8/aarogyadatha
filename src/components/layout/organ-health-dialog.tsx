@@ -214,21 +214,12 @@ export function OrganHealthDialog({ organ, children }: { organ: any, children: R
                     
                     <Separator />
                     
-                    <Collapsible>
-                        <CollapsibleTrigger className="w-full">
-                            <div className="flex items-center justify-between font-semibold">
-                               <div className="flex items-center gap-2">
-                                 <Utensils className="h-4 w-4" style={{color: organ.color}} /> AI-Generated Diet Plan
-                               </div>
-                               <Button variant="ghost" size="sm" className='text-xs'>
-                                   Show
-                               </Button>
-                            </div>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                            <OrganDietPlanGenerator organ={organ} />
-                        </CollapsibleContent>
-                    </Collapsible>
+                    <div>
+                        <div className="font-semibold flex items-center gap-2">
+                            <Utensils className="h-4 w-4" style={{color: organ.color}} /> AI-Generated Diet Plan
+                        </div>
+                        <OrganDietPlanGenerator organ={organ} />
+                    </div>
 
 
                     {organ.status === 'Needs Critical Attention' && (
