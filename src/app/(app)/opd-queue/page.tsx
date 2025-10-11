@@ -87,7 +87,9 @@ export default function OpdQueuePage() {
     const [today, setToday] = useState('');
     
     useEffect(() => {
-        setToday(new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }));
+        // This effect runs only on the client, after hydration
+        const formattedDate = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        setToday(`Live status for your appointments on ${formattedDate}.`);
     }, []);
 
     const currentStatusInfo = getStatusInfo(appointmentDetails.status);
@@ -98,7 +100,7 @@ export default function OpdQueuePage() {
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-chat))'}}>Live OPD Status</h1>
                 <p className="text-muted-foreground mt-2">
-                    {today ? `Live status for your appointments on ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.` : 'Loading date...'}
+                    {today || 'Loading date...'}
                 </p>
             </div>
 
@@ -203,3 +205,5 @@ export default function OpdQueuePage() {
         </div>
     );
 }
+
+    
