@@ -177,12 +177,12 @@ export default function DashboardPage() {
         <Separator />
         
         <section>
-          <div className="mb-4">
-            <h2 className="text-xl font-semibold text-center sm:text-left">Organ Health Overview</h2>
-            <p className="text-sm text-muted-foreground text-center sm:text-left">A summary of your key organ health based on recent reports.</p>
-          </div>
           <Card>
-            <CardContent className="p-4">
+            <CardContent className="p-4 space-y-4">
+                <div className="text-center sm:text-left">
+                    <h2 className="text-xl font-semibold">Organ Health Overview</h2>
+                    <p className="text-sm text-muted-foreground">A summary of your key organ health based on recent reports.</p>
+                </div>
                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2">
                     {organHealthData.map((organ) => (
                          <OrganHealthDialog key={organ.name} organ={organ}>
