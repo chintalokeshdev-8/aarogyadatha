@@ -166,6 +166,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const isMobile = useIsMobile();
   const [visibleMenuItems, setVisibleMenuItems] = React.useState<MenuItem[]>([]);
   const [navSettings, setNavSettings] = React.useState<Record<string, boolean>>({});
+  const { toast } = useToast();
 
   React.useEffect(() => {
     setIsClient(true);
@@ -190,8 +191,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     const newSettings = { ...navSettings, [id]: isEnabled };
     setNavSettings(newSettings);
     localStorage.setItem('navSettings', JSON.stringify(newSettings));
-    // The toast is removed as per user request.
-    // The user will see the new notification in the alerts dropdown.
+    
+    toast({
+        title: "Navigation Updated",
+        description: "Changes will apply on the next page load.",
+    });
     
     // Optimistically update the visible menu items for instant feedback
     const finalVisibleItems = allMenuItems.filter(item => newSettings[item.id] !== false);
@@ -333,15 +337,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             <span className="font-semibold">Insurances</span>
                                         </DropdownMenuItem>
                                     </Link>
-                                    <Link href="/blood-bank" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <Droplets className="mr-3 text-primary" />
-                                            <span className="font-semibold">Blood Bank</span>
-                                        </DropdownMenuItem>
-                                    </Link>
                                     
                                     {getCustomizableItem('surgery')}
+                                    {getCustomizableItem('bloodBank')}
                                     {getCustomizableItem('healthTracker')}
+                                    {getCustomizableItem('jrDoctors')}
                                     {getCustomizableItem('pregnancy')}
                                     
                                     <Link href="/settings" passHref>
