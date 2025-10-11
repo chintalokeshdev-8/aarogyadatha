@@ -24,19 +24,19 @@ import { Separator } from '@/components/ui/separator';
 
 
 const quickAccessItems = [
-  { href: '/symptom-checker', icon: HeartPulse, label: 'AI Symptom Checker', description: 'వైద్య లక్షణాలు తనిఖీ', color: 'hsl(var(--nav-symptoms))' },
-  { href: '/appointments', icon: CalendarCheck, label: 'Appointments', description: 'సమయం నమోదు చేసుకోండి', color: 'hsl(var(--nav-appointments))' },
-  { href: '/opd-queue', icon: MessageSquare, label: 'OP STATUS', description: 'OP స్థితి', color: 'hsl(var(--nav-chat))' },
-  { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', description: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
-  { href: '/medicines', icon: Pill, label: 'My Medicines', description: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
-  { href: '/insurances', icon: Shield, label: 'Insurances', description: 'భీమా', color: 'hsl(var(--nav-profile))' },
+  { href: '/symptom-checker', icon: HeartPulse, label: 'AI Symptom Checker', telugu: 'వైద్య లక్షణాలు తనిఖీ', color: 'hsl(var(--nav-symptoms))' },
+  { href: '/appointments', icon: CalendarCheck, label: 'Appointments', telugu: 'సమయం నమోదు చేసుకోండి', color: 'hsl(var(--nav-appointments))' },
+  { href: '/opd-queue', icon: MessageSquare, label: 'OP STATUS', telugu: 'OP స్థితి', color: 'hsl(var(--nav-chat))' },
+  { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', telugu: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
+  { href: '/medicines', icon: Pill, label: 'My Medicines', telugu: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
+  { href: '/insurances', icon: Shield, label: 'Insurances', telugu: 'భీమా', color: 'hsl(var(--nav-profile))' },
   { href: '/surgery-care', label: 'Surgery Care', telugu: 'సర్జరీ కేర్', icon: Stethoscope, color: 'hsl(var(--nav-appointments))'},
-  { href: '/blood-bank', icon: Droplets, label: 'Blood Bank', description: 'రక్త నిధి', color: 'hsl(var(--nav-blood-bank))' },
-  { href: '/health-tracker', label: 'Health Tracker', description: 'ఆరోగ్య ట్రాకర్', icon: Activity, color: 'hsl(var(--nav-profile))' },
-  { href: '/junior-doctors', icon: Headset, label: '24/7 Jr. Doctors', description: 'ఉచిత సలహా', color: 'hsl(var(--nav-junior-doctors))' },
-  { href: '/pregnancy-tracker', label: 'Pregnancy Care', description: 'గర్భం', icon: PregnantLadyIcon, color: 'hsl(var(--nav-appointments))' },
-  { href: '/profile', icon: User, label: 'Profile', description: 'ప్రొఫైల్', color: 'hsl(var(--nav-profile))' },
-  { href: '/emergency', icon: Siren, label: 'Emergency', description: 'తక్షణ సహాయం', color: 'hsl(var(--nav-emergency))' },
+  { href: '/blood-bank', icon: Droplets, label: 'Blood Bank', telugu: 'రక్త నిధి', color: 'hsl(var(--nav-blood-bank))' },
+  { href: '/health-tracker', label: 'Health Tracker', telugu: 'ఆరోగ్య ట్రాకర్', icon: Activity, color: 'hsl(var(--nav-profile))' },
+  { href: '/junior-doctors', icon: Headset, label: '24/7 Jr. Doctors', telugu: 'ఉచిత సలహా', color: 'hsl(var(--nav-junior-doctors))' },
+  { href: '/pregnancy-tracker', label: 'Pregnancy Care', telugu: 'గర్భం', icon: PregnantLadyIcon, color: 'hsl(var(--nav-appointments))' },
+  { href: '/profile', icon: User, label: 'Profile', telugu: 'ప్రొఫైల్', color: 'hsl(var(--nav-profile))' },
+  { href: '/emergency', icon: Siren, label: 'Emergency', telugu: 'తక్షణ సహాయం', color: 'hsl(var(--nav-emergency))' },
 ];
 
 const medicineAssistanceItems = [
@@ -91,6 +91,40 @@ const carouselSlides = [
     },
 ];
 
+const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) => {
+    const radius = (size - strokeWidth) / 2;
+    const circumference = radius * 2 * Math.PI;
+    const offset = circumference - (percentage / 100) * circumference;
+
+    return (
+        <div className="relative flex items-center justify-center" style={{width: size, height: size}}>
+            <svg width={size} height={size} className="transform -rotate-90">
+                <circle
+                    className="text-muted/30"
+                    stroke="currentColor"
+                    fill="transparent"
+                    strokeWidth={strokeWidth}
+                    r={radius}
+                    cx={size/2}
+                    cy={size/2}
+                />
+                <circle
+                    stroke={color || "hsl(var(--primary))"}
+                    fill="transparent"
+                    strokeWidth={strokeWidth}
+                    strokeDasharray={circumference}
+                    strokeDashoffset={offset}
+                    strokeLinecap="round"
+                    r={radius}
+                    cx={size/2}
+                    cy={size/2}
+                />
+            </svg>
+            <div className="absolute">{children}</div>
+        </div>
+    );
+};
+
 export default function DashboardPage() {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
@@ -131,6 +165,7 @@ export default function DashboardPage() {
                                     <item.icon className="h-7 w-7" style={{ color: item.color }} />
                                 </div>
                                 <p className="font-semibold text-sm leading-tight text-foreground">{item.label}</p>
+                                <p className="text-xs text-muted-foreground">{item.telugu}</p>
                                 </div>
                             </Link>
                         ))}
@@ -148,7 +183,27 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent className="p-4">
                <p className="text-sm text-muted-foreground mb-4">A summary of your key organ health based on recent reports.</p>
-               <HealthOverview />
+               <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                    {organHealthData.map((organ) => (
+                         <OrganHealthDialog key={organ.name} organ={organ}>
+                            <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
+                                <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
+                                    <Image
+                                        src={organ.image}
+                                        alt={organ.name}
+                                        width={40}
+                                        height={40}
+                                        data-ai-hint={organ.dataAiHint}
+                                        className="rounded-full object-cover"
+                                    />
+                                </CircularProgress>
+                                <p className="mt-2 text-sm font-bold">{organ.name}</p>
+                                <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
+                                <p className="text-xs text-muted-foreground">Healthy</p>
+                            </Card>
+                        </OrganHealthDialog>
+                    ))}
+                </div>
             </CardContent>
           </Card>
         </section>
