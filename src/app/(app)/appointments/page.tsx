@@ -675,7 +675,7 @@ export default function AppointmentsPage() {
     const filteredAppointments = useMemo(() => {
         const lowercasedSearchTerm = searchTerm.toLowerCase();
         
-        return appointments.filter(appt => {
+        return appointments.filter((appt, apptIndex) => {
             const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor || appt.prescriptions.some(p => p.doctor === filterDoctor);
             const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
 
@@ -683,18 +683,26 @@ export default function AppointmentsPage() {
                 return doctorMatch && dateMatch;
             }
 
+            const serialNumber = (apptIndex + 1).toString();
+            const serialMatch = serialNumber === lowercasedSearchTerm;
+
             const keywordMatch = 
+                serialMatch ||
                 appt.problem.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.initialDoctor.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.specialty.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.date.toLowerCase().includes(lowercasedSearchTerm) ||
-                appt.prescriptions.some(p => 
-                    p.title.toLowerCase().includes(lowercasedSearchTerm) ||
-                    p.doctor.toLowerCase().includes(lowercasedSearchTerm) ||
-                    p.summary.toLowerCase().includes(lowercasedSearchTerm) ||
-                    (p.medicines && p.medicines.some(m => m.toLowerCase().includes(lowercasedSearchTerm))) ||
-                    (p.details && p.details.some(d => d.name.toLowerCase().includes(lowercasedSearchTerm)))
-                );
+                appt.prescriptions.some((p, pIndex) => {
+                    const subSerialNumber = `${apptIndex + 1}.${pIndex + 1}`;
+                    return (
+                        subSerialNumber === lowercasedSearchTerm ||
+                        p.title.toLowerCase().includes(lowercasedSearchTerm) ||
+                        p.doctor.toLowerCase().includes(lowercasedSearchTerm) ||
+                        p.summary.toLowerCase().includes(lowercasedSearchTerm) ||
+                        (p.medicines && p.medicines.some(m => m.toLowerCase().includes(lowercasedSearchTerm))) ||
+                        (p.details && p.details.some(d => d.name.toLowerCase().includes(lowercasedSearchTerm)))
+                    );
+                });
 
             return keywordMatch && doctorMatch && dateMatch;
         });
@@ -875,7 +883,7 @@ export default function AppointmentsPage() {
                                     <div className="relative lg:col-span-2">
                                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                         <Input 
-                                            placeholder="Search by reason, doctor, test..." 
+                                            placeholder="Search by S.No, reason, doctor, test..." 
                                             className="pl-10"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -920,7 +928,7 @@ export default function AppointmentsPage() {
                                     <Collapsible key={index} className="border rounded-lg bg-background">
                                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                             <div className="flex-1 flex items-start gap-3">
-                                                <span className="text-2xl font-bold text-blue-900 dark:text-blue-400">{index + 1})</span>
+                                                <span className="text-2xl font-bold text-blue-900 dark:text-blue-400">{filteredAppointments.indexOf(appt) + 1})</span>
                                                 <div>
                                                     <p className="text-xl font-bold">{appt.problem}</p>
                                                     <div className="text-base font-semibold text-muted-foreground mt-1">{appt.specialty}</div>
@@ -948,7 +956,7 @@ export default function AppointmentsPage() {
                                                                 <div className='p-4 border bg-background rounded-lg'>
                                                                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
                                                                         <div className="font-semibold text-sm flex items-center gap-2 flex-wrap">
-                                                                            <span className="text-lg font-bold text-blue-900 dark:text-blue-400">{index + 1}.{pIndex + 1})</span>
+                                                                            <span className="text-lg font-bold text-blue-900 dark:text-blue-400">{filteredAppointments.indexOf(appt) + 1}.{pIndex + 1})</span>
                                                                             <span>{item.title}</span>
                                                                             <span className="hidden sm:inline mx-1 text-muted-foreground">•</span>
                                                                             <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{item.doctor}</span>
@@ -1148,5 +1156,8 @@ export default function AppointmentsPage() {
     
 
     
+
+    
+
 
     
