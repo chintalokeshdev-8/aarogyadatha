@@ -11,14 +11,14 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { PregnantLadyIcon } from '@/components/icons/pregnant-lady-icon';
 import { GovIdIcon } from '@/components/icons/gov-id-icon';
 import { formatDistanceToNow } from "date-fns";
 import { HealthOverview } from './health-overview';
 import { OrganHealthDialog } from '@/components/layout/organ-health-dialog';
 import { organHealthData } from '@/lib/organ-health-data';
-import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import Autoplay from "embla-carousel-autoplay";
 
 
@@ -60,19 +60,25 @@ const carouselSlides = [
         title: "Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records.",
         buttonText: "Link Now",
         buttonIcon: Link2,
-        href: "/insurances"
+        href: "/insurances",
+        color: "bg-blue-600",
+        textColor: "text-white"
     },
     {
         title: '"Right disease for the right doctor is 100% cure"',
         buttonText: "Book Appointment",
         buttonIcon: CalendarCheck,
-        href: "/appointments"
+        href: "/appointments",
+        color: "bg-teal-500",
+        textColor: "text-white"
     },
     {
         title: "Limited Time Offer: Get 20% off on all master health checkups this month!",
         buttonText: "Book Now",
         buttonIcon: TestTube,
-        href: "/lab-reports"
+        href: "/lab-reports",
+        color: "bg-purple-600",
+        textColor: "text-white"
     },
 ];
 
@@ -114,6 +120,21 @@ export default function DashboardPage() {
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: true })
   );
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+ 
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+ 
+    setCurrent(api.selectedScrollSnap())
+ 
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
+
 
   return (
     <div className="space-y-8">
@@ -126,7 +147,8 @@ export default function DashboardPage() {
                 className="hover:shadow-md transition-shadow cursor-pointer h-full flex flex-col items-center justify-center text-center p-2 border-2"
                 style={{
                   backgroundColor: item.color.replace(')', ' / 0.1)'),
-                  borderColor: 'hsl(var(--primary))'
+                  borderColor: item.color,
+                  borderWidth: '2px'
                 }}
               >
                 <div className="p-1 rounded-full mb-1">
@@ -149,7 +171,6 @@ export default function DashboardPage() {
                           <AvatarFallback>CLB</AvatarFallback>
                       </Avatar>
                       <div>
-                          <p className="text-sm opacity-80 font-semibold">S.No: 1</p>
                           <h2 className="text-xl font-bold">Chinta Lokesh Babu</h2>
                           <p className="text-sm opacity-80 font-semibold">Patient ID: PAT001</p>
                       </div>
@@ -158,6 +179,7 @@ export default function DashboardPage() {
               <div className="border-t border-primary-foreground/20 mt-4 -mx-6"></div>
           </div>
           <Carousel
+            setApi={setApi}
             plugins={[plugin.current]}
             className="w-full"
             onMouseEnter={plugin.current.stop}
@@ -167,7 +189,7 @@ export default function DashboardPage() {
                 {carouselSlides.map((slide, index) => (
                 <CarouselItem key={index}>
                     <div className="p-6 pt-0">
-                        <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col items-center justify-center gap-4 text-center min-h-[160px]">
+                        <div className={cn("rounded-lg p-4 flex flex-col items-center justify-center gap-4 text-center min-h-[160px]", slide.color, slide.textColor)}>
                             <p className="font-bold text-lg flex-1 flex items-center">{slide.title}</p>
                             <Link href={slide.href}>
                                 <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
@@ -180,6 +202,18 @@ export default function DashboardPage() {
                 ))}
             </CarouselContent>
             </Carousel>
+            <div className="flex justify-center gap-2 pb-4">
+                {carouselSlides.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => api?.scrollTo(index)}
+                        className={cn(
+                            "h-2 w-2 rounded-full transition-all",
+                            current === index ? "w-4 bg-primary-foreground" : "bg-primary-foreground/50"
+                        )}
+                    />
+                ))}
+            </div>
       </Card>
       
        <Card>
