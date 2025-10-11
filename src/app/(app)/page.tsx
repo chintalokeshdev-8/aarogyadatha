@@ -58,20 +58,18 @@ const medicineAssistanceItems = [
 
 const carouselSlides = [
     {
-        title: "Choosing the right doctor for the right disease is the key to a 100% cure.",
+        title: "Right doctor for right disease is 100% cure.",
         buttonText: "Find a Doctor",
         buttonIcon: CheckCircle,
         href: "/appointments",
-        color: "bg-blue-50 border-blue-200",
         textColor: "text-white",
-        bgImage: "https://picsum.photos/seed/slide1/800/400"
+        bgImage: "https://picsum.photos/seed/slideNew1/800/400"
     },
     {
         title: "Daily Health Tip: Stay hydrated by drinking at least 8 glasses of water throughout the day!",
         buttonText: "Learn More",
         buttonIcon: Leaf,
         href: "/health-tracker",
-        color: "bg-green-50 border-green-200",
         textColor: "text-white",
         bgImage: "https://picsum.photos/seed/slide2/800/400"
     },
@@ -80,7 +78,6 @@ const carouselSlides = [
         buttonText: "Link Now",
         buttonIcon: Link2,
         href: "/insurances#gov-health-ids",
-        color: "bg-indigo-50 border-indigo-200",
         textColor: "text-white",
         bgImage: "https://picsum.photos/seed/slide3/800/400"
     },
@@ -89,7 +86,6 @@ const carouselSlides = [
         buttonText: "Book Now",
         buttonIcon: TestTube,
         href: "/lab-reports",
-        color: "bg-purple-50 border-purple-200",
         textColor: "text-white",
         bgImage: "https://picsum.photos/seed/slide4/800/400"
     },
@@ -295,3 +291,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
