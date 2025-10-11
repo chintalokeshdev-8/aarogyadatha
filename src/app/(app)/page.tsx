@@ -1,4 +1,6 @@
 
+'use client';
+
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,13 +11,15 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { PregnantLadyIcon } from '@/components/icons/pregnant-lady-icon';
 import { GovIdIcon } from '@/components/icons/gov-id-icon';
 import { formatDistanceToNow } from "date-fns";
 import { HealthOverview } from './health-overview';
 import { OrganHealthDialog } from '@/components/layout/organ-health-dialog';
 import { organHealthData } from '@/lib/organ-health-data';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import Autoplay from "embla-carousel-autoplay";
 
 
 const quickAccessItems = [
@@ -48,6 +52,27 @@ const medicineAssistanceItems = [
         description: 'Speak with a licensed pharmacist for expert advice.',
         buttonText: 'Consult',
         href: '#'
+    },
+];
+
+const carouselSlides = [
+    {
+        title: "Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records.",
+        buttonText: "Link Now",
+        buttonIcon: Link2,
+        href: "/insurances"
+    },
+    {
+        title: '"Right disease for the right doctor is 100% cure"',
+        buttonText: "Book Appointment",
+        buttonIcon: CalendarCheck,
+        href: "/appointments"
+    },
+    {
+        title: "Limited Time Offer: Get 20% off on all master health checkups this month!",
+        buttonText: "Book Now",
+        buttonIcon: TestTube,
+        href: "/lab-reports"
     },
 ];
 
@@ -86,18 +111,28 @@ const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, c
 };
 
 export default function DashboardPage() {
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true })
+  );
+
   return (
     <div className="space-y-8">
       <section>
         <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">Quick Access</h2>
-        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2">
+        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-8 gap-2">
           {quickAccessItems.map((item) => (
             <Link key={item.href} href={item.href} passHref>
-              <Card className="hover:shadow-md transition-colors cursor-pointer h-full flex flex-col items-center justify-center text-center p-2" style={{ backgroundColor: 'hsl(200 80% 30% / 0.1)'}}>
+              <Card 
+                className="hover:shadow-md transition-shadow cursor-pointer h-full flex flex-col items-center justify-center text-center p-2 border-2"
+                style={{
+                  backgroundColor: item.color.replace(')', ' / 0.1)'),
+                  borderColor: 'hsl(var(--primary))'
+                }}
+              >
                 <div className="p-1 rounded-full mb-1">
                     <item.icon className="h-5 w-5" style={{color: item.color}} />
                 </div>
-                <p className="font-bold text-[11px] leading-tight">{item.label}</p>
+                <p className="font-bold text-[11px] leading-tight" style={{color: item.color}}>{item.label}</p>
                 <p className="text-[10px] text-muted-foreground whitespace-normal">{item.description}</p>
               </Card>
             </Link>
@@ -105,8 +140,8 @@ export default function DashboardPage() {
         </div>
       </section>
 
-       <Card className="bg-primary text-primary-foreground">
-          <CardContent className="p-6">
+       <Card className="bg-primary text-primary-foreground overflow-hidden">
+          <div className="p-6">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-4 text-center sm:text-left">
                       <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
@@ -120,30 +155,31 @@ export default function DashboardPage() {
                       </div>
                   </div>
               </div>
-              <div className="border-t border-primary-foreground/20 my-4"></div>
-              <div className="grid md:grid-cols-2 gap-4">
-                  <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col items-center justify-center gap-4 text-center">
-                       <p className="font-bold text-lg">
-                          Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records.
-                      </p>
-                       <Link href="/insurances">
-                        <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
-                            <Link2 className="mr-2 h-4 w-4" /> Link Now
-                        </Button>
-                    </Link>
-                  </div>
-                   <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col items-center justify-center gap-4 text-center">
-                       <p className="text-lg italic font-bold">
-                          "Right disease for the right doctor is 100% cure"
-                      </p>
-                      <Link href="/appointments">
-                        <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
-                            <CalendarCheck className="mr-2 h-4 w-4" /> Book Appointment
-                        </Button>
-                    </Link>
-                  </div>
-              </div>
-          </CardContent>
+              <div className="border-t border-primary-foreground/20 mt-4 -mx-6"></div>
+          </div>
+          <Carousel
+            plugins={[plugin.current]}
+            className="w-full"
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
+            >
+            <CarouselContent>
+                {carouselSlides.map((slide, index) => (
+                <CarouselItem key={index}>
+                    <div className="p-6 pt-0">
+                        <div className="rounded-lg bg-primary-foreground/10 p-4 flex flex-col items-center justify-center gap-4 text-center min-h-[160px]">
+                            <p className="font-bold text-lg flex-1 flex items-center">{slide.title}</p>
+                            <Link href={slide.href}>
+                                <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
+                                    <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+                </CarouselItem>
+                ))}
+            </CarouselContent>
+            </Carousel>
       </Card>
       
        <Card>
