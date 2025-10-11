@@ -24,7 +24,7 @@ import { dummyReportData } from '@/lib/dummy-report-data';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
-import { FlowerFall } from '@/components/ui/flower_fall';
+import { FlowerFall } from '@/components/ui/flower-fall';
 import { analyzeReport, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -1142,5 +1142,7 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
 
     
