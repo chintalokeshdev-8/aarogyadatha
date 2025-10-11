@@ -217,21 +217,21 @@ export default function DashboardPage() {
                     {organHealthData.map((organ) => (
                          <OrganHealthDialog key={organ.name} organ={organ}>
                             <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
-                                <CircularProgress percentage={organ.healthScore} size={80} strokeWidth={6} color={organ.color}>
+                                <CircularProgress percentage={organ.healthScore} size={60} strokeWidth={5} color={organ.color}>
                                     <Image
                                         src={organ.image}
                                         alt={organ.name}
-                                        width={40}
-                                        height={40}
+                                        width={30}
+                                        height={30}
                                         data-ai-hint={organ.dataAiHint}
                                         className="rounded-full object-cover"
                                     />
                                 </CircularProgress>
-                                <p className="mt-2 text-sm font-bold">{organ.name}</p>
+                                <p className="mt-2 text-xs font-bold">{organ.name}</p>
                                 {organ.healthScore !== null ? (
-                                    <p className="font-semibold text-base" style={{color: organ.color}}>{organ.healthScore}%</p>
+                                    <p className="font-semibold text-sm" style={{color: organ.color}}>{organ.healthScore}%</p>
                                 ) : (
-                                    <p className="font-semibold text-base" style={{color: organ.color}}>--%</p>
+                                    <p className="font-semibold text-sm" style={{color: organ.color}}>--%</p>
                                 )}
                                 <p className="text-xs font-semibold" style={{color: organ.color}}>{organ.status}</p>
                             </Card>
