@@ -952,45 +952,45 @@ export default function AppointmentsPage() {
                                 const discountedFee = doctor.opFee * 0.5;
                                 return (
                                     <Card key={index} className="transition-shadow hover:shadow-md">
-                                        <CardContent className="p-6">
-                                            <div className="flex flex-col sm:flex-row gap-6">
-                                                <Avatar className="h-28 w-28 border-4" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
+                                        <CardContent className="p-4">
+                                            <div className="flex flex-row gap-4">
+                                                <Avatar className="h-24 w-24 border-4 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
                                                     <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
                                                     <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                                 </Avatar>
                                                 <div className="flex-1">
-                                                    <div className="flex items-center gap-3">
-                                                        <h3 className="text-2xl font-bold">{doctor.name}</h3>
+                                                    <div className="flex items-center gap-2">
+                                                        <h3 className="text-xl font-bold">{doctor.name}</h3>
                                                         {(doctor as any).recommended && (
-                                                            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                                                            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 hidden sm:flex">
                                                                 <Star className="h-3 w-3 mr-1" />
                                                                 Recommended
                                                             </Badge>
                                                         )}
                                                     </div>
-                                                    <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold">{doctor.specialty}</p>
-                                                    <p className="text-sm text-muted-foreground">{doctor.experience} experience</p>
-                                                    <p className="text-sm text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
+                                                    <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold text-sm">{doctor.specialty}</p>
+                                                    <p className="text-xs text-muted-foreground">{doctor.experience} experience</p>
+                                                    <p className="text-xs text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
                                                 </div>
                                             </div>
-                                            <div className="mt-4 space-y-3 text-sm">
-                                                <p><strong className="font-semibold">Successful Surgeries:</strong> {doctor.surgeries}</p>
-                                                <p><strong className="font-semibold">Main Focus:</strong> {doctor.mainDealing}</p>
+                                            <div className="mt-4 space-y-2 text-sm">
+                                                <p><strong className="font-semibold">Surgeries:</strong> {doctor.surgeries}</p>
+                                                <p><strong className="font-semibold">Focus:</strong> {doctor.mainDealing}</p>
                                             </div>
-                                             <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                                             <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
                                                 <div className="text-center sm:text-left">
-                                                    <p className="text-sm font-semibold">Consultation Fee</p>
+                                                    <p className="text-xs font-semibold">Consultation Fee</p>
                                                     <div className="flex items-baseline gap-2">
-                                                        <p className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{discountedFee}</p>
+                                                        <p className="text-xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{discountedFee}</p>
                                                         <p className="line-through text-muted-foreground">₹{doctor.opFee}</p>
                                                     </div>
-                                                     <Badge variant="outline" className="mt-1 border-green-500 text-green-600">Promo: MEDIBRIDGE</Badge>
+                                                     <Badge variant="outline" className="mt-1 border-green-500 text-green-600 text-xs">Promo: MEDIBRIDGE</Badge>
                                                 </div>
-                                                <div className="flex justify-end gap-2">
-                                                    <Button variant="outline" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
-                                                    <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
+                                                <div className="flex w-full sm:w-auto justify-end gap-2">
+                                                    <Button variant="outline" className="flex-1 sm:flex-auto" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
+                                                    <Button className="flex-1 sm:flex-auto" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
                                                         {isBooking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                                        {isBooking ? 'Booking...' : 'Book Appointment'}
+                                                        {isBooking ? 'Booking...' : 'Book'}
                                                     </Button>
                                                 </div>
                                             </div>
