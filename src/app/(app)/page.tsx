@@ -127,7 +127,7 @@ const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, c
 
 export default function DashboardPage() {
   const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnInteraction: true })
   );
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
@@ -186,7 +186,7 @@ export default function DashboardPage() {
                 {carouselSlides.map((slide, index) => (
                     <CarouselItem key={index}>
                         <div 
-                            className={cn("rounded-lg p-6 flex flex-col items-center justify-center gap-6 text-center min-h-[220px] border relative overflow-hidden", slide.textColor)}
+                            className={cn("rounded-lg p-6 flex items-center justify-center text-center min-h-[220px] border relative overflow-hidden", slide.textColor)}
                             style={{ 
                                 backgroundImage: `url(${slide.bgImage})`, 
                                 backgroundSize: 'cover', 
@@ -194,8 +194,8 @@ export default function DashboardPage() {
                             }}
                         >
                             <div className="absolute inset-0 bg-black/50 z-0"></div>
-                             <div className="flex-1 space-y-4 z-10">
-                                <p className="font-bold text-2xl drop-shadow-md">{slide.title}</p>
+                             <div className="space-y-4 z-10">
+                                <p className="font-bold text-2xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
                                 <Link href={slide.href}>
                                     <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
                                         <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
