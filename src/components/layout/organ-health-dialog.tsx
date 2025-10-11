@@ -16,6 +16,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/colla
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { generateOrganDietPlan, AiOrganDietPlanOutput } from '@/ai/flows/ai-organ-diet';
 import { Separator } from '../ui/separator';
+import { medicineSchedule } from '@/lib/medicines-data';
 
 
 const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number | null, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) {
@@ -76,9 +77,11 @@ function OrganDietPlanGenerator({ organ }: { organ: any }) {
 
     const handleGeneratePlan = () => {
         startTransition(async () => {
+            const activeMedications = medicineSchedule.map(med => med.name);
             const result = await generateOrganDietPlan({
                 organName: organ.name,
-                condition: organ.condition
+                condition: organ.condition,
+                medications: activeMedications
             });
             setDietPlan(result);
         });
@@ -218,6 +221,7 @@ export function OrganHealthDialog({ organ, children }: { organ: any, children: R
                         <div className="font-semibold flex items-center gap-2">
                             <Utensils className="h-4 w-4" style={{color: organ.color}} /> AI-Generated Diet Plan
                         </div>
+                        <p className="text-xs text-muted-foreground mt-1">Based on ICMR guidelines and your health data.</p>
                         <OrganDietPlanGenerator organ={organ} />
                     </div>
 

@@ -1,7 +1,8 @@
+
 'use server';
 
 /**
- * @fileOverview Provides an AI-powered diet plan based on a specific organ's health condition.
+ * @fileOverview Provides an AI-powered diet plan based on a specific organ's health condition and active medications.
  *
  * - generateOrganDietPlan - Creates a personalized diet plan for an organ.
  * - AiOrganDietPlanInput - Input type for the function.
@@ -14,6 +15,7 @@ import {z} from 'zod';
 const AiOrganDietPlanInputSchema = z.object({
   organName: z.string().describe("The name of the organ (e.g., 'Liver', 'Heart')."),
   condition: z.string().describe("The user's current health condition related to that organ (e.g., 'Liver Cirrhosis', 'Mildly reduced Ejection Fraction')."),
+  medications: z.array(z.string()).describe("A list of the user's active medications."),
 });
 export type AiOrganDietPlanInput = z.infer<typeof AiOrganDietPlanInputSchema>;
 
@@ -35,20 +37,22 @@ const prompt = ai.definePrompt({
   name: 'organDietPlanPrompt',
   input: {schema: AiOrganDietPlanInputSchema},
   output: {schema: AiOrganDietPlanOutputSchema},
-  prompt: `You are an expert AI nutritionist specializing in therapeutic diets for organ health based on ICMR (Indian Council of Medical Research) guidelines.
-  
-  Your task is to create a simple, one-day diet plan for an Indian user to help correct abnormalities related to a specific organ.
+  prompt: `You are an expert AI nutritionist specializing in therapeutic diets for organ health based on ICMR (Indian Council of Medical Research) guidelines. Your primary goal is to create a diet that helps the user recover as quickly as possible.
+
+  Your task is to create a simple, one-day **South Indian** style diet plan. The food items must be easy to digest for better absorption and suitable for a person recovering from a health issue.
+
+  **Crucially, you must consider the user's active medications and their health condition to ensure the diet is complementary and does not cause adverse interactions.**
 
   Organ: {{{organName}}}
   Condition: {{{condition}}}
+  Active Medications: {{{json medications}}}
 
-  Based on the severity implied by the condition (e.g., 'Healthy' vs 'Liver Cirrhosis'), generate a suitable diet plan.
+  Based on the severity implied by the condition and the medications, generate a suitable diet plan.
 
   - Structure the plan with sections for Breakfast, Lunch, and Dinner.
-  - For each meal, provide a few recommended food items and a brief reason explaining how it benefits the specified organ.
-  - Include a section for 'General Advice' with a few key dietary points.
+  - For each meal, provide a few recommended South Indian food items and a brief reason explaining how it helps recovery and supports the specified organ.
+  - Include a section for 'General Advice' with key dietary points for recovery.
   - Keep the language simple, encouraging, and easy for a non-medical person to understand.
-  - Ensure the food items are commonly available in India.
   `,
 });
 
