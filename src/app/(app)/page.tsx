@@ -152,7 +152,7 @@ export default function DashboardPage() {
         <section className="-mt-16">
           <Card>
             <CardHeader>
-              <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
+                <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-y-2 gap-x-1">
