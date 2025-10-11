@@ -20,6 +20,7 @@ import { OrganHealthDialog } from '@/components/layout/organ-health-dialog';
 import { organHealthData } from '@/lib/organ-health-data';
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import Autoplay from "embla-carousel-autoplay";
+import { Separator } from '@/components/ui/separator';
 
 
 const quickAccessItems = [
@@ -170,6 +171,8 @@ export default function DashboardPage() {
         </div>
       </section>
 
+      <Separator />
+
       <div className="space-y-2">
         <h2 className="text-xl font-semibold text-center sm:text-left">App Updates & Health Tips</h2>
         <Carousel
@@ -183,7 +186,7 @@ export default function DashboardPage() {
             {carouselSlides.map((slide, index) => (
             <CarouselItem key={index}>
                 <div className="p-1">
-                    <div className={cn("rounded-lg p-4 flex flex-col items-center justify-center gap-4 text-center min-h-[160px]", slide.color, slide.textColor)}>
+                    <div className={cn("rounded-lg p-4 flex flex-col items-center justify-center gap-4 text-center min-h-[160px] border", slide.color, slide.textColor)}>
                         <p className="font-bold text-lg flex-1 flex items-center">{slide.title}</p>
                         <Link href={slide.href}>
                             <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
@@ -210,6 +213,8 @@ export default function DashboardPage() {
         </div>
       </div>
       
+      <Separator />
+
        <Card>
           <CardHeader>
               <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--primary))'}}><Heart style={{color: 'hsl(var(--primary))'}}/>Organ Health Overview</CardTitle>
@@ -241,6 +246,8 @@ export default function DashboardPage() {
           </CardContent>
       </Card>
       
+      <Separator />
+
       <div className="grid md:grid-cols-2 gap-8">
         <section>
           <h2 className="text-xl font-semibold mb-4">Health Overview</h2>
