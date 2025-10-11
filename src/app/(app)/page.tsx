@@ -146,172 +146,175 @@ export default function DashboardPage() {
 
 
   return (
-    <div className="space-y-8">
-      <section className="-mt-16">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-y-2 gap-x-1">
-              {quickAccessItems.map((item) => (
-                <Link key={item.href} href={item.href} passHref>
-                  <div
-                    className="transition-colors hover:bg-primary/10 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-2 p-2 rounded-lg"
-                  >
-                    <div className="p-3 rounded-full mb-1 bg-primary/10">
-                      <item.icon className="h-7 w-7" style={{ color: item.color }} />
+    <div className="relative">
+      <div className="absolute top-0 left-0 w-full h-52 bg-primary -z-10 -mt-8"></div>
+      <div className="space-y-8">
+        <section className="-mt-16">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-y-2 gap-x-1">
+                {quickAccessItems.map((item) => (
+                  <Link key={item.href} href={item.href} passHref>
+                    <div
+                      className="transition-colors hover:bg-primary/10 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-2 p-2 rounded-lg"
+                    >
+                      <div className="p-3 rounded-full mb-1 bg-primary/10">
+                        <item.icon className="h-7 w-7" style={{ color: item.color }} />
+                      </div>
+                      <p className="font-semibold text-sm leading-tight text-black dark:text-white">{item.label}</p>
                     </div>
-                    <p className="font-semibold text-sm leading-tight text-black dark:text-white">{item.label}</p>
-                  </div>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        <Separator />
+
+        <section>
+            <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">Organ Health Overview</h2>
+            <Card>
+                <CardContent className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 p-4">
+                    {organHealthData.map((organ) => (
+                        <OrganHealthDialog key={organ.name} organ={organ}>
+                          <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
+                              <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
+                                  <Image
+                                      src={organ.image}
+                                      alt={organ.name}
+                                      width={40}
+                                      height={40}
+                                      data-ai-hint={organ.dataAiHint}
+                                      className="rounded-full object-cover"
+                                  />
+                              </CircularProgress>
+                              <p className="mt-2 text-sm font-bold">{organ.name}</p>
+                              <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
+                              <p className="text-xs text-muted-foreground">Healthy</p>
+                          </Card>
+                        </OrganHealthDialog>
+                    ))}
+                </CardContent>
+            </Card>
+        </section>
+        
+        <Separator />
+
+        <div className="space-y-2">
+          <h2 className="text-xl font-semibold text-center sm:text-left">App Updates & Health Tips</h2>
+          <Carousel
+              setApi={setApi}
+              plugins={[plugin.current]}
+              className="w-full border rounded-lg overflow-hidden"
+              onMouseEnter={plugin.current.stop}
+              onMouseLeave={plugin.current.reset}
+          >
+              <CarouselContent>
+                  {carouselSlides.map((slide, index) => (
+                      <CarouselItem key={index}>
+                          <div 
+                              className={cn("p-6 flex items-center justify-center text-center min-h-[220px] relative", slide.textColor)}
+                          >
+                              <Image
+                                  src={slide.bgImage}
+                                  alt={slide.title}
+                                  fill
+                                  style={{objectFit:"cover"}}
+                                  className="absolute inset-0 z-0"
+                                  data-ai-hint="abstract background"
+                              />
+                              <div className="absolute inset-0 bg-black/50 z-10"></div>
+                               <div className="space-y-4 z-20 flex flex-col items-center justify-center h-full">
+                                  <p className="font-bold text-2xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
+                                  <Link href={slide.href}>
+                                      <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
+                                          <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
+                                      </Button>
+                                  </Link>
+                              </div>
+                          </div>
+                      </CarouselItem>
+                  ))}
+              </CarouselContent>
+              
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-30">
+                  {carouselSlides.map((_, index) => (
+                      <button
+                          key={index}
+                          onClick={() => api?.scrollTo(index)}
+                          className={cn(
+                              "h-2 w-2 rounded-full transition-all bg-white/50",
+                              current === index + 1 ? "w-4 bg-white" : "hover:bg-white/80"
+                          )}
+                          aria-label={`Go to slide ${index + 1}`}
+                      />
+                  ))}
+              </div>
+          </Carousel>
+        </div>
+
+        <Separator />
+
+        <div className="grid md:grid-cols-2 gap-8">
+          <section>
+            <h2 className="text-xl font-semibold mb-4">Health Overview</h2>
+            <HealthOverview />
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-4">Medicine Assistance</h2>
+            <div className="space-y-4">
+              {medicineAssistanceItems.map((item) => (
+                 <Link key={item.title} href={item.href} passHref>
+                    <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                        <CardContent className="p-4 flex items-center gap-4">
+                            <div className="bg-primary/10 p-3 rounded-full">
+                                <item.icon className="h-6 w-6 text-primary" />
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="font-semibold">{item.title}</h3>
+                                <p className="text-sm text-muted-foreground">{item.description}</p>
+
+                            </div>
+                            <Button size="sm" variant="ghost" style={{color: 'hsl(var(--nav-medicines))'}}>{item.buttonText}</Button>
+                        </CardContent>
+                    </Card>
                 </Link>
               ))}
             </div>
-          </CardContent>
-        </Card>
-      </section>
+          </section>
+        </div>
+        
+        <Separator />
 
-      <Separator />
-
-      <section>
-          <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">Organ Health Overview</h2>
-          <Card>
-              <CardContent className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 p-4">
-                  {organHealthData.map((organ) => (
-                      <OrganHealthDialog key={organ.name} organ={organ}>
-                        <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
-                            <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
-                                <Image
-                                    src={organ.image}
-                                    alt={organ.name}
-                                    width={40}
-                                    height={40}
-                                    data-ai-hint={organ.dataAiHint}
-                                    className="rounded-full object-cover"
-                                />
-                            </CircularProgress>
-                            <p className="mt-2 text-sm font-bold">{organ.name}</p>
-                            <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
-                            <p className="text-xs text-muted-foreground">Healthy</p>
-                        </Card>
-                      </OrganHealthDialog>
-                  ))}
-              </CardContent>
-          </Card>
-      </section>
-      
-      <Separator />
-
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold text-center sm:text-left">App Updates & Health Tips</h2>
-        <Carousel
-            setApi={setApi}
-            plugins={[plugin.current]}
-            className="w-full border rounded-lg overflow-hidden"
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.reset}
-        >
-            <CarouselContent>
-                {carouselSlides.map((slide, index) => (
-                    <CarouselItem key={index}>
-                        <div 
-                            className={cn("p-6 flex items-center justify-center text-center min-h-[220px] relative", slide.textColor)}
-                        >
-                            <Image
-                                src={slide.bgImage}
-                                alt={slide.title}
-                                fill
-                                style={{objectFit:"cover"}}
-                                className="absolute inset-0 z-0"
-                                data-ai-hint="abstract background"
-                            />
-                            <div className="absolute inset-0 bg-black/50 z-10"></div>
-                             <div className="space-y-4 z-20 flex flex-col items-center justify-center h-full">
-                                <p className="font-bold text-2xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
-                                <Link href={slide.href}>
-                                    <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
-                                        <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2 z-30">
-                {carouselSlides.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => api?.scrollTo(index)}
-                        className={cn(
-                            "h-2 w-2 rounded-full transition-all bg-white/50",
-                            current === index + 1 ? "w-4 bg-white" : "hover:bg-white/80"
-                        )}
-                        aria-label={`Go to slide ${index + 1}`}
-                    />
-                ))}
-            </div>
-        </Carousel>
-      </div>
-
-      <Separator />
-
-      <div className="grid md:grid-cols-2 gap-8">
-        <section>
-          <h2 className="text-xl font-semibold mb-4">Health Overview</h2>
-          <HealthOverview />
-        </section>
-
-        <section>
-          <h2 className="text-xl font-semibold mb-4">Medicine Assistance</h2>
-          <div className="space-y-4">
-            {medicineAssistanceItems.map((item) => (
-               <Link key={item.title} href={item.href} passHref>
-                  <Card className="hover:shadow-md transition-shadow cursor-pointer">
-                      <CardContent className="p-4 flex items-center gap-4">
-                          <div className="bg-primary/10 p-3 rounded-full">
-                              <item.icon className="h-6 w-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                              <h3 className="font-semibold">{item.title}</h3>
-                              <p className="text-sm text-muted-foreground">{item.description}</p>
-
-                          </div>
-                          <Button size="sm" variant="ghost" style={{color: 'hsl(var(--nav-medicines))'}}>{item.buttonText}</Button>
-                      </CardContent>
-                  </Card>
-              </Link>
-            ))}
+        <section className="text-center py-8">
+          <h2 className="text-2xl font-bold mb-4">Download The App</h2>
+          <div className="flex justify-center gap-4">
+            <Link href="https://play.google.com/store" target="_blank" rel="noopener noreferrer">
+              <Image
+                src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                alt="Get it on Google Play"
+                width={180}
+                height={60}
+                data-ai-hint="google play badge"
+              />
+            </Link>
+            <Link href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer">
+              <Image
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/640px-Download_on_the_App_Store_Badge.svg.png"
+                alt="Download on the App Store"
+                width={160}
+                height={60}
+                data-ai-hint="app store badge"
+              />
+            </Link>
           </div>
         </section>
       </div>
-      
-      <Separator />
-
-      <section className="text-center py-8">
-        <h2 className="text-2xl font-bold mb-4">Download The App</h2>
-        <div className="flex justify-center gap-4">
-          <Link href="https://play.google.com/store" target="_blank" rel="noopener noreferrer">
-            <Image
-              src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
-              alt="Get it on Google Play"
-              width={180}
-              height={60}
-              data-ai-hint="google play badge"
-            />
-          </Link>
-          <Link href="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer">
-            <Image
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/640px-Download_on_the_App_Store_Badge.svg.png"
-              alt="Download on the App Store"
-              width={160}
-              height={60}
-              data-ai-hint="app store badge"
-            />
-          </Link>
-        </div>
-      </section>
     </div>
   );
 }
