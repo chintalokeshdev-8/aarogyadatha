@@ -57,19 +57,19 @@ const medicineAssistanceItems = [
 
 const carouselSlides = [
     {
-        title: "Connect your insurances, Aarogyasri (UHID) or ABHA ID to securely access and manage your health records.",
+        title: "Daily Health Tip: Stay hydrated by drinking at least 8 glasses of water throughout the day!",
+        buttonText: "Learn More",
+        buttonIcon: Leaf,
+        href: "/health-tracker",
+        color: "bg-teal-500",
+        textColor: "text-white"
+    },
+    {
+        title: "New Feature: You can now link your Aarogyasri (UHID) and ABHA ID to manage all your health records in one place.",
         buttonText: "Link Now",
         buttonIcon: Link2,
         href: "/insurances",
         color: "bg-blue-600",
-        textColor: "text-white"
-    },
-    {
-        title: '"Right disease for the right doctor is 100% cure"',
-        buttonText: "Book Appointment",
-        buttonIcon: CalendarCheck,
-        href: "/appointments",
-        color: "bg-teal-500",
         textColor: "text-white"
     },
     {
@@ -164,18 +164,7 @@ export default function DashboardPage() {
 
        <Card className="bg-primary text-primary-foreground overflow-hidden">
           <div className="p-6">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-4 text-center sm:text-left">
-                      <Avatar className="h-16 w-16 border-2 border-primary-foreground/50">
-                          <AvatarImage src="/images/profile.jpg" />
-                          <AvatarFallback>CLB</AvatarFallback>
-                      </Avatar>
-                      <div>
-                          <h2 className="text-xl font-bold">Chinta Lokesh Babu</h2>
-                          <p className="text-sm opacity-80 font-semibold">Patient ID: PAT001</p>
-                      </div>
-                  </div>
-              </div>
+              <h2 className="text-xl font-bold text-center sm:text-left">App Updates & Health Tips</h2>
               <div className="border-t border-primary-foreground/20 mt-4 -mx-6"></div>
           </div>
           <Carousel
