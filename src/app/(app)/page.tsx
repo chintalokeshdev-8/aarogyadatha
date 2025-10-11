@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { HeartPulse, MessageSquare, Siren, Users, TestTube, FlaskConical, LifeBuoy, Stethoscope, Microscope, Pill, Headset, Phone, Link2, CalendarCheck, User, Heart, Baby, Leaf, Droplets, Wind, Brain, LayoutGrid, Activity, FileText, MapPin, UserPlus, Shield, CheckCircle } from 'lucide-react';
+import { HeartPulse, MessageSquare, Siren, Users, TestTube, FlaskConical, LifeBuoy, Stethoscope, Microscope, Pill, Headset, Phone, Link2, CalendarCheck, User, Heart, Baby, Leaf, Droplets, Wind, Brain, LayoutGrid, Activity, FileText, MapPin, UserPlus, Shield, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
@@ -18,7 +18,7 @@ import { formatDistanceToNow } from "date-fns";
 import { HealthOverview } from './health-overview';
 import { OrganHealthDialog } from '@/components/layout/organ-health-dialog';
 import { organHealthData } from '@/lib/organ-health-data';
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import Autoplay from "embla-carousel-autoplay";
 import { Separator } from '@/components/ui/separator';
 
@@ -62,32 +62,36 @@ const carouselSlides = [
         buttonText: "Find a Doctor",
         buttonIcon: CheckCircle,
         href: "/appointments",
-        color: "bg-orange-500",
-        textColor: "text-white"
+        color: "bg-blue-50 border-blue-200",
+        textColor: "text-blue-900",
+        image: { src: "https://picsum.photos/seed/slide1/400/300", "dataAiHint": "doctor stethoscope" }
     },
     {
         title: "Daily Health Tip: Stay hydrated by drinking at least 8 glasses of water throughout the day!",
         buttonText: "Learn More",
         buttonIcon: Leaf,
         href: "/health-tracker",
-        color: "bg-teal-500",
-        textColor: "text-white"
+        color: "bg-green-50 border-green-200",
+        textColor: "text-green-900",
+        image: { src: "https://picsum.photos/seed/slide2/400/300", "dataAiHint": "glass water" }
     },
     {
-        title: "New Feature: Link your Aarogyasri (UHID) and ABHA ID to manage all health records in one place.",
+        title: "New Feature: Link your Aarogyasri & ABHA ID to manage all health records in one place.",
         buttonText: "Link Now",
         buttonIcon: Link2,
-        href: "/insurances",
-        color: "bg-blue-600",
-        textColor: "text-white"
+        href: "/insurances#gov-health-ids",
+        color: "bg-indigo-50 border-indigo-200",
+        textColor: "text-indigo-900",
+        image: { src: "https://picsum.photos/seed/slide3/400/300", "dataAiHint": "digital health card" }
     },
     {
         title: "Limited Time Offer: Get 20% off on all master health checkups this month!",
         buttonText: "Book Now",
         buttonIcon: TestTube,
         href: "/lab-reports",
-        color: "bg-purple-600",
-        textColor: "text-white"
+        color: "bg-purple-50 border-purple-200",
+        textColor: "text-purple-900",
+        image: { src: "https://picsum.photos/seed/slide4/400/300", "dataAiHint": "lab test tubes" }
     },
 ];
 
@@ -137,10 +141,10 @@ export default function DashboardPage() {
       return
     }
  
-    setCurrent(api.selectedScrollSnap())
+    setCurrent(api.selectedScrollSnap() + 1)
  
     api.on("select", () => {
-      setCurrent(api.selectedScrollSnap())
+      setCurrent(api.selectedScrollSnap() + 1)
     })
   }, [api])
 
@@ -176,41 +180,52 @@ export default function DashboardPage() {
       <div className="space-y-2">
         <h2 className="text-xl font-semibold text-center sm:text-left">App Updates & Health Tips</h2>
         <Carousel
-        setApi={setApi}
-        plugins={[plugin.current]}
-        className="w-full"
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
+            setApi={setApi}
+            plugins={[plugin.current]}
+            className="w-full"
+            onMouseEnter={plugin.current.stop}
+            onMouseLeave={plugin.current.reset}
         >
-        <CarouselContent>
-            {carouselSlides.map((slide, index) => (
-            <CarouselItem key={index}>
-                <div className="p-1">
-                    <div className={cn("rounded-lg p-4 flex flex-col items-center justify-center gap-4 text-center min-h-[160px] border", slide.color, slide.textColor)}>
-                        <p className="font-bold text-lg flex-1 flex items-center">{slide.title}</p>
-                        <Link href={slide.href}>
-                            <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
-                                <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
-                            </Button>
-                        </Link>
-                    </div>
-                </div>
-            </CarouselItem>
-            ))}
-        </CarouselContent>
+            <CarouselContent>
+                {carouselSlides.map((slide, index) => (
+                    <CarouselItem key={index}>
+                        <div className={cn("rounded-lg p-6 flex flex-col md:flex-row items-center justify-center gap-6 text-center md:text-left min-h-[220px] border", slide.color, slide.textColor)}>
+                             <div className="flex-1 space-y-4">
+                                <p className="font-bold text-xl">{slide.title}</p>
+                                <Link href={slide.href}>
+                                    <Button variant="outline" className="bg-background/70 hover:bg-background font-bold shrink-0 border-current">
+                                        <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
+                                    </Button>
+                                </Link>
+                            </div>
+                            <Image
+                                src={slide.image.src}
+                                alt={slide.title}
+                                width={150}
+                                height={150}
+                                data-ai-hint={slide.image.dataAiHint}
+                                className="rounded-lg shadow-md w-32 h-32 md:w-40 md:h-40 object-cover"
+                            />
+                        </div>
+                    </CarouselItem>
+                ))}
+            </CarouselContent>
+            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80" />
+            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-background/50 hover:bg-background/80" />
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex justify-center gap-2">
+                {carouselSlides.map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => api?.scrollTo(index)}
+                        className={cn(
+                            "h-2 w-2 rounded-full transition-all bg-background/50",
+                            current === index + 1 ? "w-4 bg-background" : "hover:bg-background/80"
+                        )}
+                        aria-label={`Go to slide ${index + 1}`}
+                    />
+                ))}
+            </div>
         </Carousel>
-        <div className="flex justify-center gap-2 pt-2">
-            {carouselSlides.map((_, index) => (
-                <button
-                    key={index}
-                    onClick={() => api?.scrollTo(index)}
-                    className={cn(
-                        "h-2 w-2 rounded-full transition-all",
-                        current === index ? "w-4 bg-primary" : "bg-primary/50"
-                    )}
-                />
-            ))}
-        </div>
       </div>
       
       <Separator />
@@ -280,5 +295,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
