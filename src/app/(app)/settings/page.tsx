@@ -2,7 +2,6 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Bell, FileDown, Lock, Palette, Trash2, User, Loader2, HelpCircle, FileText, Info, Phone } from "lucide-react";
 import React from "react";
@@ -56,22 +55,6 @@ export default function SettingsPage() {
                 </Card>
 
                  <Card>
-                    <CardHeader>
-                        <CardTitle>Appearance</CardTitle>
-                        <CardDescription>Customize the look and feel of the app.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
-                            <div className="flex items-center gap-3">
-                                <Palette className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
-                                <p className="font-semibold">Theme</p>
-                            </div>
-                            <ThemeToggle />
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card>
                     <CardHeader>
                         <CardTitle>Notifications</CardTitle>
                         <CardDescription>Choose how you receive notifications.</CardDescription>

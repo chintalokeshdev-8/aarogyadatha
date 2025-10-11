@@ -271,12 +271,15 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
         ) : (
             <>
-                <Link href="/" className="flex items-center gap-2">
-                    <div className="p-1.5 bg-primary-foreground rounded-lg">
-                        <AnimatedActivityIcon className="w-6 h-6 text-primary" />
-                    </div>
-                    <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
-                </Link>
+                <div className="flex items-center gap-2">
+                    <Link href="/" className="flex items-center gap-2">
+                        <div className="p-1.5 bg-primary-foreground rounded-lg">
+                            <AnimatedActivityIcon className="w-6 h-6 text-primary" />
+                        </div>
+                        <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
+                    </Link>
+                    <ThemeToggle />
+                </div>
 
                 <div className="hidden md:block flex-1 max-w-xl">
                     <div className="relative">
