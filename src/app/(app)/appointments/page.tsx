@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -14,7 +13,7 @@ import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
@@ -25,7 +24,7 @@ import { dummyReportData } from '@/lib/dummy-report-data';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
-import { FlowerFall } from '@/components/ui/flower-fall';
+import { FlowerFall } from '@/components/ui/flower_fall';
 import { analyzeReport, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -947,16 +946,16 @@ export default function AppointmentsPage() {
                                                                  </div>
                                                             ) : (
                                                                 <div className='p-4 border bg-background rounded-lg'>
-                                                                    <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
-                                                                            <div className="font-bold text-base flex items-baseline gap-x-2 flex-wrap">
-                                                                                <span className="text-lg font-bold text-blue-900 dark:text-blue-400">{index + 1}.{pIndex + 1}.</span>
-                                                                                <span>{item.title}</span>
-                                                                                <span className="text-sm text-muted-foreground font-normal">by</span>
-                                                                                <span className="font-bold text-base" style={{color: 'hsl(var(--nav-appointments))'}}>{item.doctor}</span>
-                                                                                <span className="text-sm text-muted-foreground font-normal">on</span>
-                                                                                <span className="font-semibold text-base">{item.date}</span>
-                                                                            </div>
-                                                                        <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn('w-fit', item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
+                                                                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
+                                                                        <div className="font-semibold text-sm flex items-center gap-2 flex-wrap">
+                                                                            <span className="text-lg font-bold text-blue-900 dark:text-blue-400">{index + 1}.{pIndex + 1}</span>
+                                                                            <span>{item.title}</span>
+                                                                            <span className="hidden sm:inline mx-1 text-muted-foreground">•</span>
+                                                                            <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{item.doctor}</span>
+                                                                            <span className="hidden sm:inline mx-1 text-muted-foreground">•</span>
+                                                                            <span>{item.date}</span>
+                                                                        </div>
+                                                                        <Badge variant={item.status === 'Completed' ? 'secondary' : 'default'} className={cn('w-fit mt-2 sm:mt-0', item.status === 'Active' ? 'bg-green-100 text-green-800' : '', item.status === 'Improved' || item.status === 'Resolved' ? 'bg-blue-100 text-blue-800' : '', item.status === 'Action Required' ? 'bg-yellow-100 text-yellow-800' : '')}>{item.status}</Badge>
                                                                     </div>
                                                                     
                                                                     <div className="flex items-center gap-2">
@@ -1063,7 +1062,7 @@ export default function AppointmentsPage() {
                                         </CollapsibleContent>
                                     </Collapsible>
                                 )) : (
-                                    <div className="md:col-span-2 text-center p-8 text-muted-foreground">No appointments match your filters.</div>
+                                    <div className="text-center p-8 text-muted-foreground">No appointments match your filters.</div>
                                 )}
                             </div>
                         </CardContent>
