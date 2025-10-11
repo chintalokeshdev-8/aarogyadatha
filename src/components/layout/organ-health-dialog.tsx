@@ -5,13 +5,32 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertCircle, TrendingUp, TrendingDown, Minus } from "lucide-react";
-import { cn } from '@/lib/utils';
+import { CheckCircle2, AlertCircle, TrendingUp, TrendingDown, Minus, Info, FileText } from "lucide-react";
+import { cn } from "@/lib/utils";
 import Image from 'next/image';
 import { Skeleton } from '../ui/skeleton';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 
-
-const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) {
+const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number | null, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) {
+    if (percentage === null) {
+      return (
+        <div className="relative flex items-center justify-center" style={{width: size, height: size}}>
+           <svg width={size} height={size} className="transform -rotate-90">
+                <circle
+                    className="text-muted/30"
+                    stroke="currentColor"
+                    fill="transparent"
+                    strokeWidth={strokeWidth}
+                    r={(size - strokeWidth) / 2}
+                    cx={size/2}
+                    cy={size/2}
+                />
+            </svg>
+            <div className="absolute">{children}</div>
+        </div>
+      );
+    }
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - (percentage / 100) * circumference;
@@ -45,13 +64,11 @@ const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress
     );
 }), { ssr: false, loading: () => <Skeleton className="h-20 w-20 rounded-full" /> });
 
-
-const getTrendIcon = (trend: 'stable' | 'improving' | 'declining') => {
-    switch(trend) {
-        case 'improving': return <TrendingUp className="h-4 w-4 text-green-500" />;
-        case 'declining': return <TrendingDown className="h-4 w-4 text-red-500" />;
-        default: return <Minus className="h-4 w-4 text-gray-500" />;
-    }
+const getStatusClass = (status: string) => {
+    if (status.toLowerCase().includes('healthy') || status.toLowerCase().includes('good')) return "bg-green-100 text-green-800";
+    if (status.toLowerCase().includes('monitoring')) return "bg-yellow-100 text-yellow-800";
+    if (status.toLowerCase().includes('critical')) return "bg-red-100 text-red-800";
+    return "bg-muted text-muted-foreground";
 }
 
 export function OrganHealthDialog({ organ, children }: { organ: any, children: React.ReactNode }) {
@@ -63,7 +80,7 @@ export function OrganHealthDialog({ organ, children }: { organ: any, children: R
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                     <div className="flex items-center gap-4">
-                        <CircularProgress percentage={organ.health} size={60} strokeWidth={5} color={organ.color}>
+                        <CircularProgress percentage={organ.healthScore} size={60} strokeWidth={5} color={organ.color}>
                               <Image
                                 src={organ.image}
                                 alt={organ.name}
@@ -75,51 +92,40 @@ export function OrganHealthDialog({ organ, children }: { organ: any, children: R
                         </CircularProgress>
                         <div>
                              <DialogTitle className="text-2xl">{organ.name} Health</DialogTitle>
-                             <DialogDescription>
-                                Overall health score: <span className="font-bold" style={{color: organ.color}}>{organ.health}%</span>
-                            </DialogDescription>
+                             <div className='flex items-center gap-2 mt-1'>
+                                <p className='text-sm text-muted-foreground'>Status:</p>
+                                <Badge className={cn("text-sm", getStatusClass(organ.status))}>{organ.status}</Badge>
+                             </div>
                         </div>
                     </div>
                 </DialogHeader>
 
                 <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
-                    <h3 className="font-semibold text-lg">Key Factors from Recent Reports</h3>
-                    
-                    {organ.details.abnormal.length > 0 && (
-                        <div className="space-y-3">
-                            <h4 className="font-semibold text-destructive flex items-center gap-2"><AlertCircle className="h-4 w-4"/> Abnormal Findings</h4>
-                            {organ.details.abnormal.map((item: any, index: number) => (
-                                <div key={index} className="p-3 rounded-lg bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800/30">
-                                    <div className="flex justify-between items-center">
-                                        <p className="font-semibold">{item.name}</p>
-                                        <div className="flex items-center gap-2">
-                                            {getTrendIcon(item.trend)}
-                                            <Badge variant="destructive">{item.value}</Badge>
-                                        </div>
-                                    </div>
-                                    <p className="text-sm text-red-700 dark:text-red-400/80 mt-1">{item.description}</p>
-                                    <p className="text-xs text-muted-foreground mt-1">Normal: {item.normalRange}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                    <div className="p-3 rounded-lg bg-muted/50">
+                        <h4 className="font-semibold flex items-center gap-2 mb-2"><FileText className="h-4 w-4"/>Source of Analysis</h4>
+                        <p className="text-sm text-muted-foreground">{organ.sourceOfAnalysis || organ.sourceOf_analysis}</p>
+                    </div>
 
-                    {organ.details.normal.length > 0 && (
-                        <div className="space-y-3">
-                            <h4 className="font-semibold text-green-600 flex items-center gap-2"><CheckCircle2 className="h-4 w-4"/> Normal Findings</h4>
-                             {organ.details.normal.map((item: any, index: number) => (
-                                <div key={index} className="p-3 rounded-lg bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800/30">
-                                    <div className="flex justify-between items-center">
-                                        <p className="font-semibold">{item.name}</p>
-                                        <div className="flex items-center gap-2">
-                                            {getTrendIcon(item.trend)}
-                                            <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">{item.value}</Badge>
-                                        </div>
-                                    </div>
-                                     <p className="text-xs text-muted-foreground mt-1">Normal: {item.normalRange}</p>
-                                </div>
-                            ))}
-                        </div>
+                    <div className="space-y-3">
+                        <h4 className="font-semibold flex items-center gap-2"><Info className="h-4 w-4"/>Recommendations</h4>
+                        <ul className="space-y-2">
+                           {organ.recommendations.map((rec: string, index: number) => (
+                               <li key={index} className="flex items-start gap-3">
+                                   <CheckCircle2 className="h-5 w-5 mt-0.5 text-green-500 flex-shrink-0" />
+                                   <span className="text-sm text-muted-foreground">{rec}</span>
+                               </li>
+                           ))}
+                        </ul>
+                    </div>
+
+                    {organ.status === 'Needs Critical Attention' && (
+                         <div className="pt-4 border-t">
+                            <Link href="/appointments" className="w-full">
+                                <Button className="w-full" variant="destructive">
+                                    <AlertCircle className="mr-2 h-4 w-4" /> Book an Appointment
+                                </Button>
+                            </Link>
+                         </div>
                     )}
                 </div>
             </DialogContent>

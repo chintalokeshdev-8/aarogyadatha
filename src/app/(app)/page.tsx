@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { HeartPulse, MessageSquare, Siren, Users, TestTube, FlaskConical, LifeBuoy, Stethoscope, Microscope, Pill, Headset, Phone, Link2, CalendarCheck, User, Heart, Baby, Leaf, Droplets, Wind, Brain, LayoutGrid, Activity, FileText, MapPin, UserPlus, Shield, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { HeartPulse, MessageSquare, Siren, Users, TestTube, FlaskConical, LifeBuoy, Stethoscope, Microscope, Pill, Headset, Phone, Link2, CalendarCheck, User, Heart, Baby, Leaf, Droplets, Wind, Brain, LayoutGrid, Activity, FileText, MapPin, UserPlus, Shield, CheckCircle, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
@@ -91,7 +91,26 @@ const carouselSlides = [
     },
 ];
 
-const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) => {
+const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number | null, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) => {
+    if (percentage === null) {
+      return (
+        <div className="relative flex items-center justify-center" style={{width: size, height: size}}>
+           <svg width={size} height={size} className="transform -rotate-90">
+                <circle
+                    className="text-muted/30"
+                    stroke="currentColor"
+                    fill="transparent"
+                    strokeWidth={strokeWidth}
+                    r={(size - strokeWidth) / 2}
+                    cx={size/2}
+                    cy={size/2}
+                />
+            </svg>
+            <div className="absolute">{children}</div>
+        </div>
+      );
+    }
+    
     const radius = (size - strokeWidth) / 2;
     const circumference = radius * 2 * Math.PI;
     const offset = circumference - (percentage / 100) * circumference;
@@ -179,15 +198,26 @@ export default function DashboardPage() {
         <section>
           <Card>
             <CardContent className="p-4 space-y-4">
-                <div className="text-center sm:text-left">
+                <div className='text-center sm:text-left'>
                     <h2 className="text-xl font-semibold">Organ Health Overview</h2>
                     <p className="text-sm text-muted-foreground">A summary of your key organ health based on recent reports.</p>
+                </div>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                   <div className="flex items-start gap-3">
+                        <AlertTriangle className="h-5 w-5 text-yellow-700 mt-1 flex-shrink-0"/>
+                        <div>
+                            <h4 className="font-semibold text-yellow-800">Disclaimer</h4>
+                            <p className="text-xs text-yellow-700">
+                                This 'Organ Health Overview' is for informational purposes only. It is an AI-generated score based on your uploaded health data and is not a medical diagnosis. Always consult with a qualified doctor for any health concerns.
+                            </p>
+                        </div>
+                   </div>
                 </div>
                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2">
                     {organHealthData.map((organ) => (
                          <OrganHealthDialog key={organ.name} organ={organ}>
                             <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
-                                <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
+                                <CircularProgress percentage={organ.healthScore} size={80} strokeWidth={6} color={organ.color}>
                                     <Image
                                         src={organ.image}
                                         alt={organ.name}
@@ -198,8 +228,12 @@ export default function DashboardPage() {
                                     />
                                 </CircularProgress>
                                 <p className="mt-2 text-sm font-bold">{organ.name}</p>
-                                <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
-                                <p className="text-xs text-muted-foreground">Healthy</p>
+                                {organ.healthScore !== null ? (
+                                    <p className="font-semibold text-base" style={{color: organ.color}}>{organ.healthScore}%</p>
+                                ) : (
+                                    <p className="font-semibold text-base" style={{color: organ.color}}>--%</p>
+                                )}
+                                <p className="text-xs font-semibold" style={{color: organ.color}}>{organ.status}</p>
                             </Card>
                         </OrganHealthDialog>
                     ))}
