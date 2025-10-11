@@ -1038,7 +1038,7 @@ export default function AppointmentsPage() {
                         <CardContent>
                              <div className="grid grid-cols-1 gap-6">
                                 {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                                    <Collapsible key={index} defaultOpen className="border rounded-lg bg-background">
+                                    <Collapsible key={index} className="border rounded-lg bg-background">
                                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                             <div className="flex-1 flex items-start gap-3">
                                                 <span className="text-2xl font-bold text-blue-900 dark:text-blue-400">{filteredAppointments.indexOf(appt) + 1})</span>
