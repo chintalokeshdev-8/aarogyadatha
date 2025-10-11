@@ -180,9 +180,9 @@ export default function DashboardPage() {
           <Card>
             <CardHeader>
                 <CardTitle className="text-xl font-semibold text-center sm:text-left">Organ Health Overview</CardTitle>
+                <CardDescription className="text-center sm:text-left -mt-1">A summary of your key organ health based on recent reports.</CardDescription>
             </CardHeader>
-            <CardContent className="p-4">
-               <p className="text-sm text-muted-foreground mb-4">A summary of your key organ health based on recent reports.</p>
+            <CardContent className="p-4 pt-0">
                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2">
                     {organHealthData.map((organ) => (
                          <OrganHealthDialog key={organ.name} organ={organ}>
