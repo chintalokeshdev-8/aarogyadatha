@@ -57,6 +57,14 @@ const medicineAssistanceItems = [
 
 const carouselSlides = [
     {
+        title: "Choosing the right doctor for the right disease is the key to a 100% cure.",
+        buttonText: "Find a Doctor",
+        buttonIcon: CheckCircle,
+        href: "/appointments",
+        color: "bg-orange-500",
+        textColor: "text-white"
+    },
+    {
         title: "Daily Health Tip: Stay hydrated by drinking at least 8 glasses of water throughout the day!",
         buttonText: "Learn More",
         buttonIcon: Leaf,
@@ -65,7 +73,7 @@ const carouselSlides = [
         textColor: "text-white"
     },
     {
-        title: "New Feature: You can now link your Aarogyasri (UHID) and ABHA ID to manage all your health records in one place.",
+        title: "New Feature: Link your Aarogyasri (UHID) and ABHA ID to manage all health records in one place.",
         buttonText: "Link Now",
         buttonIcon: Link2,
         href: "/insurances",
@@ -80,14 +88,6 @@ const carouselSlides = [
         color: "bg-purple-600",
         textColor: "text-white"
     },
-     {
-        title: "Choosing the right doctor for the right disease is the key to a 100% cure.",
-        buttonText: "Find a Doctor",
-        buttonIcon: CheckCircle,
-        href: "/appointments",
-        color: "bg-orange-500",
-        textColor: "text-white"
-    }
 ];
 
 const CircularProgress = ({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) => {
@@ -170,48 +170,45 @@ export default function DashboardPage() {
         </div>
       </section>
 
-       <Card className="bg-primary text-primary-foreground overflow-hidden">
-          <div className="p-6">
-              <h2 className="text-xl font-bold text-center sm:text-left">App Updates & Health Tips</h2>
-              <div className="border-t border-primary-foreground/20 mt-4 -mx-6"></div>
-          </div>
-          <Carousel
-            setApi={setApi}
-            plugins={[plugin.current]}
-            className="w-full"
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.reset}
-            >
-            <CarouselContent>
-                {carouselSlides.map((slide, index) => (
-                <CarouselItem key={index}>
-                    <div className="p-6 pt-0">
-                        <div className={cn("rounded-lg p-4 flex flex-col items-center justify-center gap-4 text-center min-h-[160px]", slide.color, slide.textColor)}>
-                            <p className="font-bold text-lg flex-1 flex items-center">{slide.title}</p>
-                            <Link href={slide.href}>
-                                <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
-                                    <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
-                                </Button>
-                            </Link>
-                        </div>
+      <div className="space-y-2">
+        <h2 className="text-xl font-semibold text-center sm:text-left">App Updates & Health Tips</h2>
+        <Carousel
+        setApi={setApi}
+        plugins={[plugin.current]}
+        className="w-full"
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
+        >
+        <CarouselContent>
+            {carouselSlides.map((slide, index) => (
+            <CarouselItem key={index}>
+                <div className="p-1">
+                    <div className={cn("rounded-lg p-4 flex flex-col items-center justify-center gap-4 text-center min-h-[160px]", slide.color, slide.textColor)}>
+                        <p className="font-bold text-lg flex-1 flex items-center">{slide.title}</p>
+                        <Link href={slide.href}>
+                            <Button variant="secondary" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shrink-0">
+                                <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
+                            </Button>
+                        </Link>
                     </div>
-                </CarouselItem>
-                ))}
-            </CarouselContent>
-            </Carousel>
-            <div className="flex justify-center gap-2 pb-4">
-                {carouselSlides.map((_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => api?.scrollTo(index)}
-                        className={cn(
-                            "h-2 w-2 rounded-full transition-all",
-                            current === index ? "w-4 bg-primary-foreground" : "bg-primary-foreground/50"
-                        )}
-                    />
-                ))}
-            </div>
-      </Card>
+                </div>
+            </CarouselItem>
+            ))}
+        </CarouselContent>
+        </Carousel>
+        <div className="flex justify-center gap-2 pt-2">
+            {carouselSlides.map((_, index) => (
+                <button
+                    key={index}
+                    onClick={() => api?.scrollTo(index)}
+                    className={cn(
+                        "h-2 w-2 rounded-full transition-all",
+                        current === index ? "w-4 bg-primary" : "bg-primary/50"
+                    )}
+                />
+            ))}
+        </div>
+      </div>
       
        <Card>
           <CardHeader>
@@ -276,3 +273,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
