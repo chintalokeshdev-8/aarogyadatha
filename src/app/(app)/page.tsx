@@ -152,6 +152,37 @@ export default function DashboardPage() {
         <section className="-mt-16">
           <Card>
             <CardHeader>
+              <CardTitle className="text-xl font-semibold text-center sm:text-left">Organ Health Overview</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 p-4">
+                {organHealthData.map((organ) => (
+                    <OrganHealthDialog key={organ.name} organ={organ}>
+                      <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
+                          <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
+                              <Image
+                                  src={organ.image}
+                                  alt={organ.name}
+                                  width={40}
+                                  height={40}
+                                  data-ai-hint={organ.dataAiHint}
+                                  className="rounded-full object-cover"
+                              />
+                          </CircularProgress>
+                          <p className="mt-2 text-sm font-bold">{organ.name}</p>
+                          <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
+                          <p className="text-xs text-muted-foreground">Healthy</p>
+                      </Card>
+                    </OrganHealthDialog>
+                ))}
+            </CardContent>
+          </Card>
+        </section>
+
+        <Separator />
+        
+        <section>
+          <Card>
+            <CardHeader>
                 <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
             </CardHeader>
             <CardContent>
@@ -173,35 +204,6 @@ export default function DashboardPage() {
           </Card>
         </section>
 
-        <Separator />
-
-        <section>
-            <h2 className="text-xl font-semibold mb-4 text-center sm:text-left">Organ Health Overview</h2>
-            <Card>
-                <CardContent className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2 p-4">
-                    {organHealthData.map((organ) => (
-                        <OrganHealthDialog key={organ.name} organ={organ}>
-                          <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
-                              <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
-                                  <Image
-                                      src={organ.image}
-                                      alt={organ.name}
-                                      width={40}
-                                      height={40}
-                                      data-ai-hint={organ.dataAiHint}
-                                      className="rounded-full object-cover"
-                                  />
-                              </CircularProgress>
-                              <p className="mt-2 text-sm font-bold">{organ.name}</p>
-                              <p className="font-semibold text-base" style={{color: organ.color}}>{organ.health}%</p>
-                              <p className="text-xs text-muted-foreground">Healthy</p>
-                          </Card>
-                        </OrganHealthDialog>
-                    ))}
-                </CardContent>
-            </Card>
-        </section>
-        
         <Separator />
 
         <div className="space-y-2">
