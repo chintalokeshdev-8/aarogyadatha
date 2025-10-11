@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2 } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, AlertDialogFooter } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -786,27 +786,27 @@ export default function AppointmentsPage() {
     }, [appointments]);
 
     const filteredAppointments = useMemo(() => {
-        const lowercasedSearchTerm = searchTerm.toLowerCase();
-        
-        return appointments.filter((appt, apptIndex) => {
+        return appointments.filter((appt) => {
             const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor || appt.prescriptions.some(p => p.doctor === filterDoctor);
             const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
-
+    
             if (!searchTerm) {
                 return doctorMatch && dateMatch;
             }
-
-            const serialNumber = (filteredAppointments.indexOf(appt) + 1).toString();
-            const serialMatch = serialNumber === lowercasedSearchTerm;
-
-            const keywordMatch = 
-                serialMatch ||
+    
+            const lowercasedSearchTerm = searchTerm.toLowerCase();
+            
+            // This is a placeholder for the index logic
+            const baseIndex = appointments.indexOf(appt) + 1;
+    
+            const keywordMatch = (
+                baseIndex.toString() === lowercasedSearchTerm ||
                 appt.problem.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.initialDoctor.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.specialty.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.date.toLowerCase().includes(lowercasedSearchTerm) ||
                 appt.prescriptions.some((p, pIndex) => {
-                    const subSerialNumber = `${filteredAppointments.indexOf(appt) + 1}.${pIndex + 1}`;
+                    const subSerialNumber = `${baseIndex}.${pIndex + 1}`;
                     return (
                         subSerialNumber === lowercasedSearchTerm ||
                         p.title.toLowerCase().includes(lowercasedSearchTerm) ||
@@ -815,8 +815,8 @@ export default function AppointmentsPage() {
                         (p.medicines && p.medicines.some(m => m.toLowerCase().includes(lowercasedSearchTerm))) ||
                         (p.details && p.details.some(d => d.name.toLowerCase().includes(lowercasedSearchTerm)))
                     );
-                });
-
+                })
+            );
             return keywordMatch && doctorMatch && dateMatch;
         });
     }, [appointments, searchTerm, filterDoctor, filterDate]);
