@@ -147,13 +147,13 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <section className="-mt-28">
+      <section className="-mt-16">
         <Card>
           <CardHeader>
             <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-4 gap-y-2 gap-x-1">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-y-2 gap-x-1">
               {quickAccessItems.map((item) => (
                 <Link key={item.href} href={item.href} passHref>
                   <div
