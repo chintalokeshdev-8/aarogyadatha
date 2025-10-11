@@ -12,6 +12,8 @@ import {
   Heart,
   Droplets,
   Stethoscope,
+  Shield,
+  User,
 } from "lucide-react";
 import { PregnantLadyIcon } from "@/components/icons/pregnant-lady-icon";
 
@@ -38,5 +40,7 @@ export const allMenuItems: MenuItem[] = [
   { id: 'healthTracker', href: "/health-tracker", label: "Health Tracker", telugu: "ఆరోగ్య ట్రాకర్", icon: Heart, color: "hsl(var(--nav-profile))", defaultVisible: false, customizable: true },
   { id: 'jrDoctors', href: "/junior-doctors", label: "Jr. Doctors", telugu: "డాక్టర్లు", icon: Headset, color: "hsl(var(--nav-junior-doctors))", defaultVisible: false, customizable: true },
   { id: 'pregnancy', href: "/pregnancy-tracker", label: "Pregnancy Care", telugu: "గర్భం", icon: PregnantLadyIcon, color: "hsl(var(--nav-appointments))", defaultVisible: false, customizable: true },
+  { id: 'insurances', href: "/insurances", label: "Insurances", telugu: "భీమా", icon: Shield, color: "hsl(var(--nav-profile))", defaultVisible: false, customizable: true },
+  { id: 'profile', href: "/profile", label: "Profile", telugu: "ప్రొఫైల్", icon: User, color: "hsl(var(--nav-profile))", defaultVisible: true, customizable: true },
   { id: 'emergency', href: "/emergency", label: "Emergency", telugu: "తక్షణ సహాయం", icon: Siren, color: "hsl(var(--destructive))", defaultVisible: true, customizable: false },
 ];

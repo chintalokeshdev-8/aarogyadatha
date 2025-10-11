@@ -325,19 +325,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             <span className="font-semibold">Switch Account</span>
                                         </DropdownMenuItem>
                                     </DialogTrigger>
-                                    <Link href="/profile" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <User className="mr-3 text-primary" />
-                                            <span className="font-semibold">Profile</span>
-                                        </DropdownMenuItem>
-                                    </Link>
-                                    <Link href="/insurances" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <Shield className="mr-3 text-primary" />
-                                            <span className="font-semibold">Insurances</span>
-                                        </DropdownMenuItem>
-                                    </Link>
                                     
+                                    {getCustomizableItem('profile')}
+                                    {getCustomizableItem('insurances')}
                                     {getCustomizableItem('surgery')}
                                     {getCustomizableItem('bloodBank')}
                                     {getCustomizableItem('healthTracker')}
@@ -419,7 +409,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         const specialColor = item.label === 'Emergency' ? 'hsl(var(--destructive))' : 'hsl(var(--nav-blood-bank))';
 
                         return (
-                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < visibleMenuItems.length - 1) && "border-r pr-2 mr-2", item.href === '/profile' ? 'hidden' : '')}>
+                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < visibleMenuItems.length - 1) && "border-r pr-2 mr-2")}>
                                <div className={cn(
                                    "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-24 py-1",
                                    isActive ? "scale-105" : "scale-100",
