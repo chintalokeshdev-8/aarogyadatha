@@ -390,8 +390,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </>
         )}
       </header>
-      <main className={cn("flex-1", pathname === '/' ? 'bg-transparent' : 'bg-muted/40')}>
-        <div className={cn(pathname !== '/' && "p-4 sm:p-6 lg:p-8", "pb-40")}>
+      <main className="flex-1 bg-muted/30">
+        <div className="p-4 sm:p-6 lg:p-8 pb-40">
           {children}
         </div>
       </main>

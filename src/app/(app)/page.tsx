@@ -112,31 +112,31 @@ export default function DashboardPage() {
 
 
   return (
-    <div className="relative">
-      <div className="absolute top-0 left-0 w-full h-52 bg-primary -z-10 rounded-b-[3rem]"></div>
-      <div className="space-y-8">
-        <section>
-          <Card>
-            <CardHeader>
-                <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4">
-                {quickAccessItems.map((item) => (
-                  <Link key={item.href} href={item.href} passHref>
-                    <div
-                      className="transition-colors hover:bg-primary/10 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-2 p-2 rounded-lg"
-                    >
-                      <div className="p-3 rounded-full mb-1 bg-primary/10">
-                        <item.icon className="h-7 w-7" style={{ color: item.color }} />
-                      </div>
-                      <p className="font-semibold text-sm leading-tight text-foreground">{item.label}</p>
+    <div className="space-y-8">
+        <div className="absolute top-0 left-0 w-full h-40 bg-primary -z-10 rounded-b-[3rem]" />
+        
+        <section className="-mt-16">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid grid-cols-3 gap-4">
+                        {quickAccessItems.map((item) => (
+                            <Link key={item.href} href={item.href} passHref>
+                                <div
+                                className="transition-colors hover:bg-primary/10 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-2 p-2 rounded-lg"
+                                >
+                                <div className="p-3 rounded-full mb-1 bg-primary/10">
+                                    <item.icon className="h-7 w-7" style={{ color: item.color }} />
+                                </div>
+                                <p className="font-semibold text-sm leading-tight text-foreground">{item.label}</p>
+                                </div>
+                            </Link>
+                        ))}
                     </div>
-                  </Link>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+            </Card>
         </section>
 
         <Separator />
@@ -259,8 +259,5 @@ export default function DashboardPage() {
           </div>
         </section>
       </div>
-    </div>
   );
 }
-
-    
