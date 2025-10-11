@@ -5,12 +5,13 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertCircle, TrendingUp, TrendingDown, Minus, Info, FileText } from "lucide-react";
+import { CheckCircle2, AlertCircle, TrendingUp, TrendingDown, Minus, Info, FileText, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from 'next/image';
 import { Skeleton } from '../ui/skeleton';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import { format } from 'date-fns';
 
 const CircularProgress = dynamic(() => Promise.resolve(function CircularProgress({ percentage, children, size = 100, strokeWidth = 8, color } : { percentage: number | null, children: React.ReactNode, size?: number, strokeWidth?: number, color?: string }) {
     if (percentage === null) {
@@ -71,6 +72,13 @@ const getStatusClass = (status: string) => {
     return "bg-muted text-muted-foreground";
 }
 
+const getTestResultBadgeClass = (result: string) => {
+    if (result.toLowerCase() === 'normal') return 'bg-green-100 text-green-800 border-green-200';
+    if (result.toLowerCase() === 'abnormal') return 'bg-red-100 text-red-800 border-red-200';
+    return 'bg-gray-100 text-gray-800 border-gray-200';
+};
+
+
 export function OrganHealthDialog({ organ, children }: { organ: any, children: React.ReactNode }) {
     return (
         <Dialog>
@@ -103,8 +111,25 @@ export function OrganHealthDialog({ organ, children }: { organ: any, children: R
                 <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
                     <div className="p-3 rounded-lg bg-muted/50">
                         <h4 className="font-semibold flex items-center gap-2 mb-2"><FileText className="h-4 w-4"/>Source of Analysis</h4>
-                        <p className="text-sm text-muted-foreground">{organ.sourceOfAnalysis || organ.sourceOf_analysis}</p>
+                        <p className="text-sm text-muted-foreground">{organ.sourceOfAnalysis}</p>
                     </div>
+
+                    {organ.relatedTests && organ.relatedTests.length > 0 && (
+                        <div className="space-y-3">
+                            <h4 className="font-semibold flex items-center gap-2">Relevant Tests</h4>
+                            <div className="space-y-2">
+                                {organ.relatedTests.map((test: any, index: number) => (
+                                    <div key={index} className="flex justify-between items-center p-2 rounded bg-background border">
+                                        <div>
+                                            <p className="font-medium text-sm">{test.name}</p>
+                                            <p className="text-xs text-muted-foreground flex items-center gap-1"><Calendar className='h-3 w-3'/> {format(new Date(test.date), 'dd-MMM-yyyy')}</p>
+                                        </div>
+                                        <Badge variant="outline" className={getTestResultBadgeClass(test.result)}>{test.result}</Badge>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
                     <div className="space-y-3">
                         <h4 className="font-semibold flex items-center gap-2"><Info className="h-4 w-4"/>Recommendations</h4>
