@@ -153,16 +153,16 @@ export default function DashboardPage() {
             <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-y-6 gap-x-4">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-y-2 gap-x-1">
               {quickAccessItems.map((item) => (
                 <Link key={item.href} href={item.href} passHref>
                   <div
-                    className="transition-transform hover:scale-105 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-2"
+                    className="transition-colors hover:bg-primary/10 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-2 p-2 rounded-lg"
                   >
                     <div className="p-3 rounded-full mb-1 bg-primary/10">
                       <item.icon className="h-7 w-7" style={{ color: item.color }} />
                     </div>
-                    <p className="font-semibold text-sm leading-tight text-foreground">{item.label}</p>
+                    <p className="font-semibold text-sm leading-tight text-black dark:text-white">{item.label}</p>
                   </div>
                 </Link>
               ))}
@@ -170,7 +170,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </section>
-      
+
       <Separator />
 
       <section>
@@ -199,7 +199,7 @@ export default function DashboardPage() {
               </CardContent>
           </Card>
       </section>
-
+      
       <Separator />
 
       <div className="space-y-2">
