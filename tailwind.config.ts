@@ -11,6 +11,9 @@ export default {
   ],
   theme: {
     extend: {
+      borderWidth: {
+        '2': '2px',
+      },
       fontFamily: {
         sans: ["var(--font-poppins)", ...fontFamily.sans],
       },
