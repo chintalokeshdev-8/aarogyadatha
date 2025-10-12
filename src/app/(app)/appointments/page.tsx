@@ -883,25 +883,19 @@ export default function AppointmentsPage() {
         <div className="space-y-6">
             <div className="text-left">
                 <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find & Manage Appointments</h1>
-                <p className="text-muted-foreground mt-1">Find the right doctor for your needs and review your history.</p>
+                <p className="text-muted-foreground">Find the right doctor for your needs and review your history.</p>
             </div>
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <TabsList className="flex h-auto p-1.5 rounded-lg border-2 border-foreground/80 bg-muted">
+                <TabsList className="grid grid-cols-2 h-auto p-1.5 rounded-lg border-2 border-foreground/80 bg-muted">
                     <TabsTrigger value="find-doctor" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5 text-foreground">Find a Doctor</TabsTrigger>
                     <TabsTrigger value="history" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5 text-foreground">Appointments History</TabsTrigger>
                 </TabsList>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
                         <Card className="shadow-sm">
-                            <CardHeader>
-                                <CardTitle>Find a Doctor</CardTitle>
-                                <CardDescription>
-                                    Use code <Badge variant="outline" className="text-green-600 border-green-500">MEDIBRIDGE</Badge> for 50% off on consultation.
-                                </CardDescription>
-                            </CardHeader>
-                             <CardContent className="p-4 pt-0">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                             <CardContent className="p-4 pt-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-end">
                                     <div className="relative sm:col-span-2 lg:col-span-1">
                                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                         <Input 
@@ -1009,61 +1003,55 @@ export default function AppointmentsPage() {
                                 <History className="h-6 w-6"/>
                                 <h2 className="text-2xl font-bold">Appointments History</h2>
                             </div>
-                            <Separator className="mt-4"/>
-                            <div className="space-y-4 pt-4">
-                                <div className="flex items-center justify-between">
-                                   <div className="flex items-center gap-2">
-                                        <Filter className="h-5 w-5"/>
-                                        <h3 className="text-lg font-semibold">Filters</h3>
-                                    </div>
-                                     <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2">
-                                        <X className='mr-2 h-4 w-4' />
-                                        Clear Filters
-                                    </Button>
-                                </div>
-                                <div className="space-y-4">
-                                    <div className="relative">
+                            <Separator className="my-4"/>
+                            <div className="space-y-4">
+                                <h3 className="font-semibold flex items-center gap-2"><Filter className="h-5 w-5" /> Filters</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
+                                    <div className="relative sm:col-span-2 md:col-span-1">
                                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                         <Input 
-                                            placeholder="Search by S.No, reason, doctor, test..." 
+                                            placeholder="Search..." 
                                             className="pl-10"
                                             value={searchTerm}
                                             onChange={(e) => setSearchTerm(e.target.value)}
                                         />
                                     </div>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <Select value={filterDoctor} onValueChange={setFilterDoctor}>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="All Doctors" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {allDoctors.map(doc => <SelectItem key={doc} value={doc}>{doc === 'all' ? 'All Doctors' : doc}</SelectItem>)}
-                                            </SelectContent>
-                                        </Select>
-                                        <Popover>
-                                            <PopoverTrigger asChild>
-                                            <Button
-                                                variant={"outline"}
-                                                className={cn(
-                                                "justify-start text-left font-normal",
-                                                !filterDate && "text-muted-foreground"
-                                                )}
-                                            >
-                                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {filterDate ? format(filterDate, "dd-MMM-yyyy") : <span>Filter by date</span>}
-                                            </Button>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-auto p-0">
-                                            <CalendarComponent
-                                                mode="single"
-                                                selected={filterDate}
-                                                onSelect={setFilterDate}
-                                                initialFocus
-                                            />
-                                            </PopoverContent>
-                                        </Popover>
-                                    </div>
+                                    <Select value={filterDoctor} onValueChange={setFilterDoctor}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="All Doctors" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {allDoctors.map(doc => <SelectItem key={doc} value={doc}>{doc === 'all' ? 'All Doctors' : doc}</SelectItem>)}
+                                        </SelectContent>
+                                    </Select>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                            "justify-start text-left font-normal",
+                                            !filterDate && "text-muted-foreground"
+                                            )}
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {filterDate ? format(filterDate, "dd-MMM-yyyy") : <span>Filter by date</span>}
+                                        </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                        <CalendarComponent
+                                            mode="single"
+                                            selected={filterDate}
+                                            onSelect={setFilterDate}
+                                            initialFocus
+                                        />
+                                        </PopoverContent>
+                                    </Popover>
+                                    <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>Go</Button>
                                 </div>
+                                <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2 -mt-2">
+                                    <X className='mr-2 h-4 w-4' />
+                                    Clear Filters
+                                </Button>
                             </div>
                         </CardHeader>
                         <CardContent>
