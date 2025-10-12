@@ -882,7 +882,7 @@ export default function AppointmentsPage() {
     return (
         <div className="space-y-8">
             <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find &amp; Manage Appointments</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find &amp; Manage Appointments</h1>
                 <p className="text-muted-foreground mt-2">Find the right doctor for your needs and review your history.</p>
             </div>
 
@@ -896,7 +896,9 @@ export default function AppointmentsPage() {
                         <Card className="p-4 shadow-sm">
                             <CardHeader className="p-2 pt-0">
                                 <CardTitle>Find a Doctor</CardTitle>
-                                <CardDescription>Use code <Badge variant="outline" className="text-green-600 border-green-500">MEDIBRIDGE</Badge> for 50% off on consultation.</CardDescription>
+                                <CardDescription>
+                                    Use code <Badge variant="outline" className="text-green-600 border-green-500">MEDIBRIDGE</Badge> for 50% off on consultation.
+                                </CardDescription>
                             </CardHeader>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                                 <div className="relative md:col-span-2">
