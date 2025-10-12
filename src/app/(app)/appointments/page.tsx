@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -743,7 +743,6 @@ function BookingDialog({ open, onOpenChange, doctor }: { open: boolean, onOpenCh
             time: selectedTime,
         };
 
-        // Store details in localStorage to pass to the summary page
         localStorage.setItem('appointmentDetails', JSON.stringify(appointmentDetails));
         
         onOpenChange(false);
@@ -763,12 +762,12 @@ function BookingDialog({ open, onOpenChange, doctor }: { open: boolean, onOpenCh
     
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md p-0 gap-0 flex flex-col h-full sm:h-auto max-h-[90vh]">
+            <DialogContent className="sm:max-w-md p-0 flex flex-col h-full sm:h-auto max-h-[90vh]">
                 <DialogHeader className="p-4 border-b">
                      <DialogTitle>Book Online Consult</DialogTitle>
                      <DialogDescription>with {doctor.name}</DialogDescription>
                 </DialogHeader>
-                <div className="p-4 space-y-6 overflow-y-auto flex-1">
+                <div className="flex-1 p-4 space-y-6 overflow-y-auto">
                     <Card>
                         <CardContent className="p-4 flex justify-between items-center">
                             <div>
@@ -800,7 +799,7 @@ function BookingDialog({ open, onOpenChange, doctor }: { open: boolean, onOpenCh
                     <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
 
                 </div>
-                <DialogFooter className="p-4 border-t bg-background sticky bottom-0">
+                <DialogFooter className="p-4 border-t bg-background">
                     <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
                         Continue Booking
                     </Button>
@@ -1013,10 +1012,11 @@ export default function AppointmentsPage() {
             </div>
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 h-auto p-1.5 rounded-lg border-2 border-primary/20 bg-muted">
-                    <TabsTrigger value="find-doctor" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Find a Doctor</TabsTrigger>
-                    <TabsTrigger value="history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Appointments History</TabsTrigger>
-                </TabsList>
+                <div className="flex items-center justify-center p-1.5 rounded-lg border-2 border-primary/20 bg-muted">
+                    <TabsTrigger value="find-doctor" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Find a Doctor</TabsTrigger>
+                    <Separator orientation="vertical" className="h-6 bg-border mx-1" />
+                    <TabsTrigger value="history" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Appointments History</TabsTrigger>
+                </div>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
                         <Card className="shadow-sm">
@@ -1101,8 +1101,7 @@ export default function AppointmentsPage() {
                                                 <div className="text-center sm:text-left">
                                                     <p className="text-xs font-semibold">Consultation Fee</p>
                                                     <div className="flex items-baseline gap-2">
-                                                        <p className="text-xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{discountedFee}</p>
-                                                        <p className="line-through text-muted-foreground">₹{doctor.opFee}</p>
+                                                        <p className="text-xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex w-full sm:w-auto shrink-0 gap-2">
@@ -1128,24 +1127,20 @@ export default function AppointmentsPage() {
                             </div>
                             <Separator className="my-4"/>
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <h3 className="font-semibold flex items-center gap-2"><Filter className="h-5 w-5" /> Filters</h3>
-                                    <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2">
-                                        <X className='mr-2 h-4 w-4' />
-                                        Clear Filters
-                                    </Button>
-                                </div>
                                 <div className="space-y-2">
-                                    <div className="relative">
-                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                        <Input 
-                                            placeholder="Search by problem, doctor, or keyword..." 
-                                            className="pl-10"
-                                            value={searchTerm}
-                                            onChange={(e) => setSearchTerm(e.target.value)}
-                                        />
+                                     <div className="flex justify-between items-center">
+                                        <h3 className="font-semibold flex items-center gap-2"><Filter className="h-5 w-5" /> Filters</h3>
                                     </div>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                                        <div className="relative md:col-span-1">
+                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                            <Input 
+                                                placeholder="Search..." 
+                                                className="pl-10"
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                            />
+                                        </div>
                                         <Select value={filterDoctor} onValueChange={setFilterDoctor}>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="All Doctors" />
@@ -1177,6 +1172,10 @@ export default function AppointmentsPage() {
                                             </PopoverContent>
                                         </Popover>
                                     </div>
+                                     <Button variant="ghost" onClick={clearFilters} className="text-sm h-8 px-2 justify-start w-fit">
+                                        <X className='mr-2 h-4 w-4' />
+                                        Clear Filters
+                                    </Button>
                                 </div>
                             </div>
                         </CardHeader>
@@ -1400,8 +1399,7 @@ export default function AppointmentsPage() {
                                 <div className="p-4 rounded-lg bg-muted/50">
                                     <h4 className="font-semibold text-lg mb-2">Consultation Fee</h4>
                                     <div className="flex items-baseline gap-2">
-                                        <p className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{selectedDoctor.opFee * 0.5}</p>
-                                        <p className="line-through text-muted-foreground text-xl">₹{selectedDoctor.opFee}</p>
+                                        <p className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{selectedDoctor.opFee}</p>
                                     </div>
                                 </div>
                                 <div className="flex justify-end gap-2">
