@@ -691,7 +691,8 @@ function TimeSlotSelector({ slots, selectedTime, onSelectTime, title, icon: Icon
                     <Button 
                         key={time} 
                         variant={selectedTime === time ? "default" : "outline"}
-                        className={cn("font-semibold", selectedTime === time && "bg-teal-500 hover:bg-teal-600")}
+                        className={cn("font-semibold", selectedTime === time && "text-primary-foreground")}
+                        style={selectedTime === time ? { backgroundColor: 'hsl(var(--nav-appointments))' } : {}}
                         onClick={() => onSelectTime(time)}
                     >
                         {time}
@@ -706,21 +707,22 @@ const DateSelector = ({ selectedDate, onSelectDate }: { selectedDate: Date, onSe
     const dates = Array.from({ length: 7 }, (_, i) => addDays(new Date(), i));
 
     return (
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4">
             {dates.map(date => (
                 <button 
                     key={date.toISOString()}
                     onClick={() => onSelectDate(date)}
                     className={cn(
-                        "flex flex-col items-center justify-center p-2 rounded-lg border-2 w-16 shrink-0",
+                        "flex flex-col items-center justify-center p-2 rounded-lg border-2 w-16 shrink-0 transition-colors",
                         format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
-                            ? "border-teal-500 bg-teal-50"
-                            : "border-gray-200"
+                            ? "bg-primary/10"
+                            : "border-transparent hover:bg-muted"
                     )}
+                    style={format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd') ? { borderColor: 'hsl(var(--nav-appointments))' } : {}}
                 >
-                    <span className="text-xs font-bold">{format(date, 'EEE')}</span>
+                    <span className="text-xs font-bold uppercase">{format(date, 'EEE')}</span>
                     <span className="text-lg font-extrabold">{format(date, 'dd')}</span>
-                    <span className="text-xs font-bold">{format(date, 'MMM')}</span>
+                    <span className="text-xs font-bold uppercase">{format(date, 'MMM')}</span>
                 </button>
             ))}
         </div>
@@ -735,41 +737,35 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingSuccess }: { open:
         if (!doctor || !selectedTime) return;
         onBookingSuccess(doctor);
     };
+    
+    useEffect(() => {
+        if (open) {
+            setSelectedTime(null);
+            setSelectedDate(addDays(new Date(), 1));
+        }
+    }, [open]);
 
     if (!doctor) return null;
 
-    const consultationFee = 630;
-    const discount = 32;
+    const consultationFee = doctor.opFee * 0.5;
     
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md p-0 gap-0">
                 <DialogHeader className="p-4 border-b">
-                    <DialogTitle>Doctor's Profile</DialogTitle>
+                     <DialogTitle>Book Online Consult</DialogTitle>
+                     <DialogDescription>with {doctor.name}</DialogDescription>
                 </DialogHeader>
-                <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
-                    <div className="p-4 border rounded-lg">
-                        <div className="flex justify-between items-start">
+                <div className="p-4 space-y-6 max-h-[70vh] overflow-y-auto">
+                    <Card>
+                        <CardContent className="p-4 flex justify-between items-center">
                             <div>
-                                <h3 className="text-lg font-bold">Book Online Consult</h3>
-                                <p className="text-sm text-muted-foreground">Consult Tomorrow</p>
+                                <h3 className="font-bold">Consultation Fee</h3>
+                                <p className="text-sm text-muted-foreground">For a 15-minute slot</p>
                             </div>
-                            <div className="text-right">
-                                <p className="text-xl font-bold">₹{consultationFee}</p>
-                                <p className="text-xs text-orange-500 flex items-center gap-1">
-                                    <Image src="https://abdm.gov.in/assets/images/logo_black.svg" alt="Circle" width={12} height={12} data-ai-hint="circle logo"/>
-                                    circle ₹{discount} off
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div className="bg-black text-white p-2 rounded-lg flex justify-center items-center text-sm font-semibold gap-2">
-                        <Image src="https://abdm.gov.in/assets/images/logo_white.svg" alt="Circle" width={16} height={16} data-ai-hint="rupee coin"/>
-                        <span>Avail Circle Discount of ₹{discount}</span>
-                        <span className="mx-1">•</span>
-                        <a href="#" className="underline">Upgrade now</a>
-                    </div>
+                            <p className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{consultationFee}</p>
+                        </CardContent>
+                    </Card>
                     
                     <DateSelector selectedDate={selectedDate} onSelectDate={setSelectedDate} />
                     
@@ -789,19 +785,11 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingSuccess }: { open:
                         onSelectTime={setSelectedTime}
                     />
 
-                    <div className="bg-blue-600 text-white p-3 rounded-lg flex items-center gap-3">
-                        <Clock className="h-8 w-8 text-yellow-300" />
-                        <div>
-                            <h4 className="font-bold">On Time Guarantee</h4>
-                            <p className="text-xs">100% refund if doctor does not connect within 10 mins of appointment time for Online Consult</p>
-                        </div>
-                    </div>
-                    
-                    <p className="text-xs text-center text-muted-foreground">*Free chat follow-up for 3 days post consultation</p>
+                    <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
 
                 </div>
                 <DialogFooter className="p-4 border-t sticky bottom-0 bg-background grid grid-cols-1">
-                    <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg bg-teal-600 hover:bg-teal-700">
+                    <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
                         Continue Booking
                     </Button>
                 </DialogFooter>
@@ -916,6 +904,7 @@ export default function AppointmentsPage() {
     };
 
     const handleBookAppointment = (doctor: any) => {
+        setProfileOpen(false); // Close profile dialog if open
         setDoctorForBooking(doctor);
         setIsBookingOpen(true);
     };
@@ -1473,5 +1462,3 @@ export default function AppointmentsPage() {
         </div>
     );
 }
-
-    
