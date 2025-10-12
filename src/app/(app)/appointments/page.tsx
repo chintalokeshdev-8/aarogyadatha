@@ -1006,11 +1006,6 @@ export default function AppointmentsPage() {
                      <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-2xl"><History />Appointments History</CardTitle>
-                             <CardDescription>
-                                Review and manage your past consultations and prescriptions.
-                                <br />
-                                మీ గత సంప్రదింపులు మరియు ప్రిస్క్రిప్షన్‌లను సమీక్షించండి మరియు నిర్వహించండి.
-                            </CardDescription>
                             <div className="border-t mt-4 pt-4">
                                 <div className="flex items-center justify-between mb-4">
                                    <div className="flex items-center gap-2">
