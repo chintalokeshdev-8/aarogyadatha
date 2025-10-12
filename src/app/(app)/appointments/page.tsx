@@ -880,9 +880,9 @@ export default function AppointmentsPage() {
     };
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6">
             <div className="text-left">
-                <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find &amp; Manage Appointments</h1>
+                <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find & Manage Appointments</h1>
                 <p className="text-muted-foreground mt-1">Find the right doctor for your needs and review your history.</p>
             </div>
 
