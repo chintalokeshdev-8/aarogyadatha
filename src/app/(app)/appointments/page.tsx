@@ -1013,9 +1013,9 @@ export default function AppointmentsPage() {
             </div>
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <TabsList className="grid grid-cols-2 h-auto p-1.5 rounded-lg border-2 border-foreground/80 bg-muted">
-                    <TabsTrigger value="find-doctor" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5 text-foreground">Find a Doctor</TabsTrigger>
-                    <TabsTrigger value="history" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5 text-foreground">Appointments History</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 h-auto p-1.5 rounded-lg border-2 border-primary/20 bg-muted">
+                    <TabsTrigger value="find-doctor" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Find a Doctor</TabsTrigger>
+                    <TabsTrigger value="history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Appointments History</TabsTrigger>
                 </TabsList>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
