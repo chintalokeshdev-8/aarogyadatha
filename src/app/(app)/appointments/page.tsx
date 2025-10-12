@@ -1311,13 +1311,15 @@ export default function AppointmentsPage() {
                         </DialogClose>
                      </DialogHeader>
                     <div className="flex-1 relative bg-muted/20">
-                        <Image
-                            src={zoomedImage || ''}
-                            alt="Zoomed Prescription"
-                            fill={true}
-                            style={{objectFit: "contain"}}
-                            className="p-4"
-                        />
+                        {zoomedImage && (
+                            <Image
+                                src={zoomedImage}
+                                alt="Zoomed Prescription"
+                                fill={true}
+                                style={{objectFit: "contain"}}
+                                className="p-4"
+                            />
+                        )}
                     </div>
                 </DialogContent>
             </Dialog>
@@ -1344,5 +1346,3 @@ export default function AppointmentsPage() {
         </div>
     );
 }
-
-    
