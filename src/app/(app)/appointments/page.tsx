@@ -888,8 +888,8 @@ export default function AppointmentsPage() {
 
             <Tabs defaultValue="find-doctor" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 rounded-lg bg-muted p-1 border-2">
-                    <TabsTrigger value="find-doctor" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">Find a Doctor</TabsTrigger>
-                    <TabsTrigger value="history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm">Appointments History</TabsTrigger>
+                    <TabsTrigger value="find-doctor" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm text-base font-bold">Find a Doctor</TabsTrigger>
+                    <TabsTrigger value="history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm text-base font-bold">Appointments History</TabsTrigger>
                 </TabsList>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
