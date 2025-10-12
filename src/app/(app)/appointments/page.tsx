@@ -750,12 +750,12 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingSuccess }: { open:
     
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md p-0 gap-0">
+            <DialogContent className="sm:max-w-md p-0 gap-0 flex flex-col h-full sm:h-auto max-h-[90vh]">
                 <DialogHeader className="p-4 border-b">
                      <DialogTitle>Book Online Consult</DialogTitle>
                      <DialogDescription>with {doctor.name}</DialogDescription>
                 </DialogHeader>
-                <div className="p-4 space-y-6 max-h-[70vh] overflow-y-auto">
+                <div className="p-4 space-y-6 overflow-y-auto flex-1">
                     <Card>
                         <CardContent className="p-4 flex justify-between items-center">
                             <div>
@@ -787,7 +787,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingSuccess }: { open:
                     <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
 
                 </div>
-                <DialogFooter className="p-4 border-t sticky bottom-0 bg-background grid grid-cols-1">
+                <DialogFooter className="p-4 border-t bg-background">
                     <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
                         Continue Booking
                     </Button>
