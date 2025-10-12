@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2 } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -679,12 +679,112 @@ function FollowUpForm({ onSave, onCancel, appointmentId, existingFollowUp }: { o
     );
 }
 
+function PaymentDialog({ open, onOpenChange, doctor, onPaymentSuccess }: { open: boolean, onOpenChange: (open: boolean) => void, doctor: any | null, onPaymentSuccess: (doctor: any) => void }) {
+    const [isPaying, setIsPaying] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState('upi');
+
+    if (!doctor) return null;
+
+    const discountedFee = doctor.opFee * 0.5;
+
+    const handlePayment = () => {
+        setIsPaying(true);
+        setTimeout(() => {
+            setIsPaying(false);
+            onOpenChange(false);
+            onPaymentSuccess(doctor);
+        }, 2000);
+    };
+
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Complete Your Payment</DialogTitle>
+                    <DialogDescription>
+                        Securely pay the consultation fee for your appointment with <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{doctor.name}</span>.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                    <div className="p-4 rounded-lg bg-muted/50 text-center">
+                        <p className="text-sm text-muted-foreground">Amount to Pay</p>
+                        <p className="text-4xl font-bold">₹{discountedFee}</p>
+                    </div>
+
+                    <Tabs value={paymentMethod} onValueChange={setPaymentMethod}>
+                        <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger value="upi">UPI</TabsTrigger>
+                            <TabsTrigger value="card">Credit/Debit Card</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="upi" className="mt-4">
+                            <div className="space-y-4">
+                                <div className="text-center text-sm text-muted-foreground">
+                                    Click an app to pay or enter your UPI ID.
+                                </div>
+                                <div className="flex justify-center gap-4">
+                                    <Button variant="outline" className="flex-col h-auto p-3 gap-2">
+                                        <Image src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="Google Pay" width={32} height={32} data-ai-hint="google pay logo" />
+                                        <span className="text-xs">GPay</span>
+                                    </Button>
+                                    <Button variant="outline" className="flex-col h-auto p-3 gap-2">
+                                        <Image src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" width={32} height={32} data-ai-hint="phonepe logo" />
+                                        <span className="text-xs">PhonePe</span>
+                                    </Button>
+                                    <Button variant="outline" className="flex-col h-auto p-3 gap-2">
+                                        <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/UPI-Logo-vector.svg/2560px-UPI-Logo-vector.svg.png" alt="Paytm" width={32} height={32} data-ai-hint="paytm logo" />
+                                        <span className="text-xs">Paytm</span>
+                                    </Button>
+                                </div>
+                                <div className="relative">
+                                    <Input placeholder="Enter UPI ID" className="pr-16" />
+                                    <Button variant="link" className="absolute right-1 top-1 h-8">Pay</Button>
+                                </div>
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="card" className="mt-4">
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="card-number">Card Number</Label>
+                                    <div className="relative">
+                                        <Input id="card-number" placeholder="0000 0000 0000 0000" />
+                                        <CreditCard className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="expiry">Expiry</Label>
+                                        <Input id="expiry" placeholder="MM/YY" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="cvv">CVV</Label>
+                                        <div className="relative">
+                                            <Input id="cvv" placeholder="123" />
+                                            <Lock className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </TabsContent>
+                    </Tabs>
+                </div>
+                <DialogFooter>
+                    <Button onClick={handlePayment} disabled={isPaying} className="w-full" style={{ backgroundColor: 'hsl(var(--nav-appointments))' }}>
+                        {isPaying ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                        {isPaying ? 'Processing...' : `Pay ₹${discountedFee} Securely`}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 export default function AppointmentsPage() {
     const [selectedDoctor, setSelectedDoctor] = useState<any | null>(null);
+    const [doctorForPayment, setDoctorForPayment] = useState<any | null>(null);
     const [isProfileOpen, setProfileOpen] = useState(false);
+    const [isPaymentOpen, setPaymentOpen] = useState(false);
     const { toast } = useToast();
     const router = useRouter();
-    const [bookingDoctor, setBookingDoctor] = useState<string | null>(null);
     const [isSharing, setIsSharing] = useState(false);
 
     // Doctor filters
@@ -784,15 +884,16 @@ export default function AppointmentsPage() {
     };
 
     const handleBookAppointment = (doctor: any) => {
-        setBookingDoctor(doctor.name);
-        setTimeout(() => {
-            toast({
-                title: "Appointment Confirmed!",
-                description: `Your appointment with ${doctor.name} is booked. Check the OP Status page for live updates.`,
-            });
-            router.push('/opd-queue');
-            setBookingDoctor(null);
-        }, 1500);
+        setDoctorForPayment(doctor);
+        setPaymentOpen(true);
+    };
+
+    const handlePaymentSuccess = (doctor: any) => {
+        toast({
+            title: "Appointment Confirmed!",
+            description: `Your appointment with ${doctor.name} is booked. Check the OP Status page for live updates.`,
+        });
+        router.push('/opd-queue');
     };
 
     const allDoctors = useMemo(() => {
@@ -943,7 +1044,6 @@ export default function AppointmentsPage() {
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {filteredDoctors.map((doctor, index) => {
-                                const isBooking = bookingDoctor === doctor.name;
                                 const discountedFee = doctor.opFee * 0.5;
                                 return (
                                     <Card key={index} className="transition-shadow hover:shadow-md">
@@ -983,9 +1083,8 @@ export default function AppointmentsPage() {
                                                 </div>
                                                 <div className="flex w-full sm:w-auto shrink-0 gap-2">
                                                     <Button variant="outline" className="flex-1 sm:flex-auto" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
-                                                    <Button className="flex-1 sm:flex-auto" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)} disabled={isBooking}>
-                                                        {isBooking ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                                        {isBooking ? 'Booking...' : 'Book Appointment'}
+                                                    <Button className="flex-1 sm:flex-auto" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)}>
+                                                        Book Appointment
                                                     </Button>
                                                 </div>
                                             </div>
@@ -1237,6 +1336,12 @@ export default function AppointmentsPage() {
                 </TabsContent>
             </Tabs>
             
+            <PaymentDialog
+                open={isPaymentOpen}
+                onOpenChange={setPaymentOpen}
+                doctor={doctorForPayment}
+                onPaymentSuccess={handlePaymentSuccess}
+            />
 
             <Dialog open={isProfileOpen} onOpenChange={setProfileOpen}>
                 <DialogContent className="sm:max-w-2xl">
@@ -1279,9 +1384,8 @@ export default function AppointmentsPage() {
                                         {isSharing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Copy className="mr-2 h-4 w-4" />}
                                         {isSharing ? 'Copying...' : 'Copy Details'}
                                     </Button>
-                                     <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(selectedDoctor)} disabled={bookingDoctor === selectedDoctor.name}>
-                                        {bookingDoctor === selectedDoctor.name ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                        {bookingDoctor === selectedDoctor.name ? 'Booking...' : 'Book Appointment'}
+                                     <Button style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(selectedDoctor)}>
+                                        Book Appointment
                                     </Button>
                                 </div>
                             </div>
