@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -895,6 +896,7 @@ export default function AppointmentsPage() {
                         <Card className="p-4 shadow-sm">
                             <CardHeader className="p-2 pt-0">
                                 <CardTitle>Find a Doctor</CardTitle>
+                                <CardDescription>Use code <Badge variant="outline" className="text-green-600 border-green-500">MEDIBRIDGE</Badge> for 50% off on consultation.</CardDescription>
                             </CardHeader>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                                 <div className="relative md:col-span-2">
@@ -1346,3 +1348,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    

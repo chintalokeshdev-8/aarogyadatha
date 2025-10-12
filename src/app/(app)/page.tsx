@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Link from 'next/link';
@@ -58,12 +59,13 @@ const medicineAssistanceItems = [
 
 const carouselSlides = [
     {
-        title: "Right doctor for right disease is 100% cure.",
-        buttonText: "Find a Doctor",
+        title: "50% OFF on All Doctor Consultations!",
+        description: "Use code MEDIBRIDGE to get half price on any consultation booking.",
+        buttonText: "Book an Appointment",
         buttonIcon: CheckCircle,
         href: "/appointments",
         textColor: "text-white",
-        bgColor: "bg-blue-500",
+        bgColor: "bg-teal-500",
     },
     {
         title: "Daily Health Tip: Stay hydrated by drinking at least 8 glasses of water throughout the day!",
@@ -261,6 +263,7 @@ export default function DashboardPage() {
                           >
                                <div className="space-y-4 z-20 flex flex-col items-center justify-center h-full">
                                   <p className="font-bold text-2xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
+                                  {slide.description && <p className="text-base drop-shadow-sm">{slide.description}</p>}
                                   <Link href={slide.href}>
                                       <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
                                           <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
@@ -341,3 +344,5 @@ export default function DashboardPage() {
       </div>
   );
 }
+
+    
