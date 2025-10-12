@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -1245,7 +1244,7 @@ export default function AppointmentsPage() {
                                                                                             <h4 className='font-semibold mb-2 text-base'>Prescription Images</h4>
                                                                                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                                                                                                 {item.prescriptionImages.map((img: any, imgIndex: number) => (
-                                                                                                    <div key={imgIndex} className="cursor-pointer group relative" onClick={() => setZoomedImage(img.url)}>
+                                                                                                    <div key={imgIndex} className="cursor-pointer group relative" onClick={()={() => setZoomedImage(img.url)}}>
                                                                                                         <Image 
                                                                                                             src={img.url} 
                                                                                                             alt={`Prescription for ${item.title} - Page ${imgIndex + 1}`}
@@ -1402,7 +1401,7 @@ export default function AppointmentsPage() {
                                     <Badge variant="outline" className="mt-2 border-green-500 text-green-600">Promo Code: MEDIBRIDGE (50% OFF)</Badge>
                                 </div>
                                 <div className="flex justify-end gap-2">
-                                    <Button variant="outline" onClick={() => handleShare(selectedDoctor)} disabled={isSharing}>
+                                    <Button variant="outline" onClick={()={() => handleShare(selectedDoctor)}} disabled={isSharing}>
                                         {isSharing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Copy className="mr-2 h-4 w-4" />}
                                         {isSharing ? 'Copying...' : 'Copy Details'}
                                     </Button>
@@ -1462,3 +1461,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
