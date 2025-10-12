@@ -893,30 +893,30 @@ export default function AppointmentsPage() {
                 </TabsList>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
-                        <Card className="p-4 shadow-sm">
-                            <CardHeader className="p-2 pt-0">
+                        <Card className="shadow-sm">
+                            <CardHeader>
                                 <CardTitle>Find a Doctor</CardTitle>
-                                <div>
+                                <CardDescription>
                                     Use code <Badge variant="outline" className="text-green-600 border-green-500">MEDIBRIDGE</Badge> for 50% off on consultation.
-                                </div>
+                                </CardDescription>
                             </CardHeader>
-                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 items-end">
-                                <div className="relative sm:col-span-2 md:col-span-3 lg:col-span-2">
-                                    <Label htmlFor="doctor-search" className="sr-only">Doctor or hospital</Label>
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                    <Input 
-                                        id="doctor-search"
-                                        placeholder="Doctor or hospital..." 
-                                        className="pl-10" 
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="dept-select" className="text-xs font-semibold">Department</Label>
+                             <CardContent className="p-4 pt-0">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                                    <div className="relative sm:col-span-2 lg:col-span-1">
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        <Input 
+                                            placeholder="Doctor, hospital..." 
+                                            className="pl-10" 
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                        />
+                                    </div>
                                     <Select value={selectedDepartment} onValueChange={setSelectedDepartment}>
-                                        <SelectTrigger id="dept-select">
-                                            <SelectValue placeholder="Select Department" />
+                                        <SelectTrigger>
+                                            <div className="flex items-center gap-2">
+                                                <StethoscopeIcon className="h-4 w-4 text-muted-foreground" />
+                                                <SelectValue placeholder="Department" />
+                                            </div>
                                         </SelectTrigger>
                                         <SelectContent>
                                             {uniqueDepartments.map(dep => (
@@ -929,13 +929,10 @@ export default function AppointmentsPage() {
                                             ))}
                                         </SelectContent>
                                     </Select>
-                                </div>
-                                <div className="space-y-1">
-                                     <Label htmlFor="loc-select" className="text-xs font-semibold">Location</Label>
                                      <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-                                         <SelectTrigger id="loc-select">
+                                         <SelectTrigger>
                                             <div className="flex items-center gap-2">
-                                               <MapPin className="h-4 w-4" />
+                                               <MapPin className="h-4 w-4 text-muted-foreground" />
                                                <SelectValue placeholder="Location" />
                                             </div>
                                         </SelectTrigger>
@@ -945,9 +942,9 @@ export default function AppointmentsPage() {
                                              <SelectItem value="Guntur">Guntur</SelectItem>
                                         </SelectContent>
                                     </Select>
+                                    <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handleFilter}>Search</Button>
                                 </div>
-                                <Button className="w-full lg:w-auto" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handleFilter}>Go</Button>
-                            </div>
+                            </CardContent>
                         </Card>
 
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1317,7 +1314,7 @@ export default function AppointmentsPage() {
                     <div className="flex-1 relative bg-muted/20">
                         {zoomedImage && (
                             <Image
-                                src={zoomedImage || ''}
+                                src={zoomedImage}
                                 alt="Zoomed Prescription"
                                 fill={true}
                                 style={{objectFit: "contain"}}
