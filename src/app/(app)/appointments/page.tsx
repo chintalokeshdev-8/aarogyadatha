@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -1007,16 +1006,15 @@ export default function AppointmentsPage() {
     return (
         <div className="space-y-6">
             <div className="text-left">
-                <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find & Manage Appointments</h1>
+                <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>Find &amp; Manage Appointments</h1>
                 <p className="text-muted-foreground">Find the right doctor for your needs and review your history.</p>
             </div>
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <div className="flex items-center justify-center p-1.5 rounded-lg border-2 border-primary/20 bg-muted">
-                    <TabsTrigger value="find-doctor" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Find a Doctor</TabsTrigger>
-                    <Separator orientation="vertical" className="h-6 bg-border mx-1" />
-                    <TabsTrigger value="history" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Appointments History</TabsTrigger>
-                </div>
+                <TabsList className="grid w-full grid-cols-2 p-1.5 rounded-lg border-2 border-primary/20 bg-muted">
+                    <TabsTrigger value="find-doctor" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Find a Doctor</TabsTrigger>
+                    <TabsTrigger value="history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Appointments History</TabsTrigger>
+                </TabsList>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
                         <Card className="shadow-sm">
@@ -1464,3 +1462,4 @@ export default function AppointmentsPage() {
     );
 }
 
+    
