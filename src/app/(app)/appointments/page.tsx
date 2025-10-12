@@ -887,9 +887,9 @@ export default function AppointmentsPage() {
             </div>
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 rounded-lg bg-muted p-1 border-2">
-                    <TabsTrigger value="find-doctor" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm text-base font-bold">Find a Doctor</TabsTrigger>
-                    <TabsTrigger value="history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm text-base font-bold">Appointments History</TabsTrigger>
+                <TabsList className="p-1.5 h-auto rounded-lg bg-muted border-2 border-border/20 grid grid-cols-2">
+                    <TabsTrigger value="find-doctor" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Find a Doctor</TabsTrigger>
+                    <TabsTrigger value="history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Appointments History</TabsTrigger>
                 </TabsList>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
@@ -897,7 +897,7 @@ export default function AppointmentsPage() {
                             <CardHeader>
                                 <CardTitle>Find a Doctor</CardTitle>
                                 <CardDescription>
-                                    <div>Use code <Badge variant="outline" className="text-green-600 border-green-500">MEDIBRIDGE</Badge> for 50% off on consultation.</div>
+                                    Use code <Badge variant="outline" className="text-green-600 border-green-500">MEDIBRIDGE</Badge> for 50% off on consultation.
                                 </CardDescription>
                             </CardHeader>
                              <CardContent className="p-4 pt-0">
