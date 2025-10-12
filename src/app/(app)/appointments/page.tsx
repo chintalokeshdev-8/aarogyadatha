@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -728,13 +729,25 @@ const DateSelector = ({ selectedDate, onSelectDate }: { selectedDate: Date, onSe
     );
 };
 
-function BookingDialog({ open, onOpenChange, doctor, onBookingSuccess }: { open: boolean, onOpenChange: (open: boolean) => void, doctor: any | null, onBookingSuccess: (doctor: any) => void }) {
+function BookingDialog({ open, onOpenChange, doctor }: { open: boolean, onOpenChange: (open: boolean) => void, doctor: any | null }) {
     const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 1));
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
+    const router = useRouter();
 
     const handleContinue = () => {
         if (!doctor || !selectedTime) return;
-        onBookingSuccess(doctor);
+
+        const appointmentDetails = {
+            doctor,
+            date: selectedDate.toISOString(),
+            time: selectedTime,
+        };
+
+        // Store details in localStorage to pass to the summary page
+        localStorage.setItem('appointmentDetails', JSON.stringify(appointmentDetails));
+        
+        onOpenChange(false);
+        router.push('/appointments/summary');
     };
     
     useEffect(() => {
@@ -787,7 +800,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingSuccess }: { open:
                     <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
 
                 </div>
-                <DialogFooter className="p-4 border-t bg-background">
+                <DialogFooter className="p-4 border-t bg-background sticky bottom-0">
                     <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
                         Continue Booking
                     </Button>
@@ -906,15 +919,6 @@ export default function AppointmentsPage() {
         setProfileOpen(false); // Close profile dialog if open
         setDoctorForBooking(doctor);
         setIsBookingOpen(true);
-    };
-
-    const handleBookingSuccess = (doctor: any) => {
-        setIsBookingOpen(false);
-        toast({
-            title: "Appointment Confirmed!",
-            description: `Your appointment with ${doctor.name} is booked. Check the OP Status page for live updates.`,
-        });
-        router.push('/opd-queue');
     };
 
     const allDoctors = useMemo(() => {
@@ -1100,7 +1104,6 @@ export default function AppointmentsPage() {
                                                         <p className="text-xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{discountedFee}</p>
                                                         <p className="line-through text-muted-foreground">₹{doctor.opFee}</p>
                                                     </div>
-                                                     <Badge variant="outline" className="mt-1 border-green-500 text-green-600 text-xs">Promo: MEDIBRIDGE</Badge>
                                                 </div>
                                                 <div className="flex w-full sm:w-auto shrink-0 gap-2">
                                                     <Button variant="outline" className="flex-1 sm:flex-auto" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
@@ -1361,7 +1364,6 @@ export default function AppointmentsPage() {
                 open={isBookingOpen}
                 onOpenChange={setIsBookingOpen}
                 doctor={doctorForBooking}
-                onBookingSuccess={handleBookingSuccess}
             />
 
             <Dialog open={isProfileOpen} onOpenChange={setProfileOpen}>
@@ -1398,7 +1400,6 @@ export default function AppointmentsPage() {
                                         <p className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{selectedDoctor.opFee * 0.5}</p>
                                         <p className="line-through text-muted-foreground text-xl">₹{selectedDoctor.opFee}</p>
                                     </div>
-                                    <Badge variant="outline" className="mt-2 border-green-500 text-green-600">Promo Code: MEDIBRIDGE (50% OFF)</Badge>
                                 </div>
                                 <div className="flex justify-end gap-2">
                                     <Button variant="outline" onClick={() => handleShare(selectedDoctor)} disabled={isSharing}>
