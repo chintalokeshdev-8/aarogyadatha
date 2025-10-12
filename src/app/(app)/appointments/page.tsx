@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -18,7 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { previousAppointments as initialAppointmentsData } from '@/lib/appointments-data';
@@ -679,98 +679,130 @@ function FollowUpForm({ onSave, onCancel, appointmentId, existingFollowUp }: { o
     );
 }
 
-function PaymentDialog({ open, onOpenChange, doctor, onPaymentSuccess }: { open: boolean, onOpenChange: (open: boolean) => void, doctor: any | null, onPaymentSuccess: (doctor: any) => void }) {
-    const [isPaying, setIsPaying] = useState(false);
-    const [paymentMethod, setPaymentMethod] = useState('upi');
+function TimeSlotSelector({ slots, selectedTime, onSelectTime, title, icon: Icon }: { slots: string[], selectedTime: string | null, onSelectTime: (time: string) => void, title: string, icon: React.ElementType }) {
+    return (
+        <div className="space-y-3">
+            <div className="flex items-center justify-between">
+                <h4 className="font-semibold flex items-center gap-2"><Icon className="h-5 w-5" />{title}</h4>
+                <p className="text-xs text-muted-foreground">{slots.length} SLOTS</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+                {slots.map(time => (
+                    <Button 
+                        key={time} 
+                        variant={selectedTime === time ? "default" : "outline"}
+                        className={cn("font-semibold", selectedTime === time && "bg-teal-500 hover:bg-teal-600")}
+                        onClick={() => onSelectTime(time)}
+                    >
+                        {time}
+                    </Button>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+const DateSelector = ({ selectedDate, onSelectDate }: { selectedDate: Date, onSelectDate: (date: Date) => void }) => {
+    const dates = Array.from({ length: 7 }, (_, i) => addDays(new Date(), i));
+
+    return (
+        <div className="flex gap-2 overflow-x-auto pb-2">
+            {dates.map(date => (
+                <button 
+                    key={date.toISOString()}
+                    onClick={() => onSelectDate(date)}
+                    className={cn(
+                        "flex flex-col items-center justify-center p-2 rounded-lg border-2 w-16 shrink-0",
+                        format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
+                            ? "border-teal-500 bg-teal-50"
+                            : "border-gray-200"
+                    )}
+                >
+                    <span className="text-xs font-bold">{format(date, 'EEE')}</span>
+                    <span className="text-lg font-extrabold">{format(date, 'dd')}</span>
+                    <span className="text-xs font-bold">{format(date, 'MMM')}</span>
+                </button>
+            ))}
+        </div>
+    );
+};
+
+function BookingDialog({ open, onOpenChange, doctor, onBookingSuccess }: { open: boolean, onOpenChange: (open: boolean) => void, doctor: any | null, onBookingSuccess: (doctor: any) => void }) {
+    const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 1));
+    const [selectedTime, setSelectedTime] = useState<string | null>(null);
+
+    const handleContinue = () => {
+        if (!doctor || !selectedTime) return;
+        onBookingSuccess(doctor);
+    };
 
     if (!doctor) return null;
 
-    const discountedFee = doctor.opFee * 0.5;
-
-    const handlePayment = () => {
-        setIsPaying(true);
-        setTimeout(() => {
-            setIsPaying(false);
-            onOpenChange(false);
-            onPaymentSuccess(doctor);
-        }, 2000);
-    };
-
+    const consultationFee = 630;
+    const discount = 32;
+    
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md">
-                <DialogHeader>
-                    <DialogTitle>Complete Your Payment</DialogTitle>
-                    <DialogDescription>
-                        Securely pay the consultation fee for your appointment with <span className="font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>{doctor.name}</span>.
-                    </DialogDescription>
+            <DialogContent className="sm:max-w-md p-0 gap-0">
+                <DialogHeader className="p-4 border-b">
+                    <DialogTitle>Doctor's Profile</DialogTitle>
                 </DialogHeader>
-                <div className="space-y-4 py-4">
-                    <div className="p-4 rounded-lg bg-muted/50 text-center">
-                        <p className="text-sm text-muted-foreground">Amount to Pay</p>
-                        <p className="text-4xl font-bold">₹{discountedFee}</p>
+                <div className="p-4 space-y-4 max-h-[70vh] overflow-y-auto">
+                    <div className="p-4 border rounded-lg">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h3 className="text-lg font-bold">Book Online Consult</h3>
+                                <p className="text-sm text-muted-foreground">Consult Tomorrow</p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-xl font-bold">₹{consultationFee}</p>
+                                <p className="text-xs text-orange-500 flex items-center gap-1">
+                                    <Image src="https://abdm.gov.in/assets/images/logo_black.svg" alt="Circle" width={12} height={12} data-ai-hint="circle logo"/>
+                                    circle ₹{discount} off
+                                </p>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <div className="bg-black text-white p-2 rounded-lg flex justify-center items-center text-sm font-semibold gap-2">
+                        <Image src="https://abdm.gov.in/assets/images/logo_white.svg" alt="Circle" width={16} height={16} data-ai-hint="rupee coin"/>
+                        <span>Avail Circle Discount of ₹{discount}</span>
+                        <span className="mx-1">•</span>
+                        <a href="#" className="underline">Upgrade now</a>
+                    </div>
+                    
+                    <DateSelector selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+                    
+                    <TimeSlotSelector 
+                        title="Afternoon"
+                        icon={Sun}
+                        slots={["12:00 PM", "12:10 PM", "12:20 PM", "12:30 PM", "12:40 PM"]}
+                        selectedTime={selectedTime}
+                        onSelectTime={setSelectedTime}
+                    />
 
-                    <Tabs value={paymentMethod} onValueChange={setPaymentMethod}>
-                        <TabsList className="grid w-full grid-cols-2">
-                            <TabsTrigger value="upi">UPI</TabsTrigger>
-                            <TabsTrigger value="card">Credit/Debit Card</TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="upi" className="mt-4">
-                            <div className="space-y-4">
-                                <div className="text-center text-sm text-muted-foreground">
-                                    Click an app to pay or enter your UPI ID.
-                                </div>
-                                <div className="flex justify-center gap-4">
-                                    <Button variant="outline" className="flex-col h-auto p-3 gap-2">
-                                        <Image src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="Google Pay" width={32} height={32} data-ai-hint="google pay logo" />
-                                        <span className="text-xs">GPay</span>
-                                    </Button>
-                                    <Button variant="outline" className="flex-col h-auto p-3 gap-2">
-                                        <Image src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" width={32} height={32} data-ai-hint="phonepe logo" />
-                                        <span className="text-xs">PhonePe</span>
-                                    </Button>
-                                    <Button variant="outline" className="flex-col h-auto p-3 gap-2">
-                                        <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/UPI-Logo-vector.svg/2560px-UPI-Logo-vector.svg.png" alt="Paytm" width={32} height={32} data-ai-hint="paytm logo" />
-                                        <span className="text-xs">Paytm</span>
-                                    </Button>
-                                </div>
-                                <div className="relative">
-                                    <Input placeholder="Enter UPI ID" className="pr-16" />
-                                    <Button variant="link" className="absolute right-1 top-1 h-8">Pay</Button>
-                                </div>
-                            </div>
-                        </TabsContent>
-                        <TabsContent value="card" className="mt-4">
-                            <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="card-number">Card Number</Label>
-                                    <div className="relative">
-                                        <Input id="card-number" placeholder="0000 0000 0000 0000" />
-                                        <CreditCard className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                    </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="expiry">Expiry</Label>
-                                        <Input id="expiry" placeholder="MM/YY" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="cvv">CVV</Label>
-                                        <div className="relative">
-                                            <Input id="cvv" placeholder="123" />
-                                            <Lock className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </TabsContent>
-                    </Tabs>
+                    <TimeSlotSelector 
+                        title="Evening"
+                        icon={Moon}
+                        slots={["03:00 PM", "03:10 PM", "03:20 PM", "03:30 PM", "03:40 PM", "03:50 PM"]}
+                        selectedTime={selectedTime}
+                        onSelectTime={setSelectedTime}
+                    />
+
+                    <div className="bg-blue-600 text-white p-3 rounded-lg flex items-center gap-3">
+                        <Clock className="h-8 w-8 text-yellow-300" />
+                        <div>
+                            <h4 className="font-bold">On Time Guarantee</h4>
+                            <p className="text-xs">100% refund if doctor does not connect within 10 mins of appointment time for Online Consult</p>
+                        </div>
+                    </div>
+                    
+                    <p className="text-xs text-center text-muted-foreground">*Free chat follow-up for 3 days post consultation</p>
+
                 </div>
-                <DialogFooter>
-                    <Button onClick={handlePayment} disabled={isPaying} className="w-full" style={{ backgroundColor: 'hsl(var(--nav-appointments))' }}>
-                        {isPaying ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                        {isPaying ? 'Processing...' : `Pay ₹${discountedFee} Securely`}
+                <DialogFooter className="p-4 border-t sticky bottom-0 bg-background grid grid-cols-1">
+                    <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg bg-teal-600 hover:bg-teal-700">
+                        Continue Booking
                     </Button>
                 </DialogFooter>
             </DialogContent>
@@ -780,9 +812,9 @@ function PaymentDialog({ open, onOpenChange, doctor, onPaymentSuccess }: { open:
 
 export default function AppointmentsPage() {
     const [selectedDoctor, setSelectedDoctor] = useState<any | null>(null);
-    const [doctorForPayment, setDoctorForPayment] = useState<any | null>(null);
+    const [doctorForBooking, setDoctorForBooking] = useState<any | null>(null);
     const [isProfileOpen, setProfileOpen] = useState(false);
-    const [isPaymentOpen, setPaymentOpen] = useState(false);
+    const [isBookingOpen, setIsBookingOpen] = useState(false);
     const { toast } = useToast();
     const router = useRouter();
     const [isSharing, setIsSharing] = useState(false);
@@ -884,11 +916,12 @@ export default function AppointmentsPage() {
     };
 
     const handleBookAppointment = (doctor: any) => {
-        setDoctorForPayment(doctor);
-        setPaymentOpen(true);
+        setDoctorForBooking(doctor);
+        setIsBookingOpen(true);
     };
 
-    const handlePaymentSuccess = (doctor: any) => {
+    const handleBookingSuccess = (doctor: any) => {
+        setIsBookingOpen(false);
         toast({
             title: "Appointment Confirmed!",
             description: `Your appointment with ${doctor.name} is booked. Check the OP Status page for live updates.`,
@@ -1336,11 +1369,11 @@ export default function AppointmentsPage() {
                 </TabsContent>
             </Tabs>
             
-            <PaymentDialog
-                open={isPaymentOpen}
-                onOpenChange={setPaymentOpen}
-                doctor={doctorForPayment}
-                onPaymentSuccess={handlePaymentSuccess}
+            <BookingDialog
+                open={isBookingOpen}
+                onOpenChange={setIsBookingOpen}
+                doctor={doctorForBooking}
+                onBookingSuccess={handleBookingSuccess}
             />
 
             <Dialog open={isProfileOpen} onOpenChange={setProfileOpen}>
@@ -1440,3 +1473,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
