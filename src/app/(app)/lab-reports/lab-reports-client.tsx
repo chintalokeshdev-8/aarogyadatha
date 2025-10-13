@@ -690,10 +690,10 @@ export function LabReportsClient({
                                             
                                             <div>
                                                 <h4 className="font-semibold text-base mb-4">Available Tests</h4>
-                                                {lab.tests.map((test: any) => (
+                                                {lab.tests.map((test: any, index: number) => (
                                                     <div key={test.name} className="p-4 flex flex-col sm:flex-row justify-between sm:items-center border-t first:border-t-0">
                                                         <div className="mb-4 sm:mb-0">
-                                                            <p className="font-semibold">{test.name}</p>
+                                                            <p className="font-semibold">{index + 1}. {test.name}</p>
                                                             <Badge variant="outline" className="mt-1">{test.category}</Badge>
                                                         </div>
                                                         <div className="flex items-center gap-4">
