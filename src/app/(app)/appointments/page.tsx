@@ -1189,7 +1189,7 @@ export default function AppointmentsPage() {
                                                 </div>
                                             </div>
                                             <div className="mt-4 space-y-2 text-sm">
-                                                <p><strong className="text-base">Focus:</strong> {doctor.mainDealing}</p>
+                                                <p className="text-sm"><strong className="text-base font-bold">Focus:</strong> {doctor.mainDealing}</p>
                                                 <div className="flex items-center gap-2 text-muted-foreground">
                                                   <Briefcase className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-appointments))'}} />
                                                   <p className="font-semibold text-xs">{doctor.surgeries}</p>
@@ -1607,6 +1607,7 @@ export default function AppointmentsPage() {
 }
 
     
+
 
 
 
