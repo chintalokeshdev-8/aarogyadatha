@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -55,18 +54,6 @@ export default function SettingsPage() {
                         </div>
                        <ThemeToggle />
                     </div>
-                     <Link href="/terms">
-                        <Button variant="outline" className="w-full justify-start gap-3 border-2 text-base py-6">
-                            <FileText className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
-                            <span>Terms & Conditions</span>
-                        </Button>
-                    </Link>
-                     <Link href="/about">
-                        <Button variant="outline" className="w-full justify-start gap-3 border-2 text-base py-6">
-                            <Info className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
-                            <span>About medibridge</span>
-                        </Button>
-                    </Link>
                     <Button variant="outline" onClick={handleDownloadData} disabled={isDownloading} className="w-full justify-start gap-3 border-2 text-base py-6">
                        {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileDown className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>}
                        <span>{isDownloading ? 'Downloading...' : 'Export My Data'}</span>

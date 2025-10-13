@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import Link from "next/link";
@@ -37,6 +35,8 @@ import {
   Send,
   Stethoscope,
   Globe,
+  FileText,
+  Info,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -340,7 +340,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </div>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <div className="p-1">
+                                <div className="p-1 max-h-[60vh] overflow-y-auto">
                                     <Link href="/profile" passHref>
                                         <DropdownMenuItem className="p-3">
                                             <User className="mr-3 text-primary" />
@@ -367,6 +367,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         <DropdownMenuItem className="p-3">
                                             <Settings className="mr-3 text-primary" />
                                             <span className="font-semibold">Settings</span>
+                                        </DropdownMenuItem>
+                                    </Link>
+                                     <Link href="/terms" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <FileText className="mr-3 text-primary" />
+                                            <span className="font-semibold">Terms &amp; Conditions</span>
+                                        </DropdownMenuItem>
+                                    </Link>
+                                     <Link href="/about" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <Info className="mr-3 text-primary" />
+                                            <span className="font-semibold">About medibridge</span>
                                         </DropdownMenuItem>
                                     </Link>
                                     <DropdownMenuItem className="p-3">
