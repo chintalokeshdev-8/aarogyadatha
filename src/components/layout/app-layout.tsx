@@ -36,6 +36,7 @@ import {
   Loader2,
   Send,
   Stethoscope,
+  Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -157,6 +158,36 @@ function AiAssistantDialog() {
     );
 }
 
+function LanguageSwitcherDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (open: boolean) => void }) {
+    const [selectedLanguage, setSelectedLanguage] = React.useState('en');
+
+    return (
+        <Dialog open={open} onOpenChange={onOpenChange}>
+            <DialogContent className="sm:max-w-xs">
+                <DialogHeader>
+                    <DialogTitle>Select Language</DialogTitle>
+                </DialogHeader>
+                <div className="flex justify-around py-4">
+                    <Button
+                        variant={selectedLanguage === 'en' ? 'default' : 'outline'}
+                        onClick={() => setSelectedLanguage('en')}
+                    >
+                        English
+                    </Button>
+                    <Button
+                        variant={selectedLanguage === 'te' ? 'default' : 'outline'}
+                        onClick={() => setSelectedLanguage('te')}
+                    >
+                        తెలుగు
+                    </Button>
+                </div>
+                <DialogDescription className="text-center text-xs">
+                    Language preference will be updated across the app.
+                </DialogDescription>
+            </DialogContent>
+        </Dialog>
+    );
+}
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -167,6 +198,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [visibleMenuItems, setVisibleMenuItems] = React.useState<MenuItem[]>([]);
   const [navSettings, setNavSettings] = React.useState<Record<string, boolean>>({});
   const { toast } = useToast();
+  const [isLangSwitcherOpen, setLangSwitcherOpen] = React.useState(false);
+
 
   React.useEffect(() => {
     setIsClient(true);
@@ -237,6 +270,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
 
   const showMobileSearch = isMobile && isSearchOpen;
+
+  const handleNavItemClick = (href: string, e: React.MouseEvent) => {
+    if (href === '#') {
+        e.preventDefault();
+        setLangSwitcherOpen(true);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -313,7 +353,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                     
                                     {allMenuItems.filter(item => item.id !== 'home' && item.id !== 'symptoms' && item.id !== 'appointments' && item.id !== 'opd' && item.id !== 'diagnostics' && item.id !== 'medicines' && item.id !== 'emergency').map(item => (
                                         <Link href={item.href} key={item.id} passHref>
-                                            <DropdownMenuItem className="p-3">
+                                            <DropdownMenuItem className="p-3" onClick={(e) => handleNavItemClick(item.href, e)}>
                                                 <item.icon className="mr-3" style={{color: item.color}} />
                                                 <span className="font-semibold">{item.label}</span>
                                             </DropdownMenuItem>
@@ -382,6 +422,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
       <AiAssistantDialog />
+      <LanguageSwitcherDialog open={isLangSwitcherOpen} onOpenChange={setLangSwitcherOpen} />
       <footer className="fixed bottom-0 z-20 w-full bg-background border-t">
         <div className="relative">
             <div className="absolute top-0 left-0 h-full flex items-center pl-2 bg-gradient-to-r from-background to-transparent w-12 z-10">
@@ -397,7 +438,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         const specialColor = item.label === 'Emergency' ? 'hsl(var(--destructive))' : 'hsl(var(--nav-blood-bank))';
 
                         return (
-                           <Link href={item.href} key={item.label} className={cn("flex-shrink-0 flex items-center", (index < visibleMenuItems.length - 1) && "border-r pr-2 mr-2")}>
+                           <Link href={item.href} key={item.label} passHref onClick={(e) => handleNavItemClick(item.href, e)}>
                                <div className={cn(
                                    "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-24 py-1",
                                    isActive ? "scale-105" : "scale-100",
