@@ -97,13 +97,7 @@ export function LabReportsClient({
     };
 
     const handleView = (report: any) => {
-        const reportKey = `${report.testName}-${report.date}`;
-        const data = dummyReportData[reportKey] || { content: "Report details not found." };
-        
         setSelectedReport(report);
-        setReportContent(data.content);
-        setReportImage(data.image);
-        setReportImageHint(data.dataAiHint);
         setViewOpen(true);
     };
 
@@ -340,7 +334,7 @@ export function LabReportsClient({
                                 </div>
                                 <div className='flex items-center gap-1 border rounded-lg p-1 flex-shrink-0'>
                                      <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
-                                        <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
+                                        <Sparkles className="mr-2 h-3 w-3" /> AI
                                     </Button>
                                     <UploadReportDialog onUpload={onUpload} initialDate={date} />
                                 </div>
@@ -604,21 +598,21 @@ export function LabReportsClient({
             
             <Dialog open={isViewOpen} onOpenChange={setViewOpen}>
                 <DialogContent className="sm:max-w-2xl">
-                    <DialogHeader>
+                     <DialogHeader>
                         <DialogTitle>View Report: {selectedReport?.testName}</DialogTitle>
                          <DialogDescription>
                             From {selectedReport?.labName || 'N/A'} on {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
-                        {reportImage ? (
+                        {dummyReportData[`${selectedReport?.testName}-${selectedReport?.date}`]?.image ? (
                              <div className="bg-muted/30 p-2 rounded-lg">
                                  <Image
-                                    src={reportImage}
+                                    src={dummyReportData[`${selectedReport.testName}-${selectedReport.date}`].image!}
                                     alt={`Report for ${selectedReport?.testName}`}
                                     width={800}
                                     height={1100}
-                                    data-ai-hint={reportImageHint || ''}
+                                    data-ai-hint={dummyReportData[`${selectedReport.testName}-${selectedReport.date}`].dataAiHint || ''}
                                     className="rounded-md border w-full h-auto object-contain"
                                 />
                              </div>
