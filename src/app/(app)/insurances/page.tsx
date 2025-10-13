@@ -127,7 +127,7 @@ export default function InsurancesPage() {
     return (
         <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>Insurances</h1>
+                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--primary))'}}>Insurances</h1>
                 <p className="text-muted-foreground mt-2">Manage your insurance policies and network hospitals.</p>
             </div>
             
@@ -138,11 +138,11 @@ export default function InsurancesPage() {
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex items-center gap-2 font-semibold text-lg">
-                        <Shield style={{color: 'hsl(var(--nav-profile))'}}/> Status: <Badge className="bg-green-100 text-green-800 text-base">Active</Badge>
+                        <Shield style={{color: 'hsl(var(--primary))'}}/> Status: <Badge className="bg-green-100 text-green-800 text-base">Active</Badge>
                     </div>
                      <Dialog>
                         <DialogTrigger asChild>
-                            <Button variant="link" className="p-0 h-auto text-base" style={{color: 'hsl(var(--nav-profile))'}}>View Network Hospitals</Button>
+                            <Button variant="link" className="p-0 h-auto text-base" style={{color: 'hsl(var(--primary))'}}>View Network Hospitals</Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[625px] border">
                             <DialogHeader>
@@ -161,7 +161,7 @@ export default function InsurancesPage() {
                                 {filteredHospitals.map((hospital, index) => (
                                     <div key={index} className="flex items-start gap-4 p-3 border rounded-lg">
                                         <div className="p-2 bg-muted rounded-full mt-1">
-                                            <Hospital className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
+                                            <Hospital className="h-5 w-5" style={{color: 'hsl(var(--primary))'}}/>
                                         </div>
                                         <div>
                                             <p className="font-semibold">{hospital.name}</p>
@@ -203,54 +203,7 @@ export default function InsurancesPage() {
                         </CardHeader>
                         {showAbha ? (
                              <div className="border rounded-lg p-4 bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
-                                <div className="flex justify-between items-start mb-2">
-                                    <p className="font-bold text-xs">National Health Authority</p>
-                                </div>
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                    <div className="flex-1 space-y-2">
-                                        <div className="flex items-center gap-4">
-                                             <Avatar className="h-20 w-20 border-2 border-white shadow-md">
-                                                <AvatarImage src="/images/profile.jpg" />
-                                                <AvatarFallback className="text-2xl">CL</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <p className="text-xs text-muted-foreground">Name/పేరు</p>
-                                                <p className="text-lg font-bold">Chinta Lokesh Babu</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-1">
-                                            <div>
-                                                <p className="text-xs text-muted-foreground">ABHA number/అభా నెంబరు</p>
-                                                <p className="text-base font-semibold tracking-wider">24-0278-1857-2658</p>
-                                            </div>
-                                            <div>
-                                                <p className="text-xs text-muted-foreground">ABHA address/అభా చిరునామా</p>
-                                                <p className="text-sm font-semibold">chinta1997@abdm</p>
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm pt-1">
-                                                <div>
-                                                    <p className="text-xs text-muted-foreground">Gender/లింగము</p>
-                                                    <p className="font-semibold">Male/మగ</p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-xs text-muted-foreground">DOB/పుట్టిన తేదీ</p>
-                                                    <p className="font-semibold">01-01-1997</p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-xs text-muted-foreground">Mobile/చరవాణి</p>
-                                                    <p className="font-semibold">8008334948</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col items-center justify-center space-y-1 self-center pt-4 sm:pt-0">
-                                        <div className="bg-white p-1 rounded-md border shadow-sm">
-                                            <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Commons_QR_code.png" alt="ABHA QR Code" width={100} height={100} data-ai-hint="qr code" />
-                                        </div>
-                                        <p className="text-xs font-medium text-muted-foreground">Scan to verify</p>
-                                    </div>
-                                </div>
+                                <Image src="https://abdm.gov.in/assets/img/ABHA_Card_new.png" alt="ABHA Card" width={856} height={540} className="rounded-lg shadow-md w-full" data-ai-hint="ABHA card"/>
                                 <div className="mt-4 flex gap-2 justify-end">
                                     <Button variant="outline" size="sm" className="border"><Printer className="mr-2 h-4 w-4"/> Print</Button>
                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}><Download className="mr-2 h-4 w-4"/> Download</Button>
@@ -269,27 +222,29 @@ export default function InsurancesPage() {
 
                     <div className="space-y-4">
                         <CardHeader className="p-0">
-                           <div className="flex items-center gap-3">
-                                <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--primary))'}}/>
-                                <div>
-                                    <CardTitle>Aarogyasri Health Card (UHID)</CardTitle>
-                                </div>
+                           <div className="flex justify-between items-center">
+                                <CardTitle>Aarogyasri Health Card (UHID)</CardTitle>
+                                <Button variant="outline" onClick={() => setShowUhid(!showUhid)} className="border">
+                                    {showUhid ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
+                                    {showUhid ? "Hide Card" : "Show Card"}
+                                </Button>
                             </div>
                         </CardHeader>
-                        <div className="p-4 border rounded-lg bg-muted/40 flex justify-between items-center">
-                            <div>
-                                <p className="font-semibold text-lg">Universal Health ID (UHID)</p>
-                                <p className="text-base text-muted-foreground tracking-wider">
-                                    {showUhid ? 'CB-1234-5678-9012' : 'CB-XXXX-XXXX-9012'}
-                                </p>
+                        {showUhid ? (
+                             <div className="border rounded-lg p-4 bg-green-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
+                                <Image src="https://picsum.photos/seed/aarogyasri/856/540" alt="Aarogyasri Card" width={856} height={540} className="rounded-lg shadow-md w-full" data-ai-hint="Aarogyasri card"/>
+                                 <div className="mt-4 flex gap-2 justify-end">
+                                    <Button variant="outline" size="sm" className="border"><Printer className="mr-2 h-4 w-4"/> Print</Button>
+                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}><Download className="mr-2 h-4 w-4"/> Download</Button>
+                                </div>
                             </div>
-                             <div className="flex items-center gap-4">
-                                <Button variant="ghost" size="icon" onClick={() => setShowUhid(!showUhid)}>
-                                    {showUhid ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                                </Button>
-                                <Badge variant="outline" className="text-green-700 border-green-200 bg-green-50">Verified</Badge>
+                        ) : (
+                            <div className="border rounded-lg p-6 flex flex-col items-center justify-center text-center bg-muted/40 min-h-[200px]">
+                                <ShieldAlert className="h-10 w-10 text-muted-foreground mb-2"/>
+                                <h3 className="font-bold">Aarogyasri Card Hidden</h3>
+                                <p className="text-sm text-muted-foreground">Click "Show Card" to view your Aarogyasri details.</p>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </CardContent>
             </Card>
