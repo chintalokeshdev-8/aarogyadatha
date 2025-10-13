@@ -1,7 +1,8 @@
+
 'use server';
 
 /**
- * @fileOverview Provides AI-powered analysis of medical reports.
+ * @fileOverview Provides AI-powered analysis of medical reports from text or images.
  *
  * - analyzeReport - A function that analyzes a report to find abnormalities.
  * - ReportAnalysisInput - The input type for the analyzeReport function.
@@ -12,7 +13,8 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const ReportAnalysisInputSchema = z.object({
-  reportContent: z.string().describe('The full content or summary of the medical report to be analyzed.'),
+  reportContent: z.string().describe('The full content or summary of the medical report to be analyzed.').optional(),
+   photoDataUri: z.string().describe("A photo of the report, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'.").optional(),
 });
 export type ReportAnalysisInput = z.infer<typeof ReportAnalysisInputSchema>;
 
@@ -36,11 +38,12 @@ const prompt = ai.definePrompt({
   input: {schema: ReportAnalysisInputSchema},
   output: {schema: ReportAnalysisOutputSchema},
   prompt: `You are a helpful AI medical assistant. Your role is to analyze a medical report and provide a simple, reassuring summary.
+  The report may be provided as text or as an image. If an image is provided, perform OCR to extract the text first.
 
   Analyze the following medical report. Identify any values that are outside the normal range. For each abnormality, provide a simple, non-alarming explanation. Avoid creating fear or panic. The goal is to highlight areas for discussion with a doctor, not to provide a diagnosis.
 
-  Report Content:
-  {{{reportContent}}}
+  Report Text: {{{reportContent}}}
+  Report Image: {{media url=photoDataUri}}
   `,
 });
 
