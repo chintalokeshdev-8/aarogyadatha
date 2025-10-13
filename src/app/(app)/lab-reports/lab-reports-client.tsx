@@ -387,11 +387,11 @@ export function LabReportsClient({
                                     mode="single"
                                     selected={date}
                                     onSelect={setDate}
-                                    captionLayout="dropdown-buttons"
+                                    captionLayout="dropdown"
                                     fromYear={new Date().getFullYear() - 10}
                                     toYear={new Date().getFullYear()}
                                     initialFocus
-                                    disabled={(d) => d > new Date()}
+                                    disabled={(d) => d > new Date() || d < new Date("1900-01-01")}
                                 />
                                 </PopoverContent>
                             </Popover>
