@@ -4,7 +4,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Hospital, Search, Eye, EyeOff, Download, Printer, ShieldAlert, Upload, Loader2, FileUp, X } from "lucide-react";
+import { Shield, Hospital, Search, Eye, EyeOff, Download, Printer, ShieldAlert, Upload, Loader2, FileUp, X, View } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { GovIdIcon } from "@/components/icons/gov-id-icon";
 import Image from 'next/image';
 import { Separator } from "@/components/ui/separator";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const networkHospitals = [
   {
@@ -40,6 +41,55 @@ const networkHospitals = [
     address: "Mangalagiri Road, Nri Hospital Campus, Chinakakani, Guntur, Andhra Pradesh",
   },
 ];
+
+function ViewCardDialog({ frontImage, backImage, cardType, trigger }: { frontImage: string; backImage: string; cardType: string; trigger: React.ReactNode }) {
+    return (
+        <Dialog>
+            <DialogTrigger asChild>{trigger}</DialogTrigger>
+            <DialogContent className="sm:max-w-2xl h-[60vh] flex flex-col p-0 border">
+                <DialogHeader className="p-4 border-b">
+                    <DialogTitle>View {cardType} Card</DialogTitle>
+                </DialogHeader>
+                <div className="flex-1 overflow-hidden relative">
+                    <Carousel className="w-full h-full">
+                        <CarouselContent className="h-full">
+                            <CarouselItem className="h-full">
+                                <div className="p-4 h-full">
+                                    <div className="relative w-full h-full bg-muted/30 rounded-lg overflow-hidden">
+                                        <Image
+                                            src={frontImage}
+                                            alt={`${cardType} Card Front`}
+                                            fill
+                                            style={{ objectFit: 'contain' }}
+                                            data-ai-hint="health id card"
+                                        />
+                                    </div>
+                                    <p className="text-center text-sm font-semibold mt-2">Front</p>
+                                </div>
+                            </CarouselItem>
+                            <CarouselItem className="h-full">
+                                <div className="p-4 h-full">
+                                    <div className="relative w-full h-full bg-muted/30 rounded-lg overflow-hidden">
+                                        <Image
+                                            src={backImage}
+                                            alt={`${cardType} Card Back`}
+                                            fill
+                                            style={{ objectFit: 'contain' }}
+                                            data-ai-hint="card back"
+                                        />
+                                    </div>
+                                     <p className="text-center text-sm font-semibold mt-2">Back</p>
+                                </div>
+                            </CarouselItem>
+                        </CarouselContent>
+                        <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10" />
+                        <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10" />
+                    </Carousel>
+                </div>
+            </DialogContent>
+        </Dialog>
+    )
+}
 
 function UploadIdDialog({ idType }: { idType: 'ABHA' | 'Aarogyasri' }) {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -200,18 +250,26 @@ export default function InsurancesPage() {
                         {showAbha ? (
                              <div className="border rounded-lg p-4 bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
                                 <div className="grid grid-cols-2 gap-4">
-                                     <div className="cursor-pointer" onClick={() => setZoomedImage("https://abdm.gov.in/assets/img/ABHA_Card_new.png")}>
+                                     <div>
                                         <p className="font-semibold text-center text-sm mb-2">Front</p>
                                         <Image src="https://abdm.gov.in/assets/img/ABHA_Card_new.png" alt="ABHA Card Front" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="ABHA card"/>
                                      </div>
-                                      <div className="cursor-pointer" onClick={() => setZoomedImage("https://picsum.photos/seed/abha_back/856/540")}>
+                                      <div>
                                         <p className="font-semibold text-center text-sm mb-2">Back</p>
                                         <Image src="https://picsum.photos/seed/abha_back/856/540" alt="ABHA Card Back" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="card back"/>
                                      </div>
                                 </div>
                                 <div className="mt-4 flex gap-2 justify-end">
-                                    <Button variant="outline" size="sm" className="border"><Printer className="mr-2 h-4 w-4"/> Print</Button>
-                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}><Download className="mr-2 h-4 w-4"/> Download</Button>
+                                    <ViewCardDialog 
+                                        frontImage="https://abdm.gov.in/assets/img/ABHA_Card_new.png"
+                                        backImage="https://picsum.photos/seed/abha_back/856/540"
+                                        cardType="ABHA"
+                                        trigger={
+                                            <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}>
+                                                <View className="mr-2 h-4 w-4"/> View Full Card
+                                            </Button>
+                                        }
+                                    />
                                 </div>
                             </div>
                         ) : (
@@ -239,18 +297,26 @@ export default function InsurancesPage() {
                         {showUhid ? (
                              <div className="border rounded-lg p-4 bg-green-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
                                 <div className="grid grid-cols-2 gap-4">
-                                     <div className="cursor-pointer" onClick={() => setZoomedImage("https://picsum.photos/seed/aarogyasri/856/540")}>
+                                     <div>
                                         <p className="font-semibold text-center text-sm mb-2">Front</p>
                                         <Image src="https://picsum.photos/seed/aarogyasri/856/540" alt="Aarogyasri Card Front" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="Aarogyasri card"/>
                                      </div>
-                                      <div className="cursor-pointer" onClick={() => setZoomedImage("https://picsum.photos/seed/aarogyasri_back/856/540")}>
+                                      <div>
                                         <p className="font-semibold text-center text-sm mb-2">Back</p>
                                         <Image src="https://picsum.photos/seed/aarogyasri_back/856/540" alt="Aarogyasri Card Back" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="card back"/>
                                      </div>
                                 </div>
                                  <div className="mt-4 flex gap-2 justify-end">
-                                    <Button variant="outline" size="sm" className="border"><Printer className="mr-2 h-4 w-4"/> Print</Button>
-                                    <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}><Download className="mr-2 h-4 w-4"/> Download</Button>
+                                    <ViewCardDialog 
+                                        frontImage="https://picsum.photos/seed/aarogyasri/856/540"
+                                        backImage="https://picsum.photos/seed/aarogyasri_back/856/540"
+                                        cardType="Aarogyasri"
+                                        trigger={
+                                            <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}>
+                                                <View className="mr-2 h-4 w-4"/> View Full Card
+                                            </Button>
+                                        }
+                                    />
                                 </div>
                             </div>
                         ) : (
