@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import Link from 'next/link';
@@ -26,7 +25,7 @@ import { Separator } from '@/components/ui/separator';
 
 const quickAccessItems = [
   { href: '/symptom-checker', icon: HeartPulse, label: 'AI Symptom Checker', telugu: 'వైద్య లక్షణాలు తనిఖీ', color: 'hsl(var(--nav-symptoms))' },
-  { href: '/appointments', icon: CalendarCheck, label: 'Book Appointments', telugu: 'సమయం నమోదు చేసుకోండి', color: 'hsl(var(--nav-appointments))' },
+  { href: '/appointments', icon: CalendarCheck, label: 'book appointment & History', telugu: 'సమయం నమోదు చేసుకోండి', color: 'hsl(var(--nav-appointments))' },
   { href: '/opd-queue', icon: MessageSquare, label: 'OP STATUS', telugu: 'OP స్థితి', color: 'hsl(var(--nav-chat))' },
   { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', telugu: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
   { href: '/medicines', icon: Pill, label: 'My Medicines', telugu: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
@@ -171,11 +170,11 @@ export default function DashboardPage() {
     <div className="space-y-6">
         
         <div className="text-center">
-            <p className="font-bold text-foreground text-sm md:text-base">Right disease for right doctor + Right Diet = 99% cure</p>
+            <p className="text-sm md:text-base font-bold text-foreground">Right disease for right doctor + Right Diet = 99% cure</p>
         </div>
 
         <section>
-            <Card className="border">
+            <Card className="border -mt-4">
                 <CardHeader>
                     <CardTitle className="text-lg font-semibold">Quick Access</CardTitle>
                 </CardHeader>
@@ -245,7 +244,7 @@ export default function DashboardPage() {
         </section>
 
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold mb-2">App Updates & Health Tips</h2>
+          <h2 className="text-lg font-semibold mb-2">App Updates &amp; Health Tips</h2>
           <Carousel
               setApi={setApi}
               plugins={[plugin.current]}
