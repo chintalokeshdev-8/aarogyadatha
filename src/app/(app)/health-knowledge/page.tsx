@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea';
+import { Textarea } from "@/components/ui/textarea";
 import { Upload, Sparkles, Loader2, BookOpenCheck, Youtube, Heart, Brain, Bone, Leaf, CheckCircle } from 'lucide-react';
 import { analyzeHealthIssue, HealthAnalysisOutput } from '@/ai/flows/ai-health-knowledge';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
