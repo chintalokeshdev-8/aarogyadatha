@@ -375,80 +375,93 @@ export function LabReportsClient({
                     <UploadReportDialog onUpload={onUpload} />
                 </div>
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
-                    <Card key={date} className="border bg-background">
-                         <CardHeader className="p-4">
-                            <div className="flex justify-between items-center gap-2">
-                                <div className='flex-1 text-left min-w-0'>
-                                    <p className="text-base font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
-                                    <p className="text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
+                     <Card key={date} className="border bg-background overflow-hidden">
+                        <Collapsible>
+                            <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left gap-2">
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm sm:text-base font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
+                                    <p className="text-xs sm:text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
                                 </div>
-                                <ViewReportsDialog
-                                    reports={reports}
-                                    date={date}
-                                    dummyReportData={dummyReportData}
-                                    trigger={
-                                        <Button variant="outline" size="sm">
-                                            <View className="mr-2 h-4 w-4" /> View All
+                                <div className="flex items-center gap-1 flex-shrink-0 border rounded-lg p-1">
+                                    <ViewReportsDialog
+                                        reports={reports}
+                                        date={date}
+                                        dummyReportData={dummyReportData}
+                                        trigger={
+                                            <Button variant="ghost" size="sm" className="h-auto px-2 py-1 text-xs">
+                                                <View className="mr-1 h-3 w-3" /> View All
+                                            </Button>
+                                        }
+                                    />
+                                </div>
+                                <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
+                            </CollapsibleTrigger>
+                            <CollapsibleContent className="border-t">
+                                <div className="p-4 space-y-2">
+                                     <div className='flex items-center justify-end gap-1 pt-2 -mt-2'>
+                                        <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
+                                            <Sparkles className="mr-2 h-3 w-3" /> AI Analysis
                                         </Button>
-                                    }
-                                />
-                            </div>
-                        </CardHeader>
-                        <CardContent className="p-4 pt-0 space-y-2">
-                             <div className='divide-y border-t'>
-                                {reports.map((report) => (
-                                    <div key={report.id} className="py-3 first:pt-3 last:pb-0">
-                                        <div className="flex justify-between items-center gap-2">
-                                            <div className="flex-1 min-w-0">
-                                                <p className="font-semibold truncate">{report.testName}</p>
-                                                <Badge variant="outline" className={cn("mt-1", getStatusBadgeClass(report.status))}>
-                                                    {report.status}
-                                                </Badge>
-                                            </div>
-                                            <div className="flex items-center gap-1 flex-shrink-0">
-                                                <Dialog>
-                                                    <DialogTrigger asChild>
-                                                        <Button variant="ghost" size="icon" className="h-10 w-10">
-                                                            <Pencil className="h-4 w-4" />
-                                                        </Button>
-                                                    </DialogTrigger>
-                                                    <DialogContent>
-                                                        <DialogHeader>
-                                                            <DialogTitle>Edit Report</DialogTitle>
-                                                        </DialogHeader>
-                                                        {/* Form would go here */}
-                                                        <p>Edit form for {report.testName}</p>
-                                                    </DialogContent>
-                                                </Dialog>
-                                                <AlertDialog>
-                                                    <AlertDialogTrigger asChild>
-                                                         <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive">
-                                                            <Trash2 className="h-4 w-4" />
-                                                        </Button>
-                                                    </AlertDialogTrigger>
-                                                    <AlertDialogContent>
-                                                        <AlertDialogHeader>
-                                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                                            <AlertDialogDescription>This will permanently delete the report for "{report.testName}".</AlertDialogDescription>
-                                                        </AlertDialogHeader>
-                                                        <AlertDialogFooter>
-                                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                            <AlertDialogAction onClick={() => onDelete(report.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
-                                                        </AlertDialogFooter>
-                                                    </AlertDialogContent>
-                                                </AlertDialog>
+                                        <UploadReportDialog onUpload={onUpload} initialDate={date} />
+                                    </div>
+                                    {reports.map((report) => (
+                                        <div key={report.id} className="py-3 px-2 rounded-lg hover:bg-muted/50">
+                                            <div className="flex justify-between items-center gap-2">
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="font-semibold truncate">{report.testName}</p>
+                                                    <Badge variant="outline" className={cn("mt-1", getStatusBadgeClass(report.status))}>
+                                                        {report.status}
+                                                    </Badge>
+                                                </div>
+                                                <div className="flex items-center gap-1 flex-shrink-0">
+                                                    <ViewReportsDialog
+                                                        reports={[report]}
+                                                        date={date}
+                                                        dummyReportData={dummyReportData}
+                                                        trigger={
+                                                            <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                                <View className="h-4 w-4" />
+                                                            </Button>
+                                                        }
+                                                    />
+                                                    <Dialog>
+                                                        <DialogTrigger asChild>
+                                                            <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                                <Pencil className="h-4 w-4" />
+                                                            </Button>
+                                                        </DialogTrigger>
+                                                        <DialogContent>
+                                                            <DialogHeader>
+                                                                <DialogTitle>Edit Report</DialogTitle>
+                                                            </DialogHeader>
+                                                            {/* Form would go here */}
+                                                            <p>Edit form for {report.testName}</p>
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                    <AlertDialog>
+                                                        <AlertDialogTrigger asChild>
+                                                            <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive">
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </AlertDialogTrigger>
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader>
+                                                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                <AlertDialogDescription>This will permanently delete the report for "{report.testName}".</AlertDialogDescription>
+                                                            </AlertDialogHeader>
+                                                            <AlertDialogFooter>
+                                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                <AlertDialogAction onClick={() => onDelete(report.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                                                            </AlertDialogFooter>
+                                                        </AlertDialogContent>
+                                                    </AlertDialog>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </div>
-                             <div className='flex items-center justify-end gap-1 border-t pt-2 mt-2'>
-                                <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
-                                    <Sparkles className="mr-2 h-3 w-3" /> AI Analysis
-                                </Button>
-                                <UploadReportDialog onUpload={onUpload} initialDate={date} />
-                            </div>
-                        </CardContent>
+                                    ))}
+                                </div>
+                            </CollapsibleContent>
+                        </Collapsible>
                     </Card>
                 )) : (
                     <div className="text-center p-8 text-muted-foreground">No reports found.</div>
@@ -786,5 +799,3 @@ export function LabReportsClient({
         </div>
     );
 }
-
-    
