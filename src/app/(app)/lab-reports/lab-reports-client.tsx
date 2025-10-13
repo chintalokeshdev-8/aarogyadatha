@@ -350,7 +350,7 @@ export function LabReportsClient({
                      <Button 
                          variant={initialDate ? 'ghost' : 'outline'} 
                          size="sm" 
-                         className={cn("text-xs", !initialDate && "border-primary text-primary")}
+                         className={cn("text-xs", !initialDate && "border-primary")}
                          style={{color: 'hsl(var(--primary))'}}
                      >
                         <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload' : 'Upload New Report'}
@@ -439,13 +439,13 @@ export function LabReportsClient({
                         <Collapsible>
                             <div className="flex items-center p-4">
                                 <CollapsibleTrigger asChild className="flex-1">
-                                    <div className='flex items-center gap-4 cursor-pointer min-w-0'>
+                                    <button className='flex items-center gap-4 cursor-pointer min-w-0 text-left'>
                                         <div>
                                             <p className="font-bold truncate text-sm sm:text-base">{format(parseISO(date), 'dd MMM, yyyy')}</p>
-                                            <p className="text-xs text-muted-foreground truncate hidden sm:block">{getDoctorsForDate(reports)}</p>
+                                            <p className="text-xs text-muted-foreground truncate hidden sm:block">Dr. {getDoctorsForDate(reports)}</p>
                                         </div>
                                         <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
-                                    </div>
+                                    </button>
                                 </CollapsibleTrigger>
                                 <div className="flex items-center gap-1 flex-shrink-0 ml-auto">
                                     <ViewReportsDialog
@@ -814,6 +814,8 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
 
     
 
