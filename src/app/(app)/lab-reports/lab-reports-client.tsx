@@ -452,13 +452,13 @@ export function LabReportsClient({
                                             </Badge>
                                              {report.status === "Completed" && (
                                                  <div className="flex gap-1">
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onView(report)}>
-                                                        <View className="h-4 w-4" />
+                                                    <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => onView(report)}>
+                                                        <View className="h-5 w-5" />
                                                     </Button>
                                                     <Dialog>
                                                         <DialogTrigger asChild>
-                                                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                                                                <FileDown className="h-4 w-4" />
+                                                            <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                                <FileDown className="h-5 w-5" />
                                                             </Button>
                                                         </DialogTrigger>
                                                         <DialogContent className='sm:max-w-xs'>
@@ -702,7 +702,7 @@ export function LabReportsClient({
             <Dialog open={isAnalyzeOpen} onOpenChange={setAnalyzeOpen}>
                 <DialogContent className="sm:max-w-4xl">
                     <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2 text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}><Sparkles /> AI Report Analysis</DialogTitle>
+                        <DialogTitle className="flex items-center gap-2 text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}><Sparkles /> AI Analysis</DialogTitle>
                         <DialogDescription>Analyzing: {selectedReport?.testName}</DialogDescription>
                     </DialogHeader>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
