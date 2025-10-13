@@ -7,13 +7,28 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Sparkles, BookOpenCheck, Heart, FileText, Utensils, AlertTriangle, Search, ShieldAlert, TestTube2, Microscope, Brain } from 'lucide-react';
-import { getDiseaseInfo, DiseaseInfoOutputSchema, type DiseaseInfoOutput } from '@/ai/flows/ai-disease-info';
-import { getDeepDive, DeepDiveOutput } from '@/ai/flows/ai-deep-dive';
+import { getDiseaseInfo } from '@/ai/flows/ai-disease-info';
+import { getDeepDive } from '@/ai/flows/ai-deep-dive';
 
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+
+const DiseaseInfoOutputSchema = z.object({
+  summary: z.string().describe("A simple, easy-to-understand summary of the disease."),
+  symptoms: z.array(z.string()).describe("A list of common symptoms associated with the disease."),
+  recommendedDiet: z.array(z.string()).describe("A list of recommended dietary habits or specific foods."),
+  recommendedTests: z.array(z.string()).describe("A list of diagnostic tests a doctor might recommend."),
+  affectedOrgans: z.string().describe("A summary of organs that may be damaged if the condition is neglected."),
+});
+export type DiseaseInfoOutput = z.infer<typeof DiseaseInfoOutputSchema>;
+
+const DeepDiveOutputSchema = z.object({
+  topic: z.string().describe("The specific topic that was analyzed."),
+  details: z.string().describe("A detailed, in-depth explanation of the requested topic related to the disease. Formatted as a single string with newline characters for paragraphs."),
+});
+export type DeepDiveOutput = z.infer<typeof DeepDiveOutputSchema>;
 
 
 const diseaseCategories = [

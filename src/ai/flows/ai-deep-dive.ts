@@ -18,7 +18,7 @@ const DeepDiveInputSchema = z.object({
 });
 type DeepDiveInput = z.infer<typeof DeepDiveInputSchema>;
 
-export const DeepDiveOutputSchema = z.object({
+const DeepDiveOutputSchema = z.object({
   topic: z.string().describe("The specific topic that was analyzed."),
   details: z.string().describe("A detailed, in-depth explanation of the requested topic related to the disease. Formatted as a single string with newline characters for paragraphs."),
 });
