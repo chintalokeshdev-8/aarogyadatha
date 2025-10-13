@@ -5,25 +5,25 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 220 20% 98%;
     --foreground: 222 84% 4.9%;
-    --card: 210 40% 98%;
+    --card: 220 20% 100%;
     --card-foreground: 222 84% 4.9%;
-    --popover: 210 40% 98%;
+    --popover: 220 20% 100%;
     --popover-foreground: 222 84% 4.9%;
-    --primary: 145 80% 30%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 355 100% 97%;
+    --secondary: 220 14% 96%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 220 14% 96%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 222 84% 4.9%;
-    --input: 222 84% 4.9%;
-    --ring: 145 80% 30%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 142 76% 36%;
     --radius: 0.75rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -31,17 +31,17 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    --nav-home: 145 80% 30%;
-    --nav-symptoms: 150 75% 28%;
-    --nav-chat: 155 70% 26%;
-    --nav-appointments: 160 65% 24%;
-    --nav-junior-doctors: 140 70% 32%;
-    --nav-diagnostics: 150 80% 25%;
-    --nav-medicines: 165 65% 28%;
+    --nav-home: 142 76% 36%;
+    --nav-symptoms: 142 76% 36%;
+    --nav-chat: 142 76% 36%;
+    --nav-appointments: 142 76% 36%;
+    --nav-junior-doctors: 142 76% 36%;
+    --nav-diagnostics: 142 76% 36%;
+    --nav-medicines: 142 76% 36%;
     --nav-blood-bank: 0 70% 45%;
-    --nav-profile: 150 70% 35%;
-    --nav-emergency: 130 85% 28%;
-    --nav-notifications: 145 75% 32%;
+    --nav-profile: 142 76% 36%;
+    --nav-emergency: 142 76% 36%;
+    --nav-notifications: 142 76% 36%;
   }
 
   .dark {
@@ -51,8 +51,8 @@
     --card-foreground: 210 40% 98%;
     --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 145 70% 40%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 142 71% 45%;
+    --primary-foreground: 355 100% 97%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
@@ -61,26 +61,26 @@
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 210 40% 98%;
-    --input: 210 40% 98%;
-    --ring: 145 70% 40%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 142 71% 45%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    --nav-home: 145 70% 40%;
-    --nav-symptoms: 150 60% 38%;
-    --nav-chat: 155 55% 36%;
-    --nav-appointments: 160 50% 34%;
-    --nav-junior-doctors: 140 60% 42%;
-    --nav-diagnostics: 150 70% 35%;
-    --nav-medicines: 165 55% 38%;
+    --nav-home: 142 71% 45%;
+    --nav-symptoms: 142 71% 45%;
+    --nav-chat: 142 71% 45%;
+    --nav-appointments: 142 71% 45%;
+    --nav-junior-doctors: 142 71% 45%;
+    --nav-diagnostics: 142 71% 45%;
+    --nav-medicines: 142 71% 45%;
     --nav-blood-bank: 0 70% 40%;
-    --nav-profile: 150 60% 45%;
-    --nav-emergency: 130 75% 38%;
-    --nav-notifications: 145 65% 42%;
+    --nav-profile: 142 71% 45%;
+    --nav-emergency: 142 71% 45%;
+    --nav-notifications: 142 71% 45%;
   }
 }
 
@@ -203,5 +203,3 @@
         }
     }
 }
-
-    

@@ -27,20 +27,15 @@ export function NotificationsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-auto w-auto flex flex-col items-center justify-center gap-1 p-2 rounded-lg relative text-primary-foreground">
-          <div className="relative">
-            <Bell className="h-6 w-6" />
+        <Button variant="ghost" className="h-10 w-10 rounded-full text-primary-foreground relative p-0">
+          <Bell className="h-5 w-5" />
             {notifications.some(n => !n.read) && (
-              <span className="absolute top-0 right-0 flex h-3 w-3">
-                  <span className={cn(
-                    "absolute -top-0.5 -right-0.5 inline-flex h-full w-full rounded-full bg-destructive opacity-75",
-                    "animate-ping"
-                  )}></span>
-                  <span className="relative -top-0.5 -right-0.5 inline-flex rounded-full h-3 w-3 bg-destructive border-2 border-background"></span>
+              <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
               </span>
             )}
-          </div>
-          <span className="text-xs font-bold">Alerts</span>
+            <span className='sr-only'>Alerts</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80" align="end">

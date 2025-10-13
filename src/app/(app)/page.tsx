@@ -168,26 +168,24 @@ export default function DashboardPage() {
 
 
   return (
-    <div className="space-y-8">
-        <div className="absolute top-0 left-0 w-full h-40 bg-primary -z-10 rounded-b-[3rem]" />
+    <div className="space-y-6">
         
-        <section className="-mt-28">
+        <section>
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-xl font-semibold text-center sm:text-left">Quick Access</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Quick Access</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-4 gap-2">
                         {quickAccessItems.map((item) => (
                             <Link key={item.href} href={item.href} passHref>
                                 <div
-                                className="transition-colors hover:bg-primary/10 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-2 p-2 rounded-lg"
+                                className="transition-colors hover:bg-primary/5 cursor-pointer h-full flex flex-col items-center justify-start text-center gap-1 p-2 rounded-lg"
                                 >
                                 <div className="p-3 rounded-full mb-1 bg-primary/10">
-                                    <item.icon className="h-7 w-7" style={{ color: item.color }} />
+                                    <item.icon className="h-6 w-6 text-primary" />
                                 </div>
-                                <p className="font-semibold text-sm leading-tight text-foreground">{item.label}</p>
-                                <p className="text-xs text-muted-foreground">{item.telugu}</p>
+                                <p className="font-semibold text-xs leading-tight text-foreground">{item.label}</p>
                                 </div>
                             </Link>
                         ))}
@@ -195,21 +193,19 @@ export default function DashboardPage() {
                 </CardContent>
             </Card>
         </section>
-
-        <Separator />
         
         <section>
           <Card>
-            <CardContent className="p-4 space-y-4">
-                <div className='text-center sm:text-left'>
-                    <h2 className="text-xl font-semibold">Organ Health Overview</h2>
-                    <p className="text-sm text-muted-foreground">A summary of your key organ health based on recent reports.</p>
-                </div>
+            <CardHeader>
+                <h2 className="text-lg font-semibold">Organ Health Overview</h2>
+                <p className="text-sm text-muted-foreground">A summary of your key organ health based on recent reports.</p>
+            </CardHeader>
+            <CardContent className="space-y-4">
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                    <div className="flex items-start gap-3">
-                        <AlertTriangle className="h-5 w-5 text-yellow-700 mt-1 flex-shrink-0"/>
+                        <AlertTriangle className="h-5 w-5 text-yellow-700 mt-0.5 flex-shrink-0"/>
                         <div>
-                            <h4 className="font-semibold text-yellow-800">Disclaimer</h4>
+                            <h4 className="font-semibold text-yellow-800 text-sm">Disclaimer</h4>
                             <p className="text-xs text-yellow-700">
                                 This 'Organ Health Overview' is for informational purposes only. It is an AI-generated score based on your uploaded health data and is not a medical diagnosis. Always consult with a qualified doctor for any health concerns.
                             </p>
@@ -245,10 +241,8 @@ export default function DashboardPage() {
           </Card>
         </section>
 
-        <Separator />
-
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-center sm:text-left">App Updates & Health Tips</h2>
+          <h2 className="text-lg font-semibold">App Updates & Health Tips</h2>
           <Carousel
               setApi={setApi}
               plugins={[plugin.current]}
@@ -260,11 +254,11 @@ export default function DashboardPage() {
                   {carouselSlides.map((slide, index) => (
                       <CarouselItem key={index}>
                           <div 
-                              className={cn("p-6 flex items-center justify-center text-center min-h-[220px] relative", slide.textColor, slide.bgColor)}
+                              className={cn("p-6 flex items-center justify-center text-center min-h-[180px] relative", slide.textColor, slide.bgColor)}
                           >
-                               <div className="space-y-4 z-20 flex flex-col items-center justify-center h-full">
-                                  <p className="font-bold text-2xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
-                                  {slide.description && <p className="text-base drop-shadow-sm">{slide.description}</p>}
+                               <div className="space-y-3 z-20 flex flex-col items-center justify-center h-full">
+                                  <p className="font-bold text-xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
+                                  {slide.description && <p className="text-sm drop-shadow-sm">{slide.description}</p>}
                                   <Link href={slide.href}>
                                       <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
                                           <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
@@ -292,10 +286,8 @@ export default function DashboardPage() {
           </Carousel>
         </div>
 
-        <Separator />
-
         <section>
-          <h2 className="text-xl font-semibold mb-4">Medicine Assistance</h2>
+          <h2 className="text-lg font-semibold mb-2">Medicine Assistance</h2>
           <div className="space-y-4">
             {medicineAssistanceItems.map((item) => (
                <Link key={item.title} href={item.href} passHref>
@@ -309,7 +301,7 @@ export default function DashboardPage() {
                               <p className="text-sm text-muted-foreground">{item.description}</p>
 
                           </div>
-                          <Button size="sm" variant="ghost" style={{color: 'hsl(var(--nav-medicines))'}}>{item.buttonText}</Button>
+                          <Button size="sm" variant="ghost" className="text-primary">{item.buttonText}</Button>
                       </CardContent>
                   </Card>
               </Link>
@@ -317,17 +309,15 @@ export default function DashboardPage() {
           </div>
         </section>
         
-        <Separator />
-
-        <section className="text-center py-8">
-          <h2 className="text-2xl font-bold mb-4">Download The App</h2>
+        <section className="text-center py-6">
+          <h2 className="text-lg font-semibold mb-2">Download The App</h2>
           <div className="flex justify-center gap-4">
             <Link href="https://play.google.com/store" target="_blank" rel="noopener noreferrer">
               <Image
                 src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
                 alt="Get it on Google Play"
-                width={180}
-                height={60}
+                width={150}
+                height={50}
                 data-ai-hint="google play badge"
               />
             </Link>
@@ -335,8 +325,8 @@ export default function DashboardPage() {
               <Image
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/640px-Download_on_the_App_Store_Badge.svg.png"
                 alt="Download on the App Store"
-                width={160}
-                height={60}
+                width={134}
+                height={50}
                 data-ai-hint="app store badge"
               />
             </Link>
@@ -345,5 +335,3 @@ export default function DashboardPage() {
       </div>
   );
 }
-
-    

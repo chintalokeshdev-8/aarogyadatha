@@ -280,7 +280,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-primary text-primary-foreground gap-4 h-20">
+      <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-primary text-primary-foreground gap-4 h-16">
         {showMobileSearch ? (
             <div className="flex items-center gap-2 w-full">
                 <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(false)}>
@@ -293,20 +293,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
         ) : (
             <>
-                <div className="flex items-center gap-2">
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="p-1.5 bg-primary-foreground rounded-lg">
-                            <AnimatedActivityIcon className="w-6 h-6 text-primary" />
-                        </div>
-                        <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
-                    </Link>
-                    <ThemeToggle />
-                </div>
+                <Link href="/" className="flex items-center gap-2">
+                    <div className="p-1.5 bg-primary-foreground rounded-lg">
+                        <AnimatedActivityIcon className="w-6 h-6 text-primary" />
+                    </div>
+                    <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
+                </Link>
 
                 <div className="hidden md:block flex-1 max-w-xl">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/70" />
-                        <Input placeholder="Search for doctors, medicines, reports..." className="pl-10 bg-primary/80 border-primary-foreground/30 placeholder:text-primary-foreground/70 text-primary-foreground" />
+                        <Input placeholder="Search for doctors, medicines, reports..." className="pl-10 bg-primary-foreground/10 border-primary-foreground/30 placeholder:text-primary-foreground/70 text-primary-foreground focus:bg-primary-foreground/20" />
                     </div>
                 </div>
 
@@ -419,11 +416,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                             </div>
                         </DialogContent>
                     </Dialog>
+                    <ThemeToggle />
                 </div>
             </>
         )}
       </header>
-      <main className="flex-1 bg-muted/30">
+      <main className="flex-1 bg-muted/20">
         <div className="p-4 sm:p-6 lg:p-8 pb-40">
           {children}
         </div>
@@ -432,8 +430,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       <LanguageSwitcherDialog open={isLangSwitcherOpen} onOpenChange={setLangSwitcherOpen} />
       <footer className="fixed bottom-0 z-20 w-full bg-background border-t">
         <div className="relative">
-            <div className="absolute top-0 left-0 h-full flex items-center pl-2 bg-gradient-to-r from-background to-transparent w-12 z-10">
-                <Button variant="ghost" size="icon" className="bg-muted rounded-full h-8 w-8" onClick={handleScrollLeft}>
+            <div className="absolute top-0 left-0 h-full flex items-center pl-2 bg-gradient-to-r from-background via-background to-transparent w-12 z-10">
+                <Button variant="ghost" size="icon" className="bg-background hover:bg-muted rounded-full h-8 w-8" onClick={handleScrollLeft}>
                     <ChevronLeft className="h-5 w-5 text-foreground" />
                 </Button>
             </div>
@@ -447,27 +445,21 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         return (
                            <Link href={item.href} key={item.label} passHref onClick={(e) => handleNavItemClick(item.href, e)}>
                                <div className={cn(
-                                   "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-24 py-1",
+                                   "flex flex-col items-center justify-center gap-1 rounded-lg transition-transform duration-200 ease-in-out w-24 py-1.5",
                                    isActive ? "scale-105" : "scale-100",
-                                   isSpecial ? 'bg-destructive/10' : '',
-                                   item.label === 'Blood Bank' && 'bg-red-500/10'
                                )}>
                                    <div
-                                        className="p-2 rounded-full"
-                                        style={{
-                                            backgroundColor: isActive && !isSpecial ? `${item.color.replace(')', ' / 0.1)')}` : 'transparent',
-                                        }}
+                                        className={cn(
+                                            "p-2 rounded-full transition-colors",
+                                            isActive ? `bg-primary/10` : ''
+                                        )}
                                     >
-                                       <item.icon className="h-5 w-5" style={{ color: isSpecial ? specialColor : item.color }} />
+                                       <item.icon className="h-6 w-6" style={{ color: isActive ? 'hsl(var(--primary))' : (isSpecial ? specialColor : 'hsl(var(--muted-foreground))') }} />
                                    </div>
                                    <div className="text-center leading-tight">
-                                        <p className="text-sm font-bold whitespace-normal"
-                                           style={{color: isActive || isSpecial ? (isSpecial ? specialColor : item.color) : 'hsl(var(--foreground))'}}>
+                                        <p className="text-xs font-bold whitespace-normal transition-colors"
+                                           style={{color: isActive ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}}>
                                            {item.label}
-                                        </p>
-                                        <p className="text-xs font-medium whitespace-normal"
-                                           style={{color: isActive || isSpecial ? (isSpecial ? specialColor : item.color) : 'hsl(var(--muted-foreground))'}}>
-                                           {item.telugu}
                                         </p>
                                    </div>
                                </div>
@@ -477,8 +469,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </nav>
                 <ScrollBar orientation="horizontal" className="invisible" />
             </ScrollArea>
-             <div className="absolute top-0 right-0 h-full flex items-center pr-2 bg-gradient-to-l from-background to-transparent w-12">
-                <Button variant="ghost" size="icon" className="bg-muted rounded-full h-8 w-8" onClick={handleScrollRight}>
+             <div className="absolute top-0 right-0 h-full flex items-center pr-2 bg-gradient-to-l from-background via-background to-transparent w-12 z-10">
+                <Button variant="ghost" size="icon" className="bg-background hover:bg-muted rounded-full h-8 w-8" onClick={handleScrollRight}>
                     <ChevronRight className="h-5 w-5 text-foreground" />
                 </Button>
             </div>
