@@ -856,7 +856,7 @@ function AppointmentSummaryDialog({ open, onOpenChange, appointmentDetails }: { 
                     
                     <Separator />
                 </div>
-                 <DialogFooter className="p-4 border-t bg-background sticky bottom-0">
+                 <DialogFooter className="p-4 border-t bg-background">
                     <div className="flex justify-between items-center w-full">
                         <div>
                             <p className="font-bold text-lg">₹{total.toFixed(2)}</p>
