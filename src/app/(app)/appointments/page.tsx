@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -130,7 +129,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc1/100/100",
         dataAiHint: "male doctor portrait",
         opFee: 800,
-        availability: "Mon - Sat, 10 AM - 1 PM",
+        availability: "Mon - Sat   10AM - 1PM",
         consultationType: "Online",
     },
     {
@@ -143,7 +142,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc2/100/100",
         dataAiHint: "female doctor",
         opFee: 700,
-        availability: "Mon - Fri, 9 AM - 5 PM",
+        availability: "Mon - Fri   9AM - 5PM",
         consultationType: "Offline (Hospital Visit)",
     },
      {
@@ -156,7 +155,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc8/100/100",
         dataAiHint: "male doctor professional",
         opFee: 1000,
-        availability: "Mon - Sat, 11 AM - 4 PM",
+        availability: "Mon - Sat   11AM - 4PM",
         consultationType: ["Online", "Offline (Hospital Visit)"],
     },
     {
@@ -169,7 +168,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc9/100/100",
         dataAiHint: "female doctor professional",
         opFee: 1200,
-        availability: "Tue, Thu, Sat, 10 AM - 2 PM",
+        availability: "Tue, Thu, Sat   10AM - 2PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -182,7 +181,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc3/100/100",
         dataAiHint: "female doctor professional",
         opFee: 900,
-        availability: "Mon - Fri, 2 PM - 6 PM",
+        availability: "Mon - Fri   2PM - 6PM",
         consultationType: "Online",
     },
      {
@@ -195,7 +194,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc15/100/100",
         dataAiHint: "male doctor glasses",
         opFee: 850,
-        availability: "Mon - Sat, 9 AM - 1 PM",
+        availability: "Mon - Sat   9AM - 1PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -209,7 +208,7 @@ const doctors = [
         dataAiHint: "male doctor senior",
         recommended: true,
         opFee: 1500,
-        availability: "Mon - Sat, 10 AM - 5 PM",
+        availability: "Mon - Sat   10AM - 5PM",
         consultationType: ["Online", "Offline (Hospital Visit)"],
     },
     {
@@ -222,7 +221,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc4/100/100",
         dataAiHint: "female doctor smile",
         opFee: 500,
-        availability: "Mon - Sun, 9 AM - 9 PM",
+        availability: "Mon - Sun   9AM - 9PM",
         consultationType: "Online",
     },
      {
@@ -235,7 +234,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc10/100/100",
         dataAiHint: "male doctor serious",
         opFee: 750,
-        availability: "Mon - Sat, 4 PM - 8 PM",
+        availability: "Mon - Sat   4PM - 8PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -248,7 +247,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc5/100/100",
         dataAiHint: "female doctor glasses",
         opFee: 600,
-        availability: "Mon - Sat, 9 AM - 12 PM, 4 PM - 7 PM",
+        availability: "Mon - Sat   9AM - 12PM, 4PM - 7PM",
         consultationType: "Online",
     },
     {
@@ -261,7 +260,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc11/100/100",
         dataAiHint: "male doctor experienced",
         opFee: 1100,
-        availability: "Mon - Fri, 10 AM - 1 PM",
+        availability: "Mon - Fri   10AM - 1PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -274,7 +273,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc14/100/100",
         dataAiHint: "male doctor professional",
         opFee: 650,
-        availability: "Mon, Wed, Fri, 5 PM - 8 PM",
+        availability: "Mon, Wed, Fri   5PM - 8PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -287,7 +286,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc6/100/100",
         dataAiHint: "female doctor professional",
         opFee: 550,
-        availability: "Mon - Sat, 11 AM - 5 PM",
+        availability: "Mon - Sat   11AM - 5PM",
         consultationType: "Online",
     },
     {
@@ -300,7 +299,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc17/100/100",
         dataAiHint: "male doctor portrait",
         opFee: 800,
-        availability: "Mon - Sat, 3 PM - 7 PM",
+        availability: "Mon - Sat   3PM - 7PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -326,7 +325,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc7/100/100",
         dataAiHint: "female doctor professional",
         opFee: 850,
-        availability: "Mon - Sat, 10 AM - 3 PM",
+        availability: "Mon - Sat   10AM - 3PM",
         consultationType: "Online",
     },
     {
@@ -339,7 +338,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc18/100/100",
         dataAiHint: "female doctor professional",
         opFee: 700,
-        availability: "Tue, Thu, Sat, 9 AM - 1 PM",
+        availability: "Tue, Thu, Sat   9AM - 1PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -352,7 +351,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc13/100/100",
         dataAiHint: "female doctor glasses",
         opFee: 450,
-        availability: "Mon - Sat, 9 AM - 6 PM",
+        availability: "Mon - Sat   9AM - 6PM",
         consultationType: "Online",
     },
 ];
@@ -1188,11 +1187,11 @@ export default function AppointmentsPage() {
                                                 </div>
                                             </div>
                                             <div className="mt-4 space-y-2 text-sm">
-                                                <p className="font-semibold">
-                                                    <strong className="font-bold">Focus:</strong> {doctor.mainDealing}
+                                                <p className="font-semibold text-foreground">
+                                                    <strong className="font-bold text-foreground">Focus:</strong> {doctor.mainDealing}
                                                 </p>
-                                                <p className="font-semibold">
-                                                    <strong className="font-bold">Surgeries:</strong> {doctor.surgeries}
+                                                <p className="font-semibold text-foreground">
+                                                    <strong className="font-bold text-foreground">Surgeries:</strong> {doctor.surgeries}
                                                 </p>
                                             </div>
                                             <div className="mt-4 p-3 rounded-lg bg-muted/50 border-2 border-border flex flex-wrap items-center justify-between gap-2 text-sm">
@@ -1605,5 +1604,6 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+    
 
     
