@@ -54,7 +54,6 @@ export function LabReportsClient({
     const [allReports, setAllReports] = useState(initialAllReports);
     
     const [isAnalyzeOpen, setAnalyzeOpen] = useState(false);
-    const [isViewOpen, setViewOpen] = useState(false);
     const [selectedReport, setSelectedReport] = useState<any | null>(null);
     const [analysisResult, setAnalysisResult] = useState<ReportAnalysisOutput | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -98,7 +97,6 @@ export function LabReportsClient({
 
     const handleView = (report: any) => {
         setSelectedReport(report);
-        setViewOpen(true);
     };
 
     const handleAnalyze = (reports: any[]) => {
@@ -242,7 +240,7 @@ export function LabReportsClient({
         return (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                     <Button variant={initialDate ? 'ghost' : 'outline'} size={initialDate ? 'sm' : 'default'} className={cn(initialDate && "text-xs")}>
+                     <Button variant={initialDate ? 'ghost' : 'outline'} size="sm" className={cn(initialDate && "text-xs")}>
                         <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload' : 'Upload New Report'}
                     </Button>
                 </DialogTrigger>
@@ -332,16 +330,16 @@ export function LabReportsClient({
                                     <p className="text-base font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
                                     <p className="text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
                                 </div>
-                                <div className='flex items-center gap-1 border rounded-lg p-1 flex-shrink-0'>
-                                     <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
-                                        <Sparkles className="mr-2 h-3 w-3" /> AI
-                                    </Button>
-                                    <UploadReportDialog onUpload={onUpload} initialDate={date} />
-                                </div>
                                 <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
                             </div>
                         </CollapsibleTrigger>
                         <CollapsibleContent className="p-4 border-t space-y-2 bg-muted/20">
+                            <div className='flex items-center justify-end gap-1 border-b pb-2 mb-2'>
+                                <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
+                                    <Sparkles className="mr-2 h-3 w-3" /> AI Analysis
+                                </Button>
+                                <UploadReportDialog onUpload={onUpload} initialDate={date} />
+                            </div>
                             <div className='divide-y'>
                                 {reports.map((report) => (
                                     <div key={report.id} className="py-3 first:pt-0 last:pb-0">
@@ -353,9 +351,11 @@ export function LabReportsClient({
                                                 </Badge>
                                                  {report.status === "Completed" && (
                                                      <div className="flex">
-                                                        <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => onView(report)}>
-                                                            <View className="h-5 w-5" />
-                                                        </Button>
+                                                        <DialogTrigger asChild>
+                                                            <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => onView(report)}>
+                                                                <View className="h-5 w-5" />
+                                                            </Button>
+                                                        </DialogTrigger>
                                                         <Dialog>
                                                             <DialogTrigger asChild>
                                                                 <Button variant="ghost" size="icon" className="h-10 w-10">
@@ -586,65 +586,64 @@ export function LabReportsClient({
                     </Card>
                 </TabsContent>
                 <TabsContent value="my-reports" className="mt-6">
-                    <ReportsList 
-                        groupedReports={groupedAllReports}
-                        onAnalyze={handleAnalyze}
-                        onView={handleView}
-                        onUpload={handleUploadReport}
-                        onDelete={handleDeleteReport}
-                    />
+                    <Dialog>
+                        <ReportsList 
+                            groupedReports={groupedAllReports}
+                            onAnalyze={handleAnalyze}
+                            onView={handleView}
+                            onUpload={handleUploadReport}
+                            onDelete={handleDeleteReport}
+                        />
+                         <DialogContent className="sm:max-w-2xl">
+                             <DialogHeader>
+                                <DialogTitle>View Report: {selectedReport?.testName}</DialogTitle>
+                                 <DialogDescription>
+                                    From {selectedReport?.labName || 'N/A'} on {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''}
+                                </DialogDescription>
+                            </DialogHeader>
+                            <div className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
+                                {dummyReportData[`${selectedReport?.testName}-${selectedReport?.date}`]?.image ? (
+                                     <div className="bg-muted/30 p-2 rounded-lg">
+                                         <Image
+                                            src={dummyReportData[`${selectedReport.testName}-${selectedReport.date}`].image!}
+                                            alt={`Report for ${selectedReport?.testName}`}
+                                            width={800}
+                                            height={1100}
+                                            data-ai-hint={dummyReportData[`${selectedReport.testName}-${selectedReport.date}`].dataAiHint || ''}
+                                            className="rounded-md border w-full h-auto object-contain"
+                                        />
+                                     </div>
+                                ) : (
+                                    <div className="h-64 flex items-center justify-center bg-muted/30 rounded-lg">
+                                        <p className="text-muted-foreground">No image available for this report.</p>
+                                    </div>
+                                )}
+                            </div>
+                             <DialogFooter className="pt-4 border-t flex-col sm:flex-row gap-2">
+                                <Button variant="outline" className="w-full sm:w-auto border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => { setAnalyzeOpen(true); handleAnalyze([selectedReport]); }}>
+                                    <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
+                                </Button>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline" className="w-full sm:w-auto"><FileDown className="mr-2 h-4 w-4" />Download</Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-xs">
+                                        <DialogHeader>
+                                            <DialogTitle>Download Report</DialogTitle>
+                                            <DialogDescription>Choose a format to download.</DialogDescription>
+                                        </DialogHeader>
+                                        <div className="flex flex-col gap-2">
+                                            <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
+                                            <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
+                                        </div>
+                                    </DialogContent>
+                                </Dialog>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </TabsContent>
             </Tabs>
             
-            <Dialog open={isViewOpen} onOpenChange={setViewOpen}>
-                <DialogContent className="sm:max-w-2xl">
-                     <DialogHeader>
-                        <DialogTitle>View Report: {selectedReport?.testName}</DialogTitle>
-                         <DialogDescription>
-                            From {selectedReport?.labName || 'N/A'} on {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''}
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
-                        {dummyReportData[`${selectedReport?.testName}-${selectedReport?.date}`]?.image ? (
-                             <div className="bg-muted/30 p-2 rounded-lg">
-                                 <Image
-                                    src={dummyReportData[`${selectedReport.testName}-${selectedReport.date}`].image!}
-                                    alt={`Report for ${selectedReport?.testName}`}
-                                    width={800}
-                                    height={1100}
-                                    data-ai-hint={dummyReportData[`${selectedReport.testName}-${selectedReport.date}`].dataAiHint || ''}
-                                    className="rounded-md border w-full h-auto object-contain"
-                                />
-                             </div>
-                        ) : (
-                            <div className="h-64 flex items-center justify-center bg-muted/30 rounded-lg">
-                                <p className="text-muted-foreground">No image available for this report.</p>
-                            </div>
-                        )}
-                    </div>
-                     <DialogFooter className="pt-4 border-t flex-col sm:flex-row gap-2">
-                        <Button variant="outline" className="w-full sm:w-auto border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => { setViewOpen(false); handleAnalyze([selectedReport]); }}>
-                            <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
-                        </Button>
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline" className="w-full sm:w-auto"><FileDown className="mr-2 h-4 w-4" />Download</Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-xs">
-                                <DialogHeader>
-                                    <DialogTitle>Download Report</DialogTitle>
-                                    <DialogDescription>Choose a format to download.</DialogDescription>
-                                </DialogHeader>
-                                <div className="flex flex-col gap-2">
-                                    <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
-                                    <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
-                                </div>
-                            </DialogContent>
-                        </Dialog>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
-
             <Dialog open={isAnalyzeOpen} onOpenChange={setAnalyzeOpen}>
                 <DialogContent className="sm:max-w-4xl">
                     <DialogHeader>
@@ -736,3 +735,5 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
