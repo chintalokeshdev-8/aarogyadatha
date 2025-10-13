@@ -19,7 +19,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
@@ -450,7 +450,7 @@ export function LabReportsClient({
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
                     <Card key={date} className='border'>
                         <CardHeader className='pb-4'>
-                            <div className="flex justify-between items-start gap-2">
+                             <div className="flex justify-between items-start gap-2">
                                 <div className='flex-1'>
                                     <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
                                     <CardDescription>Dr. {getDoctorsForDate(reports)}</CardDescription>
@@ -722,23 +722,48 @@ export function LabReportsClient({
                 <DialogContent className="sm:max-w-2xl">
                     <DialogHeader>
                         <DialogTitle>View Report: {selectedReport?.testName}</DialogTitle>
-                        <DialogDescription>Date: {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''} | Ordered by: {selectedReport?.doctor}</DialogDescription>
+                        <DialogDescription>
+                            From {selectedReport?.labName || 'N/A'} on {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''}
+                        </DialogDescription>
                     </DialogHeader>
-                    <div className="max-h-[70vh] overflow-y-auto p-1 space-y-4">
-                        {reportImage && (
-                            <div className="mb-6">
-                                <Image 
-                                    src={reportImage} 
-                                    alt="Report Image" 
-                                    width={600} 
-                                    height={400} 
-                                    className="rounded-lg border"
+                    <div className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
+                        {reportImage ? (
+                             <div className="bg-muted/30 p-2 rounded-lg">
+                                 <Image
+                                    src={reportImage}
+                                    alt={`Report for ${selectedReport?.testName}`}
+                                    width={800}
+                                    height={1100}
                                     data-ai-hint={reportImageHint || ''}
+                                    className="rounded-md border w-full h-auto object-contain"
                                 />
+                             </div>
+                        ) : (
+                            <div className="h-64 flex items-center justify-center bg-muted/30 rounded-lg">
+                                <p className="text-muted-foreground">No image available for this report.</p>
                             </div>
                         )}
-                        <ReportViewer content={reportContent} />
                     </div>
+                     <DialogFooter className="pt-4 border-t flex-col sm:flex-row gap-2">
+                        <Button variant="outline" className="w-full sm:w-auto border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => { setViewOpen(false); handleAnalyze([selectedReport]); }}>
+                            <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
+                        </Button>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" className="w-full sm:w-auto"><FileDown className="mr-2 h-4 w-4" />Download</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-xs">
+                                <DialogHeader>
+                                    <DialogTitle>Download Report</DialogTitle>
+                                    <DialogDescription>Choose a format to download.</DialogDescription>
+                                </DialogHeader>
+                                <div className="flex flex-col gap-2">
+                                    <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
+                                    <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
 
@@ -833,3 +858,5 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
