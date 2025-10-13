@@ -72,33 +72,47 @@ export default function ProfilePage() {
 
     return (
         <div className="space-y-8">
-            <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-card border rounded-lg">
-                <Avatar className="h-28 w-28 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
-                    <AvatarImage src="/images/profile.jpg" />
-                    <AvatarFallback className="text-3xl">CL</AvatarFallback>
-                </Avatar>
-                <div className="flex-1 text-center md:text-left">
-                    <p className="font-semibold text-muted-foreground">S.No: 1</p>
-                    <h1 className="text-3xl font-bold">Chinta Lokesh Babu</h1>
-                    <p className="text-lg font-semibold text-muted-foreground">Patient ID: PAT001</p>
-                    <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 mt-2 text-muted-foreground">
-                        <div className="flex items-center gap-2"><User /> 27 years old</div>
-                        <div className="flex items-center gap-2"><Heart /> Male</div>
-                        <div className="flex items-center gap-2"><Droplets /> O+ Positive</div>
+            <Card>
+                <CardContent className="p-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                        <Avatar className="h-20 w-20 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                            <AvatarImage src="/images/profile.jpg" />
+                            <AvatarFallback className="text-2xl">CL</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 text-center sm:text-left">
+                            <h1 className="text-2xl font-bold">Chinta Lokesh Babu</h1>
+                            <p className="font-semibold text-muted-foreground">Patient ID: PAT001</p>
+                            <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
+                                <div className="flex items-center gap-2"><User className="h-4 w-4" /> 27 years old</div>
+                                <div className="flex items-center gap-2"><Heart className="h-4 w-4" /> Male</div>
+                                <div className="flex items-center gap-2"><Droplets className="h-4 w-4" /> O+ Positive</div>
+                            </div>
+                        </div>
+                        <Button style={{backgroundColor: 'hsl(var(--nav-profile))'}}><Pencil className="mr-2 h-4 w-4" /> Edit Profile</Button>
                     </div>
-                    <div className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2 mt-2 text-muted-foreground">
-                        <div className="flex items-center gap-2"><MapPin /> Rentachintala, Palnadu District</div>
+                </CardContent>
+            </Card>
+
+            <Card>
+                 <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><MapPin style={{color: 'hsl(var(--nav-profile))'}}/> Address & Contact</CardTitle>
+                    <CardDescription>Your primary contact information for communication and medicine delivery.</CardDescription>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                    <div className="flex items-center gap-3">
+                        <Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
+                        <span className="text-muted-foreground">lokeshbabu9298@gmail.com</span>
                     </div>
-                </div>
-                <Button style={{backgroundColor: 'hsl(var(--nav-profile))'}}><Pencil className="mr-2 h-4 w-4" /> Edit Profile</Button>
-            </div>
-            <div className="p-6 bg-card border rounded-lg">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div className="flex items-center gap-3"><Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5"/><span>lokeshbabu9298@gmail.com</span></div>
-                    <div className="flex items-center gap-3"><Phone style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5"/><span>+91 8008334948</span></div>
-                    <div className="flex items-start gap-3"><MapPin style={{color: 'hsl(var(--nav-profile))'}} className="h-5 w-5 mt-1"/><span>Rentala village, Rentachintala mandal, Palnadu district, India</span></div>
-                </div>
-            </div>
+                    <div className="flex items-center gap-3">
+                        <Phone style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
+                        <span className="text-muted-foreground">+91 8008334948</span>
+                    </div>
+                    <div className="md:col-span-2 flex items-start gap-3">
+                        <MapPin style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 mt-1 flex-shrink-0"/>
+                        <span className="text-muted-foreground">Rentala village, Rentachintala mandal, Palnadu district, Andhra Pradesh, India</span>
+                    </div>
+                </CardContent>
+            </Card>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <Card>
