@@ -293,5 +293,97 @@ All values are within the normal range.
 `,
         image: "https://picsum.photos/seed/lft_report_jan05/800/1100",
         dataAiHint: "lab report"
+    },
+    "Abdominal Ultrasound-2024-07-18": {
+        content: `
+Patient Name: Chinta Lokesh Babu
+Date: 2024-07-18
+Test: Abdominal Ultrasound
+Doctor: Dr. Priya Sharma
+
+IMPRESSION:
+Liver, gallbladder, pancreas, spleen, and both kidneys are normal in size, shape, and echotexture. No evidence of free fluid. Normal study.
+`,
+        image: "https://picsum.photos/seed/ultrasound_jul18/800/1100",
+        dataAiHint: "ultrasound image"
+    },
+    "Serum Creatinine-2024-07-18": {
+        content: `
+Patient Name: Chinta Lokesh Babu
+Date: 2024-07-18
+Test: Serum Creatinine
+Doctor: Dr. Priya Sharma
+
+Result: 0.9 mg/dL (Normal: 0.7-1.3 mg/dL)
+
+IMPRESSION:
+Normal kidney function.
+`,
+        image: "https://picsum.photos/seed/creatinine_jul18/800/1100",
+        dataAiHint: "lab report"
+    },
+    "Urine Culture-2024-07-18": {
+        content: `
+Patient Name: Chinta Lokesh Babu
+Date: 2024-07-18
+Test: Urine Culture
+Doctor: Dr. Priya Sharma
+
+Result: No significant growth of bacteria after 48 hours of incubation.
+
+IMPRESSION:
+Negative for urinary tract infection.
+`,
+        image: "https://picsum.photos/seed/urine_culture_jul18/800/1100",
+        dataAiHint: "lab report document"
+    },
+    "Vitamin B12 Level-2024-06-20": {
+        content: `
+Patient Name: Chinta Lokesh Babu
+Date: 2024-06-20
+Test: Vitamin B12 Level
+Doctor: Dr. Rajesh Kumar
+
+Result: 250 pg/mL (Normal: 200-900 pg/mL)
+
+IMPRESSION:
+Vitamin B12 levels are in the lower end of the normal range. Monitoring is suggested.
+`,
+        image: "https://picsum.photos/seed/b12_jun20/800/1100",
+        dataAiHint: "lab report"
+    },
+    "ESR (Erythrocyte Sedimentation Rate)-2024-07-15": {
+        content: `
+Patient Name: Chinta Lokesh Babu
+Date: 2024-07-15
+Test: ESR
+Doctor: Dr. Rajesh Kumar
+
+Result: 22 mm/hr (Normal: 0-15 mm/hr) - Elevated
+
+IMPRESSION:
+Elevated ESR may indicate inflammation. Correlate clinically.
+`,
+        image: "https://picsum.photos/seed/esr_jul15/800/1100",
+        dataAiHint: "medical chart"
+    },
+    "ECG-2024-07-10": {
+        content: `
+Patient Name: Chinta Lokesh Babu
+Date: 2024-07-10
+Test: Electrocardiogram (ECG)
+Doctor: Dr. Rajesh Kumar
+
+Rhythm: Normal Sinus Rhythm
+Heart Rate: 78 bpm
+Axis: Normal
+Intervals: PR, QRS, QT intervals are within normal limits.
+ST-T waves: No significant ST-T changes.
+
+IMPRESSION:
+Normal ECG.
+`,
+        image: "https://picsum.photos/seed/ecg_jul10/800/1100",
+        dataAiHint: "ecg graph"
     }
 };

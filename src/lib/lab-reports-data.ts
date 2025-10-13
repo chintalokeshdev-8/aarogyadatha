@@ -12,4 +12,9 @@ export const labReports = [
   { id: "rep10", testName: "MRI Brain Scan", date: "2024-05-12", doctor: "Dr. Arjun Kumar", status: "Completed", type: "mri" },
   { id: "rep11", testName: "Abdominal Ultrasound", date: "2024-07-18", doctor: "Dr. Priya Sharma", status: "Processing", type: "x-ray" },
   { id: "rep12", testName: "CT Scan Abdomen", date: "2024-02-25", doctor: "Dr. Arjun Kumar", status: "Completed", type: "mri" },
+  { id: "rep14", testName: "Serum Creatinine", date: "2024-07-18", doctor: "Dr. Priya Sharma", status: "Completed" },
+  { id: "rep15", testName: "Urine Culture", date: "2024-07-18", doctor: "Dr. Priya Sharma", status: "Completed" },
+  { id: "rep16", testName: "Vitamin B12 Level", date: "2024-06-20", doctor: "Dr. Rajesh Kumar", status: "Completed" },
+  { id: "rep17", testName: "ESR (Erythrocyte Sedimentation Rate)", date: "2024-07-15", doctor: "Dr. Rajesh Kumar", status: "Completed" },
+  { id: "rep18", testName: "ECG", date: "2024-07-10", doctor: "Dr. Rajesh Kumar", status: "Completed", type: "Cardiology" },
 ];
