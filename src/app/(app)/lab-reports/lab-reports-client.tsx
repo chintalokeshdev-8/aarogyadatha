@@ -294,7 +294,6 @@ export function LabReportsClient({
         const newReport = {
             ...formData,
             id: `rep${Date.now()}`, // simple unique id
-            status: 'Completed',
         };
     
         setAllReports(prev => {
@@ -322,6 +321,7 @@ export function LabReportsClient({
         const [testName, setTestName] = useState('');
         const [doctor, setDoctor] = useState('');
         const [date, setDate] = useState<Date | undefined>(initialDate ? parseISO(initialDate) : new Date());
+        const [status, setStatus] = useState('Completed');
         const [fileName, setFileName] = useState('');
 
         const handleSubmit = (e: React.FormEvent) => {
@@ -334,6 +334,7 @@ export function LabReportsClient({
                 testName,
                 doctor,
                 date: format(date, 'yyyy-MM-dd'),
+                status,
             };
             onUpload(formData);
             setIsDialogOpen(false);
@@ -342,6 +343,7 @@ export function LabReportsClient({
             setDoctor('');
             setDate(initialDate ? parseISO(initialDate) : new Date());
             setFileName('');
+            setStatus('Completed');
         };
         
         return (
@@ -370,34 +372,49 @@ export function LabReportsClient({
                             <Label htmlFor="doctor">Ordered By (Doctor)</Label>
                             <Input id="doctor" value={doctor} onChange={e => setDoctor(e.target.value)} placeholder="e.g., Dr. Rajesh Kumar" required />
                         </div>
-                        <div className="space-y-2">
-                            <Label>Report Date</Label>
-                             <Popover>
-                                <PopoverTrigger asChild>
-                                <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                    "w-full justify-start text-left font-normal",
-                                    !date && "text-muted-foreground"
-                                    )}
-                                >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
-                                </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0">
-                                <CalendarComponent
-                                    mode="single"
-                                    selected={date}
-                                    onSelect={setDate}
-                                    captionLayout="dropdown-buttons"
-                                    fromYear={new Date().getFullYear() - 10}
-                                    toYear={new Date().getFullYear()}
-                                    initialFocus
-                                    disabled={(d) => d > new Date() || d < new Date("1900-01-01")}
-                                />
-                                </PopoverContent>
-                            </Popover>
+                         <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Report Date</Label>
+                                 <Popover>
+                                    <PopoverTrigger asChild>
+                                    <Button
+                                        variant={"outline"}
+                                        className={cn(
+                                        "w-full justify-start text-left font-normal",
+                                        !date && "text-muted-foreground"
+                                        )}
+                                    >
+                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                        {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                    </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0">
+                                    <CalendarComponent
+                                        mode="single"
+                                        selected={date}
+                                        onSelect={setDate}
+                                        captionLayout="dropdown-buttons"
+                                        fromYear={new Date().getFullYear() - 10}
+                                        toYear={new Date().getFullYear()}
+                                        initialFocus
+                                        disabled={(d) => d > new Date() || d < new Date("1900-01-01")}
+                                    />
+                                    </PopoverContent>
+                                </Popover>
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Status</Label>
+                                <Select value={status} onValueChange={setStatus}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select status" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="Completed">Completed</SelectItem>
+                                        <SelectItem value="Processing">Processing</SelectItem>
+                                        <SelectItem value="Pending">Pending</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
                         <div className="space-y-2">
                             <Label>Report File</Label>
@@ -428,27 +445,39 @@ export function LabReportsClient({
             const doctors = new Set(reports.map(r => r.doctor));
             return Array.from(doctors).join(', ');
         };
+        
+        const getGroupStatus = (reports: any[]) => {
+            const statuses = new Set(reports.map(r => r.status));
+            if (statuses.has("Pending")) return "Pending";
+            if (statuses.has("Processing")) return "Processing";
+            return "Completed";
+        }
 
         return (
             <div className="space-y-6">
                 <div className="flex justify-end">
                     <UploadReportDialog onUpload={onUpload} />
                 </div>
-                {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
+                {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => {
+                    const groupStatus = getGroupStatus(reports);
+                    return (
                      <Card key={date} className="border bg-background overflow-hidden">
                         <Collapsible>
                             <div className="flex items-center p-4">
-                                <CollapsibleTrigger asChild className="flex-1">
-                                    <button className='flex items-center gap-4 cursor-pointer min-w-0 text-left'>
+                                <CollapsibleTrigger asChild>
+                                    <div className="flex items-center gap-4 cursor-pointer min-w-0 text-left">
                                         <div>
                                             <p className="font-bold truncate text-sm sm:text-base">{format(parseISO(date), 'dd MMM, yyyy')}</p>
                                             <p className="text-xs text-muted-foreground truncate hidden sm:block">Dr. {getDoctorsForDate(reports)}</p>
                                         </div>
                                         <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
-                                    </button>
+                                    </div>
                                 </CollapsibleTrigger>
+                                <div className="flex items-center gap-2 mx-auto">
+                                    <Badge className={cn("text-sm", getStatusBadgeClass(groupStatus))}>{groupStatus}</Badge>
+                                </div>
                                 <div className="flex items-center gap-1 flex-shrink-0 ml-auto">
-                                    <ViewReportsDialog
+                                     <ViewReportsDialog
                                         reports={reports}
                                         date={date}
                                         dummyReportData={dummyReportData}
@@ -457,7 +486,7 @@ export function LabReportsClient({
                                                 <View className="mr-1 h-3 w-3" /> View All
                                             </Button>
                                         }
-                                    />
+                                     />
                                 </div>
                             </div>
 
@@ -526,7 +555,7 @@ export function LabReportsClient({
                             </CollapsibleContent>
                         </Collapsible>
                     </Card>
-                )) : (
+                )}) : (
                     <div className="text-center p-8 text-muted-foreground">No reports found.</div>
                 )}
             </div>
