@@ -1,11 +1,10 @@
-
 'use client';
 
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Mail, MapPin, Pencil, User, Heart, Droplets, Phone, Settings, CreditCard, Shield } from "lucide-react";
+import { Mail, MapPin, Pencil, User, Heart, Droplets, Phone, Settings, CreditCard, Shield, Camera, Upload } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -22,24 +21,37 @@ export default function ProfilePage() {
         email: "lokeshbabu9298@gmail.com",
         phone: "+91 8008334948",
         address: "Rentala village, Rentachintala mandal, Palnadu district, Andhra Pradesh, India",
-        aadhar: ""
+        aadhar: "123456789012"
     });
 
     const [formData, setFormData] = useState(profileData);
+    const [profilePic, setProfilePic] = useState<File | null>(null);
+    const [aadharPic, setAadharPic] = useState<File | null>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
         setFormData(prev => ({ ...prev, [id]: value }));
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'profile' | 'aadhar') => {
+        if (e.target.files && e.target.files[0]) {
+            if (fileType === 'profile') {
+                setProfilePic(e.target.files[0]);
+            } else {
+                setAadharPic(e.target.files[0]);
+            }
+        }
+    };
+
     const handleSave = () => {
         setProfileData(formData);
+        // Here you would typically handle the file uploads
     };
 
     return (
         <div className="space-y-8">
             <Card className="relative">
-                <Dialog>
+                 <Dialog>
                     <DialogTrigger asChild>
                         <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-8 w-8 rounded-full bg-muted/70 flex-shrink-0">
                             <Pencil className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
@@ -52,7 +64,22 @@ export default function ProfilePage() {
                                 Make changes to your profile here. Click save when you're done.
                             </DialogDescription>
                         </DialogHeader>
-                        <div className="space-y-4 py-4">
+                        <div className="space-y-4 py-4 max-h-[70vh] overflow-y-auto px-1">
+                             <div className="flex justify-center">
+                                <div className="relative">
+                                    <Avatar className="h-24 w-24 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                                        <AvatarImage src={profilePic ? URL.createObjectURL(profilePic) : "/images/profile.jpg"} />
+                                        <AvatarFallback className="text-3xl">CL</AvatarFallback>
+                                    </Avatar>
+                                    <Button asChild variant="ghost" size="icon" className="absolute bottom-0 right-0 h-8 w-8 rounded-full bg-muted/80">
+                                        <label htmlFor="profile-pic-upload" className="cursor-pointer">
+                                            <Camera className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
+                                        </label>
+                                    </Button>
+                                    <input id="profile-pic-upload" type="file" className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, 'profile')} />
+                                </div>
+                            </div>
+
                             <div className="space-y-2">
                                 <Label htmlFor="name">Full Name</Label>
                                 <Input id="name" value={formData.name} onChange={handleInputChange} />
@@ -73,6 +100,19 @@ export default function ProfilePage() {
                                 <Label htmlFor="aadhar">Aadhar Number</Label>
                                 <Input id="aadhar" value={formData.aadhar} onChange={handleInputChange} placeholder="Enter 12-digit Aadhar number"/>
                             </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="aadhar-card-photo">Aadhar Card Photo (Front)</Label>
+                                <div className="flex items-center gap-2">
+                                    <Button asChild variant="outline" className="flex-1">
+                                        <label htmlFor="aadhar-pic-upload" className="cursor-pointer">
+                                            <Upload className="mr-2 h-4 w-4" />
+                                            {aadharPic ? aadharPic.name : 'Choose File'}
+                                        </label>
+                                    </Button>
+                                    <input id="aadhar-pic-upload" type="file" className="hidden" accept="image/*" onChange={(e) => handleFileChange(e, 'aadhar')} />
+                                </div>
+                                {aadharPic && <p className="text-xs text-muted-foreground mt-1">Selected: {aadharPic.name}</p>}
+                            </div>
                         </div>
                         <DialogFooter>
                             <DialogClose asChild>
@@ -86,16 +126,15 @@ export default function ProfilePage() {
                 </Dialog>
                 
                 <CardContent className="p-4 sm:p-6 space-y-4">
-                    {/* Profile Header */}
                     <div className="flex items-center gap-4">
-                        <Avatar className="h-16 w-16 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                        <Avatar className="h-16 w-16 border-4 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-profile))'}}>
                             <AvatarImage src="/images/profile.jpg" />
                             <AvatarFallback className="text-2xl">CL</AvatarFallback>
                         </Avatar>
                         <div className="space-y-1">
-                            <h1 className="text-xl font-bold whitespace-nowrap">{profileData.name}</h1>
-                            <p className="font-semibold text-sm text-foreground">Patient ID: {profileData.patientId}</p>
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-foreground font-semibold">
+                            <h1 className="text-xl font-semibold whitespace-nowrap">{profileData.name}</h1>
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-foreground font-bold">
+                                <span>Patient ID: {profileData.patientId}</span>
                                 <div className="flex items-center gap-1"><User className="h-3 w-3 text-muted-foreground" /> {profileData.age} years</div>
                                 <div className="flex items-center gap-1"><Heart className="h-3 w-3 text-muted-foreground" /> {profileData.gender}</div>
                                 <div className="flex items-center gap-1"><Droplets className="h-3 w-3 text-muted-foreground" /> {profileData.bloodGroup}</div>
@@ -103,14 +142,13 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    <Separator />
+                    <Separator className="my-2" />
 
-                    {/* Address and Contact */}
                     <div>
-                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-3">
+                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
                             <MapPin style={{color: 'hsl(var(--nav-profile))'}}/> Address & Contact
                         </h3>
-                        <div className="grid grid-cols-1 gap-y-3 text-sm">
+                        <div className="grid grid-cols-1 gap-y-2 text-sm">
                             <div className="flex items-center gap-3">
                                 <Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
                                 <span className="text-muted-foreground">{profileData.email}</span>
@@ -126,11 +164,10 @@ export default function ProfilePage() {
                         </div>
                     </div>
 
-                    <Separator />
+                    <Separator className="my-2" />
 
-                    {/* Identity Verification */}
                     <div>
-                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-3">
+                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
                             <CreditCard style={{color: 'hsl(var(--nav-profile))'}} /> Identity Verification
                         </h3>
                         <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
@@ -147,7 +184,6 @@ export default function ProfilePage() {
                              )}
                         </div>
                     </div>
-
                 </CardContent>
             </Card>
         </div>
