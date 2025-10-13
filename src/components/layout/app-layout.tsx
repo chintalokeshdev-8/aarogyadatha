@@ -44,7 +44,6 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "../ui/button";
 import { PregnantLadyIcon } from "../icons/pregnant-lady-icon";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { ThemeToggle } from "../theme-toggle";
 import { NotificationsDropdown } from "./notifications-dropdown";
 import { Input } from "../ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -416,7 +415,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                             </div>
                         </DialogContent>
                     </Dialog>
-                    <ThemeToggle />
                 </div>
             </>
         )}

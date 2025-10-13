@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Bell, FileDown, Lock, Palette, Trash2, User, Loader2, HelpCircle, FileText, Info, Phone } from "lucide-react";
 import React from "react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function SettingsPage() {
 
@@ -64,6 +65,22 @@ export default function SettingsPage() {
                             <Bell className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
                             <span>Manage Notifications</span>
                         </Button>
+                    </CardContent>
+                </Card>
+                
+                <Card className="border-2">
+                    <CardHeader>
+                        <CardTitle>Appearance</CardTitle>
+                        <CardDescription>Customize the look and feel of the app.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg border-2">
+                            <div className="flex items-center gap-3">
+                               <Palette className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
+                               <p className="font-semibold">Theme</p>
+                            </div>
+                           <ThemeToggle />
+                        </div>
                     </CardContent>
                 </Card>
 
