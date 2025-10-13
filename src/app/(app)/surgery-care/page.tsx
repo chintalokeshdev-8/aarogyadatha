@@ -61,16 +61,16 @@ function InquiryForm({ topic }: { topic: string }) {
         <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
-                <Input id="name" placeholder="Enter your name" className="border-2" />
+                <Input id="name" placeholder="Enter your name" className="border" />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" placeholder="Enter your phone number" className="border-2" />
+                <Input id="phone" type="tel" placeholder="Enter your phone number" className="border" />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
                 <Select>
-                    <SelectTrigger id="city" className="border-2">
+                    <SelectTrigger id="city" className="border">
                         <SelectValue placeholder="Select your city" />
                     </SelectTrigger>
                     <SelectContent>
@@ -84,7 +84,7 @@ function InquiryForm({ topic }: { topic: string }) {
             </div>
             <div className="space-y-2">
                 <Label htmlFor="message">Tell us more (optional)</Label>
-                <Textarea id="message" placeholder="Please provide a brief reason for your inquiry..." className="border-2" />
+                <Textarea id="message" placeholder="Please provide a brief reason for your inquiry..." className="border" />
             </div>
             <Button type="submit" className="w-full" style={{ backgroundColor: 'hsl(var(--nav-appointments))' }} disabled={isSubmitting}>
                 {isSubmitting ? (
@@ -118,7 +118,7 @@ export default function SurgeryCarePage() {
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                     {services.map((service, index) => (
                         <DialogTrigger asChild key={index} onClick={() => handleInquiryClick(service.title)}>
-                            <Card className="flex items-center p-4 hover:bg-muted/50 transition-colors cursor-pointer border-2">
+                            <Card className="flex items-center p-4 hover:bg-muted/50 transition-colors cursor-pointer border">
                                 <div className="p-3 bg-primary/10 rounded-full mr-4">
                                     <service.icon className="h-6 w-6" style={{ color: 'hsl(var(--nav-appointments))' }} />
                                 </div>
@@ -128,7 +128,7 @@ export default function SurgeryCarePage() {
                     ))}
                 </div>
                 
-                <Card className="border-2">
+                <Card className="border">
                     <CardHeader>
                         <CardTitle>Popular Surgeries</CardTitle>
                         <CardDescription>Click on a surgery to get a cost estimate and a free consultation.</CardDescription>
@@ -136,7 +136,7 @@ export default function SurgeryCarePage() {
                     <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         {surgeriesOffered.map((surgery) => (
                             <DialogTrigger asChild key={surgery.name} onClick={() => handleInquiryClick(surgery.name)}>
-                                <Card className="text-center p-4 hover:shadow-md transition-shadow cursor-pointer border-2">
+                                <Card className="text-center p-4 hover:shadow-md transition-shadow cursor-pointer border">
                                     <Image
                                         src={surgery.imageUrl}
                                         alt={`${surgery.name} icon`}
@@ -152,7 +152,7 @@ export default function SurgeryCarePage() {
                     </CardContent>
                 </Card>
 
-                 <Card className="border-2">
+                 <Card className="border">
                     <CardHeader>
                         <CardTitle>Transplant Surgeries</CardTitle>
                         <CardDescription>Specialized care and complete support for organ transplants.</CardDescription>
@@ -160,7 +160,7 @@ export default function SurgeryCarePage() {
                     <CardContent className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                         {transplantsOffered.map((surgery) => (
                              <DialogTrigger asChild key={surgery.name} onClick={() => handleInquiryClick(surgery.name)}>
-                                <Card className="text-center p-4 hover:shadow-md transition-shadow cursor-pointer border-2">
+                                <Card className="text-center p-4 hover:shadow-md transition-shadow cursor-pointer border">
                                      <Image
                                         src={surgery.imageUrl}
                                         alt={`${surgery.name} icon`}
@@ -177,7 +177,7 @@ export default function SurgeryCarePage() {
                 </Card>
             </div>
 
-            <DialogContent className="border-2">
+            <DialogContent className="border">
                 <DialogHeader>
                     <DialogTitle>Request a Call Back</DialogTitle>
                     <DialogDescription>

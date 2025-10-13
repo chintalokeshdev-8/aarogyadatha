@@ -37,7 +37,7 @@ export default function MedicineAssistantPage() {
                 <p className="text-muted-foreground">Get information about medications, dosages, and side effects.</p>
             </div>
 
-            <Card className="overflow-hidden border-2">
+            <Card className="overflow-hidden border">
                 <form onSubmit={handleSubmit}>
                     <CardHeader>
                         <CardTitle>Enter Medicine Name</CardTitle>
@@ -49,7 +49,7 @@ export default function MedicineAssistantPage() {
                             value={medicineName}
                             onChange={(e) => setMedicineName(e.target.value)}
                             disabled={isPending}
-                            className="border-2"
+                            className="border"
                         />
                     </CardContent>
                     <CardFooter className="bg-muted/30 px-6 py-4">
@@ -71,7 +71,7 @@ export default function MedicineAssistantPage() {
             </Card>
 
             {result && !isPending && (
-                <Card className="border-2">
+                <Card className="border">
                     <CardHeader>
                         <CardTitle className="text-2xl" style={{color: 'hsl(var(--nav-medicines))'}}>{result.name}</CardTitle>
                     </CardHeader>
@@ -85,7 +85,7 @@ export default function MedicineAssistantPage() {
                             <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><AlertTriangle /> Side Effects</h3>
                             <p className="text-muted-foreground">{result.sideEffects}</p>
                         </div>
-                        <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 mt-6">
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
                            <div className="flex items-start gap-3">
                                 <FileText className="h-5 w-5 text-yellow-700 mt-1"/>
                                 <div>

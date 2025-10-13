@@ -53,9 +53,9 @@ export default function JuniorDoctorsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {doctors.map((doctor, index) => (
-                    <Card key={index} className="flex flex-col transition-shadow hover:shadow-md border-2">
+                    <Card key={index} className="flex flex-col transition-shadow hover:shadow-md border">
                         <CardHeader className="flex flex-row items-center gap-4">
-                            <Avatar className="h-16 w-16 border-2" style={{borderColor: 'hsl(var(--nav-junior-doctors))'}}>
+                            <Avatar className="h-16 w-16 border" style={{borderColor: 'hsl(var(--nav-junior-doctors))'}}>
                                 <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
                                 <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                             </Avatar>
@@ -87,7 +87,7 @@ export default function JuniorDoctorsPage() {
                             <Button disabled={doctor.status === 'Offline'} style={{backgroundColor: doctor.status === 'Online' ? 'hsl(var(--nav-junior-doctors))' : ''}}>
                                 <Video className="mr-2 h-4 w-4" /> Video Call
                             </Button>
-                            <Button variant="outline" disabled={doctor.status === 'Offline'} className="border-2">
+                            <Button variant="outline" disabled={doctor.status === 'Offline'} className="border">
                                 <Phone className="mr-2 h-4 w-4" /> Audio Call
                             </Button>
                         </div>

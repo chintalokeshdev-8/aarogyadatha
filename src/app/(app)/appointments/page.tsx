@@ -750,7 +750,7 @@ const DateSelector = ({ selectedDate, onSelectDate }: { selectedDate: Date, onSe
                     key={date.toISOString()}
                     onClick={() => onSelectDate(date)}
                     className={cn(
-                        "flex flex-col items-center justify-center p-2 rounded-lg border-2 w-16 shrink-0 transition-colors",
+                        "flex flex-col items-center justify-center p-2 rounded-lg border w-16 shrink-0 transition-colors",
                         format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
                             ? "bg-primary/10"
                             : "border-transparent hover:bg-muted"
@@ -1105,7 +1105,7 @@ export default function AppointmentsPage() {
         <div className="space-y-6">
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                 <div className="border-2 rounded-lg p-1 bg-muted border-border">
+                 <div className="border rounded-lg p-1 bg-muted border-border">
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="find-doctor" className="font-bold">Find a Doctor</TabsTrigger>
                         <TabsTrigger value="history" className="font-bold">Appointments History</TabsTrigger>
@@ -1113,7 +1113,7 @@ export default function AppointmentsPage() {
                 </div>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
-                        <Card className="shadow-sm border-2 border-border">
+                        <Card className="shadow-sm border border-border">
                              <CardContent className="p-4 pt-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-end">
                                     <div className="relative sm:col-span-2 lg:col-span-1">
@@ -1165,10 +1165,10 @@ export default function AppointmentsPage() {
                             {filteredDoctors.map((doctor, index) => {
                                 const discountedFee = doctor.opFee * 0.5;
                                 return (
-                                    <Card key={index} className="transition-shadow hover:shadow-md border-2 border-border">
+                                    <Card key={index} className="transition-shadow hover:shadow-md border border-border">
                                         <CardContent className="p-4">
                                             <div className="flex flex-row gap-4">
-                                                <Avatar className="h-20 w-20 border-4 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
+                                                <Avatar className="h-20 w-20 border-2 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
                                                     <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
                                                     <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                                 </Avatar>
@@ -1195,7 +1195,7 @@ export default function AppointmentsPage() {
                                                     <strong className="font-bold text-foreground">Surgeries:</strong> {doctor.surgeries}
                                                 </p>
                                             </div>
-                                            <div className="mt-4 p-3 rounded-lg bg-muted/50 border-2 border-border flex flex-wrap items-center justify-between gap-2 text-sm">
+                                            <div className="mt-4 p-3 rounded-lg bg-muted/50 border border-border flex flex-wrap items-center justify-between gap-2 text-sm">
                                                 <div className="flex items-center gap-2">
                                                     <Clock className="h-4 w-4" />
                                                     <span className="font-semibold text-xs">{doctor.availability}</span>
@@ -1236,7 +1236,7 @@ export default function AppointmentsPage() {
                     </div>
                 </TabsContent>
                 <TabsContent value="history" className="mt-6">
-                     <Card className="border-2 border-border">
+                     <Card className="border border-border">
                         <CardHeader>
                              <div className="flex items-center gap-2">
                                 <History className="h-6 w-6"/>
@@ -1299,7 +1299,7 @@ export default function AppointmentsPage() {
                         <CardContent>
                              <div className="grid grid-cols-1 gap-6">
                                 {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                                    <Collapsible key={index} className="border-2 border-border rounded-lg bg-background">
+                                    <Collapsible key={index} className="border border-border rounded-lg bg-background">
                                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                             <div className="flex-1 flex items-start gap-3">
                                                 <span className="text-2xl font-bold text-blue-900 dark:text-blue-400">{filteredAppointments.indexOf(appt) + 1})</span>
@@ -1322,7 +1322,7 @@ export default function AppointmentsPage() {
                                                     {appt.prescriptions.map((item, pIndex) => (
                                                         <div key={pIndex}>
                                                             {item.title === 'Condition Status' && item.status === 'Resolved' ? (
-                                                                 <div className='p-4 border-2 border-border bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-800 rounded-lg text-center relative overflow-hidden'>
+                                                                 <div className='p-4 border border-border bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-800 rounded-lg text-center relative overflow-hidden'>
                                                                     <FlowerFall />
                                                                     <div className="relative z-10">
                                                                         <PartyPopper className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-2"/>
@@ -1331,7 +1331,7 @@ export default function AppointmentsPage() {
                                                                     </div>
                                                                  </div>
                                                             ) : (
-                                                                <div className='p-4 border-2 border-border bg-background rounded-lg'>
+                                                                <div className='p-4 border border-border bg-background rounded-lg'>
                                                                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
                                                                         <div className="font-semibold text-sm flex items-center gap-2 flex-wrap">
                                                                             <span className="text-lg font-bold text-blue-900 dark:text-blue-400">{filteredAppointments.indexOf(appt) + 1}.{pIndex + 1})</span>
@@ -1351,7 +1351,7 @@ export default function AppointmentsPage() {
                                                                                     <View className="mr-2 h-4 w-4" /> View Details
                                                                                 </Button>
                                                                             </DialogTrigger>
-                                                                            <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0 border-2 border-border">
+                                                                            <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0 border border-border">
                                                                                 <DialogHeader className="p-6 pb-4">
                                                                                     <DialogTitle>{item.title}</DialogTitle>
                                                                                     <DialogDescription>
@@ -1372,7 +1372,7 @@ export default function AppointmentsPage() {
                                                                                                             width={150}
                                                                                                             height={210}
                                                                                                             data-ai-hint={img.dataAiHint}
-                                                                                                            className="rounded-lg border-2 border-border group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
+                                                                                                            className="rounded-lg border border-border group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
                                                                                                         />
                                                                                                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
                                                                                                             <Search className="text-white h-6 w-6" />
@@ -1407,7 +1407,7 @@ export default function AppointmentsPage() {
                                                                                             <h4 className='font-semibold mb-2 text-base'>Test Results</h4>
                                                                                             <div className="space-y-2">
                                                                                                 {item.details.map((detail, dIndex) => (
-                                                                                                    <div key={dIndex} className="p-3 border-2 border-border rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                                                                                    <div key={dIndex} className="p-3 border border-border rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                                                                                         <div className='mb-2 sm:mb-0'>
                                                                                                             <p className="font-bold">{detail.name}</p>
                                                                                                             <Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge>
@@ -1486,12 +1486,12 @@ export default function AppointmentsPage() {
             />
 
             <Dialog open={isProfileOpen} onOpenChange={setProfileOpen}>
-                <DialogContent className="sm:max-w-2xl border-2 border-border">
+                <DialogContent className="sm:max-w-2xl border border-border">
                     {selectedDoctor && (
                         <>
                             <DialogHeader>
                                 <div className="flex items-center gap-4">
-                                     <Avatar className="h-20 w-20 border-4" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
+                                     <Avatar className="h-20 w-20 border-2" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
                                         <AvatarImage src={selectedDoctor.avatar} data-ai-hint={selectedDoctor.dataAiHint} />
                                         <AvatarFallback>{selectedDoctor.name.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
                                     </Avatar>
@@ -1503,7 +1503,7 @@ export default function AppointmentsPage() {
                                 </div>
                             </DialogHeader>
                             <div className="space-y-4 py-4">
-                                <div className="p-4 rounded-lg bg-muted/50 border-2 border-border">
+                                <div className="p-4 rounded-lg bg-muted/50 border border-border">
                                     <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
                                         <Wifi style={{color: 'hsl(var(--nav-appointments))'}}/>
                                         Availability
@@ -1527,7 +1527,7 @@ export default function AppointmentsPage() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-4 rounded-lg bg-muted/50 border-2 border-border">
+                                <div className="p-4 rounded-lg bg-muted/50 border border-border">
                                     <h4 className="font-semibold text-lg mb-2">{selectedDoctor.hospital}</h4>
                                     <div className="space-y-2 text-sm">
                                         <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {hospitalsData[selectedDoctor.hospital as keyof typeof hospitalsData]?.address}</p>
@@ -1537,7 +1537,7 @@ export default function AppointmentsPage() {
                                         </a>
                                     </div>
                                 </div>
-                                <div className="p-4 rounded-lg bg-muted/50 border-2 border-border">
+                                <div className="p-4 rounded-lg bg-muted/50 border border-border">
                                     <h4 className="font-semibold text-lg mb-2">Consultation Fee</h4>
                                     <div className="flex items-baseline gap-2">
                                         <p className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{selectedDoctor.opFee}</p>
@@ -1607,4 +1607,5 @@ export default function AppointmentsPage() {
     
 
     
+
 

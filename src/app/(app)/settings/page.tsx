@@ -35,30 +35,30 @@ export default function SettingsPage() {
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>Settings</h1>
             </div>
 
-            <Card className="border-2">
+            <Card className="border">
                 <CardContent className="p-4 space-y-2">
-                     <Button variant="outline" className="w-full justify-start gap-3 border-2 text-base py-6">
+                     <Button variant="outline" className="w-full justify-start gap-3 border text-base py-6">
                         <Lock className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
                         <span>Change Password</span>
                     </Button>
                     <Link href="/notifications">
-                        <Button variant="outline" className="w-full justify-start gap-3 border-2 text-base py-6">
+                        <Button variant="outline" className="w-full justify-start gap-3 border text-base py-6">
                             <Bell className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
                             <span>Manage Notifications</span>
                         </Button>
                     </Link>
-                    <div className="flex items-center justify-between p-3 rounded-lg border-2">
+                    <div className="flex items-center justify-between p-3 rounded-lg border">
                         <div className="flex items-center gap-3">
                            <Palette className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
                            <span className="font-semibold text-base">Theme</span>
                         </div>
                        <ThemeToggle />
                     </div>
-                    <Button variant="outline" onClick={handleDownloadData} disabled={isDownloading} className="w-full justify-start gap-3 border-2 text-base py-6">
+                    <Button variant="outline" onClick={handleDownloadData} disabled={isDownloading} className="w-full justify-start gap-3 border text-base py-6">
                        {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileDown className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>}
                        <span>{isDownloading ? 'Downloading...' : 'Export My Data'}</span>
                     </Button>
-                     <Button variant="destructive" onClick={handleDeleteAccount} disabled={isDeleting} className="w-full justify-start gap-3 border-2 text-base py-6">
+                     <Button variant="destructive" onClick={handleDeleteAccount} disabled={isDeleting} className="w-full justify-start gap-3 border text-base py-6">
                        {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="h-5 w-5"/>}
                        <span>{isDeleting ? 'Deleting...' : 'Delete Account'}</span>
                    </Button>

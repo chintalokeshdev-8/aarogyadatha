@@ -245,7 +245,7 @@ const BmiAdvice = ({ bmi }: { bmi: number | null }) => {
                         </li>
                     ))}
                 </ul>
-                 <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 mt-6">
+                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
                    <div className="flex items-start gap-3">
                         <Info className="h-5 w-5 text-yellow-700 mt-1 flex-shrink-0"/>
                         <div>
@@ -337,14 +337,14 @@ export default function HealthTrackerPage() {
                     <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>Health & Activity</h1>
                     <p className="text-muted-foreground">Monitor your vitals, steps, and activity goals.</p>
                 </div>
-                <Button variant="outline" onClick={handleConnectWatch} disabled={isConnecting} className="border-2">
+                <Button variant="outline" onClick={handleConnectWatch} disabled={isConnecting} className="border">
                     {isConnecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Watch className="mr-2 h-4 w-4"/>}
                     {isConnecting ? 'Connecting...' : 'Connect Watch'}
                 </Button>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
-                <Card className="border-2">
+                <Card className="border">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2"><Footprints/> Today's Steps</CardTitle>
                     </CardHeader>
@@ -380,7 +380,7 @@ export default function HealthTrackerPage() {
                     </CardContent>
                 </Card>
 
-                 <Card className="border-2">
+                 <Card className="border">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2"><Target/> Weekly Activity</CardTitle>
                         <CardDescription className="flex items-center gap-1.5 text-xs"><Info className="h-3 w-3"/> WHO: {weeklyActivityData.goal} Min/week.</CardDescription>
@@ -419,7 +419,7 @@ export default function HealthTrackerPage() {
                 </Card>
             </div>
 
-            <Card className="border-2">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}><Heart style={{color: 'hsl(var(--nav-profile))'}}/>Organ Health Overview</CardTitle>
                     <div className="text-sm text-muted-foreground">
@@ -430,7 +430,7 @@ export default function HealthTrackerPage() {
                 <CardContent className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2">
                     {organHealthData.map((organ) => (
                          <OrganHealthDialog key={organ.name} organ={organ}>
-                            <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50 border-2">
+                            <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50 border">
                                 <CircularProgress percentage={organ.health} size={80} strokeWidth={6} color={organ.color}>
                                     <Image
                                         src={organ.image}
@@ -450,20 +450,20 @@ export default function HealthTrackerPage() {
                 </CardContent>
             </Card>
             
-            <Card className="border-2">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><Activity /> Vital Signs</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="rounded-lg border-2 bg-card text-card-foreground shadow-sm p-4">
+                        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
                              <div className="flex items-center gap-2 text-sm font-semibold mb-2 text-muted-foreground"><Scale className="h-4 w-4" />Last BMI Reading</div>
                              <div className="text-center">
                                 <p className="text-3xl font-bold">{latestBmi}</p>
                                 <Badge className={`mt-2 text-xs ${bmiInfo.className}`}>{bmiInfo.category}</Badge>
                             </div>
                         </div>
-                        <div className="rounded-lg border-2 bg-card text-card-foreground shadow-sm p-4">
+                        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-4">
                              <div className="flex items-center gap-2 text-sm font-semibold mb-2 text-muted-foreground"><Heart className="h-4 w-4" />Last Blood Pressure</div>
                             <div className="text-center">
                                 <p className="text-3xl font-bold">{latestBp.systolic}/{latestBp.diastolic} <span className="text-lg text-muted-foreground">mmHg</span></p>
@@ -474,7 +474,7 @@ export default function HealthTrackerPage() {
                 </CardContent>
             </Card>
 
-            <Card className="border-2">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle className="flex items-center justify-center gap-2"><Scale /> BMI Calculator</CardTitle>
                 </CardHeader>
@@ -513,7 +513,7 @@ export default function HealthTrackerPage() {
 
                     <BmiAdvice bmi={calculatedBmi} />
                     
-                    <div className="pt-6 border-t-2">
+                    <div className="pt-6 border-t">
                         <h4 className="font-semibold flex items-center gap-2"><Info className="h-5 w-5 text-primary" style={{color: 'hsl(var(--nav-profile))'}}/> What is BMI?</h4>
                         <p className="text-sm text-muted-foreground">
                             Body Mass Index (BMI) is a measure of body fat based on height and weight. It's a simple way to see if you're in a healthy weight range.
@@ -526,7 +526,7 @@ export default function HealthTrackerPage() {
             </Card>
 
 
-            <Card className="border-2">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><PlusCircle /> Add New Measurement</CardTitle>
                 </CardHeader>
@@ -552,7 +552,7 @@ export default function HealthTrackerPage() {
                 </CardContent>
             </Card>
 
-            <Card className="border-2">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><Activity /> Measurement History</CardTitle>
                 </CardHeader>

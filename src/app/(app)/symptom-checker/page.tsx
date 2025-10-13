@@ -127,7 +127,7 @@ export default function SymptomCheckerPage() {
                 <p className="text-muted-foreground mt-2">Describe your symptoms to get intelligent health guidance.</p>
             </div>
             
-            <Card className="border-2">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle>1. Select Common Symptoms</CardTitle>
                 </CardHeader>
@@ -137,7 +137,7 @@ export default function SymptomCheckerPage() {
                             key={symptom.english}
                             onClick={() => handleSymptomClick(symptom.english)}
                             className={cn(
-                                "cursor-pointer transition-all rounded-lg p-2 text-center border-2",
+                                "cursor-pointer transition-all rounded-lg p-2 text-center border",
                                 selectedSymptoms.includes(symptom.english) ? 'border-green-500 bg-green-500/10' : 'bg-muted/40 border-input hover:border-muted-foreground/20'
                             )}
                         >
@@ -148,7 +148,7 @@ export default function SymptomCheckerPage() {
                 </CardContent>
             </Card>
 
-            <Card className="border-2">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle>2. Describe Your Symptoms in Detail</CardTitle>
                 </CardHeader>
@@ -171,7 +171,7 @@ export default function SymptomCheckerPage() {
             
 
             {analysis && !isPending && (
-                <Card className="border-2">
+                <Card className="border">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
                             <Sparkles /> AI Analysis Result
@@ -211,7 +211,7 @@ export default function SymptomCheckerPage() {
                 </Card>
             )}
 
-            <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/40 border-2">
+            <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/40 border">
                 <CardContent className="p-4 flex items-start gap-4">
                     <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-1 flex-shrink-0" />
                     <div>

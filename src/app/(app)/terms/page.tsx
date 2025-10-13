@@ -13,7 +13,7 @@ export default function TermsPage() {
                 <p className="text-muted-foreground text-lg">Last updated: July 25, 2024</p>
             </div>
 
-            <Card className="border-2">
+            <Card className="border">
                 <CardContent className="p-6 space-y-6 text-muted-foreground">
                     <section className="space-y-2">
                         <h2 className="text-2xl font-semibold text-foreground">1. Introduction</h2>

@@ -13,7 +13,7 @@ export default function AboutPage() {
                 <p className="text-muted-foreground text-lg">Your Comprehensive Health Companion</p>
             </div>
 
-            <Card className="border-2">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle>Introduction</CardTitle>
                 </CardHeader>
@@ -27,7 +27,7 @@ export default function AboutPage() {
                 </CardContent>
             </Card>
 
-             <Card className="border-2">
+             <Card className="border">
                 <CardHeader>
                     <CardTitle>Core Features</CardTitle>
                 </CardHeader>
