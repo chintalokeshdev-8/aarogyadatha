@@ -350,7 +350,7 @@ export function LabReportsClient({
                      <Button 
                          variant={initialDate ? 'ghost' : 'outline'} 
                          size="sm" 
-                         className={cn("text-xs border-primary", !initialDate && "border-primary text-primary")}
+                         className={cn("text-xs", !initialDate && "border-primary text-primary")}
                          style={{color: 'hsl(var(--primary))'}}
                      >
                         <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload' : 'Upload New Report'}
@@ -438,8 +438,8 @@ export function LabReportsClient({
                      <Card key={date} className="border bg-background overflow-hidden">
                         <Collapsible>
                             <div className="flex items-center justify-between p-4">
-                                <CollapsibleTrigger asChild className="flex-1 min-w-0">
-                                    <div className='flex items-center gap-4 cursor-pointer'>
+                                <CollapsibleTrigger asChild>
+                                    <div className='flex items-center gap-4 cursor-pointer flex-1 min-w-0'>
                                         <div>
                                             <p className="font-bold truncate text-sm sm:text-base">{format(parseISO(date), 'dd MMM, yyyy')}</p>
                                             <p className="text-xs text-muted-foreground truncate hidden sm:block">{getDoctorsForDate(reports)}</p>
@@ -544,8 +544,8 @@ export function LabReportsClient({
             <Tabs defaultValue="my-reports" className="w-full">
                 <div className="p-1 border bg-muted rounded-lg">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="find-lab">Find a Lab</TabsTrigger>
-                        <TabsTrigger value="my-reports">My Reports</TabsTrigger>
+                        <TabsTrigger value="find-lab" className="font-bold text-base">Find a Lab</TabsTrigger>
+                        <TabsTrigger value="my-reports" className="font-bold text-base">My Reports</TabsTrigger>
                     </TabsList>
                 </div>
 
@@ -814,3 +814,5 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
