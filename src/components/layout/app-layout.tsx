@@ -344,6 +344,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <div className="p-1">
+                                    <Link href="/profile" passHref>
+                                        <DropdownMenuItem className="p-3">
+                                            <User className="mr-3 text-primary" />
+                                            <span className="font-semibold">Profile</span>
+                                        </DropdownMenuItem>
+                                    </Link>
                                     <DialogTrigger asChild>
                                         <DropdownMenuItem className="p-3">
                                             <Users className="mr-3 text-primary" />
@@ -351,7 +357,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         </DropdownMenuItem>
                                     </DialogTrigger>
                                     
-                                    {allMenuItems.filter(item => item.id !== 'home' && item.id !== 'symptoms' && item.id !== 'appointments' && item.id !== 'opd' && item.id !== 'diagnostics' && item.id !== 'medicines' && item.id !== 'emergency').map(item => (
+                                    {allMenuItems.filter(item => ['surgery', 'language', 'bloodBank', 'healthTracker', 'jrDoctors', 'pregnancy', 'insurances'].includes(item.id)).map(item => (
                                         <Link href={item.href} key={item.id} passHref>
                                             <DropdownMenuItem className="p-3" onClick={(e) => handleNavItemClick(item.href, e)}>
                                                 <item.icon className="mr-3" style={{color: item.color}} />
