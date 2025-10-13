@@ -32,7 +32,7 @@ const prompt = ai.definePrompt({
 
   Analyze the user's input:
   - User's question: {{{query}}}
-  - User's document: {{media url=documentDataUri}}
+  {{#if documentDataUri}}- User's document: {{media url=documentDataUri}}{{/if}}
 
   Provide a simple summary of the potential issue and suggest general, non-prescriptive next steps. For example, recommend consulting a doctor, suggest lifestyle changes (like diet or exercise), or mention relevant types of tests to discuss with a healthcare provider.
 

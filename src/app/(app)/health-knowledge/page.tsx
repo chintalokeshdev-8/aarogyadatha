@@ -7,49 +7,36 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Sparkles, Loader2, BookOpenCheck, Youtube, Heart, Brain, Bone, Leaf, CheckCircle, Smile, Scissors, PersonStanding, Eye, Utensils, Activity as ActivityIcon } from 'lucide-react';
+import { Upload, Sparkles, Loader2, BookOpenCheck } from 'lucide-react';
 import { HealthAnalysisOutput, analyzeHealthIssue } from '@/ai/flows/ai-health-knowledge';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-
-const healthTips = [
-    "Drink at least 8 glasses of water a day to stay hydrated.",
-    "Aim for 30 minutes of moderate exercise most days of the week.",
-    "Eat a balanced diet rich in fruits, vegetables, and whole grains.",
-    "Get 7-9 hours of quality sleep each night.",
-    "Practice mindfulness or meditation to manage stress."
-];
-
-const videoCategories = [
-    { name: "General Health", icon: Leaf, videoId: "Jk_kM4vJ3yY" },
-    { name: "Heart Health", icon: Heart, videoId: "qK3n2sI4yvU" },
-    { name: "Diabetes Care", icon: Brain, videoId: "w28o31t33yE" },
-    { name: "Bone & Joint", icon: Bone, videoId: "gAloMM2t3_g" },
-    { name: "Skin Care", icon: Sparkles, videoId: "b3G4dJ1PSbM" },
-    { name: "Hair Care", icon: Scissors, videoId: "2n5iY4HHe1g" },
-    { name: "Mental Wellness", icon: Smile, videoId: "xwB2zD6Rj90" },
-    { name: "Digestive Health", icon: Utensils, videoId: "gD-tS_4i_c4" },
-    { name: "Women's Health", icon: PersonStanding, videoId: "Q32dda-16gQ" },
-    { name: "Men's Health", icon: PersonStanding, videoId: "T7n5h3-G-ew" },
-    { name: "Eye Care", icon: Eye, videoId: "w-p_b-ew2pY" },
-    { name: "Fitness & Exercise", icon: ActivityIcon, videoId: "gC_L9q_1a4k" },
-];
 
 export default function HealthKnowledgePage() {
     const [userQuery, setUserQuery] = useState('');
     const [fileName, setFileName] = useState('');
     const [analysisResult, setAnalysisResult] = useState<HealthAnalysisOutput | null>(null);
     const [isPending, startTransition] = useTransition();
+    const [dataUri, setDataUri] = useState<string | null>(null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            setFileName(event.target.files[0].name);
+        const file = event.target.files?.[0];
+        if (file) {
+            setFileName(file.name);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setDataUri(e.target?.result as string);
+            };
+            reader.readAsDataURL(file);
         }
     };
 
     const handleRunAnalysis = () => {
-        if (!userQuery && !fileName) return;
+        if (!userQuery && !dataUri) return;
         startTransition(async () => {
-            const result = await analyzeHealthIssue({ query: userQuery });
+            const result = await analyzeHealthIssue({ 
+                query: userQuery,
+                documentDataUri: dataUri || undefined
+            });
             setAnalysisResult(result);
         });
     };
@@ -57,67 +44,23 @@ export default function HealthKnowledgePage() {
     return (
         <div className="space-y-6">
             <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{ color: 'hsl(var(--nav-profile))' }}>Health Knowledge</h1>
-                <p className="text-muted-foreground mt-2">Empower yourself with health tips, expert advice, and AI analysis.</p>
+                <h1 className="text-3xl font-bold" style={{ color: 'hsl(var(--nav-profile))' }}>Health Knowledge AI</h1>
+                <p className="text-muted-foreground mt-2">Your personal AI to search, study, and understand any health topic.</p>
             </div>
 
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <CheckCircle style={{ color: 'hsl(var(--nav-profile))' }} /> Daily Health Tips
+                        <Sparkles style={{ color: 'hsl(var(--nav-profile))' }} /> AI-Powered Health Explorer
                     </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <ul className="space-y-3">
-                        {healthTips.map((tip, index) => (
-                            <li key={index} className="flex items-start gap-3">
-                                <Leaf className="h-5 w-5 mt-1 text-green-500 flex-shrink-0" />
-                                <span className="text-muted-foreground">{tip}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Youtube style={{ color: 'hsl(var(--nav-profile))' }} /> Doctor's Advice
-                    </CardTitle>
-                    <CardDescription>Watch videos from trusted doctors on various health topics.</CardDescription>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {videoCategories.map((category) => (
-                        <div key={category.name} className="space-y-2">
-                            <h3 className="font-semibold flex items-center gap-2"><category.icon className="h-5 w-5" /> {category.name}</h3>
-                            <div className="aspect-video rounded-lg overflow-hidden border">
-                                <iframe
-                                    className="w-full h-full"
-                                    src={`https://www.youtube.com/embed/${category.videoId}`}
-                                    title={`YouTube video player - ${category.name}`}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
-                            </div>
-                        </div>
-                    ))}
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Sparkles style={{ color: 'hsl(var(--nav-profile))' }} /> AI-Powered Health Analysis
-                    </CardTitle>
-                    <CardDescription>Upload a health issue or document to get an AI-driven analysis.</CardDescription>
+                    <CardDescription>Ask a question or upload a document (like a lab report) to get a simple, AI-driven analysis.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="health-issue">Describe your health concern or question</Label>
                         <Textarea
                             id="health-issue"
-                            placeholder="e.g., I've been feeling tired for a week, what could be the reason?"
+                            placeholder="e.g., What are the benefits of a Mediterranean diet?"
                             value={userQuery}
                             onChange={(e) => setUserQuery(e.target.value)}
                         />
@@ -137,11 +80,11 @@ export default function HealthKnowledgePage() {
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button onClick={handleRunAnalysis} disabled={isPending || (!userQuery && !fileName)} style={{ backgroundColor: 'hsl(var(--nav-profile))' }}>
+                    <Button onClick={handleRunAnalysis} disabled={isPending || (!userQuery && !fileName)} style={{ backgroundColor: 'hsl(var(--nav-profile))' }} className="w-full">
                         {isPending ? (
                             <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
                         ) : (
-                            <><Sparkles className="mr-2 h-4 w-4" /> Run AI Analysis</>
+                            <><Sparkles className="mr-2 h-4 w-4" /> Get AI Analysis</>
                         )}
                     </Button>
                 </CardFooter>
