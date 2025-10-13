@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -14,11 +14,11 @@ import { Separator } from "@/components/ui/separator";
 
 
 function CustomizeNavigationCard() {
-    const [navSettings, setNavSettings] = useState<Record<string, boolean>>({});
-    const [isClient, setIsClient] = useState(false);
+    const [navSettings, setNavSettings] = React.useState<Record<string, boolean>>({});
+    const [isClient, setIsClient] = React.useState(false);
     const { toast } = useToast();
 
-    useEffect(() => {
+    React.useEffect(() => {
         setIsClient(true);
         const savedSettings = localStorage.getItem('navSettings');
         if (savedSettings) {
@@ -77,21 +77,25 @@ export default function ProfilePage() {
             <Card>
                 <CardContent className="p-4 sm:p-6 space-y-6">
                     {/* Profile Header */}
-                    <div className="flex flex-col items-center gap-4">
-                        <Avatar className="h-24 w-24 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
-                            <AvatarImage src="/images/profile.jpg" />
-                            <AvatarFallback className="text-3xl">CL</AvatarFallback>
-                        </Avatar>
-                        <div className="text-center">
-                            <h1 className="text-2xl font-bold">Chinta Lokesh Babu</h1>
-                            <p className="font-semibold text-muted-foreground">Patient ID: PAT001</p>
+                    <div className="flex items-center justify-between gap-4">
+                         <div className="flex items-center gap-4">
+                            <Avatar className="h-20 w-20 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                                <AvatarImage src="/images/profile.jpg" />
+                                <AvatarFallback className="text-3xl">CL</AvatarFallback>
+                            </Avatar>
+                            <div className="space-y-1">
+                                <h1 className="text-xl font-bold">Chinta Lokesh Babu</h1>
+                                <p className="font-semibold text-muted-foreground text-sm">Patient ID: PAT001</p>
+                                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                                    <div className="flex items-center gap-1"><User className="h-3 w-3" /> 27 years</div>
+                                    <div className="flex items-center gap-1"><Heart className="h-3 w-3" /> Male</div>
+                                    <div className="flex items-center gap-1"><Droplets className="h-3 w-3" /> O+</div>
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-2"><User className="h-4 w-4" /> 27 years old</div>
-                            <div className="flex items-center gap-2"><Heart className="h-4 w-4" /> Male</div>
-                            <div className="flex items-center gap-2"><Droplets className="h-4 w-4" /> O+ Positive</div>
-                        </div>
-                        <Button style={{backgroundColor: 'hsl(var(--nav-profile))'}} className="w-full sm:w-auto"><Pencil className="mr-2 h-4 w-4" /> Edit Profile</Button>
+                        <Button variant="ghost" size="icon" className="flex-shrink-0">
+                            <Pencil className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}} />
+                        </Button>
                     </div>
 
                     <Separator />
@@ -140,3 +144,4 @@ export default function ProfilePage() {
         </div>
     );
 }
+
