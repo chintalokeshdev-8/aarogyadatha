@@ -12,7 +12,6 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { previousAppointments } from '@/lib/appointments-data';
 import { labReports } from '@/lib/lab-reports-data';
-import { imagingReports } from '@/lib/imaging-reports-data';
 import { medicineSchedule } from '@/lib/medicines-data';
 
 const AiAssistantInputSchema = z.object({
@@ -43,8 +42,6 @@ const aiAssistantFlow = ai.defineFlow(
       Appointment History: ${JSON.stringify(previousAppointments, null, 2)}
       
       Lab Reports: ${JSON.stringify(labReports, null, 2)}
-      
-      Imaging Reports: ${JSON.stringify(imagingReports, null, 2)}
       
       Current Medications: ${JSON.stringify(medicineSchedule, null, 2)}
     `;

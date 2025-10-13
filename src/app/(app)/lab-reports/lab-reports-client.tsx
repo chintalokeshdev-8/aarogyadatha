@@ -18,8 +18,8 @@ import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
@@ -158,20 +158,17 @@ const ReportViewer = ({ content }: { content: string }) => {
 };
 
 interface LabReportsClientProps {
-    labReports: any[];
-    imagingReports: any[];
+    allReports: any[];
     diagnosticLabs: any[];
     dummyReportData: Record<string, { content: string, image?: string, dataAiHint?: string }>;
 }
 
 export function LabReportsClient({
-    labReports: initialLabReports,
-    imagingReports: initialImagingReports,
+    allReports: initialAllReports,
     diagnosticLabs,
     dummyReportData
 }: LabReportsClientProps) {
-    const [labReports, setLabReports] = useState(initialLabReports);
-    const [imagingReports, setImagingReports] = useState(initialImagingReports);
+    const [allReports, setAllReports] = useState(initialAllReports);
     
     const [isAnalyzeOpen, setAnalyzeOpen] = useState(false);
     const [isViewOpen, setViewOpen] = useState(false);
@@ -309,26 +306,22 @@ export function LabReportsClient({
         return Object.entries(grouped).sort(([dateA], [dateB]) => new Date(dateB).getTime() - new Date(dateA).getTime());
     };
 
-    const groupedLabReports = groupReportsByDate(labReports);
-    const groupedImagingReports = groupReportsByDate(imagingReports);
+    const groupedAllReports = groupReportsByDate(allReports);
     
-    const handleUploadReport = (formData: any, type: 'lab' | 'imaging') => {
+    const handleUploadReport = (formData: any) => {
         const newReport = {
             ...formData,
             status: 'Completed',
         };
-        if (type === 'lab') {
-            setLabReports(prev => [...prev, newReport]);
-        } else {
-            setImagingReports(prev => [...prev, newReport]);
-        }
+        setAllReports(prev => [...prev, newReport]);
+
         toast({
             title: "Report Uploaded",
             description: `${formData.testName} has been added to your reports.`,
         });
     };
     
-    function UploadReportDialog({ onUpload, reportType }: { onUpload: (data: any, type: 'lab' | 'imaging') => void; reportType: 'lab' | 'imaging' }) {
+    function UploadReportDialog({ onUpload }: { onUpload: (data: any) => void; }) {
         const [isDialogOpen, setIsDialogOpen] = useState(false);
         const [testName, setTestName] = useState('');
         const [doctor, setDoctor] = useState('');
@@ -346,7 +339,7 @@ export function LabReportsClient({
                 doctor,
                 date: format(date, 'yyyy-MM-dd'),
             };
-            onUpload(formData, reportType);
+            onUpload(formData);
             setIsDialogOpen(false);
             // Reset form
             setTestName('');
@@ -423,10 +416,10 @@ export function LabReportsClient({
         );
     }
     
-    const ReportsList = ({ groupedReports, onAnalyze, onView, onUpload, reportType }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onView: (report: any) => void, onUpload: (data: any, type: 'lab' | 'imaging') => void, reportType: 'lab' | 'imaging' }) => (
+    const ReportsList = ({ groupedReports, onAnalyze, onView, onUpload }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onView: (report: any) => void, onUpload: (data: any) => void }) => (
         <div className="space-y-6">
             <div className="flex justify-end">
-                <UploadReportDialog onUpload={onUpload} reportType={reportType} />
+                <UploadReportDialog onUpload={onUpload} />
             </div>
             {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
                 <Card key={date} className='border'>
@@ -495,17 +488,17 @@ export function LabReportsClient({
             <div className="flex items-baseline justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics & Reports</h1>
-                    <p className="text-muted-foreground">Find labs, book tests, and manage your reports.</p>
                 </div>
             </div>
             
             <div className="border rounded-lg p-1 bg-muted flex items-center justify-center">
                 <Tabs defaultValue="find-lab" className="w-full">
-                    <TabsList className="grid w-full grid-cols-3 h-auto">
-                        <TabsTrigger value="find-lab" className="text-sm font-semibold h-10">Find a Lab</TabsTrigger>
-                        <TabsTrigger value="lab-reports" className="text-sm font-semibold h-10">Lab Reports</TabsTrigger>
-                        <TabsTrigger value="imaging-reports" className="text-sm font-semibold h-10">Imaging Reports</TabsTrigger>
-                    </TabsList>
+                     <div className="p-1 border bg-muted rounded-lg flex items-center">
+                        <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger value="find-lab">Find a Lab</TabsTrigger>
+                            <TabsTrigger value="my-reports">My Reports</TabsTrigger>
+                        </TabsList>
+                    </div>
 
                     <TabsContent value="find-lab" className="mt-6">
                         <Card>
@@ -670,22 +663,12 @@ export function LabReportsClient({
                             </CardContent>
                         </Card>
                     </TabsContent>
-                    <TabsContent value="lab-reports" className="mt-6">
+                    <TabsContent value="my-reports" className="mt-6">
                         <ReportsList 
-                            groupedReports={groupedLabReports}
+                            groupedReports={groupedAllReports}
                             onAnalyze={handleAnalyze}
                             onView={handleView}
                             onUpload={handleUploadReport}
-                            reportType="lab"
-                        />
-                    </TabsContent>
-                    <TabsContent value="imaging-reports" className="mt-6">
-                        <ReportsList 
-                            groupedReports={groupedImagingReports}
-                            onAnalyze={handleAnalyze}
-                            onView={handleView}
-                            onUpload={handleUploadReport}
-                            reportType="imaging"
                         />
                     </TabsContent>
                 </Tabs>

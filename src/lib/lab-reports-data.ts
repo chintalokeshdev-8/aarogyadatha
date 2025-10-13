@@ -7,4 +7,8 @@ export const labReports = [
   { testName: "HbA1c", date: "2024-06-20", doctor: "Dr. Rajesh Kumar", status: "Completed" },
   { testName: "Complete Blood Count", date: "2024-04-10", doctor: "Dr. Rajesh Kumar", status: "Completed" },
   { testName: "Liver Function Test", date: "2024-01-05", doctor: "Dr. Priya Sharma", status: "Completed" },
+  { testName: "Chest X-Ray", date: "2024-07-10", doctor: "Dr. Rajesh Kumar", status: "Completed", type: "x-ray" },
+  { testName: "MRI Brain Scan", date: "2024-05-12", doctor: "Dr. Arjun Kumar", status: "Completed", type: "mri" },
+  { testName: "Abdominal Ultrasound", date: "2024-07-18", doctor: "Dr. Priya Sharma", status: "Processing", type: "x-ray" },
+  { testName: "CT Scan Abdomen", date: "2024-02-25", doctor: "Dr. Arjun Kumar", status: "Completed", type: "mri" },
 ];

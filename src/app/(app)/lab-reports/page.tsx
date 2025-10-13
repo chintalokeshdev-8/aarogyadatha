@@ -1,7 +1,6 @@
 
 import { LabReportsClient } from './lab-reports-client';
 import { labReports } from '@/lib/lab-reports-data';
-import { imagingReports } from '@/lib/imaging-reports-data';
 import { dummyReportData } from '@/lib/dummy-report-data';
 
 const diagnosticLabs = [
@@ -98,8 +97,7 @@ const diagnosticLabs = [
 export default function DiagnosticsPage() {
     return (
       <LabReportsClient
-        labReports={labReports}
-        imagingReports={imagingReports}
+        allReports={labReports}
         diagnosticLabs={diagnosticLabs}
         dummyReportData={dummyReportData}
       />
