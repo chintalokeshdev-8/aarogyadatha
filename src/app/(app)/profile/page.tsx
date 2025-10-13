@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Mail, MapPin, Pencil, User, Heart, Droplets, Phone, Settings, CreditCard, Shield, Camera, Upload, Eye, EyeOff } from "lucide-react";
+import { Mail, MapPin, Pencil, User, Heart, Droplets, Phone, Settings, CreditCard, Shield, Camera, Upload, Eye, EyeOff, CheckCircle } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,14 @@ export default function ProfilePage() {
 
     const [formData, setFormData] = useState(profileData);
     const [profilePic, setProfilePic] = useState<File | null>(null);
-    const [aadharPic, setAadharPic] = useState<File | null>(null);
+    const [aadharPic, setAadharPic] = useState<File | null>(() => {
+        // Mock a pre-existing file for display purposes
+        try {
+            return new File([""], "aadhar-mock.jpg", { type: "image/jpeg" });
+        } catch (e) {
+            return null; // For SSR or environments where File constructor isn't available
+        }
+    });
     const [showAadharNumber, setShowAadharNumber] = useState(false);
     const [showAadharPhoto, setShowAadharPhoto] = useState(false);
 
@@ -53,7 +60,7 @@ export default function ProfilePage() {
     };
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6">
             <Card className="relative">
                  <Dialog>
                     <DialogTrigger asChild>
@@ -129,14 +136,14 @@ export default function ProfilePage() {
                     </DialogContent>
                 </Dialog>
 
-                <CardContent className="p-4 sm:p-6 space-y-4">
+                <CardContent className="p-4 sm:p-6 space-y-2">
                     <div className="flex items-center gap-4">
                         <Avatar className="h-16 w-16 border-4 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-profile))'}}>
                             <AvatarImage src="/images/profile.jpg" />
                             <AvatarFallback className="text-2xl">CL</AvatarFallback>
                         </Avatar>
-                        <div className="space-y-1">
-                            <h1 className="text-xl font-semibold whitespace-nowrap">{profileData.name}</h1>
+                        <div className="space-y-1 overflow-hidden">
+                            <h1 className="text-xl font-semibold whitespace-nowrap truncate">{profileData.name}</h1>
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-foreground font-bold">
                                 <span>Patient ID: {profileData.patientId}</span>
                                 <div className="flex items-center gap-1"><User className="h-3 w-3 text-muted-foreground" /> {profileData.age} years</div>
@@ -172,7 +179,7 @@ export default function ProfilePage() {
 
                     <div className="space-y-4">
                         <h3 className="font-semibold text-lg flex items-center gap-2">
-                            <CreditCard style={{color: 'hsl(var(--nav-profile))'}} /> Identity Verification
+                            <CheckCircle className="text-foreground"/> Verified
                         </h3>
                         <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
                             <div className="space-y-1">
