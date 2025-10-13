@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -799,19 +799,20 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
 
     if (!doctor) return null;
 
-    const gst = doctor.opFee * 0.18;
-    const total = doctor.opFee + gst;
+    const bookingCharge = doctor.opFee * 0.05; // Example 5% booking charge
+    const gst = bookingCharge * 0.18;
+    const totalPaid = doctor.opFee + bookingCharge + gst;
     
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md p-0 flex flex-col h-[90vh] sm:h-auto max-h-[90vh]">
+            <DialogContent className="sm:max-w-md p-0 flex flex-col h-auto max-h-[90vh]">
                 <DialogHeader className="p-4 border-b flex-row items-center">
                     {step === 2 && (
                         <Button variant="ghost" size="icon" onClick={handleBack} className="mr-2">
                             <ArrowLeft className="h-5 w-5" />
                         </Button>
                     )}
-                    <DialogTitle className={cn(step === 2 && "text-center flex-1")}>
+                    <DialogTitle className={cn("text-xl", step === 2 && "text-center flex-1")}>
                         {step === 1 ? `Book Consult` : 'Payment Summary'}
                     </DialogTitle>
                      <DialogClose asChild>
@@ -855,19 +856,53 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                             <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
                         </div>
                     ) : (
-                         <div className="p-4 space-y-2">
-                            <div className="text-center mb-2">
-                                <h3 className="font-bold text-lg">{format(selectedDate, "eeee, d MMMM yyyy")}</h3>
-                                <p className="font-bold text-lg" style={{color: 'hsl(var(--nav-appointments))'}}>{selectedTime}</p>
-                            </div>
+                        <div className="p-4 space-y-4">
+                            <Card>
+                                <CardHeader className="pb-2">
+                                    <CardTitle className="text-base">Payment Details</CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-2 text-sm">
+                                    <div className="flex justify-between">
+                                        <p className="text-muted-foreground">Consultation Fee</p>
+                                        <p className="font-medium">₹{doctor.opFee.toFixed(2)}</p>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p className="text-muted-foreground">Booking Charge</p>
+                                        <p className="font-medium">₹{bookingCharge.toFixed(2)}</p>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <p className="text-muted-foreground">GST (18%)</p>
+                                        <p className="font-medium">₹{gst.toFixed(2)}</p>
+                                    </div>
+                                    <Separator />
+                                    <div className="flex justify-between font-bold text-base">
+                                        <p>To be paid</p>
+                                        <p>₹{totalPaid.toFixed(2)}</p>
+                                    </div>
+                                </CardContent>
+                            </Card>
 
                              <Card>
+                                <CardHeader className="flex-row justify-between items-center pb-2">
+                                    <CardTitle className="text-base">Your Details</CardTitle>
+                                    <Button variant="link" className="p-0 h-auto text-sm">Edit</Button>
+                                </CardHeader>
+                                <CardContent className="text-sm space-y-1">
+                                    <p className="font-semibold flex items-center gap-2"><User className="h-4 w-4 text-muted-foreground" />Chinta Lokesh Babu</p>
+                                    <p className="text-muted-foreground flex items-center gap-2"><Phone className="h-4 w-4" />+91 8008334948</p>
+                                </CardContent>
+                            </Card>
+
+                            <Card className="cursor-pointer hover:bg-muted/50">
                                 <CardContent className="p-4 flex justify-between items-center">
-                                    <div>
-                                        <h3 className="font-bold">1 Consultation</h3>
-                                        <p className="text-sm text-muted-foreground">Dr. {doctor.name}</p>
+                                    <div className="flex items-center gap-3">
+                                        <CreditCard className="h-6 w-6 text-muted-foreground" />
+                                        <div>
+                                            <p className="font-bold">medibridge Wallet</p>
+                                            <p className="text-sm text-muted-foreground">Balance: <span className="font-semibold text-green-600">₹150.00</span></p>
+                                        </div>
                                     </div>
-                                    <p className="text-xl font-bold">₹{doctor.opFee.toFixed(2)}</p>
+                                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
                                 </CardContent>
                             </Card>
                          </div>
@@ -881,9 +916,9 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                         </Button>
                     ) : (
                          <div className="flex justify-between items-center w-full">
-                            <div className="flex-1">
-                                <p className="text-xs text-muted-foreground">Total Amount</p>
-                                <p className="font-bold text-lg">₹{(doctor.opFee).toFixed(2)}</p>
+                            <div>
+                                <p className="text-xl font-bold">₹{totalPaid.toFixed(2)}</p>
+                                <p className="text-xs text-primary" style={{color: 'hsl(var(--nav-appointments))'}}>View Details</p>
                             </div>
                             <Button className="h-12 px-6" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handlePay}>
                                 <div className="flex flex-col items-end -my-1">
@@ -1608,5 +1643,7 @@ export default function AppointmentsPage() {
 
     
 
+
+    
 
     
