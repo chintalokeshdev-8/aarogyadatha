@@ -439,7 +439,7 @@ export function LabReportsClient({
         );
     }
     
-    const ReportsList = ({ groupedReports, onAnalyze, onUpload, onDelete, dummyReportData }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onUpload: (data: any) => void, onDelete: (id: string) => void, dummyReportData: any }) => {
+    function ReportsList({ groupedReports, onAnalyze, onUpload, onDelete, dummyReportData }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onUpload: (data: any) => void, onDelete: (id: string) => void, dummyReportData: any }) {
         
         const getDoctorsForDate = (reports: any[]) => {
             const doctors = new Set(reports.map(r => r.doctor));
@@ -464,13 +464,12 @@ export function LabReportsClient({
                      <Card key={date} className="border bg-background overflow-hidden">
                         <Collapsible>
                             <div className="flex items-center p-4">
-                                <CollapsibleTrigger asChild>
+                                <CollapsibleTrigger asChild className="flex-1">
                                     <div className="flex items-center gap-4 cursor-pointer min-w-0 text-left">
                                         <div>
                                             <p className="font-bold truncate text-sm sm:text-base">{format(parseISO(date), 'dd MMM, yyyy')}</p>
                                             <p className="text-xs text-muted-foreground truncate hidden sm:block">Dr. {getDoctorsForDate(reports)}</p>
                                         </div>
-                                        <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
                                     </div>
                                 </CollapsibleTrigger>
                                 <div className="flex items-center gap-2 mx-auto">
@@ -487,6 +486,11 @@ export function LabReportsClient({
                                             </Button>
                                         }
                                      />
+                                    <CollapsibleTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
+                                        </Button>
+                                    </CollapsibleTrigger>
                                 </div>
                             </div>
 
@@ -852,3 +856,4 @@ export function LabReportsClient({
     
 
     
+
