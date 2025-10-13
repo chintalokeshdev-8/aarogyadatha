@@ -729,143 +729,144 @@ const DateSelector = ({ selectedDate, onSelectDate }: { selectedDate: Date, onSe
     );
 };
 
-function BookingDialog({ open, onOpenChange, doctor, onContinue }: { open: boolean, onOpenChange: (open: boolean) => void, doctor: any | null, onContinue: (details: any) => void }) {
+function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open: boolean, onOpenChange: (open: boolean) => void, doctor: any | null, onBookingComplete: (details: any) => void }) {
+    const [step, setStep] = useState(1);
     const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 1));
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
 
     const handleContinue = () => {
         if (!doctor || !selectedTime) return;
+        setStep(2);
+    };
 
-        const appointmentDetails = {
+    const handleBack = () => {
+        setStep(1);
+    };
+    
+    const handlePay = () => {
+         onBookingComplete({
             doctor,
             date: selectedDate,
             time: selectedTime,
-            fee: doctor.opFee,
-        };
-        
+        });
         onOpenChange(false);
-        onContinue(appointmentDetails);
-    };
-    
+    }
+
     useEffect(() => {
         if (open) {
+            setStep(1);
             setSelectedTime(null);
             setSelectedDate(addDays(new Date(), 1));
         }
     }, [open]);
 
     if (!doctor) return null;
+
+    const gst = doctor.opFee * 0.18;
+    const total = doctor.opFee + gst;
     
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md p-0 flex flex-col h-full sm:h-auto max-h-[90vh]">
-                <DialogHeader className="p-4 border-b">
-                     <DialogTitle>Book Online Consult</DialogTitle>
-                     <DialogDescription>with {doctor.name}</DialogDescription>
-                </DialogHeader>
-                <div className="flex-1 p-4 space-y-6 overflow-y-auto">
-                    <Card>
-                        <CardContent className="p-4 flex justify-between items-center">
-                            <div>
-                                <h3 className="font-bold">Consultation Fee</h3>
-                                <p className="text-sm text-muted-foreground">For a 15-minute slot</p>
-                            </div>
-                            <p className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
-                        </CardContent>
-                    </Card>
-                    
-                    <DateSelector selectedDate={selectedDate} onSelectDate={setSelectedDate} />
-                    
-                    <TimeSlotSelector 
-                        title="Afternoon"
-                        icon={Sun}
-                        slots={["12:00 PM", "12:10 PM", "12:20 PM", "12:30 PM", "12:40 PM"]}
-                        selectedTime={selectedTime}
-                        onSelectTime={setSelectedTime}
-                    />
-
-                    <TimeSlotSelector 
-                        title="Evening"
-                        icon={Moon}
-                        slots={["03:00 PM", "03:10 PM", "03:20 PM", "03:30 PM", "03:40 PM", "03:50 PM"]}
-                        selectedTime={selectedTime}
-                        onSelectTime={setSelectedTime}
-                    />
-
-                    <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
-
-                </div>
-                <DialogFooter className="p-4 border-t bg-background">
-                    <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
-                        Continue Booking
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
-}
-
-function AppointmentSummaryDialog({ open, onOpenChange, appointmentDetails }: { open: boolean, onOpenChange: (open: boolean) => void, appointmentDetails: any | null }) {
-    if (!appointmentDetails) return null;
-    
-    const gst = appointmentDetails.fee * 0.18;
-    const total = appointmentDetails.fee + gst;
-
-    return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-md p-0 flex flex-col h-full sm:h-auto max-h-[90vh]">
+            <DialogContent className="sm:max-w-md p-0 flex flex-col h-[90vh] sm:h-auto max-h-[90vh]">
+                
                  <DialogHeader className="p-4 border-b flex-row items-center">
-                    <Button variant="ghost" size="icon" onClick={() => onOpenChange(false)}>
-                        <ArrowLeft className="h-5 w-5" />
-                    </Button>
-                    <DialogTitle className="mx-auto">Payment Summary</DialogTitle>
-                    <div className='w-9'></div>
-                </DialogHeader>
-                <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-                    <div className="flex justify-between items-center text-lg font-semibold">
-                        <p>{format(appointmentDetails.date, "EEEE, d MMM")}</p>
-                        <p>{appointmentDetails.time}</p>
-                    </div>
-
-                    <Card>
-                        <CardContent className="p-4 flex justify-between items-center">
-                             <div>
-                                <p className="font-bold">1 Online Consultation</p>
-                                <p className="text-sm text-muted-foreground">For {appointmentDetails.doctor.name}</p>
-                             </div>
-                             <p className="font-bold text-lg">₹{appointmentDetails.fee.toFixed(2)}</p>
-                        </CardContent>
-                    </Card>
-                    
-                    <Collapsible defaultOpen className="space-y-2">
-                        <CollapsibleTrigger className="flex justify-between items-center w-full text-sm font-semibold text-muted-foreground">
-                            <span>Payment Details</span>
-                           <ChevronDown className="h-4 w-4 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="space-y-2 pt-2">
-                            <div className="flex justify-between text-sm">
-                                <p className="text-muted-foreground">Consultation Fee</p>
-                                <p>₹{appointmentDetails.fee.toFixed(2)}</p>
-                            </div>
-                             <div className="flex justify-between text-sm">
-                                <p className="text-muted-foreground">Booking charge (inc. of GST)</p>
-                                <p>₹{gst.toFixed(2)}</p>
-                            </div>
-                        </CollapsibleContent>
-                    </Collapsible>
-                    
-                    <Separator />
-                </div>
-                 <DialogFooter className="p-4 border-t bg-background">
-                    <div className="flex justify-between items-center w-full">
-                        <div>
-                            <p className="font-bold text-lg">₹{total.toFixed(2)}</p>
-                            <p className="text-xs text-muted-foreground">Total Amount</p>
-                        </div>
-                        <Button className="h-12 px-8 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
-                           Pay & Confirm
+                    {step === 2 && (
+                        <Button variant="ghost" size="icon" onClick={handleBack} className="mr-2">
+                            <ArrowLeft className="h-5 w-5" />
                         </Button>
-                    </div>
+                    )}
+                    <DialogTitle className={cn(step === 2 && "mx-auto")}>{step === 1 ? 'Book Online Consult' : 'Payment Summary'}</DialogTitle>
+                     {step === 2 && <div className='w-9'></div>}
+                </DialogHeader>
+
+                <div className="flex-1 overflow-y-auto">
+                    {step === 1 ? (
+                         <div className="p-4 space-y-6">
+                            <Card>
+                                <CardContent className="p-4 flex justify-between items-center">
+                                    <div>
+                                        <h3 className="font-bold">Consultation Fee</h3>
+                                        <p className="text-sm text-muted-foreground">For a 15-minute slot</p>
+                                    </div>
+                                    <p className="text-2xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
+                                </CardContent>
+                            </Card>
+                            
+                            <DateSelector selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+                            
+                            <TimeSlotSelector 
+                                title="Afternoon"
+                                icon={Sun}
+                                slots={["12:00 PM", "12:10 PM", "12:20 PM", "12:30 PM", "12:40 PM"]}
+                                selectedTime={selectedTime}
+                                onSelectTime={setSelectedTime}
+                            />
+
+                            <TimeSlotSelector 
+                                title="Evening"
+                                icon={Moon}
+                                slots={["03:00 PM", "03:10 PM", "03:20 PM", "03:30 PM", "03:40 PM", "03:50 PM"]}
+                                selectedTime={selectedTime}
+                                onSelectTime={setSelectedTime}
+                            />
+
+                            <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
+                        </div>
+                    ) : (
+                         <div className="p-4 space-y-4">
+                            <div className="flex justify-between items-center text-lg font-semibold">
+                                <p>{format(selectedDate, "EEEE, d MMM")}</p>
+                                <p>{selectedTime}</p>
+                            </div>
+
+                            <Card>
+                                <CardContent className="p-4 flex justify-between items-center">
+                                     <div>
+                                        <p className="font-bold">1 Online Consultation</p>
+                                        <p className="text-sm text-muted-foreground">For {doctor.name}</p>
+                                     </div>
+                                     <p className="font-bold text-lg">₹{doctor.opFee.toFixed(2)}</p>
+                                </CardContent>
+                            </Card>
+                            
+                            <Collapsible defaultOpen className="space-y-2">
+                                <CollapsibleTrigger className="flex justify-between items-center w-full text-sm font-semibold text-muted-foreground">
+                                    <span>Payment Details</span>
+                                   <ChevronDown className="h-4 w-4 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                </CollapsibleTrigger>
+                                <CollapsibleContent className="space-y-2 pt-2">
+                                    <div className="flex justify-between text-sm">
+                                        <p className="text-muted-foreground">Consultation Fee</p>
+                                        <p>₹{doctor.opFee.toFixed(2)}</p>
+                                    </div>
+                                     <div className="flex justify-between text-sm">
+                                        <p className="text-muted-foreground">Booking charge (inc. of GST)</p>
+                                        <p>₹{gst.toFixed(2)}</p>
+                                    </div>
+                                </CollapsibleContent>
+                            </Collapsible>
+                            
+                            <Separator />
+                        </div>
+                    )}
+                </div>
+
+                <DialogFooter className="p-4 border-t bg-background">
+                    {step === 1 ? (
+                        <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
+                            Continue
+                        </Button>
+                    ) : (
+                         <div className="flex justify-between items-center w-full">
+                            <div>
+                                <p className="font-bold text-lg">₹{total.toFixed(2)}</p>
+                                <p className="text-xs text-muted-foreground">Total Amount</p>
+                            </div>
+                            <Button className="h-12 px-8 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handlePay}>
+                               Pay & Confirm
+                            </Button>
+                        </div>
+                    )}
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -875,10 +876,8 @@ function AppointmentSummaryDialog({ open, onOpenChange, appointmentDetails }: { 
 export default function AppointmentsPage() {
     const [selectedDoctor, setSelectedDoctor] = useState<any | null>(null);
     const [doctorForBooking, setDoctorForBooking] = useState<any | null>(null);
-    const [appointmentDetails, setAppointmentDetails] = useState<any | null>(null);
     const [isProfileOpen, setProfileOpen] = useState(false);
     const [isBookingOpen, setIsBookingOpen] = useState(false);
-    const [isSummaryOpen, setIsSummaryOpen] = useState(false);
     const { toast } = useToast();
     const router = useRouter();
     const [isSharing, setIsSharing] = useState(false);
@@ -985,9 +984,12 @@ export default function AppointmentsPage() {
         setIsBookingOpen(true);
     };
 
-    const handleContinueToSummary = (details: any) => {
-        setAppointmentDetails(details);
-        setIsSummaryOpen(true);
+     const handleBookingComplete = (details: any) => {
+        toast({
+            title: "Appointment Booked!",
+            description: `Your appointment with ${details.doctor.name} on ${format(details.date, "PPP")} at ${details.time} is confirmed.`,
+        });
+        // Optionally redirect or update UI
     };
 
     const allDoctors = useMemo(() => {
@@ -1435,13 +1437,7 @@ export default function AppointmentsPage() {
                 open={isBookingOpen}
                 onOpenChange={setIsBookingOpen}
                 doctor={doctorForBooking}
-                onContinue={handleContinueToSummary}
-            />
-
-            <AppointmentSummaryDialog
-                open={isSummaryOpen}
-                onOpenChange={setIsSummaryOpen}
-                appointmentDetails={appointmentDetails}
+                onBookingComplete={handleBookingComplete}
             />
 
             <Dialog open={isProfileOpen} onOpenChange={setProfileOpen}>
