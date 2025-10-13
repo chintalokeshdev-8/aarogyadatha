@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User, Wallet } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -770,6 +770,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
     const [step, setStep] = useState(1);
     const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 1));
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
+    const [paymentMethod, setPaymentMethod] = useState('medibridge Wallet');
 
     const handleContinue = () => {
         if (!doctor || !selectedTime) return;
@@ -777,7 +778,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
     };
 
     const handleBack = () => {
-        setStep(1);
+        setStep(step - 1);
     };
     
     const handlePay = () => {
@@ -787,33 +788,48 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
             time: selectedTime,
         });
         onOpenChange(false);
-    }
+    };
+    
+    const selectPaymentMethod = (method: string) => {
+        setPaymentMethod(method);
+        setStep(2);
+    };
 
     useEffect(() => {
         if (open) {
             setStep(1);
             setSelectedTime(null);
             setSelectedDate(addDays(new Date(), 1));
+            setPaymentMethod('medibridge Wallet');
         }
     }, [open]);
 
     if (!doctor) return null;
 
-    const bookingCharge = doctor.opFee * 0.05; // Example 5% booking charge
+    const bookingCharge = doctor.opFee * 0.05;
     const gst = bookingCharge * 0.18;
     const totalPaid = doctor.opFee + bookingCharge + gst;
     
+    const getDialogTitle = () => {
+        switch (step) {
+            case 1: return 'Book Consult';
+            case 2: return 'Payment Summary';
+            case 3: return 'Payment Options';
+            default: return '';
+        }
+    };
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md p-0 flex flex-col h-auto max-h-[90vh]">
                 <DialogHeader className="p-4 border-b flex-row items-center">
-                    {step === 2 && (
+                    {step > 1 && (
                         <Button variant="ghost" size="icon" onClick={handleBack} className="mr-2">
                             <ArrowLeft className="h-5 w-5" />
                         </Button>
                     )}
-                    <DialogTitle className={cn("text-xl", step === 2 && "text-center flex-1")}>
-                        {step === 1 ? `Book Consult` : 'Payment Summary'}
+                    <DialogTitle className={cn("text-xl", step > 1 && "text-center flex-1")}>
+                        {getDialogTitle()}
                     </DialogTitle>
                      <DialogClose asChild>
                         <Button variant="ghost" size="icon" className="ml-auto absolute right-4 top-4">
@@ -823,7 +839,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                 </DialogHeader>
 
                 <div className="flex-1 overflow-y-auto">
-                    {step === 1 ? (
+                    {step === 1 && (
                          <div className="p-4 space-y-6">
                             <Card>
                                 <CardContent className="p-4 flex justify-between items-center">
@@ -855,7 +871,8 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
 
                             <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
                         </div>
-                    ) : (
+                    )}
+                    {step === 2 && (
                         <div className="p-4 space-y-4">
                             <Card>
                                 <CardHeader className="pb-2">
@@ -867,12 +884,8 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                                         <p className="font-medium">₹{doctor.opFee.toFixed(2)}</p>
                                     </div>
                                     <div className="flex justify-between">
-                                        <p className="text-muted-foreground">Booking Charge</p>
-                                        <p className="font-medium">₹{bookingCharge.toFixed(2)}</p>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <p className="text-muted-foreground">GST (18%)</p>
-                                        <p className="font-medium">₹{gst.toFixed(2)}</p>
+                                        <p className="text-muted-foreground">Booking Charge (incl. GST)</p>
+                                        <p className="font-medium">₹{(bookingCharge + gst).toFixed(2)}</p>
                                     </div>
                                     <Separator />
                                     <div className="flex justify-between font-bold text-base">
@@ -893,19 +906,63 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                                 </CardContent>
                             </Card>
 
-                            <Card className="cursor-pointer hover:bg-muted/50">
+                             <Card className="cursor-pointer hover:bg-muted/50" onClick={() => setStep(3)}>
                                 <CardContent className="p-4 flex justify-between items-center">
                                     <div className="flex items-center gap-3">
-                                        <CreditCard className="h-6 w-6 text-muted-foreground" />
+                                        {paymentMethod.includes('Wallet') ? <Wallet className="h-6 w-6 text-muted-foreground" /> : <CreditCard className="h-6 w-6 text-muted-foreground" />}
                                         <div>
-                                            <p className="font-bold">medibridge Wallet</p>
-                                            <p className="text-sm text-muted-foreground">Balance: <span className="font-semibold text-green-600">₹150.00</span></p>
+                                            <p className="font-bold">{paymentMethod}</p>
+                                            {paymentMethod.includes('Wallet') && <p className="text-sm text-muted-foreground">Balance: <span className="font-semibold text-green-600">₹150.00</span></p>}
                                         </div>
                                     </div>
                                     <ChevronRight className="h-5 w-5 text-muted-foreground" />
                                 </CardContent>
                             </Card>
                          </div>
+                    )}
+                    {step === 3 && (
+                        <div className='p-4 space-y-6'>
+                             <p className="font-bold text-center -mb-2">₹{totalPaid.toFixed(2)}</p>
+                             <div>
+                                <h3 className='font-bold text-lg mb-2'>UPI Apps</h3>
+                                <div className='space-y-1'>
+                                    <Button variant="ghost" className='w-full justify-start h-14' onClick={() => selectPaymentMethod('Google Pay')}>
+                                        <Image src="https://picsum.photos/seed/gpay/40/40" alt="GPay" width={24} height={24} className='mr-4' data-ai-hint="google pay logo"/> Google Pay
+                                        <ChevronRight className='ml-auto h-5 w-5 text-muted-foreground'/>
+                                    </Button>
+                                    <Separator/>
+                                    <Button variant="ghost" className='w-full justify-start h-14' onClick={() => selectPaymentMethod('PhonePe')}>
+                                        <Image src="https://picsum.photos/seed/phonepe/40/40" alt="PhonePe" width={24} height={24} className='mr-4' data-ai-hint="phonepe logo"/> PhonePe
+                                         <ChevronRight className='ml-auto h-5 w-5 text-muted-foreground'/>
+                                    </Button>
+                                    <Separator/>
+                                    <Button variant="ghost" className='w-full justify-start h-14' onClick={() => selectPaymentMethod('Paytm')}>
+                                        <Image src="https://picsum.photos/seed/paytm/40/40" alt="Paytm" width={24} height={24} className='mr-4' data-ai-hint="paytm logo"/> Paytm
+                                         <ChevronRight className='ml-auto h-5 w-5 text-muted-foreground'/>
+                                    </Button>
+                                    <Separator/>
+                                     <Button variant="ghost" className='w-full justify-start h-14 text-primary' style={{color: 'hsl(var(--nav-appointments))'}}>
+                                        <PlusCircle className="mr-4 h-6 w-6"/> 
+                                        <div>
+                                            <p className='font-bold text-left'>Add New UPI ID</p>
+                                            <p className='text-xs text-muted-foreground font-normal'>You need to have a registered UPI ID</p>
+                                        </div>
+                                    </Button>
+                                </div>
+                             </div>
+                             <div>
+                                <h3 className='font-bold text-lg mb-2'>Credit/Debit Cards</h3>
+                                <div>
+                                    <Button variant="ghost" className='w-full justify-start h-14 text-primary' style={{color: 'hsl(var(--nav-appointments))'}}>
+                                        <PlusCircle className="mr-4 h-6 w-6"/> 
+                                        <div>
+                                            <p className='font-bold text-left'>Add New Card</p>
+                                            <p className='text-xs text-muted-foreground font-normal'>Save and Pay via Cards</p>
+                                        </div>
+                                    </Button>
+                                </div>
+                             </div>
+                        </div>
                     )}
                 </div>
 
@@ -914,11 +971,11 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                         <Button onClick={handleContinue} disabled={!selectedTime} className="w-full h-12 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
                             Continue
                         </Button>
-                    ) : (
+                    ) : step === 2 ? (
                          <div className="flex justify-between items-center w-full">
                             <div>
                                 <p className="text-xl font-bold">₹{totalPaid.toFixed(2)}</p>
-                                <p className="text-xs text-primary" style={{color: 'hsl(var(--nav-appointments))'}}>View Details</p>
+                                <button className="text-xs text-primary font-semibold" style={{color: 'hsl(var(--nav-appointments))'}} onClick={() => setStep(3)}>Payment method</button>
                             </div>
                             <Button className="h-12 px-6" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handlePay}>
                                 <div className="flex flex-col items-end -my-1">
@@ -927,7 +984,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                                 <ChevronRight className="ml-2 h-5 w-5" />
                             </Button>
                         </div>
-                    )}
+                    ) : null}
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -1643,6 +1700,8 @@ export default function AppointmentsPage() {
 
     
 
+
+    
 
     
 
