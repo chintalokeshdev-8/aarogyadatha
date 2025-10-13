@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -15,7 +16,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
@@ -818,41 +819,21 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                             <p className="text-xs text-center text-muted-foreground pt-2">*Includes a free chat follow-up for 3 days post-consultation.</p>
                         </div>
                     ) : (
-                         <div className="p-4 space-y-4">
-                            <div className="flex justify-between items-center text-lg font-bold">
-                                <span>{format(selectedDate, "eeee, d MMM")}</span>
-                                <span>{selectedTime}</span>
+                         <div className="p-4 space-y-2">
+                            <div className="text-center mb-2">
+                                <h3 className="font-bold text-lg">{format(selectedDate, "eeee, d MMMM yyyy")}</h3>
+                                <p className="font-bold text-lg" style={{color: 'hsl(var(--nav-appointments))'}}>{selectedTime}</p>
                             </div>
 
                              <Card>
-                                <CardContent className="p-4">
-                                    <h3 className="font-bold">1 Online Consultation</h3>
-                                    <p className="text-sm text-muted-foreground">For Dr. {doctor.name}</p>
-                                    <p className="text-xl font-bold text-right" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee.toFixed(2)}</p>
+                                <CardContent className="p-4 flex justify-between items-center">
+                                    <div>
+                                        <h3 className="font-bold">1 Online Consultation</h3>
+                                        <p className="text-sm text-muted-foreground">Dr. {doctor.name}</p>
+                                    </div>
+                                    <p className="text-xl font-bold">₹{doctor.opFee.toFixed(2)}</p>
                                 </CardContent>
                             </Card>
-
-                            <Separator />
-
-                            <div className="space-y-4">
-                                <div className="flex justify-between items-center">
-                                    <h3 className="font-bold text-lg">Your details</h3>
-                                </div>
-                                <Card>
-                                    <CardContent className="p-4 space-y-2">
-                                        <div className="flex items-center gap-3">
-                                            <Avatar className="h-10 w-10">
-                                                <AvatarImage src="/images/profile.jpg" />
-                                                <AvatarFallback>CL</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <p className="font-semibold">Lokesh Babu chinta</p>
-                                                <p className="text-sm text-muted-foreground">+91-8008334948</p>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
                          </div>
                     )}
                 </div>
@@ -866,7 +847,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                          <div className="flex justify-between items-center w-full">
                             <div className="flex-1">
                                 <p className="text-xs text-muted-foreground">Total Amount</p>
-                                <p className="font-bold text-lg">₹{(doctor.opFee + (doctor.opFee * 0.18)).toFixed(2)}</p>
+                                <p className="font-bold text-lg">₹{(doctor.opFee).toFixed(2)}</p>
                             </div>
                             <Button className="h-12 px-6" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handlePay}>
                                 <div className="flex flex-col items-end -my-1">
@@ -1089,10 +1070,12 @@ export default function AppointmentsPage() {
         <div className="space-y-6">
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
-                    <TabsTrigger value="history">Appointments History</TabsTrigger>
-                </TabsList>
+                <div className="border-2 rounded-lg p-1 bg-muted">
+                    <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
+                        <TabsTrigger value="history">Appointments History</TabsTrigger>
+                    </TabsList>
+                </div>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
                         <Card className="shadow-sm border-2">
@@ -1540,3 +1523,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
