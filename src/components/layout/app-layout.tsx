@@ -336,9 +336,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                     </Avatar>
                                     <div>
                                         <p className="text-xl font-bold whitespace-nowrap">Chinta Lokesh Babu</p>
-                                        <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
-                                        <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
-                                        <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
+                                        <div className="space-y-0.5">
+                                            <p className="text-xs text-muted-foreground">Patient ID: PAT001</p>
+                                            <p className="text-xs text-muted-foreground">Blood Group: O+ Positive</p>
+                                            <p className="text-xs text-muted-foreground">Phone: +91 8008334948</p>
+                                        </div>
                                     </div>
                                 </div>
                                 </DropdownMenuLabel>
