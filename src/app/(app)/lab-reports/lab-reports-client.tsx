@@ -294,6 +294,7 @@ export function LabReportsClient({
                          variant={initialDate ? 'ghost' : 'outline'} 
                          size="sm" 
                          className={cn(initialDate && "text-xs", !initialDate && "border-primary text-primary")}
+                         style={{color: 'hsl(var(--primary))'}}
                      >
                         <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload' : 'Upload New Report'}
                     </Button>
@@ -379,11 +380,16 @@ export function LabReportsClient({
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
                      <Card key={date} className="border bg-background overflow-hidden">
                         <Collapsible>
-                            <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left gap-2">
-                                <div className="flex-1 min-w-0">
-                                    <p className="font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
-                                    <p className="text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
-                                </div>
+                            <div className="flex items-center justify-between p-4">
+                                <CollapsibleTrigger asChild>
+                                    <div className="flex-1 min-w-0 cursor-pointer flex items-center gap-4">
+                                        <div>
+                                            <p className="font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
+                                            <p className="text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
+                                        </div>
+                                        <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
+                                    </div>
+                                </CollapsibleTrigger>
                                 <div className="flex items-center gap-1 flex-shrink-0">
                                     <ViewReportsDialog
                                         reports={reports}
@@ -396,8 +402,8 @@ export function LabReportsClient({
                                         }
                                     />
                                 </div>
-                                <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
-                            </CollapsibleTrigger>
+                            </div>
+
                             <CollapsibleContent className="border-t">
                                 <div className="p-4 space-y-2">
                                      <div className='flex items-center justify-end gap-1 pt-2 -mt-2'>
@@ -416,7 +422,7 @@ export function LabReportsClient({
                                                     </Badge>
                                                 </div>
                                                 <div className="flex items-center gap-1 flex-shrink-0">
-                                                    <ViewReportsDialog
+                                                     <ViewReportsDialog
                                                         reports={[report]}
                                                         date={date}
                                                         dummyReportData={dummyReportData}
