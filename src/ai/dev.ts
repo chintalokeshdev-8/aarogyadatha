@@ -9,4 +9,4 @@ import '@/ai/flows/ai-report-analysis.ts';
 import '@/ai/flows/ai-diet-plan.ts';
 import '@/ai/flows/ai-organ-diet.ts';
 import '@/ai/flows/ai-assistant.ts';
-import '@/ai/flows/ai-health-knowledge.ts';
+import '@/ai/flows/ai-disease-info.ts';

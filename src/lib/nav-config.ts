@@ -47,4 +47,3 @@ export const allMenuItems: MenuItem[] = [
   { id: 'profile', href: "/profile", label: "Profile", telugu: "ప్రొఫైల్", icon: User, color: "hsl(var(--nav-profile))", defaultVisible: true, customizable: true },
   { id: 'emergency', href: "/emergency", label: "Emergency", telugu: "తక్షణ సహాయం", icon: Siren, color: "hsl(var(--destructive))", defaultVisible: true, customizable: false },
 ];
-

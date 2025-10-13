@@ -1,167 +1,160 @@
 
 'use client';
 
-import React, { useState, useTransition } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import React, { useState, useTransition, useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Upload, Sparkles, Loader2, BookOpenCheck, Heart, Brain, Bone, Leaf, Droplets, Wind, User, Baby, Smile, Eye } from 'lucide-react';
-import { HealthAnalysisOutput, analyzeHealthIssue } from '@/ai/flows/ai-health-knowledge';
+import { Loader2, Sparkles, BookOpenCheck, Heart, Brain, Bone, Leaf, Droplets, Wind, User, Baby, Smile, Eye, Stethoscope, FileText, Utensils, AlertTriangle, Search, ShieldAlert } from 'lucide-react';
+import { getDiseaseInfo, DiseaseInfoOutput } from '@/ai/flows/ai-disease-info';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
-const healthCategories = [
-    { name: "Heart Health", icon: Heart },
-    { name: "Diabetes Care", icon: Droplets },
-    { name: "Skin Problems", icon: Leaf },
-    { name: "Mental Wellness", icon: Brain },
-    { name: "Bone & Joint", icon: Bone },
-    { name: "Digestive Issues", icon: Wind },
-    { name: "Child Health", icon: Baby },
-    { name: "Women's Health", icon: User },
-    { name: "Men's Health", icon: User },
-    { name: "Dental Care", icon: Smile },
-    { name: "Eye Care", icon: Eye },
-    { name: "Nutrition & Diet", icon: Leaf },
+const diseaseCategories = [
+    "Acne", "Allergies", "Alzheimer's", "Anemia", "Anxiety", "Appendicitis", "Arthritis", "Asthma",
+    "Back Pain", "Blood Pressure", "Bronchitis", "Cancer", "Cataract", "Cholesterol", "Cirrhosis",
+    "Common Cold", "COPD", "COVID-19", "Dandruff", "Dengue Fever", "Depression", "Diabetes", "Diarrhea",
+    "Eczema", "Epilepsy", "Fatty Liver", "Fibromyalgia", "Flu (Influenza)", "Food Poisoning", "Gallstones",
+    "GERD (Acid Reflux)", "Glaucoma", "Gout", "Hair Loss", "Headache", "Heart Attack", "Hepatitis",
+    "Hernia", "Herpes", "HIV/AIDS", "Hypothyroidism", "Hyperthyroidism", "IBS", "Insomnia",
+    "Jaundice", "Kidney Stones", "Leukemia", "Lung Cancer", "Lupus", "Malaria", "Measles", "Meningitis",
+    "Migraine", "Multiple Sclerosis", "Obesity", "Osteoporosis", "Pancreatitis", "Parkinson's",
+    "Piles (Hemorrhoids)", "Pneumonia", "Polio", "Psoriasis", "Rabies", "Rheumatoid Arthritis",
+    "Sinusitis", "Skin Cancer", "Stroke", "Tonsillitis", "Tuberculosis", "Typhoid", "Ulcers",
+    "UTI", "Varicose Veins", "Vertigo", "Vitamin D Deficiency", "Whooping Cough"
 ];
 
+
 export default function HealthKnowledgePage() {
-    const [userQuery, setUserQuery] = useState('');
-    const [fileName, setFileName] = useState('');
-    const [analysisResult, setAnalysisResult] = useState<HealthAnalysisOutput | null>(null);
+    const [selectedDisease, setSelectedDisease] = useState<string | null>(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [analysisResult, setAnalysisResult] = useState<DiseaseInfoOutput | null>(null);
     const [isPending, startTransition] = useTransition();
-    const [dataUri, setDataUri] = useState<string | null>(null);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            setFileName(file.name);
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setDataUri(e.target?.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleRunAnalysis = () => {
-        if (!userQuery && !dataUri) return;
+    const handleDiseaseClick = (disease: string) => {
+        setSelectedDisease(disease);
+        setAnalysisResult(null); 
         startTransition(async () => {
-            const result = await analyzeHealthIssue({ 
-                query: userQuery,
-                documentDataUri: dataUri || undefined,
-                category: selectedCategory || undefined
-            });
+            const result = await getDiseaseInfo({ diseaseName: disease });
             setAnalysisResult(result);
         });
     };
 
+    const filteredDiseases = useMemo(() => {
+        return diseaseCategories.filter(disease =>
+            disease.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }, [searchTerm]);
+
     return (
-        <div className="space-y-6">
-            <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{ color: 'hsl(var(--nav-profile))' }}>Health Knowledge AI</h1>
-                <p className="text-muted-foreground mt-2">Your personal AI to search, study, and understand any health topic.</p>
-            </div>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Sparkles style={{ color: 'hsl(var(--nav-profile))' }} /> AI-Powered Health Explorer
-                    </CardTitle>
-                    <CardDescription>Ask a question or upload a document to get a simple, AI-driven analysis.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                     <div>
-                        <Label>First, select a category (optional)</Label>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
-                            {healthCategories.map((category) => (
-                                <Button
-                                    key={category.name}
-                                    variant="outline"
-                                    className={cn(
-                                        "h-auto py-3 flex-col gap-2 border-2",
-                                        selectedCategory === category.name ? "border-primary bg-primary/10" : ""
-                                    )}
-                                    onClick={() => setSelectedCategory(prev => prev === category.name ? null : category.name)}
-                                >
-                                    <category.icon className="h-6 w-6" style={{ color: selectedCategory === category.name ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))' }} />
-                                    <span className="font-semibold text-sm">{category.name}</span>
-                                </Button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label htmlFor="health-issue">Then, describe your health concern or question</Label>
-                        <Textarea
-                            id="health-issue"
-                            placeholder="e.g., What are the benefits of a Mediterranean diet for heart health?"
-                            value={userQuery}
-                            onChange={(e) => setUserQuery(e.target.value)}
-                        />
-                    </div>
-                    <div className="text-center text-sm font-semibold text-muted-foreground">OR</div>
-                    <div className="space-y-2">
-                        <Label>Upload a health document for analysis</Label>
-                        <div className="flex items-center gap-2">
-                            <Button asChild variant="outline" className="flex-1">
-                                <label htmlFor="health-doc-upload" className="cursor-pointer">
-                                    <Upload className="mr-2 h-4 w-4" />
-                                    {fileName || 'Choose File'}
-                                </label>
-                            </Button>
-                            <input id="health-doc-upload" type="file" className="hidden" onChange={handleFileChange} />
-                        </div>
-                    </div>
-                </CardContent>
-                <CardFooter>
-                    <Button onClick={handleRunAnalysis} disabled={isPending || (!userQuery && !fileName)} style={{ backgroundColor: 'hsl(var(--nav-profile))' }} className="w-full">
-                        {isPending ? (
-                            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...</>
-                        ) : (
-                            <><Sparkles className="mr-2 h-4 w-4" /> Get AI Analysis</>
-                        )}
-                    </Button>
-                </CardFooter>
-            </Card>
-
-            {isPending && (
-                <div className="flex items-center justify-center rounded-lg border bg-muted/50 p-8">
-                    <Loader2 className="h-8 w-8 animate-spin" style={{ color: 'hsl(var(--nav-profile))' }} />
-                </div>
-            )}
-
-            {analysisResult && (
+        <div className="grid lg:grid-cols-3 gap-6 items-start">
+            <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-24">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2">AI Analysis Result</CardTitle>
+                        <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}>
+                            <BookOpenCheck /> Health Encyclopedia
+                        </CardTitle>
+                        <CardDescription>Select a topic to learn more.</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div>
-                            <h3 className="font-semibold text-lg mb-2">Summary</h3>
-                            <p className="text-muted-foreground">{analysisResult.summary}</p>
+                    <CardContent>
+                        <div className="relative mb-4">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                type="search"
+                                placeholder="Search diseases..."
+                                className="pl-8"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
                         </div>
-                        <div>
-                            <h3 className="font-semibold text-lg mb-2">Potential Next Steps</h3>
-                            <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                                {analysisResult.nextSteps.map((step, index) => (
-                                    <li key={index}>{step}</li>
+                        <ScrollArea className="h-[60vh]">
+                            <div className="flex flex-wrap gap-2">
+                                {filteredDiseases.map((disease) => (
+                                    <Button
+                                        key={disease}
+                                        variant={selectedDisease === disease ? "default" : "outline"}
+                                        size="sm"
+                                        className={cn("text-xs h-auto py-1 px-2", selectedDisease === disease ? "bg-primary" : "")}
+                                        style={selectedDisease === disease ? {backgroundColor: 'hsl(var(--nav-profile))'} : {}}
+                                        onClick={() => handleDiseaseClick(disease)}
+                                        disabled={isPending && selectedDisease === disease}
+                                    >
+                                        {isPending && selectedDisease === disease ? <Loader2 className="mr-2 h-3 w-3 animate-spin"/> : null}
+                                        {disease}
+                                    </Button>
                                 ))}
-                            </ul>
-                        </div>
-                        <Alert variant="destructive">
-                            <BookOpenCheck className="h-4 w-4" />
-                            <AlertTitle>Disclaimer</AlertTitle>
-                            <AlertDescription>
-                                This AI analysis is for informational purposes only and is not a substitute for professional medical advice. Always consult a qualified doctor.
-                            </AlertDescription>
-                        </Alert>
+                            </div>
+                        </ScrollArea>
                     </CardContent>
                 </Card>
-            )}
+            </div>
+
+            <div className="lg:col-span-2 space-y-6">
+                {isPending && (
+                    <Card className="flex flex-col items-center justify-center p-8 min-h-[50vh]">
+                        <Loader2 className="h-12 w-12 animate-spin mb-4" style={{ color: 'hsl(var(--nav-profile))' }} />
+                        <h2 className="text-xl font-bold">Loading information for {selectedDisease}...</h2>
+                        <p className="text-muted-foreground">Our AI is preparing the data for you.</p>
+                    </Card>
+                )}
+
+                {!selectedDisease && !isPending && (
+                    <Card className="flex flex-col items-center justify-center text-center p-8 min-h-[50vh]">
+                        <BookOpenCheck className="h-16 w-16 text-muted-foreground mb-4" />
+                        <h2 className="text-xl font-bold">Welcome to the Health Encyclopedia</h2>
+                        <p className="text-muted-foreground">Select a disease from the list to get started.</p>
+                    </Card>
+                )}
+
+                {analysisResult && !isPending && selectedDisease && (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="text-2xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>{selectedDisease}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><FileText className="h-5 w-5"/>Summary</h3>
+                                <p className="text-muted-foreground">{analysisResult.summary}</p>
+                            </div>
+                            
+                            <div>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Heart className="h-5 w-5"/>Common Symptoms</h3>
+                                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                                    {analysisResult.symptoms.map((symptom, index) => <li key={index}>{symptom}</li>)}
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Utensils className="h-5 w-5"/>Recommended Diet</h3>
+                                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                                    {analysisResult.recommendedDiet.map((item, index) => <li key={index}>{item}</li>)}
+                                </ul>
+                            </div>
+                            
+                            <div>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Stethoscope className="h-5 w-5"/>Recommended Tests</h3>
+                                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                                    {analysisResult.recommendedTests.map((test, index) => <li key={index}>{test}</li>)}
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><ShieldAlert className="h-5 w-5"/>Affected Organs (If Neglected)</h3>
+                                <p className="text-muted-foreground">{analysisResult.affectedOrgans}</p>
+                            </div>
+
+                            <Alert variant="destructive">
+                                <AlertTriangle className="h-4 w-4" />
+                                <AlertTitle>Disclaimer</AlertTitle>
+                                <AlertDescription>
+                                    This AI-generated information is for educational purposes only. It is not a substitute for professional medical advice. Always consult a qualified doctor for diagnosis and treatment.
+                                </AlertDescription>
+                            </Alert>
+                        </CardContent>
+                    </Card>
+                )}
+            </div>
         </div>
     );
 }
