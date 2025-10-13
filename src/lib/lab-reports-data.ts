@@ -5,6 +5,7 @@ export const labReports = [
   { id: "rep4", testName: "Thyroid Function Test", date: "2024-07-16", doctor: "Dr. Priya Sharma", status: "Processing" },
   { id: "rep5", testName: "Urinalysis", date: "2024-07-17", doctor: "Dr. Rajesh Kumar", status: "Pending" },
   { id: "rep6", testName: "HbA1c", date: "2024-06-20", doctor: "Dr. Rajesh Kumar", status: "Completed" },
+  { id: "rep13", testName: "Vitamin D Level", date: "2024-06-20", doctor: "Dr. Rajesh Kumar", status: "Completed" },
   { id: "rep7", testName: "Complete Blood Count", date: "2024-04-10", doctor: "Dr. Rajesh Kumar", status: "Completed" },
   { id: "rep8", testName: "Liver Function Test", date: "2024-01-05", doctor: "Dr. Priya Sharma", status: "Completed" },
   { id: "rep9", testName: "Chest X-Ray", date: "2024-07-10", doctor: "Dr. Rajesh Kumar", status: "Completed", type: "x-ray" },
