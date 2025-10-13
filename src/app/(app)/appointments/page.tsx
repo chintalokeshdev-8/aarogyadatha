@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -157,7 +157,7 @@ const doctors = [
         dataAiHint: "male doctor professional",
         opFee: 1000,
         availability: "Mon - Sat, 11 AM - 4 PM",
-        consultationType: "Offline (Hospital Visit)",
+        consultationType: ["Online", "Offline (Hospital Visit)"],
     },
     {
         name: "Dr. Padmavathi",
@@ -210,7 +210,7 @@ const doctors = [
         recommended: true,
         opFee: 1500,
         availability: "Mon - Sat, 10 AM - 5 PM",
-        consultationType: "Offline (Hospital Visit)",
+        consultationType: ["Online", "Offline (Hospital Visit)"],
     },
     {
         name: "Dr. Anjali",
@@ -812,7 +812,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                         </Button>
                     )}
                     <DialogTitle className={cn(step === 2 && "text-center flex-1")}>
-                        {step === 1 ? `Book ${doctor.consultationType} Consult` : 'Payment Summary'}
+                        {step === 1 ? `Book Consult` : 'Payment Summary'}
                     </DialogTitle>
                      <DialogClose asChild>
                         <Button variant="ghost" size="icon" className="ml-auto absolute right-4 top-4">
@@ -864,7 +864,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                              <Card>
                                 <CardContent className="p-4 flex justify-between items-center">
                                     <div>
-                                        <h3 className="font-bold">1 {doctor.consultationType} Consultation</h3>
+                                        <h3 className="font-bold">1 Consultation</h3>
                                         <p className="text-sm text-muted-foreground">Dr. {doctor.name}</p>
                                     </div>
                                     <p className="text-xl font-bold">₹{doctor.opFee.toFixed(2)}</p>
@@ -1106,7 +1106,7 @@ export default function AppointmentsPage() {
         <div className="space-y-6">
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <div className="border-2 rounded-lg p-1 bg-muted border-black">
+                 <div className="border-2 rounded-lg p-1 bg-muted border-black">
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
                         <TabsTrigger value="history">Appointments History</TabsTrigger>
@@ -1189,22 +1189,34 @@ export default function AppointmentsPage() {
                                                 </div>
                                             </div>
                                             <div className="mt-4 space-y-2 text-sm">
-                                                <p><strong>Focus:</strong> {doctor.mainDealing}</p>
-                                            </div>
-                                            <div className="p-4 mt-2 rounded-lg bg-muted/50 border-2 border-black">
-                                                <h4 className="font-semibold mb-2 flex items-center gap-2">
-                                                    {doctor.consultationType === 'Online' ? <Wifi style={{color: 'hsl(var(--nav-appointments))'}}/> : <Hospital style={{color: 'hsl(var(--nav-appointments))'}}/>}
-                                                    Availability
-                                                </h4>
-                                                <div className="space-y-2 text-sm">
-                                                    <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {doctor.availability}</p>
-                                                    <p className="flex items-center gap-2 font-semibold" style={{color: 'hsl(var(--nav-appointments))'}}>
-                                                        {doctor.consultationType === 'Online' ? <Wifi className="h-4 w-4"/> : <Hospital className="h-4 w-4"/>}
-                                                        {doctor.consultationType}
-                                                    </p>
+                                                <p><strong className="text-base">Focus:</strong> {doctor.mainDealing}</p>
+                                                <div className="flex items-center gap-2 text-muted-foreground">
+                                                  <Briefcase className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-appointments))'}} />
+                                                  <p className="font-semibold text-xs">{doctor.surgeries}</p>
                                                 </div>
                                             </div>
-                                             <div className="mt-4 flex flex-col sm:flex-row justify-between items-start gap-2">
+                                            <div className="mt-4 p-3 rounded-lg bg-muted/50 border-2 border-black flex flex-wrap items-center justify-between gap-2 text-sm">
+                                                <div className="flex items-center gap-2">
+                                                    <Clock className="h-4 w-4" />
+                                                    <span className="font-semibold text-xs">{doctor.availability}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    {Array.isArray(doctor.consultationType) ? (
+                                                        doctor.consultationType.map(type => (
+                                                            <Badge key={type} variant="outline" className="text-xs font-semibold" style={{borderColor: 'hsl(var(--nav-appointments))', color: 'hsl(var(--nav-appointments))'}}>
+                                                                {type === 'Online' ? <Wifi className="h-3 w-3 mr-1" /> : <Hospital className="h-3 w-3 mr-1" />}
+                                                                {type}
+                                                            </Badge>
+                                                        ))
+                                                    ) : (
+                                                        <Badge variant="outline" className="text-xs font-semibold" style={{borderColor: 'hsl(var(--nav-appointments))', color: 'hsl(var(--nav-appointments))'}}>
+                                                            {doctor.consultationType === 'Online' ? <Wifi className="h-3 w-3 mr-1" /> : <Hospital className="h-3 w-3 mr-1" />}
+                                                            {doctor.consultationType}
+                                                        </Badge>
+                                                    )}
+                                                </div>
+                                            </div>
+                                             <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-2">
                                                 <div className="flex items-baseline gap-2">
                                                     <p className="text-sm font-semibold text-muted-foreground">Consultation Fee:</p>
                                                     <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
@@ -1494,15 +1506,26 @@ export default function AppointmentsPage() {
                             <div className="space-y-4 py-4">
                                 <div className="p-4 rounded-lg bg-muted/50 border-2 border-black">
                                     <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                                        {selectedDoctor.consultationType === 'Online' ? <Wifi style={{color: 'hsl(var(--nav-appointments))'}}/> : <Hospital style={{color: 'hsl(var(--nav-appointments))'}}/>}
+                                        <Wifi style={{color: 'hsl(var(--nav-appointments))'}}/>
                                         Availability
                                     </h4>
                                     <div className="space-y-2 text-sm">
                                         <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {selectedDoctor.availability}</p>
-                                        <p className="flex items-center gap-2">
-                                            {selectedDoctor.consultationType === 'Online' ? <Wifi className="h-4 w-4"/> : <Hospital className="h-4 w-4"/>}
-                                            {selectedDoctor.consultationType}
-                                        </p>
+                                        <div className="flex items-center gap-2">
+                                            {Array.isArray(selectedDoctor.consultationType) ? (
+                                                selectedDoctor.consultationType.map((type: string) => (
+                                                    <span key={type} className="flex items-center gap-1.5 font-semibold">
+                                                        {type === 'Online' ? <Wifi className="h-4 w-4"/> : <Hospital className="h-4 w-4"/>}
+                                                        {type}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <span className="flex items-center gap-1.5 font-semibold">
+                                                    {selectedDoctor.consultationType === 'Online' ? <Wifi className="h-4 w-4"/> : <Hospital className="h-4 w-4"/>}
+                                                    {selectedDoctor.consultationType}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="p-4 rounded-lg bg-muted/50 border-2 border-black">
@@ -1584,5 +1607,6 @@ export default function AppointmentsPage() {
 }
 
     
+
 
 
