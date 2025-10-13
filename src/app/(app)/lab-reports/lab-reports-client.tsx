@@ -387,6 +387,9 @@ export function LabReportsClient({
                                     mode="single"
                                     selected={date}
                                     onSelect={setDate}
+                                    captionLayout="dropdown-buttons"
+                                    fromYear={new Date().getFullYear() - 10}
+                                    toYear={new Date().getFullYear()}
                                     initialFocus
                                     disabled={(d) => d > new Date()}
                                 />
@@ -485,10 +488,10 @@ export function LabReportsClient({
 
     return (
         <div className="space-y-6">
-            <div className="flex items-baseline justify-between gap-4">
-                <div>
+            <div className="flex items-center justify-between gap-4">
+                 <div className="flex-1">
                     <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics & Reports</h1>
-                </div>
+                 </div>
             </div>
             
             <Tabs defaultValue="my-reports" className="w-full">
