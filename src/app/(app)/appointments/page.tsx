@@ -738,7 +738,7 @@ function BookingDialog({ open, onOpenChange, doctor, onContinue }: { open: boole
 
         const appointmentDetails = {
             doctor,
-            date: selectedDate.toISOString(),
+            date: selectedDate,
             time: selectedTime,
             fee: doctor.opFee,
         };
@@ -808,6 +808,9 @@ function BookingDialog({ open, onOpenChange, doctor, onContinue }: { open: boole
 function AppointmentSummaryDialog({ open, onOpenChange, appointmentDetails }: { open: boolean, onOpenChange: (open: boolean) => void, appointmentDetails: any | null }) {
     if (!appointmentDetails) return null;
     
+    const gst = appointmentDetails.fee * 0.18;
+    const total = appointmentDetails.fee + gst;
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md p-0 flex flex-col h-full sm:h-auto max-h-[90vh]">
@@ -815,97 +818,49 @@ function AppointmentSummaryDialog({ open, onOpenChange, appointmentDetails }: { 
                     <Button variant="ghost" size="icon" onClick={() => onOpenChange(false)}>
                         <ArrowLeft className="h-5 w-5" />
                     </Button>
-                    <DialogTitle className="mx-auto">Summary</DialogTitle>
+                    <DialogTitle className="mx-auto">Payment Summary</DialogTitle>
                     <div className='w-9'></div>
                 </DialogHeader>
-                <div className="flex-1 px-4 space-y-4 overflow-y-auto">
-                     <Collapsible defaultOpen>
-                        <CollapsibleTrigger className="flex justify-between items-center w-full py-2">
-                           <h3 className="text-lg font-semibold">Patient's Contact Number</h3>
-                           <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="space-y-4 pb-4">
-                           <p className="text-sm text-muted-foreground">You will receive the call on:</p>
-                           <div className="flex items-center justify-between p-3 border rounded-lg">
-                               <div className="flex items-center gap-2">
-                                   <span className="font-semibold text-muted-foreground">+91</span>
-                                   <Separator orientation="vertical" className="h-5" />
-                                   <span className="font-semibold text-lg">8008334948</span>
-                               </div>
-                               <Pencil className="h-5 w-5 text-muted-foreground cursor-pointer" />
-                           </div>
-                             <div className="p-3 bg-blue-50 text-blue-800 text-sm rounded-lg border border-blue-200">
-                                The doctor will try to reach you on this number if unable to connect via the Medibridge App.
-                            </div>
-                        </CollapsibleContent>
-                    </Collapsible>
-                    
-                     <div className="space-y-2">
-                         <Label className="font-semibold text-lg">Patient Name</Label>
-                         <Select defaultValue="lokesh-babu">
-                            <SelectTrigger className="h-12 text-base">
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="lokesh-babu">LOKESH BABU</SelectItem>
-                                <SelectItem value="other">Other Patient</SelectItem>
-                            </SelectContent>
-                        </Select>
-                     </div>
-                     
-                    <Separator />
+                <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+                    <div className="flex justify-between items-center text-lg font-semibold">
+                        <p>{format(appointmentDetails.date, "EEEE, d MMM")}</p>
+                        <p>{appointmentDetails.time}</p>
+                    </div>
 
-                    <Collapsible>
-                        <CollapsibleTrigger className="flex justify-between items-center w-full py-2">
-                            <h3 className="text-lg font-semibold">Offers and discounts</h3>
-                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="pb-4">
-                            <p className="text-muted-foreground text-sm">No offers available at this moment.</p>
-                        </CollapsibleContent>
-                    </Collapsible>
+                    <Card>
+                        <CardContent className="p-4 flex justify-between items-center">
+                             <div>
+                                <p className="font-bold">1 Online Consultation</p>
+                                <p className="text-sm text-muted-foreground">For {appointmentDetails.doctor.name}</p>
+                             </div>
+                             <p className="font-bold text-lg">₹{appointmentDetails.fee.toFixed(2)}</p>
+                        </CardContent>
+                    </Card>
                     
-                    <Separator />
-
-                     <Collapsible>
-                        <CollapsibleTrigger className="flex justify-between items-center w-full py-2">
-                           <h3 className="text-lg font-semibold">Total Charges</h3>
-                           <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                    <Collapsible defaultOpen className="space-y-2">
+                        <CollapsibleTrigger className="flex justify-between items-center w-full text-sm font-semibold text-muted-foreground">
+                            <span>Payment Details</span>
+                           <ChevronDown className="h-4 w-4 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
                         </CollapsibleTrigger>
-                        <CollapsibleContent className="pb-4 space-y-2">
+                        <CollapsibleContent className="space-y-2 pt-2">
                             <div className="flex justify-between text-sm">
-                                <p>Consultation Fee</p>
-                                <p>₹{appointmentDetails.fee}</p>
+                                <p className="text-muted-foreground">Consultation Fee</p>
+                                <p>₹{appointmentDetails.fee.toFixed(2)}</p>
                             </div>
                              <div className="flex justify-between text-sm">
-                                <p className="text-muted-foreground">GST</p>
-                                <p className="text-muted-foreground">₹{(appointmentDetails.fee * 0.18).toFixed(2)}</p>
-                            </div>
-                            <Separator />
-                             <div className="flex justify-between font-bold text-base">
-                                <p>To Pay</p>
-                                <p>₹{(appointmentDetails.fee * 1.18).toFixed(2)}</p>
+                                <p className="text-muted-foreground">Booking charge (inc. of GST)</p>
+                                <p>₹{gst.toFixed(2)}</p>
                             </div>
                         </CollapsibleContent>
                     </Collapsible>
                     
-                     <p className="text-xs text-muted-foreground text-center pt-4">
-                        By proceeding to avail a consultation, you agree to
-                        Medibridge's <a href="#" className="text-primary underline">Terms of use</a>.
-                    </p>
+                    <Separator />
                 </div>
                  <DialogFooter className="p-4 border-t bg-background sticky bottom-0">
                     <div className="flex justify-between items-center w-full">
                         <div>
-                             <p className="text-xs text-muted-foreground">Consult for:</p>
-                             <div className="flex items-center gap-2">
-                                <Avatar className="h-6 w-6">
-                                    <AvatarFallback>LB</AvatarFallback>
-                                </Avatar>
-                                <span className="font-bold">LOKESH BABU</span>
-                             </div>
-                             <p className="font-bold text-lg">₹{(appointmentDetails.fee * 1.18).toFixed(2)}</p>
-                             <p className="text-xs text-muted-foreground">To Pay</p>
+                            <p className="font-bold text-lg">₹{total.toFixed(2)}</p>
+                            <p className="text-xs text-muted-foreground">Total Amount</p>
                         </div>
                         <Button className="h-12 px-8 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}}>
                            Pay & Confirm
@@ -1047,7 +1002,7 @@ export default function AppointmentsPage() {
     const filteredAppointments = useMemo(() => {
         return appointments.filter((appt) => {
             const doctorMatch = filterDoctor === 'all' || appt.initialDoctor === filterDoctor || appt.prescriptions.some(p => p.doctor === filterDoctor);
-            const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(filterDate, 'yyyy-MM-dd');
+            const dateMatch = !filterDate || format(new Date(appt.date), 'yyyy-MM-dd') === format(new Date(filterDate), 'yyyy-MM-dd');
     
             if (!searchTerm) {
                 return doctorMatch && dateMatch;
@@ -1128,8 +1083,8 @@ export default function AppointmentsPage() {
 
             <Tabs defaultValue="find-doctor" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 p-1.5 rounded-lg border-2 border-primary/20 bg-muted">
-                    <TabsTrigger value="find-doctor" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Find a Doctor</TabsTrigger>
-                    <TabsTrigger value="history" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md rounded-md text-base font-bold py-2.5">Appointments History</TabsTrigger>
+                    <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
+                    <TabsTrigger value="history">Appointments History</TabsTrigger>
                 </TabsList>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
