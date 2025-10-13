@@ -167,7 +167,6 @@ export default function InsurancesPage() {
     const [searchTerm, setSearchTerm] = React.useState('');
     const [showUhid, setShowUhid] = React.useState(false);
     const [showAbha, setShowAbha] = React.useState(false);
-    const [zoomedImage, setZoomedImage] = React.useState<string | null>(null);
 
     const filteredHospitals = networkHospitals.filter(hospital =>
         hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -260,6 +259,9 @@ export default function InsurancesPage() {
                                      </div>
                                 </div>
                                 <div className="mt-4 flex gap-2 justify-end">
+                                    <Button size="sm" variant="outline">
+                                        <Download className="mr-2 h-4 w-4"/> Download
+                                    </Button>
                                     <ViewCardDialog 
                                         frontImage="https://abdm.gov.in/assets/img/ABHA_Card_new.png"
                                         backImage="https://picsum.photos/seed/abha_back/856/540"
@@ -307,6 +309,9 @@ export default function InsurancesPage() {
                                      </div>
                                 </div>
                                  <div className="mt-4 flex gap-2 justify-end">
+                                    <Button size="sm" variant="outline">
+                                        <Download className="mr-2 h-4 w-4"/> Download
+                                    </Button>
                                     <ViewCardDialog 
                                         frontImage="https://picsum.photos/seed/aarogyasri/856/540"
                                         backImage="https://picsum.photos/seed/aarogyasri_back/856/540"
@@ -329,31 +334,8 @@ export default function InsurancesPage() {
                     </div>
                 </CardContent>
             </Card>
-
-            <Dialog open={zoomedImage !== null} onOpenChange={() => setZoomedImage(null)}>
-                <DialogContent className="max-w-4xl h-[80vh] flex flex-col p-0 border-0">
-                     <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm flex-row items-center justify-between">
-                        <DialogTitle>Card Viewer</DialogTitle>
-                        <DialogClose asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                                <X className="h-5 w-5" />
-                            </Button>
-                        </DialogClose>
-                     </DialogHeader>
-                    <div className="flex-1 relative bg-muted/20 flex items-center justify-center p-4">
-                        {zoomedImage && (
-                            <Image
-                                src={zoomedImage}
-                                alt="Zoomed ID Card"
-                                fill
-                                style={{objectFit: "contain"}}
-                                className="rounded-lg"
-                            />
-                        )}
-                    </div>
-                </DialogContent>
-            </Dialog>
-
         </div>
     );
 }
+
+    
