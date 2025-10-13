@@ -15,6 +15,7 @@ import { z } from 'zod';
 const HealthAnalysisInputSchema = z.object({
   query: z.string().describe('The user\'s health-related question or description of their issue.'),
   documentDataUri: z.string().describe("A document or image as a data URI. Expected format: 'data:<mimetype>;base64,<encoded_data>'.").optional(),
+  category: z.string().describe('The selected health category for focused analysis.').optional(),
 });
 export type HealthAnalysisInput = z.infer<typeof HealthAnalysisInputSchema>;
 
@@ -29,6 +30,10 @@ const prompt = ai.definePrompt({
   input: { schema: HealthAnalysisInputSchema },
   output: { schema: HealthAnalysisOutputSchema },
   prompt: `You are an AI health assistant. Your role is to provide general educational information based on a user's query or uploaded document. You must not provide a medical diagnosis.
+
+  {{#if category}}
+  The user has selected the '{{{category}}}' category. Act as an expert on this topic and provide a detailed, focused analysis based on their query.
+  {{/if}}
 
   Analyze the user's input:
   - User's question: {{{query}}}

@@ -7,9 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Sparkles, Loader2, BookOpenCheck } from 'lucide-react';
+import { Upload, Sparkles, Loader2, BookOpenCheck, Heart, Brain, Bone, Leaf, Droplets, Wind } from 'lucide-react';
 import { HealthAnalysisOutput, analyzeHealthIssue } from '@/ai/flows/ai-health-knowledge';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { cn } from '@/lib/utils';
+
+const healthCategories = [
+    { name: "Heart Health", icon: Heart },
+    { name: "Diabetes Care", icon: Droplets },
+    { name: "Skin Problems", icon: Leaf },
+    { name: "Mental Wellness", icon: Brain },
+    { name: "Bone & Joint", icon: Bone },
+    { name: "Digestive Issues", icon: Wind },
+];
 
 export default function HealthKnowledgePage() {
     const [userQuery, setUserQuery] = useState('');
@@ -17,6 +27,7 @@ export default function HealthKnowledgePage() {
     const [analysisResult, setAnalysisResult] = useState<HealthAnalysisOutput | null>(null);
     const [isPending, startTransition] = useTransition();
     const [dataUri, setDataUri] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -35,7 +46,8 @@ export default function HealthKnowledgePage() {
         startTransition(async () => {
             const result = await analyzeHealthIssue({ 
                 query: userQuery,
-                documentDataUri: dataUri || undefined
+                documentDataUri: dataUri || undefined,
+                category: selectedCategory || undefined
             });
             setAnalysisResult(result);
         });
@@ -53,14 +65,34 @@ export default function HealthKnowledgePage() {
                     <CardTitle className="flex items-center gap-2">
                         <Sparkles style={{ color: 'hsl(var(--nav-profile))' }} /> AI-Powered Health Explorer
                     </CardTitle>
-                    <CardDescription>Ask a question or upload a document (like a lab report) to get a simple, AI-driven analysis.</CardDescription>
+                    <CardDescription>Ask a question or upload a document to get a simple, AI-driven analysis.</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-6">
+                     <div>
+                        <Label>First, select a category (optional)</Label>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+                            {healthCategories.map((category) => (
+                                <Button
+                                    key={category.name}
+                                    variant="outline"
+                                    className={cn(
+                                        "h-auto py-3 flex-col gap-2 border-2",
+                                        selectedCategory === category.name ? "border-primary bg-primary/10" : ""
+                                    )}
+                                    onClick={() => setSelectedCategory(prev => prev === category.name ? null : category.name)}
+                                >
+                                    <category.icon className="h-6 w-6" style={{ color: selectedCategory === category.name ? 'hsl(var(--primary))' : 'hsl(var(--muted-foreground))' }} />
+                                    <span className="font-semibold text-sm">{category.name}</span>
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+
                     <div className="space-y-2">
-                        <Label htmlFor="health-issue">Describe your health concern or question</Label>
+                        <Label htmlFor="health-issue">Then, describe your health concern or question</Label>
                         <Textarea
                             id="health-issue"
-                            placeholder="e.g., What are the benefits of a Mediterranean diet?"
+                            placeholder="e.g., What are the benefits of a Mediterranean diet for heart health?"
                             value={userQuery}
                             onChange={(e) => setUserQuery(e.target.value)}
                         />
