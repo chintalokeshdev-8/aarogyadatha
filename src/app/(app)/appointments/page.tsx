@@ -1155,12 +1155,10 @@ export default function AppointmentsPage() {
                                                 <p><strong>Surgeries:</strong> {doctor.surgeries}</p>
                                                 <p><strong>Focus:</strong> {doctor.mainDealing}</p>
                                             </div>
-                                             <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                                                <div className="text-center sm:text-left">
-                                                    <p className="text-xs font-semibold">Consultation Fee</p>
-                                                    <div className="flex items-baseline gap-2">
-                                                        <p className="text-xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
-                                                    </div>
+                                             <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+                                                <div className="flex items-baseline gap-2 self-start sm:self-center">
+                                                    <p className="text-sm font-semibold text-muted-foreground">Consultation Fee:</p>
+                                                    <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
                                                 </div>
                                                 <div className="flex w-full sm:w-auto shrink-0 gap-2">
                                                     <Button variant="outline" className="flex-1 sm:flex-auto" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
@@ -1522,7 +1520,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
-
-    
 
     
