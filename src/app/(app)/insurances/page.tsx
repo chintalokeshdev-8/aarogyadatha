@@ -41,7 +41,7 @@ const networkHospitals = [
   },
 ];
 
-function UploadIdDialog() {
+function UploadIdDialog({ idType }: { idType: 'ABHA' | 'Aarogyasri' }) {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
     const [frontFileName, setFrontFileName] = React.useState('');
     const [backFileName, setBackFileName] = React.useState('');
@@ -59,30 +59,17 @@ function UploadIdDialog() {
         <Dialog>
             <DialogTrigger asChild>
                 <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary/10 hover:text-primary">
-                    <Upload className="mr-2 h-4 w-4" /> Upload ID
+                    <Upload className="mr-2 h-4 w-4" /> Upload {idType} Card
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Upload Health ID</DialogTitle>
+                    <DialogTitle>Upload {idType} Health ID</DialogTitle>
                     <DialogDescription>
-                        Upload a photo or PDF of your government health ID card (front and back).
+                        Upload a photo or PDF of your {idType} card (front and back).
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4 py-2">
-                    <div className="space-y-2">
-                        <Label htmlFor="id-type">ID Type</Label>
-                        <Select>
-                            <SelectTrigger id="id-type" className="border">
-                                <SelectValue placeholder="Select ID Type" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="abha">ABHA Card</SelectItem>
-                                <SelectItem value="aarogyasri">Aarogyasri Card</SelectItem>
-                                <SelectItem value="other">Other</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
                      <div className="space-y-2">
                         <Label htmlFor="id-number">ID Number (Optional)</Label>
                         <Input id="id-number" placeholder="Enter the number on your card" className="border" />
@@ -93,7 +80,7 @@ function UploadIdDialog() {
                             <Button asChild variant="outline" className="flex-1">
                                 <label htmlFor="file-upload-front" className="cursor-pointer">
                                     <FileUp className="mr-2 h-4 w-4" />
-                                    {frontFileName || 'Choose File'}
+                                    {frontFileName || 'Choose Front Image'}
                                 </label>
                             </Button>
                             <input id="file-upload-front" type="file" className="hidden" onChange={(e) => setFrontFileName(e.target.files?.[0]?.name || '')} accept="image/*,.pdf" />
@@ -106,7 +93,7 @@ function UploadIdDialog() {
                             <Button asChild variant="outline" className="flex-1">
                                 <label htmlFor="file-upload-back" className="cursor-pointer">
                                     <FileUp className="mr-2 h-4 w-4" />
-                                    {backFileName || 'Choose File'}
+                                    {backFileName || 'Choose Back Image'}
                                 </label>
                             </Button>
                             <input id="file-upload-back" type="file" className="hidden" onChange={(e) => setBackFileName(e.target.files?.[0]?.name || '')} accept="image/*,.pdf" />
@@ -198,7 +185,6 @@ export default function InsurancesPage() {
                                 <CardDescription>Aarogyasri (UHID) & ABHA ID</CardDescription>
                             </div>
                         </div>
-                        <UploadIdDialog />
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -207,9 +193,10 @@ export default function InsurancesPage() {
                             <div className="flex justify-between items-center">
                                 <CardTitle>Ayushman Bharat Health Account (ABHA)</CardTitle>
                                 <div className="flex gap-2">
+                                    <UploadIdDialog idType="ABHA" />
                                      <Button variant="outline" onClick={() => setShowAbha(!showAbha)} className="border">
                                         {showAbha ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
-                                        {showAbha ? "Hide Card" : "Show Card"}
+                                        {showAbha ? "Hide" : "Show"}
                                      </Button>
                                 </div>
                             </div>
@@ -232,10 +219,10 @@ export default function InsurancesPage() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="border rounded-lg p-6 flex flex-col items-center justify-center text-center bg-muted/40 min-h-[200px]">
+                            <div className="border rounded-lg p-6 flex flex-col items-center justify-center text-center bg-muted/40 min-h-[150px]">
                                 <ShieldAlert className="h-10 w-10 text-muted-foreground mb-2"/>
                                 <h3 className="font-bold">ABHA Card Hidden</h3>
-                                <p className="text-sm text-muted-foreground">Click "Show Card" to view your ABHA details.</p>
+                                <p className="text-sm text-muted-foreground">Click "Show" to view your ABHA details.</p>
                             </div>
                         )}
                     </div>
@@ -246,10 +233,13 @@ export default function InsurancesPage() {
                         <CardHeader className="p-0">
                            <div className="flex justify-between items-center">
                                 <CardTitle>Aarogyasri Health Card (UHID)</CardTitle>
-                                <Button variant="outline" onClick={() => setShowUhid(!showUhid)} className="border">
-                                    {showUhid ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
-                                    {showUhid ? "Hide Card" : "Show Card"}
-                                </Button>
+                                <div className="flex gap-2">
+                                    <UploadIdDialog idType="Aarogyasri" />
+                                    <Button variant="outline" onClick={() => setShowUhid(!showUhid)} className="border">
+                                        {showUhid ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
+                                        {showUhid ? "Hide" : "Show"}
+                                    </Button>
+                                </div>
                             </div>
                         </CardHeader>
                         {showUhid ? (
@@ -270,10 +260,10 @@ export default function InsurancesPage() {
                                 </div>
                             </div>
                         ) : (
-                            <div className="border rounded-lg p-6 flex flex-col items-center justify-center text-center bg-muted/40 min-h-[200px]">
+                            <div className="border rounded-lg p-6 flex flex-col items-center justify-center text-center bg-muted/40 min-h-[150px]">
                                 <ShieldAlert className="h-10 w-10 text-muted-foreground mb-2"/>
                                 <h3 className="font-bold">Aarogyasri Card Hidden</h3>
-                                <p className="text-sm text-muted-foreground">Click "Show Card" to view your Aarogyasri details.</p>
+                                <p className="text-sm text-muted-foreground">Click "Show" to view your Aarogyasri details.</p>
                             </div>
                         )}
                     </div>
@@ -307,4 +297,4 @@ export default function InsurancesPage() {
         </div>
     );
 
-    
+}
