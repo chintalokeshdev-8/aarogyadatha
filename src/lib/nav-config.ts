@@ -15,6 +15,7 @@ import {
   Shield,
   User,
   Globe,
+  BookOpenCheck,
 } from "lucide-react";
 import { PregnantLadyIcon } from "@/components/icons/pregnant-lady-icon";
 
@@ -36,6 +37,7 @@ export const allMenuItems: MenuItem[] = [
   { id: 'opd', href: "/opd-queue", label: "OP STATUS", telugu: "OP స్థితి", icon: MessageSquare, color: "hsl(var(--nav-chat))", defaultVisible: true, customizable: false },
   { id: 'diagnostics', href: "/lab-reports", label: "Diagnostics", telugu: "రిపోర్టులు", icon: TestTube, color: "hsl(var(--nav-diagnostics))", defaultVisible: true, customizable: false },
   { id: 'medicines', href: "/medicines", label: "Medicines", telugu: "మందులు", icon: Pill, color: "hsl(var(--nav-medicines))", defaultVisible: true, customizable: false },
+  { id: 'healthKnowledge', href: "/health-knowledge", label: "Health Knowledge", telugu: "ఆరోగ్య పరిజ్ఞానం", icon: BookOpenCheck, color: "hsl(var(--nav-profile))", defaultVisible: true, customizable: true },
   { id: 'surgery', href: '/surgery-care', label: 'Surgery Care', telugu: 'సర్జరీ కేర్', icon: Stethoscope, color: 'hsl(var(--nav-appointments))', defaultVisible: false, customizable: true },
   { id: 'bloodBank', href: "/blood-bank", label: "Blood Bank", telugu: "రక్త నిధి", icon: Droplets, color: "hsl(var(--nav-blood-bank))", defaultVisible: false, customizable: true },
   { id: 'healthTracker', href: "/health-tracker", label: "Health Tracker", telugu: "ఆరోగ్య ట్రాకర్", icon: Heart, color: "hsl(var(--nav-profile))", defaultVisible: false, customizable: true },
@@ -45,3 +47,4 @@ export const allMenuItems: MenuItem[] = [
   { id: 'profile', href: "/profile", label: "Profile", telugu: "ప్రొఫైల్", icon: User, color: "hsl(var(--nav-profile))", defaultVisible: true, customizable: true },
   { id: 'emergency', href: "/emergency", label: "Emergency", telugu: "తక్షణ సహాయం", icon: Siren, color: "hsl(var(--destructive))", defaultVisible: true, customizable: false },
 ];
+
