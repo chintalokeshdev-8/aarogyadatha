@@ -448,22 +448,23 @@ export function LabReportsClient({
                     <UploadReportDialog onUpload={onUpload} />
                 </div>
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
-                    <Card key={date} className='border'>
-                        <CardHeader className='pb-4'>
-                             <div className="flex justify-between items-start gap-2">
-                                <div className='flex-1'>
+                    <Collapsible key={date} className="border rounded-lg bg-background">
+                        <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors">
+                            <div className="flex justify-between items-start gap-2">
+                                <div className='flex-1 text-left'>
                                     <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
                                     <CardDescription>Dr. {getDoctorsForDate(reports)}</CardDescription>
                                 </div>
                                 <div className='flex gap-2 items-center flex-shrink-0'>
-                                    <UploadReportDialog onUpload={onUpload} initialDate={date} />
-                                    <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10 text-xs" onClick={() => onAnalyze(reports)}>
+                                     <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
                                         <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
                                     </Button>
+                                    <UploadReportDialog onUpload={onUpload} initialDate={date} />
+                                    <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
                                 </div>
                             </div>
-                        </CardHeader>
-                        <CardContent>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="p-4 border-t space-y-2 bg-muted/20">
                             <div className='divide-y'>
                                 {reports.map((report) => (
                                     <div key={report.id} className="py-3 first:pt-0 last:pb-0">
@@ -494,8 +495,8 @@ export function LabReportsClient({
                                                         </Dialog>
                                                         <AlertDialog>
                                                             <AlertDialogTrigger asChild>
-                                                                <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive">
-                                                                    <Trash2 className="h-4 w-4" />
+                                                                <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                                    <Trash2 className="h-4 w-4 text-destructive" />
                                                                 </Button>
                                                             </AlertDialogTrigger>
                                                             <AlertDialogContent>
@@ -519,8 +520,8 @@ export function LabReportsClient({
                                     </div>
                                 ))}
                             </div>
-                        </CardContent>
-                    </Card>
+                        </CollapsibleContent>
+                    </Collapsible>
                 )) : (
                     <div className="text-center p-8 text-muted-foreground">No reports found.</div>
                 )}
@@ -722,7 +723,7 @@ export function LabReportsClient({
                 <DialogContent className="sm:max-w-2xl">
                     <DialogHeader>
                         <DialogTitle>View Report: {selectedReport?.testName}</DialogTitle>
-                        <DialogDescription>
+                         <DialogDescription>
                             From {selectedReport?.labName || 'N/A'} on {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''}
                         </DialogDescription>
                     </DialogHeader>
@@ -858,5 +859,3 @@ export function LabReportsClient({
         </div>
     );
 }
-
-    
