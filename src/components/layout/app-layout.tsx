@@ -237,24 +237,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
 
   const showMobileSearch = isMobile && isSearchOpen;
-  
-  const getCustomizableItem = (id: string) => {
-    const item = allMenuItems.find(i => i.id === id);
-    if (!item || !item.customizable) return null;
-    return (
-      <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="p-3 justify-between">
-          <div className="flex items-center gap-3">
-              <item.icon className="mr-0 text-primary" style={{color: item.color}}/>
-              <span className="font-semibold">{item.label}</span>
-          </div>
-          <Switch
-              checked={navSettings[item.id] === undefined ? item.defaultVisible : navSettings[item.id]}
-              onCheckedChange={(checked) => handleToggle(item.id, checked)}
-          />
-      </DropdownMenuItem>
-    );
-  };
-
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -329,13 +311,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         </DropdownMenuItem>
                                     </DialogTrigger>
                                     
-                                    {getCustomizableItem('profile')}
-                                    {getCustomizableItem('insurances')}
-                                    {getCustomizableItem('surgery')}
-                                    {getCustomizableItem('bloodBank')}
-                                    {getCustomizableItem('healthTracker')}
-                                    {getCustomizableItem('jrDoctors')}
-                                    {getCustomizableItem('pregnancy')}
+                                    {allMenuItems.filter(item => item.id !== 'home' && item.id !== 'symptoms' && item.id !== 'appointments' && item.id !== 'opd' && item.id !== 'diagnostics' && item.id !== 'medicines' && item.id !== 'emergency').map(item => (
+                                        <Link href={item.href} key={item.id} passHref>
+                                            <DropdownMenuItem className="p-3">
+                                                <item.icon className="mr-3" style={{color: item.color}} />
+                                                <span className="font-semibold">{item.label}</span>
+                                            </DropdownMenuItem>
+                                        </Link>
+                                    ))}
                                     
                                     <Link href="/settings" passHref>
                                         <DropdownMenuItem className="p-3">
