@@ -6,10 +6,12 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Mail, MapPin, Pencil, User, Heart, Droplets, Phone, Settings, CreditCard } from "lucide-react";
+import { Mail, MapPin, Pencil, User, Heart, Droplets, Phone, Settings, CreditCard, Shield } from "lucide-react";
 import { allMenuItems, type MenuItem } from "@/lib/nav-config";
 import { useToast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+
 
 function CustomizeNavigationCard() {
     const [navSettings, setNavSettings] = useState<Record<string, boolean>>({});
@@ -73,7 +75,8 @@ export default function ProfilePage() {
     return (
         <div className="space-y-8">
             <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-4 sm:p-6 space-y-6">
+                    {/* Profile Header */}
                     <div className="flex flex-col sm:flex-row items-center gap-4">
                         <Avatar className="h-20 w-20 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
                             <AvatarImage src="/images/profile.jpg" />
@@ -88,50 +91,52 @@ export default function ProfilePage() {
                                 <div className="flex items-center gap-2"><Droplets className="h-4 w-4" /> O+ Positive</div>
                             </div>
                         </div>
-                        <Button style={{backgroundColor: 'hsl(var(--nav-profile))'}}><Pencil className="mr-2 h-4 w-4" /> Edit Profile</Button>
+                        <Button style={{backgroundColor: 'hsl(var(--nav-profile))'}} className="w-full sm:w-auto"><Pencil className="mr-2 h-4 w-4" /> Edit Profile</Button>
                     </div>
-                </CardContent>
-            </Card>
 
-            <Card>
-                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><MapPin style={{color: 'hsl(var(--nav-profile))'}}/> Address & Contact</CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
-                    <div className="flex items-center gap-3">
-                        <Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
-                        <span className="text-muted-foreground">lokeshbabu9298@gmail.com</span>
+                    <Separator />
+
+                    {/* Address and Contact */}
+                    <div>
+                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-4">
+                            <MapPin style={{color: 'hsl(var(--nav-profile))'}}/> Address & Contact
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                            <div className="flex items-center gap-3">
+                                <Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
+                                <span className="text-muted-foreground">lokeshbabu9298@gmail.com</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <Phone style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
+                                <span className="text-muted-foreground">+91 8008334948</span>
+                            </div>
+                            <div className="md:col-span-2 flex items-start gap-3">
+                                <MapPin style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 mt-1 flex-shrink-0"/>
+                                <span className="text-muted-foreground">Rentala village, Rentachintala mandal, Palnadu district, Andhra Pradesh, India</span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                        <Phone style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
-                        <span className="text-muted-foreground">+91 8008334948</span>
-                    </div>
-                    <div className="md:col-span-2 flex items-start gap-3">
-                        <MapPin style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 mt-1 flex-shrink-0"/>
-                        <span className="text-muted-foreground">Rentala village, Rentachintala mandal, Palnadu district, Andhra Pradesh, India</span>
-                    </div>
-                </CardContent>
-            </Card>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><CreditCard style={{color: 'hsl(var(--nav-profile))'}} /> Identity Verification</CardTitle>
-                        <CardDescription>Optionally link your Aadhar card for faster verification at hospitals.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
+
+                    <Separator />
+
+                    {/* Identity Verification */}
+                    <div>
+                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-3">
+                            <CreditCard style={{color: 'hsl(var(--nav-profile))'}} /> Identity Verification
+                        </h3>
                         <div className="flex items-center justify-between p-4 bg-muted/40 rounded-lg">
-                            <div className="flex items-center gap-4">
-                                <User className="h-6 w-6 text-muted-foreground" />
+                            <div className="space-y-1">
                                 <p className="font-semibold">Aadhar Card</p>
+                                <p className="text-sm text-muted-foreground">Optionally link your Aadhar for faster verification at hospitals.</p>
                             </div>
                             <Button variant="outline">Add (Optional)</Button>
                         </div>
-                    </CardContent>
-                </Card>
+                    </div>
 
-                <CustomizeNavigationCard />
-            </div>
+                </CardContent>
+            </Card>
+            
+            <CustomizeNavigationCard />
         </div>
     );
 }
