@@ -48,6 +48,63 @@ interface LabReportsClientProps {
     dummyReportData: Record<string, { content: string, image?: string, dataAiHint?: string }>;
 }
 
+function ViewReportDialog({ report, trigger, children, dummyReportData }: { report: any; trigger?: React.ReactNode; children?: React.ReactNode; dummyReportData: LabReportsClientProps['dummyReportData'] }) {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild onClick={() => setIsOpen(true)}>
+                {trigger || children}
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-2xl">
+                <DialogHeader>
+                    <DialogTitle>View Report: {report.testName}</DialogTitle>
+                    <DialogDescription>
+                        From {report.labName || 'N/A'} on {report ? format(new Date(report.date), 'dd-MMM-yyyy') : ''}
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
+                    {dummyReportData[`${report.testName}-${report.date}`]?.image ? (
+                         <div className="bg-muted/30 p-2 rounded-lg">
+                             <Image
+                                src={dummyReportData[`${report.testName}-${report.date}`].image!}
+                                alt={`Report for ${report.testName}`}
+                                width={800}
+                                height={1100}
+                                data-ai-hint={dummyReportData[`${report.testName}-${report.date}`].dataAiHint || ''}
+                                className="rounded-md border w-full h-auto object-contain"
+                            />
+                         </div>
+                    ) : (
+                        <div className="h-64 flex items-center justify-center bg-muted/30 rounded-lg">
+                            <p className="text-muted-foreground">No image available for this report.</p>
+                        </div>
+                    )}
+                </div>
+                 <DialogFooter className="pt-4 border-t flex-col sm:flex-row gap-2">
+                    <Button variant="outline" className="w-full sm:w-auto border-primary/50" style={{color: 'hsl(var(--primary))'}} onClick={() => { setIsOpen(false); alert('AI Analysis triggered for ' + report.testName)}}>
+                        <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
+                    </Button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button variant="outline" className="w-full sm:w-auto"><FileDown className="mr-2 h-4 w-4" />Download</Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-xs">
+                            <DialogHeader>
+                                <DialogTitle>Download Report</DialogTitle>
+                                <DialogDescription>Choose a format to download.</DialogDescription>
+                            </DialogHeader>
+                            <div className="flex flex-col gap-2">
+                                <Button style={{ backgroundColor: 'hsl(var(--primary))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
+                                <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 function ViewReportsDialog({ reports, date, trigger, dummyReportData }: { reports: any[], date: string, trigger: React.ReactNode, dummyReportData: LabReportsClientProps['dummyReportData'] }) {
     const images = reports.map(r => dummyReportData[`${r.testName}-${r.date}`]?.image).filter(Boolean) as string[];
     const dataAiHints = reports.map(r => dummyReportData[`${r.testName}-${r.date}`]?.dataAiHint).filter(Boolean) as string[];
@@ -293,13 +350,13 @@ export function LabReportsClient({
                      <Button 
                          variant={initialDate ? 'ghost' : 'outline'} 
                          size="sm" 
-                         className={cn(initialDate && "text-xs", !initialDate && "border-primary text-primary")}
+                         className={cn("text-xs border-primary", !initialDate && "border-primary text-primary")}
                          style={{color: 'hsl(var(--primary))'}}
                      >
                         <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload' : 'Upload New Report'}
                     </Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="sm:max-w-md">
                     <DialogHeader>
                         <DialogTitle>Upload a New Report</DialogTitle>
                         <DialogDescription>Manually add a report from an image or PDF file.</DialogDescription>
@@ -381,11 +438,11 @@ export function LabReportsClient({
                      <Card key={date} className="border bg-background overflow-hidden">
                         <Collapsible>
                             <div className="flex items-center justify-between p-4">
-                                <CollapsibleTrigger asChild>
-                                    <div className="flex-1 min-w-0 cursor-pointer flex items-center gap-4">
+                                <CollapsibleTrigger asChild className="flex-1 min-w-0">
+                                    <div className='flex items-center gap-4 cursor-pointer'>
                                         <div>
-                                            <p className="font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
-                                            <p className="text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
+                                            <p className="font-bold truncate text-sm sm:text-base">{format(parseISO(date), 'dd MMM, yyyy')}</p>
+                                            <p className="text-xs text-muted-foreground truncate hidden sm:block">{getDoctorsForDate(reports)}</p>
                                         </div>
                                         <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
                                     </div>
@@ -422,16 +479,15 @@ export function LabReportsClient({
                                                     </Badge>
                                                 </div>
                                                 <div className="flex items-center gap-1 flex-shrink-0">
-                                                     <ViewReportsDialog
-                                                        reports={[report]}
-                                                        date={date}
+                                                     <ViewReportDialog
+                                                        report={report}
                                                         dummyReportData={dummyReportData}
                                                         trigger={
                                                             <Button variant="ghost" size="icon" className="h-10 w-10" style={{color: 'hsl(var(--primary))'}}>
                                                                 <View className="h-4 w-4" />
                                                             </Button>
                                                         }
-                                                    />
+                                                     />
                                                     <Dialog>
                                                         <DialogTrigger asChild>
                                                             <Button variant="ghost" size="icon" className="h-10 w-10">
@@ -657,61 +713,13 @@ export function LabReportsClient({
                     </Card>
                 </TabsContent>
                 <TabsContent value="my-reports" className="mt-6">
-                    <Dialog>
-                        <ReportsList 
-                            groupedReports={groupedAllReports}
-                            onAnalyze={handleAnalyze}
-                            onUpload={handleUploadReport}
-                            onDelete={handleDeleteReport}
-                            dummyReportData={dummyReportData}
-                        />
-                         <DialogContent className="sm:max-w-2xl">
-                             <DialogHeader>
-                                <DialogTitle>View Report: {selectedReport?.testName}</DialogTitle>
-                                 <DialogDescription>
-                                    From {selectedReport?.labName || 'N/A'} on {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''}
-                                </DialogDescription>
-                            </DialogHeader>
-                            <div className="space-y-4 max-h-[70vh] overflow-y-auto p-1">
-                                {dummyReportData[`${selectedReport?.testName}-${selectedReport?.date}`]?.image ? (
-                                     <div className="bg-muted/30 p-2 rounded-lg">
-                                         <Image
-                                            src={dummyReportData[`${selectedReport.testName}-${selectedReport.date}`].image!}
-                                            alt={`Report for ${selectedReport?.testName}`}
-                                            width={800}
-                                            height={1100}
-                                            data-ai-hint={dummyReportData[`${selectedReport.testName}-${selectedReport.date}`].dataAiHint || ''}
-                                            className="rounded-md border w-full h-auto object-contain"
-                                        />
-                                     </div>
-                                ) : (
-                                    <div className="h-64 flex items-center justify-center bg-muted/30 rounded-lg">
-                                        <p className="text-muted-foreground">No image available for this report.</p>
-                                    </div>
-                                )}
-                            </div>
-                             <DialogFooter className="pt-4 border-t flex-col sm:flex-row gap-2">
-                                <Button variant="outline" className="w-full sm:w-auto border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => { setAnalyzeOpen(true); handleAnalyze([selectedReport]); }}>
-                                    <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
-                                </Button>
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline" className="w-full sm:w-auto"><FileDown className="mr-2 h-4 w-4" />Download</Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="sm:max-w-xs">
-                                        <DialogHeader>
-                                            <DialogTitle>Download Report</DialogTitle>
-                                            <DialogDescription>Choose a format to download.</DialogDescription>
-                                        </DialogHeader>
-                                        <div className="flex flex-col gap-2">
-                                            <Button style={{ backgroundColor: 'hsl(var(--primary))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
-                                            <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
-                                        </div>
-                                    </DialogContent>
-                                </Dialog>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
+                    <ReportsList 
+                        groupedReports={groupedAllReports}
+                        onAnalyze={handleAnalyze}
+                        onUpload={handleUploadReport}
+                        onDelete={handleDeleteReport}
+                        dummyReportData={dummyReportData}
+                    />
                 </TabsContent>
             </Tabs>
             
