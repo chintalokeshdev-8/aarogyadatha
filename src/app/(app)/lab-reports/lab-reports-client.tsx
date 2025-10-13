@@ -323,7 +323,7 @@ export function LabReportsClient({
                     <UploadReportDialog onUpload={onUpload} />
                 </div>
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
-                    <Collapsible key={date} className="border rounded-lg bg-background">
+                    <Collapsible key={date} defaultOpen={true} className="border rounded-lg bg-background">
                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors">
                              <div className="flex justify-between items-center gap-2 flex-nowrap">
                                 <div className='flex-1 text-left min-w-0'>
@@ -344,56 +344,51 @@ export function LabReportsClient({
                                 {reports.map((report) => (
                                     <div key={report.id} className="py-3 first:pt-0 last:pb-0">
                                         <div className="flex justify-between items-center gap-2">
-                                            <p className="font-semibold truncate flex-1">{report.testName}</p>
-                                            <div className="flex items-center gap-1 flex-shrink-0">
-                                                <Badge variant="outline" className={cn("hidden sm:inline-flex", getStatusBadgeClass(report.status))}>
+                                            <div className="flex-1 min-w-0">
+                                                <p className="font-semibold truncate">{report.testName}</p>
+                                                <Badge variant="outline" className={cn("mt-1", getStatusBadgeClass(report.status))}>
                                                     {report.status}
                                                 </Badge>
-                                                 {report.status === "Completed" && (
-                                                     <div className="flex">
-                                                        <DialogTrigger asChild>
-                                                            <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => onView(report)}>
-                                                                <View className="h-5 w-5" />
-                                                            </Button>
-                                                        </DialogTrigger>
-                                                        <Dialog>
-                                                            <DialogTrigger asChild>
-                                                                <Button variant="ghost" size="icon" className="h-10 w-10">
-                                                                    <Pencil className="h-4 w-4" />
-                                                                </Button>
-                                                            </DialogTrigger>
-                                                            <DialogContent>
-                                                                <DialogHeader>
-                                                                    <DialogTitle>Edit Report</DialogTitle>
-                                                                </DialogHeader>
-                                                                {/* Form would go here */}
-                                                                <p>Edit form for {report.testName}</p>
-                                                            </DialogContent>
-                                                        </Dialog>
-                                                        <AlertDialog>
-                                                            <AlertDialogTrigger asChild>
-                                                                 <Button variant="ghost" size="icon" className="h-10 w-10">
-                                                                    <Trash2 className="h-4 w-4 text-destructive" />
-                                                                </Button>
-                                                            </AlertDialogTrigger>
-                                                            <AlertDialogContent>
-                                                                <AlertDialogHeader>
-                                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                                                    <AlertDialogDescription>This will permanently delete the report for "{report.testName}".</AlertDialogDescription>
-                                                                </AlertDialogHeader>
-                                                                <AlertDialogFooter>
-                                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                                    <AlertDialogAction onClick={() => onDelete(report.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
-                                                                </AlertDialogFooter>
-                                                            </AlertDialogContent>
-                                                        </AlertDialog>
-                                                    </div>
-                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-1 flex-shrink-0">
+                                                <DialogTrigger asChild>
+                                                    <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => onView(report)}>
+                                                        <View className="h-5 w-5" />
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                            <Pencil className="h-4 w-4" />
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent>
+                                                        <DialogHeader>
+                                                            <DialogTitle>Edit Report</DialogTitle>
+                                                        </DialogHeader>
+                                                        {/* Form would go here */}
+                                                        <p>Edit form for {report.testName}</p>
+                                                    </DialogContent>
+                                                </Dialog>
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                         <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                            <Trash2 className="h-4 w-4 text-destructive" />
+                                                        </Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                            <AlertDialogDescription>This will permanently delete the report for "{report.testName}".</AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                            <AlertDialogAction onClick={() => onDelete(report.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
                                             </div>
                                         </div>
-                                        <Badge variant="outline" className={cn("sm:hidden mt-2", getStatusBadgeClass(report.status))}>
-                                            {report.status}
-                                        </Badge>
                                     </div>
                                 ))}
                             </div>
