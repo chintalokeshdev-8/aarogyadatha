@@ -171,7 +171,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
         
         <div className="text-center py-2 mb-2">
-            <p className="font-bold text-foreground capitalize">right disease for right doctor is 100% cure</p>
+            <p className="font-bold text-foreground capitalize">Right Disease For Right Doctor + Right Diet = 99% Cure</p>
         </div>
 
         <section>
@@ -245,7 +245,7 @@ export default function DashboardPage() {
         </section>
 
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold">App Updates & Health Tips</h2>
+          <h2 className="text-lg font-semibold mb-2">App Updates & Health Tips</h2>
           <Carousel
               setApi={setApi}
               plugins={[plugin.current]}
