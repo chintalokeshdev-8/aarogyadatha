@@ -77,19 +77,19 @@ export default function ProfilePage() {
             <Card>
                 <CardContent className="p-4 sm:p-6 space-y-6">
                     {/* Profile Header */}
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
-                        <Avatar className="h-20 w-20 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                    <div className="flex flex-col items-center gap-4">
+                        <Avatar className="h-24 w-24 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
                             <AvatarImage src="/images/profile.jpg" />
-                            <AvatarFallback className="text-2xl">CL</AvatarFallback>
+                            <AvatarFallback className="text-3xl">CL</AvatarFallback>
                         </Avatar>
-                        <div className="flex-1 text-center sm:text-left">
+                        <div className="text-center">
                             <h1 className="text-2xl font-bold">Chinta Lokesh Babu</h1>
                             <p className="font-semibold text-muted-foreground">Patient ID: PAT001</p>
-                            <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1 mt-2 text-sm text-muted-foreground">
-                                <div className="flex items-center gap-2"><User className="h-4 w-4" /> 27 years old</div>
-                                <div className="flex items-center gap-2"><Heart className="h-4 w-4" /> Male</div>
-                                <div className="flex items-center gap-2"><Droplets className="h-4 w-4" /> O+ Positive</div>
-                            </div>
+                        </div>
+                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-2"><User className="h-4 w-4" /> 27 years old</div>
+                            <div className="flex items-center gap-2"><Heart className="h-4 w-4" /> Male</div>
+                            <div className="flex items-center gap-2"><Droplets className="h-4 w-4" /> O+ Positive</div>
                         </div>
                         <Button style={{backgroundColor: 'hsl(var(--nav-profile))'}} className="w-full sm:w-auto"><Pencil className="mr-2 h-4 w-4" /> Edit Profile</Button>
                     </div>
@@ -101,7 +101,7 @@ export default function ProfilePage() {
                         <h3 className="font-semibold text-lg flex items-center gap-2 mb-4">
                             <MapPin style={{color: 'hsl(var(--nav-profile))'}}/> Address & Contact
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                        <div className="grid grid-cols-1 gap-y-4 text-sm">
                             <div className="flex items-center gap-3">
                                 <Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
                                 <span className="text-muted-foreground">lokeshbabu9298@gmail.com</span>
@@ -110,7 +110,7 @@ export default function ProfilePage() {
                                 <Phone style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
                                 <span className="text-muted-foreground">+91 8008334948</span>
                             </div>
-                            <div className="md:col-span-2 flex items-start gap-3">
+                            <div className="flex items-start gap-3">
                                 <MapPin style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 mt-1 flex-shrink-0"/>
                                 <span className="text-muted-foreground">Rentala village, Rentachintala mandal, Palnadu district, Andhra Pradesh, India</span>
                             </div>
@@ -129,7 +129,7 @@ export default function ProfilePage() {
                                 <p className="font-semibold">Aadhar Card</p>
                                 <p className="text-sm text-muted-foreground">Optionally link your Aadhar for faster verification at hospitals.</p>
                             </div>
-                            <Button variant="outline">Add (Optional)</Button>
+                            <Button variant="outline">Add</Button>
                         </div>
                     </div>
 
