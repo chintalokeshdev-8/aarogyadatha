@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -15,7 +16,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { format, addDays } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
@@ -1188,8 +1189,20 @@ export default function AppointmentsPage() {
                                                 </div>
                                             </div>
                                             <div className="mt-4 space-y-2 text-sm">
-                                                <p><strong>Surgeries:</strong> {doctor.surgeries}</p>
                                                 <p><strong>Focus:</strong> {doctor.mainDealing}</p>
+                                            </div>
+                                            <div className="p-4 mt-2 rounded-lg bg-muted/50 border-2 border-black">
+                                                <h4 className="font-semibold mb-2 flex items-center gap-2">
+                                                    {doctor.consultationType === 'Online' ? <Wifi style={{color: 'hsl(var(--nav-appointments))'}}/> : <Hospital style={{color: 'hsl(var(--nav-appointments))'}}/>}
+                                                    Availability
+                                                </h4>
+                                                <div className="space-y-2 text-sm">
+                                                    <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {doctor.availability}</p>
+                                                    <p className="flex items-center gap-2 font-semibold" style={{color: 'hsl(var(--nav-appointments))'}}>
+                                                        {doctor.consultationType === 'Online' ? <Wifi className="h-4 w-4"/> : <Hospital className="h-4 w-4"/>}
+                                                        {doctor.consultationType}
+                                                    </p>
+                                                </div>
                                             </div>
                                              <div className="mt-4 flex flex-col sm:flex-row justify-between items-start gap-2">
                                                 <div className="flex items-baseline gap-2">
@@ -1571,4 +1584,5 @@ export default function AppointmentsPage() {
 }
 
     
+
 
