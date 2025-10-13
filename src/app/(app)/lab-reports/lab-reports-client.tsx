@@ -40,123 +40,6 @@ const getStatusBadgeClass = (status: string) => {
     }
 }
 
-const ReportViewer = ({ content }: { content: string }) => {
-    const lines = content.trim().split('\n');
-    const patientInfo: { [key: string]: string } = {};
-    const testResults: any[] = [];
-    const otherSections: {title: string, content: string[]}[] = [];
-    let currentSection: {title: string, content: string[]} | null = null;
-    let isParsingResults = false;
-    let isParsingOtherSections = false;
-
-    lines.forEach(line => {
-        if (line.trim() === '') {
-            if(!isParsingOtherSections && Object.keys(patientInfo).length > 0){
-                isParsingResults = true;
-            }
-            return;
-        }
-
-        const sectionTitleMatch = line.match(/^([A-Z\s]+):$/);
-         if (sectionTitleMatch && !line.includes(': ')) {
-             isParsingResults = false;
-             isParsingOtherSections = true;
-            if(currentSection){
-                otherSections.push(currentSection);
-            }
-            currentSection = { title: sectionTitleMatch[1].trim(), content: [] };
-        } else if (currentSection && isParsingOtherSections) {
-             currentSection.content.push(line.trim());
-        } else if (!isParsingResults && !isParsingOtherSections) {
-            const [key, ...valueParts] = line.split(':');
-            if (key && valueParts.length > 0) {
-                patientInfo[key.trim()] = valueParts.join(':').trim();
-            }
-        } else if(isParsingResults) {
-            const resultMatch = line.match(/(.*?):\s*(.*?)\s*\((.*?)\)(.*)/);
-            if (resultMatch) {
-                const [, test, value, normalRange, remark] = resultMatch;
-                const isAbnormal = remark && (remark.toLowerCase().includes('high') || remark.toLowerCase().includes('low'));
-                testResults.push({
-                    test: test.trim(),
-                    value: value.trim(),
-                    normalRange: `(${normalRange.trim()})`,
-                    remark: remark.trim(),
-                    isAbnormal
-                });
-            } else {
-                 const simpleResultMatch = line.match(/(.*?):\s*(.*)/);
-                 if(simpleResultMatch){
-                    const [, test, value] = simpleResultMatch;
-                    testResults.push({ test: test.trim(), value: value.trim(), normalRange: '', remark: '', isAbnormal: false });
-                 }
-            }
-        }
-    });
-
-    if(currentSection) {
-        otherSections.push(currentSection);
-    }
-
-    return (
-        <div className="font-sans space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><FlaskConical className="h-5 w-5 text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}} /> {patientInfo['Test'] || 'Report Details'}</CardTitle>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-muted-foreground" />
-                        <strong>Patient:</strong> {patientInfo['Patient Name']}
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <strong>Date:</strong> {patientInfo['Date'] ? format(new Date(patientInfo['Date']), 'dd-MMM-yyyy') : 'N/A'}
-                    </div>
-                    {patientInfo['Doctor'] && (
-                         <div className="flex items-center gap-2 col-span-1 sm:col-span-2">
-                            <StethoscopeIcon className="h-4 w-4 text-muted-foreground" />
-                            <strong>Doctor:</strong> {patientInfo['Doctor']}
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-
-            {testResults.length > 0 && (
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Test</TableHead>
-                            <TableHead>Result</TableHead>
-                            <TableHead>Normal Range</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {testResults.map((result, index) => (
-                            <TableRow key={index} className={cn('border-b', result.isAbnormal ? 'bg-red-50 dark:bg-red-900/20' : '')}>
-                                <TableCell className="font-semibold">{result.test}</TableCell>
-                                <TableCell className={`font-bold ${result.isAbnormal ? 'text-red-600' : ''}`}>
-                                    {result.value} {result.remark && <span className="text-xs font-normal"> - {result.remark.replace('-','').trim()}</span>}
-                                </TableCell>
-                                <TableCell className="text-muted-foreground">{result.normalRange}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            )}
-            
-            {otherSections.map((section, index) => (
-                <div key={index}>
-                    <h3 className="font-bold text-lg mb-2">{section.title}</h3>
-                    <div className="text-muted-foreground space-y-1 text-sm">
-                        {section.content.map((line, i) => <p key={i}>{line}</p>)}
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-};
-
 interface LabReportsClientProps {
     allReports: any[];
     diagnosticLabs: any[];
@@ -450,18 +333,18 @@ export function LabReportsClient({
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
                     <Collapsible key={date} className="border rounded-lg bg-background">
                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors">
-                            <div className="flex justify-between items-start gap-2">
+                             <div className="flex justify-between items-center gap-2">
                                 <div className='flex-1 text-left'>
                                     <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
-                                    <CardDescription>Dr. {getDoctorsForDate(reports)}</CardDescription>
+                                    <CardDescription>{getDoctorsForDate(reports)}</CardDescription>
                                 </div>
-                                <div className='flex gap-2 items-center flex-shrink-0'>
+                                <div className='flex items-center gap-1 border rounded-lg p-1'>
                                      <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
                                         <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
                                     </Button>
                                     <UploadReportDialog onUpload={onUpload} initialDate={date} />
-                                    <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
                                 </div>
+                                <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
                             </div>
                         </CollapsibleTrigger>
                         <CollapsibleContent className="p-4 border-t space-y-2 bg-muted/20">
@@ -495,7 +378,7 @@ export function LabReportsClient({
                                                         </Dialog>
                                                         <AlertDialog>
                                                             <AlertDialogTrigger asChild>
-                                                                <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                                 <Button variant="ghost" size="icon" className="h-10 w-10">
                                                                     <Trash2 className="h-4 w-4 text-destructive" />
                                                                 </Button>
                                                             </AlertDialogTrigger>
