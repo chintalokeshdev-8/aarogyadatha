@@ -84,8 +84,8 @@ export default function ProfilePage() {
                                 <AvatarFallback className="text-3xl">CL</AvatarFallback>
                             </Avatar>
                             <div className="space-y-1">
-                                <h1 className="text-lg font-bold">Chinta Lokesh Babu</h1>
-                                <p className="font-semibold text-muted-foreground text-sm">Patient ID: PAT001</p>
+                                <h1 className="text-xl font-bold whitespace-nowrap">Chinta Lokesh Babu</h1>
+                                <p className="font-semibold text-foreground text-sm">Patient ID: PAT001</p>
                                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-foreground font-semibold">
                                     <div className="flex items-center gap-1"><User className="h-3 w-3 text-muted-foreground" /> 27 years</div>
                                     <div className="flex items-center gap-1"><Heart className="h-3 w-3 text-muted-foreground" /> Male</div>
@@ -144,5 +144,6 @@ export default function ProfilePage() {
         </div>
     );
 }
+
 
 
