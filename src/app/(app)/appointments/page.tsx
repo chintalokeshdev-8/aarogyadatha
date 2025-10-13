@@ -1107,8 +1107,8 @@ export default function AppointmentsPage() {
             <Tabs defaultValue="find-doctor" className="w-full">
                  <div className="border-2 rounded-lg p-1 bg-muted border-border">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
-                        <TabsTrigger value="history">Appointments History</TabsTrigger>
+                        <TabsTrigger value="find-doctor" className="font-bold">Find a Doctor</TabsTrigger>
+                        <TabsTrigger value="history" className="font-bold">Appointments History</TabsTrigger>
                     </TabsList>
                 </div>
                 <TabsContent value="find-doctor" className="mt-6">
