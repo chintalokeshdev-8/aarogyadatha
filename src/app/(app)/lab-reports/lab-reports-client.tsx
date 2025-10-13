@@ -39,36 +39,98 @@ const getStatusBadgeClass = (status: string) => {
 }
 
 const ReportTable = ({ reports, onAnalyze, onView }: { reports: any[], onAnalyze: (report: any) => void, onView: (report: any) => void }) => (
-    <Table>
-        <TableHeader>
-            <TableRow>
-                <TableHead>Test/Prescription Name</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Ordered By</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-        </TableHeader>
-        <TableBody>
+    <div>
+        {/* Desktop View: Table */}
+        <div className="hidden md:block">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Test/Prescription Name</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Ordered By</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {reports.length > 0 ? reports.map((report, index) => (
+                        <TableRow key={index} className='border-b'>
+                            <TableCell className="font-medium">{report.testName}</TableCell>
+                            <TableCell>{format(new Date(report.date), 'dd-MMM-yyyy')}</TableCell>
+                            <TableCell>{report.doctor}</TableCell>
+                            <TableCell>
+                                <Badge variant="outline" className={getStatusBadgeClass(report.status)}>
+                                    {report.status}
+                                </Badge>
+                            </TableCell>
+                            <TableCell className="text-right">
+                                {report.status === "Completed" ? (
+                                    <div className="flex gap-2 justify-end">
+                                        <Button variant="outline" size="sm" onClick={() => onView(report)}>
+                                            <View className="mr-2 h-4 w-4" /> View
+                                        </Button>
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button variant="outline" size="sm">
+                                                    <FileDown className="mr-2 h-4 w-4" /> Download
+                                                </Button>
+                                            </DialogTrigger>
+                                            <DialogContent className='sm:max-w-md'>
+                                                <DialogHeader>
+                                                    <DialogTitle>Download Report</DialogTitle>
+                                                    <DialogDescription>Choose a format to download your report.</DialogDescription>
+                                                </DialogHeader>
+                                                <div className="flex flex-col gap-2">
+                                                    <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> Download as PDF</Button>
+                                                    <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Download as Image</Button>
+                                                </div>
+                                            </DialogContent>
+                                        </Dialog>
+                                        <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(report)}>
+                                            <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
+                                        </Button>
+                                    </div>
+                                ) : (
+                                    <span className="text-xs text-muted-foreground">Not Available</span>
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    )) : (
+                        <TableRow>
+                            <TableCell colSpan={5} className="h-24 text-center">
+                                No reports found.
+                            </TableCell>
+                        </TableRow>
+                    )}
+                </TableBody>
+            </Table>
+        </div>
+
+        {/* Mobile View: Cards */}
+        <div className="md:hidden space-y-4">
             {reports.length > 0 ? reports.map((report, index) => (
-                <TableRow key={index} className='border-b'>
-                    <TableCell className="font-medium">{report.testName}</TableCell>
-                    <TableCell>{format(new Date(report.date), 'dd-MMM-yyyy')}</TableCell>
-                    <TableCell>{report.doctor}</TableCell>
-                    <TableCell>
+                <Card key={index} className="border">
+                    <CardHeader>
+                        <CardTitle>{report.testName}</CardTitle>
+                        <div className="flex justify-between items-center text-sm text-muted-foreground pt-1">
+                            <span>{format(new Date(report.date), 'dd-MMM-yyyy')}</span>
+                            <span>{report.doctor}</span>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
                         <Badge variant="outline" className={getStatusBadgeClass(report.status)}>
                             {report.status}
                         </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
+                    </CardContent>
+                    <CardFooter className="flex-wrap gap-2">
                         {report.status === "Completed" ? (
-                            <div className="flex gap-2 justify-end">
-                                <Button variant="outline" size="sm" onClick={() => onView(report)}>
+                            <>
+                                <Button variant="outline" size="sm" className="flex-1" onClick={() => onView(report)}>
                                     <View className="mr-2 h-4 w-4" /> View
                                 </Button>
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                         <Button variant="outline" size="sm">
+                                        <Button variant="outline" size="sm" className="flex-1">
                                             <FileDown className="mr-2 h-4 w-4" /> Download
                                         </Button>
                                     </DialogTrigger>
@@ -78,29 +140,27 @@ const ReportTable = ({ reports, onAnalyze, onView }: { reports: any[], onAnalyze
                                             <DialogDescription>Choose a format to download your report.</DialogDescription>
                                         </DialogHeader>
                                         <div className="flex flex-col gap-2">
-                                            <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}><FileIcon className="mr-2 h-4 w-4" /> Download as PDF</Button>
+                                            <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> Download as PDF</Button>
                                             <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Download as Image</Button>
                                         </div>
                                     </DialogContent>
                                 </Dialog>
-                                <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(report)}>
+                                <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10 w-full" onClick={() => onAnalyze(report)}>
                                     <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
                                 </Button>
-                            </div>
+                            </>
                         ) : (
-                            <span className="text-xs text-muted-foreground">Not Available</span>
+                            <p className="text-xs text-muted-foreground w-full text-center">Actions will be available once the report is completed.</p>
                         )}
-                    </TableCell>
-                </TableRow>
+                    </CardFooter>
+                </Card>
             )) : (
-                 <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center">
-                        No reports found.
-                    </TableCell>
-                </TableRow>
+                <div className="text-center p-8 text-muted-foreground">
+                    No reports found.
+                </div>
             )}
-        </TableBody>
-    </Table>
+        </div>
+    </div>
 );
 
 const ReportViewer = ({ content }: { content: string }) => {
@@ -634,5 +694,7 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
 
     
