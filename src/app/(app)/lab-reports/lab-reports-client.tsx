@@ -441,13 +441,13 @@ export function LabReportsClient({
                         <div className='divide-y'>
                             {reports.map((report, index) => (
                                 <div key={index} className="py-3 first:pt-0 last:pb-0">
-                                    <div className="flex justify-between items-center gap-2 flex-wrap">
-                                        <div>
-                                            <p className="font-semibold">{report.testName}</p>
+                                    <div className="flex justify-between items-center gap-2">
+                                        <div className="flex-1 min-w-0">
+                                            <p className="font-semibold truncate">{report.testName}</p>
                                             <p className="text-sm text-muted-foreground">Dr. {report.doctor}</p>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <Badge variant="outline" className={getStatusBadgeClass(report.status)}>
+                                        <div className="flex items-center gap-2 flex-shrink-0">
+                                            <Badge variant="outline" className={cn("hidden sm:inline-flex", getStatusBadgeClass(report.status))}>
                                                 {report.status}
                                             </Badge>
                                              {report.status === "Completed" && (
@@ -475,6 +475,9 @@ export function LabReportsClient({
                                             )}
                                         </div>
                                     </div>
+                                    <Badge variant="outline" className={cn("sm:hidden mt-2", getStatusBadgeClass(report.status))}>
+                                        {report.status}
+                                    </Badge>
                                 </div>
                             ))}
                         </div>
