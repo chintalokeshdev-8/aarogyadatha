@@ -12,12 +12,12 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const DiseaseInfoInputSchema = z.object({
+const DiseaseInfoInputSchema = z.object({
   diseaseName: z.string().describe('The name of the disease or health condition.'),
 });
-export type DiseaseInfoInput = z.infer<typeof DiseaseInfoInputSchema>;
+type DiseaseInfoInput = z.infer<typeof DiseaseInfoInputSchema>;
 
-export const DiseaseInfoOutputSchema = z.object({
+const DiseaseInfoOutputSchema = z.object({
   summary: z.string().describe("A simple, easy-to-understand summary of the disease."),
   symptoms: z.array(z.string()).describe("A list of common symptoms associated with the disease."),
   recommendedDiet: z.array(z.string()).describe("A list of recommended dietary habits or specific foods."),
