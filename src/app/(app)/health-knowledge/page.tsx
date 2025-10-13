@@ -12,17 +12,53 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const diseaseCategories = [
-    "Acne", "Allergies", "Alzheimer's", "Anemia", "Anxiety", "Appendicitis", "Arthritis", "Asthma",
-    "Back Pain", "Blood Pressure", "Bronchitis", "Cancer", "Cataract", "Cholesterol", "Cirrhosis",
-    "Common Cold", "COPD", "COVID-19", "Dandruff", "Dengue Fever", "Depression", "Diabetes", "Diarrhea",
-    "Eczema", "Epilepsy", "Fatty Liver", "Fibromyalgia", "Flu (Influenza)", "Food Poisoning", "Gallstones",
-    "GERD (Acid Reflux)", "Glaucoma", "Gout", "Hair Loss", "Headache", "Heart Attack", "Hepatitis",
-    "Hernia", "Herpes", "HIV/AIDS", "Hypothyroidism", "Hyperthyroidism", "IBS", "Insomnia",
-    "Jaundice", "Kidney Stones", "Leukemia", "Lung Cancer", "Lupus", "Malaria", "Measles", "Meningitis",
-    "Migraine", "Multiple Sclerosis", "Obesity", "Osteoporosis", "Pancreatitis", "Parkinson's",
-    "Piles (Hemorrhoids)", "Pneumonia", "Polio", "Psoriasis", "Rabies", "Rheumatoid Arthritis",
-    "Sinusitis", "Skin Cancer", "Stroke", "Tonsillitis", "Tuberculosis", "Typhoid", "Ulcers",
-    "UTI", "Varicose Veins", "Vertigo", "Vitamin D Deficiency", "Whooping Cough"
+    // Common Illnesses
+    "Common Cold", "Influenza (Flu)", "COVID-19", "Strep Throat", "Sinusitis", "Bronchitis", "Pneumonia", "Urinary Tract Infection (UTI)", "Food Poisoning", "Gastroenteritis", "Conjunctivitis (Pink Eye)",
+    
+    // Chronic Diseases
+    "Diabetes (Type 1 & 2)", "Hypertension (High Blood Pressure)", "High Cholesterol", "Asthma", "COPD", "Arthritis (Osteoarthritis & Rheumatoid)", "Osteoporosis", "Hypothyroidism", "Hyperthyroidism",
+    
+    // Heart Conditions
+    "Coronary Artery Disease", "Heart Attack", "Heart Failure", "Atrial Fibrillation", "Stroke",
+    
+    // Digestive Issues
+    "GERD (Acid Reflux)", "Irritable Bowel Syndrome (IBS)", "Gallstones", "Peptic Ulcers", "Cirrhosis", "Fatty Liver Disease", "Hemorrhoids (Piles)", "Hernia", "Appendicitis", "Pancreatitis",
+    
+    // Neurological & Mental Health
+    "Migraine", "Headache", "Anxiety", "Depression", "Insomnia", "Alzheimer's Disease", "Parkinson's Disease", "Epilepsy", "Multiple Sclerosis", "Dementia", "Vertigo",
+    
+    // Skin Conditions
+    "Acne", "Eczema (Atopic Dermatitis)", "Psoriasis", "Dandruff", "Rosacea", "Skin Cancer", "Herpes", "Ringworm", "Hives",
+    
+    // Cancers
+    "Breast Cancer", "Lung Cancer", "Prostate Cancer", "Colon Cancer", "Leukemia", "Lymphoma",
+    
+    // Infectious Diseases
+    "Tuberculosis", "Malaria", "Dengue Fever", "Typhoid Fever", "Hepatitis (A, B, C)", "HIV/AIDS", "Measles", "Chickenpox", "Rabies",
+    
+    // Bone & Joint
+    "Back Pain", "Gout", "Fibromyalgia", "Sprains and Strains",
+    
+    // Women's Health
+    "PCOS", "Endometriosis", "Menopause", "Yeast Infection",
+    
+    // Men's Health
+    "Erectile Dysfunction", "Benign Prostatic Hyperplasia (BPH)",
+    
+    // Eye & Ear
+    "Cataracts", "Glaucoma", "Ear Infection", "Tinnitus",
+    
+    // Kidney & Urinary
+    "Kidney Stones", "Chronic Kidney Disease",
+    
+    // Blood Disorders
+    "Anemia",
+    
+    // Allergies
+    "Allergies", "Allergic Rhinitis (Hay Fever)",
+    
+    // Other
+    "Obesity", "Hair Loss", "Varicose Veins", "Tonsillitis", "Vitamin D Deficiency"
 ];
 
 
