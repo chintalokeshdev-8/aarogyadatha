@@ -437,9 +437,9 @@ export function LabReportsClient({
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
                      <Card key={date} className="border bg-background overflow-hidden">
                         <Collapsible>
-                            <div className="flex items-center justify-between p-4">
-                                <CollapsibleTrigger asChild>
-                                    <div className='flex items-center gap-4 cursor-pointer flex-1 min-w-0'>
+                            <div className="flex items-center p-4">
+                                <CollapsibleTrigger asChild className="flex-1">
+                                    <div className='flex items-center gap-4 cursor-pointer min-w-0'>
                                         <div>
                                             <p className="font-bold truncate text-sm sm:text-base">{format(parseISO(date), 'dd MMM, yyyy')}</p>
                                             <p className="text-xs text-muted-foreground truncate hidden sm:block">{getDoctorsForDate(reports)}</p>
@@ -447,7 +447,7 @@ export function LabReportsClient({
                                         <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
                                     </div>
                                 </CollapsibleTrigger>
-                                <div className="flex items-center gap-1 flex-shrink-0">
+                                <div className="flex items-center gap-1 flex-shrink-0 ml-auto">
                                     <ViewReportsDialog
                                         reports={reports}
                                         date={date}
@@ -469,11 +469,11 @@ export function LabReportsClient({
                                         </Button>
                                         <UploadReportDialog onUpload={onUpload} initialDate={date} />
                                     </div>
-                                    {reports.map((report) => (
+                                    {reports.map((report, index) => (
                                         <div key={report.id} className="py-3 px-2 rounded-lg hover:bg-muted/50">
                                             <div className="flex justify-between items-center gap-2">
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="font-semibold truncate">{report.testName}</p>
+                                                    <p className="font-semibold truncate">{index + 1}. {report.testName}</p>
                                                     <Badge variant="outline" className={cn("mt-1", getStatusBadgeClass(report.status))}>
                                                         {report.status}
                                                     </Badge>
@@ -814,5 +814,7 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
 
     
