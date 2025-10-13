@@ -499,57 +499,60 @@ export function LabReportsClient({
                                         <UploadReportDialog onUpload={onUpload} initialDate={date} />
                                     </div>
                                     {reports.map((report, index) => (
-                                        <div key={report.id} className="py-3 px-2 rounded-lg hover:bg-muted/50">
-                                            <div className="flex justify-between items-center gap-2">
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="font-semibold truncate">{index + 1}. {report.testName}</p>
-                                                    <Badge variant="outline" className={cn("mt-1", getStatusBadgeClass(report.status))}>
-                                                        {report.status}
-                                                    </Badge>
-                                                </div>
-                                                <div className="flex items-center gap-1 flex-shrink-0">
-                                                     <ViewReportDialog
-                                                        report={report}
-                                                        dummyReportData={dummyReportData}
-                                                        trigger={
-                                                            <Button variant="ghost" size="icon" className="h-10 w-10" style={{color: 'hsl(var(--primary))'}}>
-                                                                <View className="h-4 w-4" />
-                                                            </Button>
-                                                        }
-                                                     />
-                                                    <Dialog>
-                                                        <DialogTrigger asChild>
-                                                            <Button variant="ghost" size="icon" className="h-10 w-10">
-                                                                <Pencil className="h-4 w-4" />
-                                                            </Button>
-                                                        </DialogTrigger>
-                                                        <DialogContent>
-                                                            <DialogHeader>
-                                                                <DialogTitle>Edit Report</DialogTitle>
-                                                            </DialogHeader>
-                                                            <p>Edit form for {report.testName}</p>
-                                                        </DialogContent>
-                                                    </Dialog>
-                                                    <AlertDialog>
-                                                        <AlertDialogTrigger asChild>
-                                                            <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive">
-                                                                <Trash2 className="h-4 w-4" />
-                                                            </Button>
-                                                        </AlertDialogTrigger>
-                                                        <AlertDialogContent>
-                                                            <AlertDialogHeader>
-                                                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                                                <AlertDialogDescription>This will permanently delete the report for "{report.testName}".</AlertDialogDescription>
-                                                            </AlertDialogHeader>
-                                                            <AlertDialogFooter>
-                                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                                <AlertDialogAction onClick={() => onDelete(report.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
-                                                            </AlertDialogFooter>
-                                                        </AlertDialogContent>
-                                                    </AlertDialog>
+                                        <React.Fragment key={report.id}>
+                                            <div className="py-3 px-2 rounded-lg hover:bg-muted/50">
+                                                <div className="flex justify-between items-center gap-2">
+                                                    <div className="flex-1 min-w-0">
+                                                        <p className="font-semibold truncate">{index + 1}. {report.testName}</p>
+                                                        <Badge variant="outline" className={cn("mt-1", getStatusBadgeClass(report.status))}>
+                                                            {report.status}
+                                                        </Badge>
+                                                    </div>
+                                                    <div className="flex items-center gap-1 flex-shrink-0">
+                                                         <ViewReportDialog
+                                                            report={report}
+                                                            dummyReportData={dummyReportData}
+                                                            trigger={
+                                                                <Button variant="ghost" size="icon" className="h-10 w-10" style={{color: 'hsl(var(--primary))'}}>
+                                                                    <View className="h-4 w-4" />
+                                                                </Button>
+                                                            }
+                                                         />
+                                                        <Dialog>
+                                                            <DialogTrigger asChild>
+                                                                <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                                    <Pencil className="h-4 w-4" />
+                                                                </Button>
+                                                            </DialogTrigger>
+                                                            <DialogContent>
+                                                                <DialogHeader>
+                                                                    <DialogTitle>Edit Report</DialogTitle>
+                                                                </DialogHeader>
+                                                                <p>Edit form for {report.testName}</p>
+                                                            </DialogContent>
+                                                        </Dialog>
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger asChild>
+                                                                <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive">
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                                <AlertDialogHeader>
+                                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                    <AlertDialogDescription>This will permanently delete the report for "{report.testName}".</AlertDialogDescription>
+                                                                </AlertDialogHeader>
+                                                                <AlertDialogFooter>
+                                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                    <AlertDialogAction onClick={() => onDelete(report.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                                                                </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                        </AlertDialog>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            {index < reports.length - 1 && <Separator />}
+                                        </React.Fragment>
                                     ))}
                                 </div>
                             </CollapsibleContent>
@@ -573,8 +576,8 @@ export function LabReportsClient({
             <Tabs defaultValue="my-reports" className="w-full">
                 <div className="p-1 border bg-muted rounded-lg">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="find-lab" className="font-bold text-base">Find a Lab</TabsTrigger>
-                        <TabsTrigger value="my-reports" className="font-bold text-base">My Reports</TabsTrigger>
+                        <TabsTrigger value="find-lab" className="font-bold">Find a Lab</TabsTrigger>
+                        <TabsTrigger value="my-reports" className="font-bold">My Reports</TabsTrigger>
                     </TabsList>
                 </div>
 
