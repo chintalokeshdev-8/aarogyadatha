@@ -330,10 +330,10 @@ export function LabReportsClient({
     }, [diagnosticLabs, searchTerm, selectedCategory]);
 
     return (
-        <div className="space-y-8">
-             <div>
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics &amp; Reports</h1>
-                <p className="text-muted-foreground">Find labs, book tests, and manage your reports.</p>
+        <div className="space-y-6">
+             <div className="flex items-baseline gap-4">
+                <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics &amp; Reports</h1>
+                <p className="text-muted-foreground hidden sm:block">Find labs, book tests, and manage your reports.</p>
             </div>
             
             <Tabs defaultValue="find-lab" className="w-full">
