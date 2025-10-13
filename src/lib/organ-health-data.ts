@@ -17,7 +17,7 @@ export const organHealthData = [
       ],
       image: "https://picsum.photos/seed/heart/100/100",
       dataAiHint: "heart organ",
-      color: "hsl(var(--nav-emergency))",
+      color: "hsl(var(--primary))",
     },
     {
       name: "Liver",
@@ -34,7 +34,7 @@ export const organHealthData = [
       ],
       image: "https://picsum.photos/seed/liver/100/100",
       dataAiHint: "liver organ",
-      color: "hsl(var(--nav-diagnostics))",
+      color: "hsl(var(--primary))",
     },
     {
       name: "Kidneys",
@@ -49,7 +49,7 @@ export const organHealthData = [
       ],
       image: "https://picsum.photos/seed/kidneys/100/100",
       dataAiHint: "kidneys organ",
-      color: "hsl(var(--nav-chat))",
+      color: "hsl(var(--primary))",
     },
     {
       name: "Lungs",
@@ -63,7 +63,7 @@ export const organHealthData = [
       ],
       image: "https://picsum.photos/seed/lungs/100/100",
       dataAiHint: "lungs organ",
-      color: "hsl(var(--nav-junior-doctors))",
+      color: "hsl(var(--primary))",
     },
     {
       name: "Brain",
@@ -77,7 +77,7 @@ export const organHealthData = [
       ],
       image: "https://picsum.photos/seed/brain/100/100",
       dataAiHint: "brain organ",
-      color: "hsl(var(--nav-symptoms))",
+      color: "hsl(var(--primary))",
     },
     {
         name: "Stomach (Gut)",
@@ -92,6 +92,6 @@ export const organHealthData = [
         ],
         image: "https://picsum.photos/seed/stomach/100/100",
         dataAiHint: "stomach organ",
-        color: "hsl(var(--nav-medicines))",
+        color: "hsl(var(--primary))",
     }
 ];
