@@ -7,11 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock, Filter, X, Image as ImageIcon, File as FileIcon, View, PlusCircle } from "lucide-react";
+import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock, Filter, X, Image as ImageIcon, File as FileIcon, View, PlusCircle, Pencil, Trash2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter } from '@/components/ui/alert-dialog';
 import { analyzeReport, ReportAnalysisInput, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -311,9 +312,14 @@ export function LabReportsClient({
     const handleUploadReport = (formData: any) => {
         const newReport = {
             ...formData,
+            id: `rep${Date.now()}`, // simple unique id
             status: 'Completed',
         };
-        setAllReports(prev => [...prev, newReport].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+    
+        setAllReports(prev => {
+            const newReports = [...prev, newReport];
+            return newReports.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        });
 
         toast({
             title: "Report Uploaded",
@@ -321,11 +327,20 @@ export function LabReportsClient({
         });
     };
     
-    function UploadReportDialog({ onUpload }: { onUpload: (data: any) => void; }) {
+    const handleDeleteReport = (reportId: string) => {
+        setAllReports(prev => prev.filter(report => report.id !== reportId));
+        toast({
+            variant: 'destructive',
+            title: "Report Deleted",
+            description: "The report has been removed from your history.",
+        });
+    }
+    
+    function UploadReportDialog({ onUpload, initialDate }: { onUpload: (data: any) => void; initialDate?: string; }) {
         const [isDialogOpen, setIsDialogOpen] = useState(false);
         const [testName, setTestName] = useState('');
         const [doctor, setDoctor] = useState('');
-        const [date, setDate] = useState<Date>();
+        const [date, setDate] = useState<Date | undefined>(initialDate ? parseISO(initialDate) : new Date());
         const [fileName, setFileName] = useState('');
 
         const handleSubmit = (e: React.FormEvent) => {
@@ -344,14 +359,16 @@ export function LabReportsClient({
             // Reset form
             setTestName('');
             setDoctor('');
-            setDate(undefined);
+            setDate(initialDate ? parseISO(initialDate) : new Date());
             setFileName('');
         };
         
         return (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                    <Button variant="outline"><Upload className="mr-2 h-4 w-4" /> Upload Report</Button>
+                     <Button variant={initialDate ? 'ghost' : 'outline'} size={initialDate ? 'sm' : 'default'}>
+                        <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload to this date' : 'Upload New Report'}
+                    </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
@@ -419,7 +436,7 @@ export function LabReportsClient({
         );
     }
     
-    const ReportsList = ({ groupedReports, onAnalyze, onView, onUpload }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onView: (report: any) => void, onUpload: (data: any) => void }) => {
+    const ReportsList = ({ groupedReports, onAnalyze, onView, onUpload, onDelete }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onView: (report: any) => void, onUpload: (data: any) => void, onDelete: (id: string) => void }) => {
         
         const getDoctorsForDate = (reports: any[]) => {
             const doctors = new Set(reports.map(r => r.doctor));
@@ -434,24 +451,25 @@ export function LabReportsClient({
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
                     <Card key={date} className='border'>
                         <CardHeader className='pb-4'>
-                            <div className="flex justify-between items-center">
+                            <div className="flex flex-wrap justify-between items-center gap-2">
                                 <div>
                                     <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
                                     <CardDescription>Dr. {getDoctorsForDate(reports)}</CardDescription>
                                 </div>
-                                <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(reports)}>
-                                    <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
-                                </Button>
+                                <div className='flex gap-2'>
+                                    <UploadReportDialog onUpload={onUpload} initialDate={date} />
+                                    <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(reports)}>
+                                        <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
+                                    </Button>
+                                </div>
                             </div>
                         </CardHeader>
                         <CardContent>
                             <div className='divide-y'>
-                                {reports.map((report, index) => (
-                                    <div key={index} className="py-3 first:pt-0 last:pb-0">
+                                {reports.map((report) => (
+                                    <div key={report.id} className="py-3 first:pt-0 last:pb-0">
                                         <div className="flex justify-between items-center gap-2">
-                                            <div className="flex-1 min-w-0">
-                                                <p className="font-semibold truncate">{report.testName}</p>
-                                            </div>
+                                            <p className="font-semibold truncate flex-1">{report.testName}</p>
                                             <div className="flex items-center gap-1 flex-shrink-0">
                                                 <Badge variant="outline" className={cn("hidden sm:inline-flex", getStatusBadgeClass(report.status))}>
                                                     {report.status}
@@ -464,19 +482,34 @@ export function LabReportsClient({
                                                         <Dialog>
                                                             <DialogTrigger asChild>
                                                                 <Button variant="ghost" size="icon" className="h-10 w-10">
-                                                                    <FileDown className="h-5 w-5" />
+                                                                    <Pencil className="h-4 w-4" />
                                                                 </Button>
                                                             </DialogTrigger>
-                                                            <DialogContent className='sm:max-w-xs'>
+                                                            <DialogContent>
                                                                 <DialogHeader>
-                                                                    <DialogTitle>Download Report</DialogTitle>
+                                                                    <DialogTitle>Edit Report</DialogTitle>
                                                                 </DialogHeader>
-                                                                <div className="flex flex-col gap-2">
-                                                                    <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
-                                                                    <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
-                                                                </div>
+                                                                {/* Form would go here */}
+                                                                <p>Edit form for {report.testName}</p>
                                                             </DialogContent>
                                                         </Dialog>
+                                                        <AlertDialog>
+                                                            <AlertDialogTrigger asChild>
+                                                                <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive">
+                                                                    <Trash2 className="h-4 w-4" />
+                                                                </Button>
+                                                            </AlertDialogTrigger>
+                                                            <AlertDialogContent>
+                                                                <AlertDialogHeader>
+                                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                                    <AlertDialogDescription>This will permanently delete the report for "{report.testName}".</AlertDialogDescription>
+                                                                </AlertDialogHeader>
+                                                                <AlertDialogFooter>
+                                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                    <AlertDialogAction onClick={() => onDelete(report.id)} className="bg-destructive hover:bg-destructive/90">Delete</AlertDialogAction>
+                                                                </AlertDialogFooter>
+                                                            </AlertDialogContent>
+                                                        </AlertDialog>
                                                     </div>
                                                 )}
                                             </div>
@@ -681,6 +714,7 @@ export function LabReportsClient({
                         onAnalyze={handleAnalyze}
                         onView={handleView}
                         onUpload={handleUploadReport}
+                        onDelete={handleDeleteReport}
                     />
                 </TabsContent>
             </Tabs>
