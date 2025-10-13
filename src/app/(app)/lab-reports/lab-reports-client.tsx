@@ -419,75 +419,82 @@ export function LabReportsClient({
         );
     }
     
-    const ReportsList = ({ groupedReports, onAnalyze, onView, onUpload }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onView: (report: any) => void, onUpload: (data: any) => void }) => (
-        <div className="space-y-6">
-            <div className="flex justify-end">
-                <UploadReportDialog onUpload={onUpload} />
-            </div>
-            {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
-                <Card key={date} className='border'>
-                    <CardHeader className='pb-4'>
-                        <div className="flex justify-between items-center">
-                            <div>
-                                <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
-                                <CardDescription>{reports.length} report{reports.length > 1 ? 's' : ''} on this day</CardDescription>
-                            </div>
-                            <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(reports)}>
-                                <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
-                            </Button>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className='divide-y'>
-                            {reports.map((report, index) => (
-                                <div key={index} className="py-3 first:pt-0 last:pb-0">
-                                    <div className="flex justify-between items-center gap-2">
-                                        <div className="flex-1 min-w-0">
-                                            <p className="font-semibold truncate">{report.testName}</p>
-                                            <p className="text-sm text-muted-foreground">Dr. {report.doctor}</p>
-                                        </div>
-                                        <div className="flex items-center gap-2 flex-shrink-0">
-                                            <Badge variant="outline" className={cn("hidden sm:inline-flex", getStatusBadgeClass(report.status))}>
-                                                {report.status}
-                                            </Badge>
-                                             {report.status === "Completed" && (
-                                                 <div className="flex gap-1">
-                                                    <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => onView(report)}>
-                                                        <View className="h-5 w-5" />
-                                                    </Button>
-                                                    <Dialog>
-                                                        <DialogTrigger asChild>
-                                                            <Button variant="ghost" size="icon" className="h-10 w-10">
-                                                                <FileDown className="h-5 w-5" />
-                                                            </Button>
-                                                        </DialogTrigger>
-                                                        <DialogContent className='sm:max-w-xs'>
-                                                            <DialogHeader>
-                                                                <DialogTitle>Download Report</DialogTitle>
-                                                            </DialogHeader>
-                                                            <div className="flex flex-col gap-2">
-                                                                <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
-                                                                <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
-                                                            </div>
-                                                        </DialogContent>
-                                                    </Dialog>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <Badge variant="outline" className={cn("sm:hidden mt-2", getStatusBadgeClass(report.status))}>
-                                        {report.status}
-                                    </Badge>
+    const ReportsList = ({ groupedReports, onAnalyze, onView, onUpload }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onView: (report: any) => void, onUpload: (data: any) => void }) => {
+        
+        const getDoctorsForDate = (reports: any[]) => {
+            const doctors = new Set(reports.map(r => r.doctor));
+            return Array.from(doctors).join(', ');
+        };
+
+        return (
+            <div className="space-y-6">
+                <div className="flex justify-end">
+                    <UploadReportDialog onUpload={onUpload} />
+                </div>
+                {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
+                    <Card key={date} className='border'>
+                        <CardHeader className='pb-4'>
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
+                                    <CardDescription>Dr. {getDoctorsForDate(reports)}</CardDescription>
                                 </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-            )) : (
-                <div className="text-center p-8 text-muted-foreground">No reports found.</div>
-            )}
-        </div>
-    );
+                                <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(reports)}>
+                                    <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
+                                </Button>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <div className='divide-y'>
+                                {reports.map((report, index) => (
+                                    <div key={index} className="py-3 first:pt-0 last:pb-0">
+                                        <div className="flex justify-between items-center gap-2">
+                                            <div className="flex-1 min-w-0">
+                                                <p className="font-semibold truncate">{report.testName}</p>
+                                            </div>
+                                            <div className="flex items-center gap-1 flex-shrink-0">
+                                                <Badge variant="outline" className={cn("hidden sm:inline-flex", getStatusBadgeClass(report.status))}>
+                                                    {report.status}
+                                                </Badge>
+                                                 {report.status === "Completed" && (
+                                                     <div className="flex">
+                                                        <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => onView(report)}>
+                                                            <View className="h-5 w-5" />
+                                                        </Button>
+                                                        <Dialog>
+                                                            <DialogTrigger asChild>
+                                                                <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                                    <FileDown className="h-5 w-5" />
+                                                                </Button>
+                                                            </DialogTrigger>
+                                                            <DialogContent className='sm:max-w-xs'>
+                                                                <DialogHeader>
+                                                                    <DialogTitle>Download Report</DialogTitle>
+                                                                </DialogHeader>
+                                                                <div className="flex flex-col gap-2">
+                                                                    <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
+                                                                    <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
+                                                                </div>
+                                                            </DialogContent>
+                                                        </Dialog>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <Badge variant="outline" className={cn("sm:hidden mt-2", getStatusBadgeClass(report.status))}>
+                                            {report.status}
+                                        </Badge>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                )) : (
+                    <div className="text-center p-8 text-muted-foreground">No reports found.</div>
+                )}
+            </div>
+        );
+    };
 
     return (
         <div className="space-y-6">
@@ -498,7 +505,7 @@ export function LabReportsClient({
             </div>
             
             <Tabs defaultValue="my-reports" className="w-full">
-                <div className="p-1 border bg-muted rounded-lg flex items-center">
+                <div className="p-1 border bg-muted rounded-lg">
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="find-lab">Find a Lab</TabsTrigger>
                         <TabsTrigger value="my-reports">My Reports</TabsTrigger>
