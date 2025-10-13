@@ -177,33 +177,29 @@ export default function InsurancesPage() {
 
             <Card id="gov-health-ids" className="border">
                 <CardHeader>
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-3">
-                            <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--primary))'}}/>
-                            <div>
-                                <CardTitle>Government Health IDs</CardTitle>
-                                <CardDescription>Aarogyasri (UHID) & ABHA ID</CardDescription>
-                            </div>
+                    <div className="flex items-center gap-3">
+                        <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--primary))'}}/>
+                        <div>
+                            <CardTitle>Government Health IDs</CardTitle>
+                            <CardDescription>Aarogyasri (UHID) & ABHA ID</CardDescription>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="space-y-4">
-                        <CardHeader className="p-0">
-                            <div className="flex justify-between items-center">
-                                <CardTitle>Ayushman Bharat Health Account (ABHA)</CardTitle>
-                                <div className="flex gap-2">
-                                    <UploadIdDialog idType="ABHA" />
-                                     <Button variant="outline" onClick={() => setShowAbha(!showAbha)} className="border">
-                                        {showAbha ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
-                                        {showAbha ? "Hide" : "Show"}
-                                     </Button>
-                                </div>
+                        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                             <h4 className="font-bold text-lg">Ayushman Bharat Health Account (ABHA)</h4>
+                             <div className="flex gap-2 shrink-0">
+                                <UploadIdDialog idType="ABHA" />
+                                 <Button variant="outline" onClick={() => setShowAbha(!showAbha)} className="border w-24">
+                                    {showAbha ? <EyeOff className="mr-2 h-4 w-4"/> : <Eye className="mr-2 h-4 w-4"/>}
+                                    {showAbha ? "Hide" : "Show"}
+                                 </Button>
                             </div>
-                        </CardHeader>
+                        </div>
                         {showAbha ? (
                              <div className="border rounded-lg p-4 bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-4">
                                      <div className="cursor-pointer" onClick={() => setZoomedImage("https://abdm.gov.in/assets/img/ABHA_Card_new.png")}>
                                         <p className="font-semibold text-center text-sm mb-2">Front</p>
                                         <Image src="https://abdm.gov.in/assets/img/ABHA_Card_new.png" alt="ABHA Card Front" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="ABHA card"/>
@@ -230,21 +226,19 @@ export default function InsurancesPage() {
                     <Separator />
 
                     <div className="space-y-4">
-                        <CardHeader className="p-0">
-                           <div className="flex justify-between items-center">
-                                <CardTitle>Aarogyasri Health Card (UHID)</CardTitle>
-                                <div className="flex gap-2">
-                                    <UploadIdDialog idType="Aarogyasri" />
-                                    <Button variant="outline" onClick={() => setShowUhid(!showUhid)} className="border">
-                                        {showUhid ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
-                                        {showUhid ? "Hide" : "Show"}
-                                    </Button>
-                                </div>
+                        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                           <h4 className="font-bold text-lg">Aarogyasri Health Card (UHID)</h4>
+                            <div className="flex gap-2 shrink-0">
+                                <UploadIdDialog idType="Aarogyasri" />
+                                <Button variant="outline" onClick={() => setShowUhid(!showUhid)} className="border w-24">
+                                    {showUhid ? <EyeOff className="mr-2 h-4 w-4"/> : <Eye className="mr-2 h-4 w-4"/>}
+                                    {showUhid ? "Hide" : "Show"}
+                                </Button>
                             </div>
-                        </CardHeader>
+                        </div>
                         {showUhid ? (
                              <div className="border rounded-lg p-4 bg-green-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-4">
                                      <div className="cursor-pointer" onClick={() => setZoomedImage("https://picsum.photos/seed/aarogyasri/856/540")}>
                                         <p className="font-semibold text-center text-sm mb-2">Front</p>
                                         <Image src="https://picsum.photos/seed/aarogyasri/856/540" alt="Aarogyasri Card Front" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="Aarogyasri card"/>
@@ -296,5 +290,4 @@ export default function InsurancesPage() {
 
         </div>
     );
-
 }
