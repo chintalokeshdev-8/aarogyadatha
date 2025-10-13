@@ -4,17 +4,15 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Hospital, Search, Eye, EyeOff, Download, Printer, ShieldAlert, Upload, Loader2, FileUp } from "lucide-react";
+import { Shield, Hospital, Search, Eye, EyeOff, Download, Printer, ShieldAlert, Upload, Loader2, FileUp, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GovIdIcon } from "@/components/icons/gov-id-icon";
 import Image from 'next/image';
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 
 const networkHospitals = [
   {
@@ -45,7 +43,8 @@ const networkHospitals = [
 
 function UploadIdDialog() {
     const [isSubmitting, setIsSubmitting] = React.useState(false);
-    const [fileName, setFileName] = React.useState('');
+    const [frontFileName, setFrontFileName] = React.useState('');
+    const [backFileName, setBackFileName] = React.useState('');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -67,7 +66,7 @@ function UploadIdDialog() {
                 <DialogHeader>
                     <DialogTitle>Upload Health ID</DialogTitle>
                     <DialogDescription>
-                        Upload a photo or PDF of your government health ID card.
+                        Upload a photo or PDF of your government health ID card (front and back).
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4 py-2">
@@ -89,20 +88,33 @@ function UploadIdDialog() {
                         <Input id="id-number" placeholder="Enter the number on your card" className="border" />
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="id-file">Card Photo/PDF</Label>
+                        <Label htmlFor="id-file-front">Card Photo/PDF (Front)</Label>
                         <div className="flex items-center gap-2">
                             <Button asChild variant="outline" className="flex-1">
-                                <label htmlFor="file-upload" className="cursor-pointer">
+                                <label htmlFor="file-upload-front" className="cursor-pointer">
                                     <FileUp className="mr-2 h-4 w-4" />
-                                    {fileName || 'Choose File'}
+                                    {frontFileName || 'Choose File'}
                                 </label>
                             </Button>
-                            <input id="file-upload" type="file" className="hidden" onChange={(e) => setFileName(e.target.files?.[0]?.name || '')} accept="image/*,.pdf" />
+                            <input id="file-upload-front" type="file" className="hidden" onChange={(e) => setFrontFileName(e.target.files?.[0]?.name || '')} accept="image/*,.pdf" />
                         </div>
-                        {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
+                        {frontFileName && <p className="text-xs text-muted-foreground mt-1">Selected: {frontFileName}</p>}
+                    </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="id-file-back">Card Photo/PDF (Back)</Label>
+                        <div className="flex items-center gap-2">
+                            <Button asChild variant="outline" className="flex-1">
+                                <label htmlFor="file-upload-back" className="cursor-pointer">
+                                    <FileUp className="mr-2 h-4 w-4" />
+                                    {backFileName || 'Choose File'}
+                                </label>
+                            </Button>
+                            <input id="file-upload-back" type="file" className="hidden" onChange={(e) => setBackFileName(e.target.files?.[0]?.name || '')} accept="image/*,.pdf" />
+                        </div>
+                        {backFileName && <p className="text-xs text-muted-foreground mt-1">Selected: {backFileName}</p>}
                     </div>
                     <DialogFooter className="pt-4">
-                        <Button type="submit" style={{ backgroundColor: 'hsl(var(--primary))' }} disabled={isSubmitting || !fileName}>
+                        <Button type="submit" style={{ backgroundColor: 'hsl(var(--primary))' }} disabled={isSubmitting || (!frontFileName && !backFileName)}>
                             {isSubmitting ? (
                                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading...</>
                             ) : <><Upload className="mr-2 h-4 w-4" /> Upload Document</>}
@@ -118,6 +130,7 @@ export default function InsurancesPage() {
     const [searchTerm, setSearchTerm] = React.useState('');
     const [showUhid, setShowUhid] = React.useState(false);
     const [showAbha, setShowAbha] = React.useState(false);
+    const [zoomedImage, setZoomedImage] = React.useState<string | null>(null);
 
     const filteredHospitals = networkHospitals.filter(hospital =>
         hospital.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -203,7 +216,16 @@ export default function InsurancesPage() {
                         </CardHeader>
                         {showAbha ? (
                              <div className="border rounded-lg p-4 bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
-                                <Image src="https://abdm.gov.in/assets/img/ABHA_Card_new.png" alt="ABHA Card" width={856} height={540} className="rounded-lg shadow-md w-full" data-ai-hint="ABHA card"/>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                     <div className="cursor-pointer" onClick={() => setZoomedImage("https://abdm.gov.in/assets/img/ABHA_Card_new.png")}>
+                                        <p className="font-semibold text-center text-sm mb-2">Front</p>
+                                        <Image src="https://abdm.gov.in/assets/img/ABHA_Card_new.png" alt="ABHA Card Front" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="ABHA card"/>
+                                     </div>
+                                      <div className="cursor-pointer" onClick={() => setZoomedImage("https://picsum.photos/seed/abha_back/856/540")}>
+                                        <p className="font-semibold text-center text-sm mb-2">Back</p>
+                                        <Image src="https://picsum.photos/seed/abha_back/856/540" alt="ABHA Card Back" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="card back"/>
+                                     </div>
+                                </div>
                                 <div className="mt-4 flex gap-2 justify-end">
                                     <Button variant="outline" size="sm" className="border"><Printer className="mr-2 h-4 w-4"/> Print</Button>
                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}><Download className="mr-2 h-4 w-4"/> Download</Button>
@@ -232,7 +254,16 @@ export default function InsurancesPage() {
                         </CardHeader>
                         {showUhid ? (
                              <div className="border rounded-lg p-4 bg-green-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
-                                <Image src="https://picsum.photos/seed/aarogyasri/856/540" alt="Aarogyasri Card" width={856} height={540} className="rounded-lg shadow-md w-full" data-ai-hint="Aarogyasri card"/>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                     <div className="cursor-pointer" onClick={() => setZoomedImage("https://picsum.photos/seed/aarogyasri/856/540")}>
+                                        <p className="font-semibold text-center text-sm mb-2">Front</p>
+                                        <Image src="https://picsum.photos/seed/aarogyasri/856/540" alt="Aarogyasri Card Front" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="Aarogyasri card"/>
+                                     </div>
+                                      <div className="cursor-pointer" onClick={() => setZoomedImage("https://picsum.photos/seed/aarogyasri_back/856/540")}>
+                                        <p className="font-semibold text-center text-sm mb-2">Back</p>
+                                        <Image src="https://picsum.photos/seed/aarogyasri_back/856/540" alt="Aarogyasri Card Back" width={428} height={270} className="rounded-lg shadow-md w-full" data-ai-hint="card back"/>
+                                     </div>
+                                </div>
                                  <div className="mt-4 flex gap-2 justify-end">
                                     <Button variant="outline" size="sm" className="border"><Printer className="mr-2 h-4 w-4"/> Print</Button>
                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}><Download className="mr-2 h-4 w-4"/> Download</Button>
@@ -248,6 +279,32 @@ export default function InsurancesPage() {
                     </div>
                 </CardContent>
             </Card>
+
+            <Dialog open={zoomedImage !== null} onOpenChange={() => setZoomedImage(null)}>
+                <DialogContent className="max-w-4xl h-[80vh] flex flex-col p-0 border-0">
+                     <DialogHeader className="p-4 bg-background rounded-t-lg z-10 shadow-sm flex-row items-center justify-between">
+                        <DialogTitle>Card Viewer</DialogTitle>
+                        <DialogClose asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <X className="h-5 w-5" />
+                            </Button>
+                        </DialogClose>
+                     </DialogHeader>
+                    <div className="flex-1 relative bg-muted/20 flex items-center justify-center p-4">
+                        {zoomedImage && (
+                            <Image
+                                src={zoomedImage}
+                                alt="Zoomed ID Card"
+                                fill
+                                style={{objectFit: "contain"}}
+                                className="rounded-lg"
+                            />
+                        )}
+                    </div>
+                </DialogContent>
+            </Dialog>
+
         </div>
     );
-}
+
+    
