@@ -170,8 +170,8 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
         
-        <div className="text-center py-2">
-            <p className="font-bold text-foreground capitalize text-sm md:text-base">Right Disease For Right Doctor + Right Diet = 99% Cure</p>
+        <div className="text-center">
+            <p className="font-bold text-foreground text-sm md:text-base">Right disease for right doctor + Right Diet = 99% cure</p>
         </div>
 
         <section>
