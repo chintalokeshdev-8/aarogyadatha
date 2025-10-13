@@ -205,9 +205,9 @@ export default function DashboardPage() {
                    <div className="flex items-start gap-3">
                         <AlertTriangle className="h-5 w-5 text-yellow-700 mt-0.5 flex-shrink-0"/>
                         <div>
-                            <h4 className="font-semibold text-yellow-800 text-sm">Disclaimer</h4>
+                            <h4 className="font-semibold text-yellow-800 text-sm">AI Disclaimer: For Your Safety</h4>
                             <p className="text-xs text-yellow-700">
-                                This 'Organ Health Overview' is for informational purposes only. It is an AI-generated score based on your uploaded health data and is not a medical diagnosis. Always consult with a qualified doctor for any health concerns.
+                                As an AI, I provide information based on the data you provide. This overview is **not** a medical diagnosis. For any health concerns or before taking any action, you must **always consult a qualified human doctor.**
                             </p>
                         </div>
                    </div>
