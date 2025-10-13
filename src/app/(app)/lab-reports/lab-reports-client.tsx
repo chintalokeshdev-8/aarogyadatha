@@ -25,6 +25,8 @@ import { format, parseISO } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 
 const getStatusBadgeClass = (status: string) => {
@@ -44,6 +46,56 @@ interface LabReportsClientProps {
     allReports: any[];
     diagnosticLabs: any[];
     dummyReportData: Record<string, { content: string, image?: string, dataAiHint?: string }>;
+}
+
+function ViewReportsDialog({ reports, date, trigger, dummyReportData }: { reports: any[], date: string, trigger: React.ReactNode, dummyReportData: LabReportsClientProps['dummyReportData'] }) {
+    const images = reports.map(r => dummyReportData[`${r.testName}-${r.date}`]?.image).filter(Boolean) as string[];
+    const dataAiHints = reports.map(r => dummyReportData[`${r.testName}-${r.date}`]?.dataAiHint).filter(Boolean) as string[];
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                {trigger}
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-xl h-[80vh] flex flex-col p-0 border">
+                <DialogHeader className="p-4 border-b">
+                    <DialogTitle>Reports for {format(parseISO(date), 'dd MMM, yyyy')}</DialogTitle>
+                </DialogHeader>
+                <div className="flex-1 overflow-hidden relative">
+                    {images.length > 0 ? (
+                        <Carousel className="w-full h-full">
+                            <CarouselContent className="h-full">
+                                {images.map((image, index) => (
+                                    <CarouselItem key={index} className="h-full">
+                                        <div className="p-4 h-full">
+                                            <div className="relative w-full h-full bg-muted/30 rounded-lg overflow-hidden">
+                                                <Image
+                                                    src={image}
+                                                    alt={`Report ${index + 1}`}
+                                                    fill
+                                                    style={{ objectFit: 'contain' }}
+                                                    data-ai-hint={dataAiHints[index] || 'medical report'}
+                                                />
+                                            </div>
+                                        </div>
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                            <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10" />
+                            <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10" />
+                        </Carousel>
+                    ) : (
+                        <div className="h-full flex items-center justify-center text-muted-foreground">
+                            No images available for these reports.
+                        </div>
+                    )}
+                </div>
+                <DialogFooter className="p-4 border-t">
+                    <Button variant="outline"><FileDown className="mr-2 h-4 w-4" /> Download All</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
 }
 
 export function LabReportsClient({
@@ -310,7 +362,7 @@ export function LabReportsClient({
         );
     }
     
-    const ReportsList = ({ groupedReports, onAnalyze, onView, onUpload, onDelete }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onView: (report: any) => void, onUpload: (data: any) => void, onDelete: (id: string) => void }) => {
+    const ReportsList = ({ groupedReports, onAnalyze, onUpload, onDelete, dummyReportData }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onUpload: (data: any) => void, onDelete: (id: string) => void, dummyReportData: any }) => {
         
         const getDoctorsForDate = (reports: any[]) => {
             const doctors = new Set(reports.map(r => r.doctor));
@@ -323,26 +375,29 @@ export function LabReportsClient({
                     <UploadReportDialog onUpload={onUpload} />
                 </div>
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
-                    <Collapsible key={date} defaultOpen={true} className="border rounded-lg bg-background">
-                        <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors">
-                             <div className="flex justify-between items-center gap-2 flex-nowrap">
+                    <Card key={date} className="border bg-background">
+                         <CardHeader className="p-4">
+                            <div className="flex justify-between items-center gap-2">
                                 <div className='flex-1 text-left min-w-0'>
                                     <p className="text-base font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
                                     <p className="text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
                                 </div>
-                                <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
+                                <ViewReportsDialog
+                                    reports={reports}
+                                    date={date}
+                                    dummyReportData={dummyReportData}
+                                    trigger={
+                                        <Button variant="outline" size="sm">
+                                            <View className="mr-2 h-4 w-4" /> View All
+                                        </Button>
+                                    }
+                                />
                             </div>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="p-4 border-t space-y-2 bg-muted/20">
-                            <div className='flex items-center justify-end gap-1 border-b pb-2 mb-2'>
-                                <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
-                                    <Sparkles className="mr-2 h-3 w-3" /> AI Analysis
-                                </Button>
-                                <UploadReportDialog onUpload={onUpload} initialDate={date} />
-                            </div>
-                            <div className='divide-y'>
+                        </CardHeader>
+                        <CardContent className="p-4 pt-0 space-y-2">
+                             <div className='divide-y border-t'>
                                 {reports.map((report) => (
-                                    <div key={report.id} className="py-3 first:pt-0 last:pb-0">
+                                    <div key={report.id} className="py-3 first:pt-3 last:pb-0">
                                         <div className="flex justify-between items-center gap-2">
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-semibold truncate">{report.testName}</p>
@@ -351,11 +406,6 @@ export function LabReportsClient({
                                                 </Badge>
                                             </div>
                                             <div className="flex items-center gap-1 flex-shrink-0">
-                                                <DialogTrigger asChild>
-                                                    <Button variant="ghost" size="icon" className="h-10 w-10" onClick={() => onView(report)}>
-                                                        <View className="h-5 w-5" />
-                                                    </Button>
-                                                </DialogTrigger>
                                                 <Dialog>
                                                     <DialogTrigger asChild>
                                                         <Button variant="ghost" size="icon" className="h-10 w-10">
@@ -372,8 +422,8 @@ export function LabReportsClient({
                                                 </Dialog>
                                                 <AlertDialog>
                                                     <AlertDialogTrigger asChild>
-                                                         <Button variant="ghost" size="icon" className="h-10 w-10">
-                                                            <Trash2 className="h-4 w-4 text-destructive" />
+                                                         <Button variant="ghost" size="icon" className="h-10 w-10 text-destructive">
+                                                            <Trash2 className="h-4 w-4" />
                                                         </Button>
                                                     </AlertDialogTrigger>
                                                     <AlertDialogContent>
@@ -392,8 +442,14 @@ export function LabReportsClient({
                                     </div>
                                 ))}
                             </div>
-                        </CollapsibleContent>
-                    </Collapsible>
+                             <div className='flex items-center justify-end gap-1 border-t pt-2 mt-2'>
+                                <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
+                                    <Sparkles className="mr-2 h-3 w-3" /> AI Analysis
+                                </Button>
+                                <UploadReportDialog onUpload={onUpload} initialDate={date} />
+                            </div>
+                        </CardContent>
+                    </Card>
                 )) : (
                     <div className="text-center p-8 text-muted-foreground">No reports found.</div>
                 )}
@@ -585,9 +641,9 @@ export function LabReportsClient({
                         <ReportsList 
                             groupedReports={groupedAllReports}
                             onAnalyze={handleAnalyze}
-                            onView={handleView}
                             onUpload={handleUploadReport}
                             onDelete={handleDeleteReport}
+                            dummyReportData={dummyReportData}
                         />
                          <DialogContent className="sm:max-w-2xl">
                              <DialogHeader>
