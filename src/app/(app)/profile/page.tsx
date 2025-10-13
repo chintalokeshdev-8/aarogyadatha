@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from "react";
@@ -15,10 +14,10 @@ export default function ProfilePage() {
     return (
         <div className="space-y-8">
             <Card className="relative">
-                <Button variant="ghost" size="icon" className="absolute top-4 right-4 h-8 w-8 rounded-full bg-muted/70 flex-shrink-0">
+                <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-8 w-8 rounded-full bg-muted/70 flex-shrink-0">
                     <Pencil className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
                 </Button>
-                <CardContent className="p-4 sm:p-6 space-y-6">
+                <CardContent className="p-4 sm:p-6 space-y-4">
                     {/* Profile Header */}
                     <div className="flex items-center gap-4">
                         <Avatar className="h-16 w-16 border-4" style={{borderColor: 'hsl(var(--nav-profile))'}}>
@@ -40,10 +39,10 @@ export default function ProfilePage() {
 
                     {/* Address and Contact */}
                     <div>
-                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-4">
+                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-3">
                             <MapPin style={{color: 'hsl(var(--nav-profile))'}}/> Address & Contact
                         </h3>
-                        <div className="grid grid-cols-1 gap-y-4 text-sm">
+                        <div className="grid grid-cols-1 gap-y-3 text-sm">
                             <div className="flex items-center gap-3">
                                 <Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
                                 <span className="text-muted-foreground">lokeshbabu9298@gmail.com</span>
@@ -66,7 +65,7 @@ export default function ProfilePage() {
                         <h3 className="font-semibold text-lg flex items-center gap-2 mb-3">
                             <CreditCard style={{color: 'hsl(var(--nav-profile))'}} /> Identity Verification
                         </h3>
-                        <div className="flex items-center justify-between p-4 bg-muted/40 rounded-lg">
+                        <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
                             <div className="space-y-1">
                                 <p className="font-semibold">Aadhar Card</p>
                                 <p className="text-sm text-muted-foreground">Optionally link your Aadhar for faster verification at hospitals.</p>
