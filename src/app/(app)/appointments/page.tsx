@@ -905,7 +905,6 @@ export default function AppointmentsPage() {
     const [isProfileOpen, setProfileOpen] = useState(false);
     const [isBookingOpen, setIsBookingOpen] = useState(false);
     const { toast } = useToast();
-    const router = useRouter();
     const [isSharing, setIsSharing] = useState(false);
 
     // Doctor filters
@@ -1189,11 +1188,12 @@ export default function AppointmentsPage() {
                                                 </div>
                                             </div>
                                             <div className="mt-4 space-y-2 text-sm">
-                                                <p className="text-sm"><strong className="text-base font-bold">Focus:</strong> {doctor.mainDealing}</p>
-                                                <div className="flex items-center gap-2 text-muted-foreground">
-                                                  <Briefcase className="h-4 w-4 text-primary" style={{color: 'hsl(var(--nav-appointments))'}} />
-                                                  <p className="font-semibold text-xs">{doctor.surgeries}</p>
-                                                </div>
+                                                <p className="text-sm font-semibold">
+                                                    <strong className="font-bold">Focus:</strong> {doctor.mainDealing}
+                                                </p>
+                                                <p className="text-sm font-semibold">
+                                                    <strong className="font-bold">Surgeries:</strong> {doctor.surgeries}
+                                                </p>
                                             </div>
                                             <div className="mt-4 p-3 rounded-lg bg-muted/50 border-2 border-black flex flex-wrap items-center justify-between gap-2 text-sm">
                                                 <div className="flex items-center gap-2">
@@ -1607,6 +1607,7 @@ export default function AppointmentsPage() {
 }
 
     
+
 
 
 
