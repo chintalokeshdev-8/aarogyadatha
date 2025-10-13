@@ -450,12 +450,12 @@ export function LabReportsClient({
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
                     <Card key={date} className='border'>
                         <CardHeader className='pb-4'>
-                            <div className="flex flex-wrap justify-between items-center gap-2">
+                            <div className="flex flex-wrap justify-between items-start gap-2">
                                 <div>
                                     <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
                                     <CardDescription>Dr. {getDoctorsForDate(reports)}</CardDescription>
                                 </div>
-                                <div className='flex gap-2'>
+                                <div className='flex gap-2 items-center'>
                                     <UploadReportDialog onUpload={onUpload} initialDate={date} />
                                     <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(reports)}>
                                         <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
