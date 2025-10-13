@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from "react";
@@ -78,7 +79,7 @@ export default function ProfilePage() {
                         <div className="space-y-4 py-4 max-h-[70vh] overflow-y-auto px-1">
                              <div className="flex justify-center">
                                 <div className="relative">
-                                    <Avatar className="h-24 w-24 border-2" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                                    <Avatar className="h-24 w-24 border" style={{borderColor: 'hsl(var(--nav-profile))'}}>
                                         <AvatarImage src={profilePic ? URL.createObjectURL(profilePic) : "/images/profile.jpg"} />
                                         <AvatarFallback className="text-3xl">CL</AvatarFallback>
                                     </Avatar>
@@ -138,7 +139,7 @@ export default function ProfilePage() {
 
                 <CardContent className="p-4 sm:p-6 space-y-2">
                     <div className="flex items-center gap-4">
-                        <Avatar className="h-16 w-16 border-2 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-profile))'}}>
+                        <Avatar className="h-16 w-16 border flex-shrink-0" style={{borderColor: 'hsl(var(--nav-profile))'}}>
                             <AvatarImage src="/images/profile.jpg" />
                             <AvatarFallback className="text-2xl">CL</AvatarFallback>
                         </Avatar>
@@ -217,3 +218,5 @@ export default function ProfilePage() {
         </div>
     );
 }
+
+    

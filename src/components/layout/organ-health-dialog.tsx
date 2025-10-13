@@ -240,3 +240,5 @@ export function OrganHealthDialog({ organ, children }: { organ: any, children: R
         </Dialog>
     );
 }
+
+    

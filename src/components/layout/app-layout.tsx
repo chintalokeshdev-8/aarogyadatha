@@ -113,7 +113,7 @@ function AiAssistantDialog() {
                     {conversation.map((msg, index) => (
                         <div key={index} className={cn("flex items-start gap-3", msg.role === 'user' ? 'justify-end' : 'justify-start')}>
                             {msg.role === 'assistant' && (
-                                <Avatar className="h-8 w-8 border-2 border-primary">
+                                <Avatar className="h-8 w-8 border border-primary">
                                     <AvatarFallback><Sparkles className="h-4 w-4" /></AvatarFallback>
                                 </Avatar>
                             )}
@@ -121,7 +121,7 @@ function AiAssistantDialog() {
                                 <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                             </div>
                              {msg.role === 'user' && (
-                                <Avatar className="h-8 w-8 border-2 border-muted-foreground">
+                                <Avatar className="h-8 w-8 border border-muted-foreground">
                                    <AvatarImage src="/images/profile.jpg" />
                                     <AvatarFallback>CL</AvatarFallback>
                                 </Avatar>
@@ -130,7 +130,7 @@ function AiAssistantDialog() {
                     ))}
                      {isPending && (
                         <div className="flex items-start gap-3 justify-start">
-                            <Avatar className="h-8 w-8 border-2 border-primary">
+                            <Avatar className="h-8 w-8 border border-primary">
                                <AvatarFallback><Sparkles className="h-4 w-4" /></AvatarFallback>
                             </Avatar>
                             <div className="max-w-sm rounded-lg px-4 py-2 bg-background border flex items-center">
@@ -318,7 +318,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                                    <Avatar className="h-10 w-10 border-2 border-primary-foreground/50">
+                                    <Avatar className="h-10 w-10 border border-primary-foreground/50">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback className="bg-primary-foreground text-primary">CL</AvatarFallback>
                                     </Avatar>
@@ -490,3 +490,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+    

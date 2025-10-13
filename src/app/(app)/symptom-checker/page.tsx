@@ -138,7 +138,7 @@ export default function SymptomCheckerPage() {
                             onClick={() => handleSymptomClick(symptom.english)}
                             className={cn(
                                 "cursor-pointer transition-all rounded-lg p-2 text-center border",
-                                selectedSymptoms.includes(symptom.english) ? 'border-green-500 bg-green-500/10' : 'bg-muted/40 border-input hover:border-muted-foreground/20'
+                                selectedSymptoms.includes(symptom.english) ? 'border-green-500 bg-green-500/10' : 'bg-muted/40 hover:border-muted-foreground/20'
                             )}
                         >
                             <p className="font-semibold text-sm">{symptom.english}</p>
@@ -242,3 +242,5 @@ export default function SymptomCheckerPage() {
         </div>
     );
 }
+
+    

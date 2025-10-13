@@ -200,7 +200,7 @@ export default function DashboardPage() {
                 <h2 className="text-lg font-semibold">Organ Health Overview</h2>
             </CardHeader>
             <CardContent className="space-y-4">
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                <div className="bg-yellow-50 border-yellow-200 rounded-lg p-3">
                    <div className="flex items-start gap-3">
                         <AlertTriangle className="h-5 w-5 text-yellow-700 mt-0.5 flex-shrink-0"/>
                         <div>
@@ -259,7 +259,7 @@ export default function DashboardPage() {
                                   <p className="font-bold text-xl drop-shadow-md max-w-lg mx-auto">{slide.title}</p>
                                   {slide.description && <p className="text-sm drop-shadow-sm">{slide.description}</p>}
                                   <Link href={slide.href}>
-                                      <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border-current text-foreground">
+                                      <Button variant="outline" className="bg-background/80 hover:bg-background font-bold shrink-0 border text-foreground">
                                           <slide.buttonIcon className="mr-2 h-4 w-4" /> {slide.buttonText}
                                       </Button>
                                   </Link>
@@ -334,3 +334,5 @@ export default function DashboardPage() {
       </div>
   );
 }
+
+    

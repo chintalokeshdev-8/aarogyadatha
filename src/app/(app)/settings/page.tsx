@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -58,7 +59,7 @@ export default function SettingsPage() {
                        {isDownloading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <FileDown className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>}
                        <span>{isDownloading ? 'Downloading...' : 'Export My Data'}</span>
                     </Button>
-                     <Button variant="destructive" onClick={handleDeleteAccount} disabled={isDeleting} className="w-full justify-start gap-3 border text-base py-6">
+                     <Button variant="destructive" onClick={handleDeleteAccount} disabled={isDeleting} className="w-full justify-start gap-3 text-base py-6">
                        {isDeleting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="h-5 w-5"/>}
                        <span>{isDeleting ? 'Deleting...' : 'Delete Account'}</span>
                    </Button>
@@ -67,3 +68,5 @@ export default function SettingsPage() {
         </div>
     );
 }
+
+    

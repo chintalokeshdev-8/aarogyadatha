@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState, useTransition, useMemo, useEffect } from 'react';
@@ -639,3 +640,5 @@ export function LabReportsClient({
         </div>
     );
 }
+
+    
