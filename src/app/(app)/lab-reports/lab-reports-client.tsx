@@ -250,13 +250,6 @@ export function LabReportsClient({
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [openLab, setOpenLab] = useState<string | null>(null);
 
-    // Defer setting initial state for Collapsible to client-side only
-    useEffect(() => {
-        if (diagnosticLabs.length > 0) {
-            setOpenLab(diagnosticLabs[0].name);
-        }
-    }, [diagnosticLabs]);
-
     const testCategories = useMemo(() => {
         const categories = new Set<string>();
         diagnosticLabs.forEach(lab => {
