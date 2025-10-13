@@ -778,7 +778,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                         {step === 1 ? 'Book Online Consult' : 'Payment Summary'}
                     </DialogTitle>
                      <DialogClose asChild>
-                        <Button variant="ghost" size="icon" className="ml-auto">
+                        <Button variant="ghost" size="icon" className="ml-auto absolute right-4 top-4">
                             <X className="h-5 w-5" />
                         </Button>
                     </DialogClose>
@@ -870,23 +870,18 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                                     </CardContent>
                                 </Card>
                             </div>
-                            <Link href="/terms" passHref>
-                                <div className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50">
-                                    <div className="flex items-center gap-3">
-                                        <HelpCircle className="h-5 w-5 text-muted-foreground" />
-                                        <p className="font-semibold">Terms and conditions</p>
-                                    </div>
-                                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                                </div>
-                            </Link>
-
-                            <div className="flex items-center justify-between p-4 border rounded-lg">
-                                <div className="flex items-center gap-3">
-                                    <Phone className="h-5 w-5 text-muted-foreground" />
-                                    <div>
-                                        <p className="font-semibold">Cancellation & Reschedule Policy</p>
-                                        <p className="text-sm text-muted-foreground">Please contact customer care for assistance.</p>
-                                    </div>
+                            
+                            <div className="space-y-2 pt-4 text-center text-sm text-muted-foreground">
+                                <Link href="/terms" passHref>
+                                    <p className="cursor-pointer hover:underline">
+                                       Terms & Conditions
+                                    </p>
+                                </Link>
+                                <div className="flex items-center justify-center gap-2">
+                                     <p>For Cancellation/Reschedule:</p>
+                                     <a href="tel:8008334948" className='contents'>
+                                        <Button variant="link" className="p-0 h-auto">Contact Us</Button>
+                                     </a>
                                 </div>
                             </div>
                          </div>
