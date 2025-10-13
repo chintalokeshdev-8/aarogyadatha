@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -1311,8 +1312,7 @@ export default function AppointmentsPage() {
                                             <ChevronDown className="h-6 w-6 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0 mt-1" />
                                         </CollapsibleTrigger>
                                         <CollapsibleContent className="p-4 border-t space-y-4 bg-muted/20">
-                                            <div className="flex justify-between items-center">
-                                                <h4 className="font-bold text-lg flex items-center gap-2"><FileText className="h-5 w-5" /> Prescription & Follow-up History</h4>
+                                            <div className="flex justify-end items-center">
                                                 <Button size="sm" onClick={() => handleOpenForm(index)}>
                                                     <PlusCircle className="mr-2 h-4 w-4" /> Add Follow-up
                                                 </Button>
@@ -1607,3 +1607,4 @@ export default function AppointmentsPage() {
     
 
     
+
