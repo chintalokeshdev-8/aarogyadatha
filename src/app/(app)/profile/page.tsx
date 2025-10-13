@@ -4,12 +4,13 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Mail, MapPin, Pencil, User, Heart, Droplets, Phone, Settings, CreditCard, Shield, Camera, Upload } from "lucide-react";
+import { Mail, MapPin, Pencil, User, Heart, Droplets, Phone, Settings, CreditCard, Shield, Camera, Upload, Eye, EyeOff } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
 
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState({
@@ -27,6 +28,9 @@ export default function ProfilePage() {
     const [formData, setFormData] = useState(profileData);
     const [profilePic, setProfilePic] = useState<File | null>(null);
     const [aadharPic, setAadharPic] = useState<File | null>(null);
+    const [showAadharNumber, setShowAadharNumber] = useState(false);
+    const [showAadharPhoto, setShowAadharPhoto] = useState(false);
+
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { id, value } = e.target;
@@ -53,7 +57,7 @@ export default function ProfilePage() {
             <Card className="relative">
                  <Dialog>
                     <DialogTrigger asChild>
-                        <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-8 w-8 rounded-full bg-muted/70 flex-shrink-0">
+                       <Button variant="ghost" size="icon" className="absolute top-2 right-2 h-8 w-8 rounded-full bg-muted/70 flex-shrink-0">
                             <Pencil className="h-4 w-4" style={{color: 'hsl(var(--nav-profile))'}} />
                         </Button>
                     </DialogTrigger>
@@ -124,7 +128,7 @@ export default function ProfilePage() {
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
-                
+
                 <CardContent className="p-4 sm:p-6 space-y-4">
                     <div className="flex items-center gap-4">
                         <Avatar className="h-16 w-16 border-4 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-profile))'}}>
@@ -144,11 +148,11 @@ export default function ProfilePage() {
 
                     <Separator className="my-2" />
 
-                    <div>
-                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
+                    <div className="space-y-2">
+                        <h3 className="font-semibold text-lg flex items-center gap-2">
                             <MapPin style={{color: 'hsl(var(--nav-profile))'}}/> Address & Contact
                         </h3>
-                        <div className="grid grid-cols-1 gap-y-2 text-sm">
+                        <div className="grid grid-cols-1 gap-y-2 text-sm pt-2">
                             <div className="flex items-center gap-3">
                                 <Mail style={{color: 'hsl(var(--nav-profile))'}} className="h-4 w-4 flex-shrink-0"/>
                                 <span className="text-muted-foreground">{profileData.email}</span>
@@ -166,23 +170,40 @@ export default function ProfilePage() {
 
                     <Separator className="my-2" />
 
-                    <div>
-                        <h3 className="font-semibold text-lg flex items-center gap-2 mb-2">
+                    <div className="space-y-4">
+                        <h3 className="font-semibold text-lg flex items-center gap-2">
                             <CreditCard style={{color: 'hsl(var(--nav-profile))'}} /> Identity Verification
                         </h3>
                         <div className="flex items-center justify-between p-3 bg-muted/40 rounded-lg">
                             <div className="space-y-1">
-                                <p className="font-semibold">Aadhar Card</p>
-                                <p className="text-sm text-muted-foreground">
-                                    {profileData.aadhar ? `**** **** ${profileData.aadhar.slice(-4)}` : "Not linked"}
+                                <p className="font-semibold">Aadhar Card Number</p>
+                                <p className="text-sm text-muted-foreground tracking-wider">
+                                    {showAadharNumber ? profileData.aadhar : `**** **** ${profileData.aadhar.slice(-4)}`}
                                 </p>
                             </div>
-                             {profileData.aadhar ? (
-                                <Button variant="outline" disabled>Linked</Button>
-                             ) : (
-                                <Button variant="outline" disabled>Add</Button>
-                             )}
+                             <Button variant="ghost" size="icon" onClick={() => setShowAadharNumber(!showAadharNumber)}>
+                                {showAadharNumber ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                            </Button>
                         </div>
+                         {aadharPic && (
+                             <div className="p-3 bg-muted/40 rounded-lg">
+                                <div className="flex items-center justify-between mb-2">
+                                     <p className="font-semibold">Aadhar Card Photo</p>
+                                     <Button variant="ghost" size="icon" onClick={() => setShowAadharPhoto(!showAadharPhoto)}>
+                                        {showAadharPhoto ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                    </Button>
+                                </div>
+                                {showAadharPhoto && (
+                                     <Image
+                                        src={URL.createObjectURL(aadharPic)}
+                                        alt="Aadhar Card"
+                                        width={400}
+                                        height={250}
+                                        className="rounded-md border-2 w-full object-contain"
+                                    />
+                                )}
+                            </div>
+                         )}
                     </div>
                 </CardContent>
             </Card>
