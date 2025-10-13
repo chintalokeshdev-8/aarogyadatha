@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock, Filter, X, Image as ImageIcon, File as FileIcon, View } from "lucide-react";
+import { FileDown, Eye, Upload, Search, MapPin, TestTube, Sparkles, Bone, Scan, FileText, Loader2, User, Calendar, Stethoscope as StethoscopeIcon, FlaskConical, ChevronDown, ChevronUp, Star, Phone, Globe, Share2, Map, Clock, Filter, X, Image as ImageIcon, File as FileIcon, View, PlusCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -20,9 +20,10 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarIcon } from 'lucide-react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
 
 
 const getStatusBadgeClass = (status: string) => {
@@ -37,131 +38,6 @@ const getStatusBadgeClass = (status: string) => {
             return "";
     }
 }
-
-const ReportTable = ({ reports, onAnalyze, onView }: { reports: any[], onAnalyze: (report: any) => void, onView: (report: any) => void }) => (
-    <div>
-        {/* Desktop View: Table */}
-        <div className="hidden md:block">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Test/Prescription Name</TableHead>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Ordered By</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {reports.length > 0 ? reports.map((report, index) => (
-                        <TableRow key={index} className='border-b'>
-                            <TableCell className="font-medium">{report.testName}</TableCell>
-                            <TableCell>{format(new Date(report.date), 'dd-MMM-yyyy')}</TableCell>
-                            <TableCell>{report.doctor}</TableCell>
-                            <TableCell>
-                                <Badge variant="outline" className={getStatusBadgeClass(report.status)}>
-                                    {report.status}
-                                </Badge>
-                            </TableCell>
-                            <TableCell className="text-right">
-                                {report.status === "Completed" ? (
-                                    <div className="flex gap-2 justify-end">
-                                        <Button variant="outline" size="sm" onClick={() => onView(report)}>
-                                            <View className="mr-2 h-4 w-4" /> View
-                                        </Button>
-                                        <Dialog>
-                                            <DialogTrigger asChild>
-                                                <Button variant="outline" size="sm">
-                                                    <FileDown className="mr-2 h-4 w-4" /> Download
-                                                </Button>
-                                            </DialogTrigger>
-                                            <DialogContent className='sm:max-w-md'>
-                                                <DialogHeader>
-                                                    <DialogTitle>Download Report</DialogTitle>
-                                                    <DialogDescription>Choose a format to download your report.</DialogDescription>
-                                                </DialogHeader>
-                                                <div className="flex flex-col gap-2">
-                                                    <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> Download as PDF</Button>
-                                                    <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Download as Image</Button>
-                                                </div>
-                                            </DialogContent>
-                                        </Dialog>
-                                        <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(report)}>
-                                            <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
-                                        </Button>
-                                    </div>
-                                ) : (
-                                    <span className="text-xs text-muted-foreground">Not Available</span>
-                                )}
-                            </TableCell>
-                        </TableRow>
-                    )) : (
-                        <TableRow>
-                            <TableCell colSpan={5} className="h-24 text-center">
-                                No reports found.
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </div>
-
-        {/* Mobile View: Cards */}
-        <div className="md:hidden space-y-4">
-            {reports.length > 0 ? reports.map((report, index) => (
-                <Card key={index} className="border">
-                    <CardHeader>
-                        <CardTitle>{report.testName}</CardTitle>
-                        <div className="flex justify-between items-center text-sm text-muted-foreground pt-1">
-                            <span>{format(new Date(report.date), 'dd-MMM-yyyy')}</span>
-                            <span>{report.doctor}</span>
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <Badge variant="outline" className={getStatusBadgeClass(report.status)}>
-                            {report.status}
-                        </Badge>
-                    </CardContent>
-                    <CardFooter className="flex-wrap gap-2">
-                        {report.status === "Completed" ? (
-                            <>
-                                <Button variant="outline" size="sm" className="flex-1" onClick={() => onView(report)}>
-                                    <View className="mr-2 h-4 w-4" /> View
-                                </Button>
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline" size="sm" className="flex-1">
-                                            <FileDown className="mr-2 h-4 w-4" /> Download
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent className='sm:max-w-md'>
-                                        <DialogHeader>
-                                            <DialogTitle>Download Report</DialogTitle>
-                                            <DialogDescription>Choose a format to download your report.</DialogDescription>
-                                        </DialogHeader>
-                                        <div className="flex flex-col gap-2">
-                                            <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> Download as PDF</Button>
-                                            <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Download as Image</Button>
-                                        </div>
-                                    </DialogContent>
-                                </Dialog>
-                                <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10 w-full" onClick={() => onAnalyze(report)}>
-                                    <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
-                                </Button>
-                            </>
-                        ) : (
-                            <p className="text-xs text-muted-foreground w-full text-center">Actions will be available once the report is completed.</p>
-                        )}
-                    </CardFooter>
-                </Card>
-            )) : (
-                <div className="text-center p-8 text-muted-foreground">
-                    No reports found.
-                </div>
-            )}
-        </div>
-    </div>
-);
 
 const ReportViewer = ({ content }: { content: string }) => {
     const lines = content.trim().split('\n');
@@ -288,11 +164,14 @@ interface LabReportsClientProps {
 }
 
 export function LabReportsClient({
-    labReports,
-    imagingReports,
+    labReports: initialLabReports,
+    imagingReports: initialImagingReports,
     diagnosticLabs,
     dummyReportData
 }: LabReportsClientProps) {
+    const [labReports, setLabReports] = useState(initialLabReports);
+    const [imagingReports, setImagingReports] = useState(initialImagingReports);
+    
     const [isAnalyzeOpen, setAnalyzeOpen] = useState(false);
     const [isViewOpen, setViewOpen] = useState(false);
     const [selectedReport, setSelectedReport] = useState<any | null>(null);
@@ -302,8 +181,8 @@ export function LabReportsClient({
     const [reportContent, setReportContent] = useState('');
     const [reportImage, setReportImage] = useState<string | undefined>(undefined);
     const [reportImageHint, setReportImageHint] = useState<string | undefined>(undefined);
-    const [fileName, setFileName] = useState('');
     const [prescriptionFileName, setPrescriptionFileName] = useState('');
+    const { toast } = useToast();
     
     // Filters for diagnostics
     const [searchTerm, setSearchTerm] = useState('');
@@ -320,14 +199,6 @@ export function LabReportsClient({
         return ['All', ...Array.from(categories)];
     }, [diagnosticLabs]);
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length > 0) {
-            setFileName(event.target.files[0].name);
-        } else {
-            setFileName('');
-        }
-    };
-    
     const handleAction = (action: Function) => {
         setIsSubmitting(true);
         setTimeout(() => {
@@ -355,12 +226,17 @@ export function LabReportsClient({
         setViewOpen(true);
     };
 
-    const handleAnalyze = (report: any) => {
-        const reportKey = `${report.testName}-${report.date}`;
-        const data = dummyReportData[reportKey] || { content: "No content to analyze." };
+    const handleAnalyze = (reports: any[]) => {
+        if (!reports || reports.length === 0) return;
+        
+        const combinedContent = reports.map(report => {
+            const reportKey = `${report.testName}-${report.date}`;
+            const data = dummyReportData[reportKey] || { content: `Content for ${report.testName} not found.` };
+            return `--- Report: ${report.testName} ---\n${data.content}`;
+        }).join('\n\n');
 
-        setSelectedReport(report);
-        setReportContent(data.content);
+        setSelectedReport({ testName: `Overall Analysis for ${format(parseISO(reports[0].date), 'dd-MMM-yyyy')}`, date: reports[0].date });
+        setReportContent(combinedContent);
         setAnalysisResult(null);
         setAnalyzeOpen(true);
     };
@@ -388,11 +264,208 @@ export function LabReportsClient({
             })
             .filter(lab => lab.tests.length > 0);
     }, [diagnosticLabs, searchTerm, selectedCategory]);
+    
+    const groupReportsByDate = (reports: any[]) => {
+        const grouped = reports.reduce((acc, report) => {
+            const date = report.date;
+            if (!acc[date]) {
+                acc[date] = [];
+            }
+            acc[date].push(report);
+            return acc;
+        }, {} as Record<string, any[]>);
+
+        return Object.entries(grouped).sort(([dateA], [dateB]) => new Date(dateB).getTime() - new Date(dateA).getTime());
+    };
+
+    const groupedLabReports = groupReportsByDate(labReports);
+    const groupedImagingReports = groupReportsByDate(imagingReports);
+    
+    const handleUploadReport = (formData: any, type: 'lab' | 'imaging') => {
+        const newReport = {
+            ...formData,
+            status: 'Completed',
+        };
+        if (type === 'lab') {
+            setLabReports(prev => [...prev, newReport]);
+        } else {
+            setImagingReports(prev => [...prev, newReport]);
+        }
+        toast({
+            title: "Report Uploaded",
+            description: `${formData.testName} has been added to your reports.`,
+        });
+    };
+    
+    function UploadReportDialog({ onUpload, reportType }: { onUpload: (data: any, type: 'lab' | 'imaging') => void; reportType: 'lab' | 'imaging' }) {
+        const [isDialogOpen, setIsDialogOpen] = useState(false);
+        const [testName, setTestName] = useState('');
+        const [doctor, setDoctor] = useState('');
+        const [date, setDate] = useState<Date>();
+        const [fileName, setFileName] = useState('');
+
+        const handleSubmit = (e: React.FormEvent) => {
+            e.preventDefault();
+            if (!testName || !doctor || !date || !fileName) {
+                toast({ variant: 'destructive', title: 'Missing fields', description: 'Please fill out all fields to upload.' });
+                return;
+            }
+            const formData = {
+                testName,
+                doctor,
+                date: format(date, 'yyyy-MM-dd'),
+            };
+            onUpload(formData, reportType);
+            setIsDialogOpen(false);
+            // Reset form
+            setTestName('');
+            setDoctor('');
+            setDate(undefined);
+            setFileName('');
+        };
+        
+        return (
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                    <Button variant="outline"><Upload className="mr-2 h-4 w-4" /> Upload Report</Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Upload a New Report</DialogTitle>
+                        <DialogDescription>Manually add a report from an image or PDF file.</DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handleSubmit} className="space-y-4 py-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="testName">Test Name</Label>
+                            <Input id="testName" value={testName} onChange={e => setTestName(e.target.value)} placeholder="e.g., Complete Blood Count" required />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="doctor">Ordered By (Doctor)</Label>
+                            <Input id="doctor" value={doctor} onChange={e => setDoctor(e.target.value)} placeholder="e.g., Dr. Rajesh Kumar" required />
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Report Date</Label>
+                             <Popover>
+                                <PopoverTrigger asChild>
+                                <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                    "w-full justify-start text-left font-normal",
+                                    !date && "text-muted-foreground"
+                                    )}
+                                >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0">
+                                <CalendarComponent
+                                    mode="single"
+                                    selected={date}
+                                    onSelect={setDate}
+                                    initialFocus
+                                    disabled={(d) => d > new Date()}
+                                />
+                                </PopoverContent>
+                            </Popover>
+                        </div>
+                        <div className="space-y-2">
+                            <Label>Report File</Label>
+                            <div className="flex items-center gap-2">
+                                <Button asChild variant="outline" className="flex-1">
+                                    <label htmlFor="file-upload" className="cursor-pointer">
+                                        <Upload className="mr-2 h-4 w-4" />
+                                        {fileName || 'Choose File'}
+                                    </label>
+                                </Button>
+                                <input id="file-upload" type="file" className="hidden" onChange={(e) => setFileName(e.target.files?.[0]?.name || '')} accept="image/*,.pdf" />
+                            </div>
+                        </div>
+                        <DialogFooter className='pt-4'>
+                            <Button type="submit" style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}>
+                                <Upload className="mr-2 h-4 w-4" /> Save Report
+                            </Button>
+                        </DialogFooter>
+                    </form>
+                </DialogContent>
+            </Dialog>
+        );
+    }
+    
+    const ReportsList = ({ groupedReports, onAnalyze, onView, onUpload, reportType }: { groupedReports: [string, any[]][], onAnalyze: (reports: any[]) => void, onView: (report: any) => void, onUpload: (data: any, type: 'lab' | 'imaging') => void, reportType: 'lab' | 'imaging' }) => (
+        <div className="space-y-6">
+            <div className="flex justify-end">
+                <UploadReportDialog onUpload={onUpload} reportType={reportType} />
+            </div>
+            {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
+                <Card key={date} className='border'>
+                    <CardHeader className='pb-4'>
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
+                                <CardDescription>{reports.length} report{reports.length > 1 ? 's' : ''} on this day</CardDescription>
+                            </div>
+                            <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(reports)}>
+                                <Sparkles className="mr-2 h-4 w-4" /> Overall AI Analysis
+                            </Button>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div className='divide-y'>
+                            {reports.map((report, index) => (
+                                <div key={index} className="py-3 first:pt-0 last:pb-0">
+                                    <div className="flex justify-between items-center gap-2 flex-wrap">
+                                        <div>
+                                            <p className="font-semibold">{report.testName}</p>
+                                            <p className="text-sm text-muted-foreground">Dr. {report.doctor}</p>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Badge variant="outline" className={getStatusBadgeClass(report.status)}>
+                                                {report.status}
+                                            </Badge>
+                                             {report.status === "Completed" && (
+                                                 <div className="flex gap-1">
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onView(report)}>
+                                                        <View className="h-4 w-4" />
+                                                    </Button>
+                                                    <Dialog>
+                                                        <DialogTrigger asChild>
+                                                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                                                                <FileDown className="h-4 w-4" />
+                                                            </Button>
+                                                        </DialogTrigger>
+                                                        <DialogContent className='sm:max-w-xs'>
+                                                            <DialogHeader>
+                                                                <DialogTitle>Download Report</DialogTitle>
+                                                            </DialogHeader>
+                                                            <div className="flex flex-col gap-2">
+                                                                <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
+                                                                <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
+                                                            </div>
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            )) : (
+                <div className="text-center p-8 text-muted-foreground">No reports found.</div>
+            )}
+        </div>
+    );
 
     return (
         <div className="space-y-6">
-             <div className="flex items-baseline gap-4">
-                <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics & Reports</h1>
+            <div className="flex items-baseline justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics & Reports</h1>
+                    <p className="text-muted-foreground">Find labs, book tests, and manage your reports.</p>
+                </div>
             </div>
             
             <Tabs defaultValue="find-lab" className="w-full">
@@ -568,26 +641,22 @@ export function LabReportsClient({
                     </Card>
                 </TabsContent>
                 <TabsContent value="lab-reports" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>My Lab Reports</CardTitle>
-                            <CardDescription>All your pathology and blood test reports.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <ReportTable reports={labReports} onAnalyze={handleAnalyze} onView={handleView} />
-                        </CardContent>
-                    </Card>
+                    <ReportsList 
+                        groupedReports={groupedLabReports}
+                        onAnalyze={handleAnalyze}
+                        onView={handleView}
+                        onUpload={handleUploadReport}
+                        reportType="lab"
+                    />
                 </TabsContent>
                 <TabsContent value="imaging-reports" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>My Imaging Reports</CardTitle>
-                            <CardDescription>All your X-Ray, CT, and MRI scan reports.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <ReportTable reports={imagingReports} onAnalyze={handleAnalyze} onView={handleView} />
-                        </CardContent>
-                    </Card>
+                    <ReportsList 
+                        groupedReports={groupedImagingReports}
+                        onAnalyze={handleAnalyze}
+                        onView={handleView}
+                        onUpload={handleUploadReport}
+                        reportType="imaging"
+                    />
                 </TabsContent>
             </Tabs>
             
@@ -619,7 +688,7 @@ export function LabReportsClient({
                 <DialogContent className="sm:max-w-4xl">
                     <DialogHeader>
                         <DialogTitle className="flex items-center gap-2 text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}><Sparkles /> AI Report Analysis</DialogTitle>
-                        <DialogDescription>Analyzing: {selectedReport?.testName} from {selectedReport ? format(new Date(selectedReport.date), 'dd-MMM-yyyy') : ''}</DialogDescription>
+                        <DialogDescription>Analyzing: {selectedReport?.testName}</DialogDescription>
                     </DialogHeader>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
                         <div className="space-y-4">
@@ -694,7 +763,3 @@ export function LabReportsClient({
         </div>
     );
 }
-
-    
-
-    
