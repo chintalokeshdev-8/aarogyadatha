@@ -12,53 +12,24 @@ import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const diseaseCategories = [
-    // Common Illnesses
-    "Common Cold", "Influenza (Flu)", "COVID-19", "Strep Throat", "Sinusitis", "Bronchitis", "Pneumonia", "Urinary Tract Infection (UTI)", "Food Poisoning", "Gastroenteritis", "Conjunctivitis (Pink Eye)",
-    
-    // Chronic Diseases
-    "Diabetes (Type 1 & 2)", "Hypertension (High Blood Pressure)", "High Cholesterol", "Asthma", "COPD", "Arthritis (Osteoarthritis & Rheumatoid)", "Osteoporosis", "Hypothyroidism", "Hyperthyroidism",
-    
-    // Heart Conditions
-    "Coronary Artery Disease", "Heart Attack", "Heart Failure", "Atrial Fibrillation", "Stroke",
-    
-    // Digestive Issues
-    "GERD (Acid Reflux)", "Irritable Bowel Syndrome (IBS)", "Gallstones", "Peptic Ulcers", "Cirrhosis", "Fatty Liver Disease", "Hemorrhoids (Piles)", "Hernia", "Appendicitis", "Pancreatitis",
-    
-    // Neurological & Mental Health
-    "Migraine", "Headache", "Anxiety", "Depression", "Insomnia", "Alzheimer's Disease", "Parkinson's Disease", "Epilepsy", "Multiple Sclerosis", "Dementia", "Vertigo",
-    
-    // Skin Conditions
-    "Acne", "Eczema (Atopic Dermatitis)", "Psoriasis", "Dandruff", "Rosacea", "Skin Cancer", "Herpes", "Ringworm", "Hives",
-    
-    // Cancers
-    "Breast Cancer", "Lung Cancer", "Prostate Cancer", "Colon Cancer", "Leukemia", "Lymphoma",
-    
-    // Infectious Diseases
-    "Tuberculosis", "Malaria", "Dengue Fever", "Typhoid Fever", "Hepatitis (A, B, C)", "HIV/AIDS", "Measles", "Chickenpox", "Rabies",
-    
-    // Bone & Joint
-    "Back Pain", "Gout", "Fibromyalgia", "Sprains and Strains",
-    
-    // Women's Health
-    "PCOS", "Endometriosis", "Menopause", "Yeast Infection",
-    
-    // Men's Health
-    "Erectile Dysfunction", "Benign Prostatic Hyperplasia (BPH)",
-    
-    // Eye & Ear
-    "Cataracts", "Glaucoma", "Ear Infection", "Tinnitus",
-    
-    // Kidney & Urinary
-    "Kidney Stones", "Chronic Kidney Disease",
-    
-    // Blood Disorders
-    "Anemia",
-    
-    // Allergies
-    "Allergies", "Allergic Rhinitis (Hay Fever)",
-    
-    // Other
-    "Obesity", "Hair Loss", "Varicose Veins", "Tonsillitis", "Vitamin D Deficiency"
+    "Acne", "Allergic Rhinitis (Hay Fever)", "Allergies", "Alzheimer's Disease", "Anemia", "Anxiety", "Appendicitis",
+    "Arthritis (Osteoarthritis & Rheumatoid)", "Asthma", "Atrial Fibrillation", "Back Pain",
+    "Benign Prostatic Hyperplasia (BPH)", "Bone", "Brain", "Breast Cancer", "Bronchitis", "COPD",
+    "COVID-19", "Cataracts", "Chickenpox", "Chronic Kidney Disease", "Cirrhosis", "Colon Cancer", "Common Cold",
+    "Conjunctivitis (Pink Eye)", "Coronary Artery Disease", "Dandruff", "Dementia", "Dengue Fever", "Depression",
+    "Diabetes (Type 1 & 2)", "Digestive Issues", "Eczema (Atopic Dermatitis)", "Endometriosis", "Epilepsy",
+    "Erectile Dysfunction", "Eye & Ear", "Fatty Liver Disease", "Fibromyalgia", "Fistula", "Flu (Influenza)",
+    "Food Poisoning", "GERD (Acid Reflux)", "Gallstones", "Gastroenteritis", "General Health", "Glaucoma", "Gout",
+    "HIV/AIDS", "Hair Loss", "Headache", "Heart", "Heart Attack", "Heart Conditions", "Heart Failure", "Hemorrhoids (Piles)",
+    "Hepatitis (A, B, C)", "Hernia", "Herpes", "High Cholesterol", "Hives", "Hypertension (High Blood Pressure)",
+    "Hyperthyroidism", "Hypothyroidism", "Hysterectomy", "Irritable Bowel Syndrome (IBS)", "Insomnia",
+    "Kidney & Urinary", "Kidney Stones", "Knee Replacement", "Lasik", "Leukemia", "Liposuction", "Lung Cancer",
+    "Lymphoma", "Malaria", "Measles", "Men's Health", "Menopause", "Mental Wellness", "Migraine", "Multiple Sclerosis",
+    "Obesity", "Osteoporosis", "PCOS", "Pancreatitis", "Parkinson's Disease", "Peptic Ulcers", "Piles/Hemorrhoids",
+    "Pneumonia", "Prostate Cancer", "Psoriasis", "Rabies", "Ringworm", "Rosacea", "Sinusitis", "Skin Cancer",
+    "Skin Conditions", "Sprains and Strains", "Stomach", "Strep Throat", "Stroke", "Tinnitus", "Tonsillitis", "Tuberculosis",
+    "Typhoid Fever", "Urinary Tract Infection (UTI)", "Varicose Veins", "Vertigo", "Vitamin D Deficiency",
+    "Women's Health", "Yeast Infection"
 ];
 
 
@@ -104,8 +75,8 @@ export default function HealthKnowledgePage() {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
-                        <ScrollArea className="h-[60vh]">
-                            <div className="flex flex-wrap gap-2">
+                        <ScrollArea className="h-[60vh] lg:h-[55vh]">
+                            <div className="flex flex-wrap gap-2 pr-4">
                                 {filteredDiseases.map((disease) => (
                                     <Button
                                         key={disease}
@@ -194,3 +165,5 @@ export default function HealthKnowledgePage() {
         </div>
     );
 }
+
+    
