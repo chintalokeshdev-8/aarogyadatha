@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Sparkles, Loader2, BookOpenCheck, Youtube, Heart, Brain, Bone, Leaf, CheckCircle } from 'lucide-react';
-import { analyzeHealthIssue, HealthAnalysisOutput } from '@/ai/flows/ai-health-knowledge';
+import { Upload, Sparkles, Loader2, BookOpenCheck, Youtube, Heart, Brain, Bone, Leaf, CheckCircle, Smile, Scissors } from 'lucide-react';
+import { HealthAnalysisOutput, analyzeHealthIssue } from '@/ai/flows/ai-health-knowledge';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 const healthTips = [
@@ -24,6 +24,9 @@ const videoCategories = [
     { name: "Heart Health", icon: Heart, videoId: "qK3n2sI4yvU" },
     { name: "Diabetes Care", icon: Brain, videoId: "w28o31t33yE" },
     { name: "Bone & Joint", icon: Bone, videoId: "gAloMM2t3_g" },
+    { name: "Skin Care", icon: Sparkles, videoId: "b3G4dJ1PSbM" },
+    { name: "Hair Care", icon: Scissors, videoId: "2n5iY4HHe1g" },
+    { name: "Mental Wellness", icon: Smile, videoId: "xwB2zD6Rj90" },
 ];
 
 export default function HealthKnowledgePage() {
