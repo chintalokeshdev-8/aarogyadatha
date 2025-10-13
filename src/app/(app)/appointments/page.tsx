@@ -129,7 +129,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc1/100/100",
         dataAiHint: "male doctor portrait",
         opFee: 800,
-        availability: "Mon - Sat   10AM - 1PM",
+        availability: "Mon - Sat       10AM - 1PM",
         consultationType: "Online",
     },
     {
@@ -142,7 +142,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc2/100/100",
         dataAiHint: "female doctor",
         opFee: 700,
-        availability: "Mon - Fri   9AM - 5PM",
+        availability: "Mon - Fri       9AM - 5PM",
         consultationType: "Offline (Hospital Visit)",
     },
      {
@@ -155,7 +155,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc8/100/100",
         dataAiHint: "male doctor professional",
         opFee: 1000,
-        availability: "Mon - Sat   11AM - 4PM",
+        availability: "Mon - Sat       11AM - 4PM",
         consultationType: ["Online", "Offline (Hospital Visit)"],
     },
     {
@@ -168,7 +168,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc9/100/100",
         dataAiHint: "female doctor professional",
         opFee: 1200,
-        availability: "Tue, Thu, Sat   10AM - 2PM",
+        availability: "Tue, Thu, Sat       10AM - 2PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -181,7 +181,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc3/100/100",
         dataAiHint: "female doctor professional",
         opFee: 900,
-        availability: "Mon - Fri   2PM - 6PM",
+        availability: "Mon - Fri       2PM - 6PM",
         consultationType: "Online",
     },
      {
@@ -194,7 +194,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc15/100/100",
         dataAiHint: "male doctor glasses",
         opFee: 850,
-        availability: "Mon - Sat   9AM - 1PM",
+        availability: "Mon - Sat       9AM - 1PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -208,7 +208,7 @@ const doctors = [
         dataAiHint: "male doctor senior",
         recommended: true,
         opFee: 1500,
-        availability: "Mon - Sat   10AM - 5PM",
+        availability: "Mon - Sat       10AM - 5PM",
         consultationType: ["Online", "Offline (Hospital Visit)"],
     },
     {
@@ -221,7 +221,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc4/100/100",
         dataAiHint: "female doctor smile",
         opFee: 500,
-        availability: "Mon - Sun   9AM - 9PM",
+        availability: "Mon - Sun       9AM - 9PM",
         consultationType: "Online",
     },
      {
@@ -234,7 +234,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc10/100/100",
         dataAiHint: "male doctor serious",
         opFee: 750,
-        availability: "Mon - Sat   4PM - 8PM",
+        availability: "Mon - Sat       4PM - 8PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -247,7 +247,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc5/100/100",
         dataAiHint: "female doctor glasses",
         opFee: 600,
-        availability: "Mon - Sat   9AM - 12PM, 4PM - 7PM",
+        availability: "Mon - Sat       9AM - 12PM, 4PM - 7PM",
         consultationType: "Online",
     },
     {
@@ -260,7 +260,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc11/100/100",
         dataAiHint: "male doctor experienced",
         opFee: 1100,
-        availability: "Mon - Fri   10AM - 1PM",
+        availability: "Mon - Fri       10AM - 1PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -273,7 +273,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc14/100/100",
         dataAiHint: "male doctor professional",
         opFee: 650,
-        availability: "Mon, Wed, Fri   5PM - 8PM",
+        availability: "Mon, Wed, Fri       5PM - 8PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -286,7 +286,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc6/100/100",
         dataAiHint: "female doctor professional",
         opFee: 550,
-        availability: "Mon - Sat   11AM - 5PM",
+        availability: "Mon - Sat       11AM - 5PM",
         consultationType: "Online",
     },
     {
@@ -299,7 +299,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc17/100/100",
         dataAiHint: "male doctor portrait",
         opFee: 800,
-        availability: "Mon - Sat   3PM - 7PM",
+        availability: "Mon - Sat       3PM - 7PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -325,7 +325,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc7/100/100",
         dataAiHint: "female doctor professional",
         opFee: 850,
-        availability: "Mon - Sat   10AM - 3PM",
+        availability: "Mon - Sat       10AM - 3PM",
         consultationType: "Online",
     },
     {
@@ -338,7 +338,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc18/100/100",
         dataAiHint: "female doctor professional",
         opFee: 700,
-        availability: "Tue, Thu, Sat   9AM - 1PM",
+        availability: "Tue, Thu, Sat       9AM - 1PM",
         consultationType: "Offline (Hospital Visit)",
     },
     {
@@ -351,7 +351,7 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc13/100/100",
         dataAiHint: "female doctor glasses",
         opFee: 450,
-        availability: "Mon - Sat   9AM - 6PM",
+        availability: "Mon - Sat       9AM - 6PM",
         consultationType: "Online",
     },
 ];
