@@ -33,15 +33,15 @@
 
     --nav-home: 145 60% 30%;
     --nav-symptoms: 145 60% 30%;
-    --nav-chat: 145 60% 30%;
-    --nav-appointments: 145 60% 30%;
-    --nav-junior-doctors: 145 60% 30%;
+    --nav-chat: 225 73% 57%;
+    --nav-appointments: 262 80% 58%;
+    --nav-junior-doctors: 342 91% 54%;
     --nav-diagnostics: 145 60% 30%;
-    --nav-medicines: 145 60% 30%;
+    --nav-medicines: 197 90% 41%;
     --nav-blood-bank: 0 70% 45%;
-    --nav-profile: 145 60% 30%;
+    --nav-profile: 217 91% 60%;
     --nav-emergency: 0 84.2% 60.2%;
-    --nav-notifications: 145 60% 30%;
+    --nav-notifications: 24 9.8% 10%;
   }
 
   .dark {
@@ -72,15 +72,15 @@
 
     --nav-home: 145 60% 35%;
     --nav-symptoms: 145 60% 35%;
-    --nav-chat: 145 60% 35%;
-    --nav-appointments: 145 60% 35%;
-    --nav-junior-doctors: 145 60% 35%;
+    --nav-chat: 225 73% 67%;
+    --nav-appointments: 262 80% 68%;
+    --nav-junior-doctors: 342 91% 64%;
     --nav-diagnostics: 145 60% 35%;
-    --nav-medicines: 145 60% 35%;
+    --nav-medicines: 197 90% 51%;
     --nav-blood-bank: 0 70% 50%;
-    --nav-profile: 145 60% 35%;
+    --nav-profile: 217 91% 70%;
     --nav-emergency: 0 62.8% 40.6%;
-    --nav-notifications: 145 60% 35%;
+    --nav-notifications: 24 9.8% 20%;
   }
 }
 
@@ -203,5 +203,3 @@
         }
     }
 }
-
-    

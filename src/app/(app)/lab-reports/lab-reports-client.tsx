@@ -180,8 +180,6 @@ export function LabReportsClient({
         startTransition(async () => {
             let input: ReportAnalysisInput = {};
             if (reportImage) {
-                // This is a simplified example. In a real app you'd get the image file.
-                // For now, we fetch and convert the picsum URL to a data URI.
                 try {
                     const response = await fetch(reportImage);
                     const blob = await response.blob();
@@ -292,7 +290,11 @@ export function LabReportsClient({
         return (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                     <Button variant={initialDate ? 'ghost' : 'outline'} size="sm" className={cn(initialDate && "text-xs")}>
+                     <Button 
+                         variant={initialDate ? 'ghost' : 'outline'} 
+                         size="sm" 
+                         className={cn(initialDate && "text-xs", !initialDate && "border-primary text-primary")}
+                     >
                         <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload' : 'Upload New Report'}
                     </Button>
                 </DialogTrigger>
@@ -352,7 +354,7 @@ export function LabReportsClient({
                             </div>
                         </div>
                         <DialogFooter className='pt-4'>
-                            <Button type="submit" style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}>
+                            <Button type="submit" style={{ backgroundColor: 'hsl(var(--primary))' }}>
                                 <Upload className="mr-2 h-4 w-4" /> Save Report
                             </Button>
                         </DialogFooter>
@@ -379,16 +381,16 @@ export function LabReportsClient({
                         <Collapsible>
                             <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between text-left gap-2">
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm sm:text-base font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
-                                    <p className="text-xs sm:text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
+                                    <p className="font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
+                                    <p className="text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
                                 </div>
-                                <div className="flex items-center gap-1 flex-shrink-0 border rounded-lg p-1">
+                                <div className="flex items-center gap-1 flex-shrink-0">
                                     <ViewReportsDialog
                                         reports={reports}
                                         date={date}
                                         dummyReportData={dummyReportData}
                                         trigger={
-                                            <Button variant="ghost" size="sm" className="h-auto px-2 py-1 text-xs">
+                                            <Button variant="ghost" size="sm" className="h-auto px-2 py-1 text-xs" style={{color: 'hsl(var(--primary))'}}>
                                                 <View className="mr-1 h-3 w-3" /> View All
                                             </Button>
                                         }
@@ -399,7 +401,7 @@ export function LabReportsClient({
                             <CollapsibleContent className="border-t">
                                 <div className="p-4 space-y-2">
                                      <div className='flex items-center justify-end gap-1 pt-2 -mt-2'>
-                                        <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
+                                        <Button variant="ghost" size="sm" className="text-xs" style={{color: 'hsl(var(--primary))'}} onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
                                             <Sparkles className="mr-2 h-3 w-3" /> AI Analysis
                                         </Button>
                                         <UploadReportDialog onUpload={onUpload} initialDate={date} />
@@ -419,7 +421,7 @@ export function LabReportsClient({
                                                         date={date}
                                                         dummyReportData={dummyReportData}
                                                         trigger={
-                                                            <Button variant="ghost" size="icon" className="h-10 w-10">
+                                                            <Button variant="ghost" size="icon" className="h-10 w-10" style={{color: 'hsl(var(--primary))'}}>
                                                                 <View className="h-4 w-4" />
                                                             </Button>
                                                         }
@@ -434,7 +436,6 @@ export function LabReportsClient({
                                                             <DialogHeader>
                                                                 <DialogTitle>Edit Report</DialogTitle>
                                                             </DialogHeader>
-                                                            {/* Form would go here */}
                                                             <p>Edit form for {report.testName}</p>
                                                         </DialogContent>
                                                     </Dialog>
@@ -474,7 +475,7 @@ export function LabReportsClient({
         <div className="space-y-6">
             <div className="flex items-center justify-between gap-4">
                  <div className="flex-1">
-                    <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics & Reports</h1>
+                    <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--primary))'}}>Diagnostics & Reports</h1>
                  </div>
             </div>
             
@@ -571,7 +572,7 @@ export function LabReportsClient({
                                                     <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {lab.address}</p>
                                                     <p className="flex items-center gap-2"><Phone className="h-4 w-4"/> {lab.phone}</p>
                                                     <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {lab.hours}</p>
-                                                    <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--nav-diagnostics))'}}>
+                                                    <a href={lab.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline" style={{color: 'hsl(var(--primary))'}}>
                                                         <Globe className="h-4 w-4"/> Visit Website
                                                     </a>
                                                 </div>
@@ -617,7 +618,7 @@ export function LabReportsClient({
                                                             </div>
                                                         </div>
                                                         <DialogFooter>
-                                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})}>
+                                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--primary))'}} onClick={() => handleAction(() => {})}>
                                                                 {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...</> : 'Send to Lab'}
                                                             </Button>
                                                         </DialogFooter>
@@ -634,8 +635,8 @@ export function LabReportsClient({
                                                             <Badge variant="outline" className="mt-1">{test.category}</Badge>
                                                         </div>
                                                         <div className="flex items-center gap-4">
-                                                            <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>₹{test.price}</p>
-                                                            <Button style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}} onClick={() => handleAction(() => {})}>
+                                                            <p className="text-lg font-bold" style={{color: 'hsl(var(--primary))'}}>₹{test.price}</p>
+                                                            <Button style={{backgroundColor: 'hsl(var(--primary))'}} onClick={() => handleAction(() => {})}>
                                                                 {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Booking...</> : 'Book Now'}
                                                             </Button>
                                                         </div>
@@ -697,7 +698,7 @@ export function LabReportsClient({
                                             <DialogDescription>Choose a format to download.</DialogDescription>
                                         </DialogHeader>
                                         <div className="flex flex-col gap-2">
-                                            <Button style={{ backgroundColor: 'hsl(var(--nav-diagnostics))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
+                                            <Button style={{ backgroundColor: 'hsl(var(--primary))' }}><FileIcon className="mr-2 h-4 w-4" /> PDF</Button>
                                             <Button variant="secondary"><ImageIcon className="mr-2 h-4 w-4" /> Image</Button>
                                         </div>
                                     </DialogContent>
@@ -711,7 +712,7 @@ export function LabReportsClient({
             <Dialog open={isAnalyzeOpen} onOpenChange={setAnalyzeOpen}>
                 <DialogContent className="sm:max-w-4xl">
                     <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2 text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}><Sparkles /> AI Analysis</DialogTitle>
+                        <DialogTitle className="flex items-center gap-2 text-primary" style={{color: 'hsl(var(--primary))'}}><Sparkles /> AI Analysis</DialogTitle>
                         <DialogDescription>Analyzing: {selectedReport?.testName}</DialogDescription>
                     </DialogHeader>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
@@ -734,7 +735,7 @@ export function LabReportsClient({
                                     onChange={(e) => setReportContent(e.target.value)}
                                 />
                             )}
-                            <Button onClick={handleRunAnalysis} disabled={isPending || (!reportContent && !reportImage)} className="w-full" style={{backgroundColor: 'hsl(var(--nav-diagnostics))'}}>
+                            <Button onClick={handleRunAnalysis} disabled={isPending || (!reportContent && !reportImage)} className="w-full" style={{backgroundColor: 'hsl(var(--primary))'}}>
                                 {isPending ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -747,7 +748,7 @@ export function LabReportsClient({
                              <h3 className="font-semibold">AI Summary &amp; Findings</h3>
                             {isPending && (
                                 <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-10 rounded-lg">
-                                    <Loader2 className="h-10 w-10 animate-spin text-primary" style={{color: 'hsl(var(--nav-diagnostics))'}}/>
+                                    <Loader2 className="h-10 w-10 animate-spin text-primary" style={{color: 'hsl(var(--primary))'}}/>
                                     <p className="mt-4 text-muted-foreground">The AI is analyzing your report...</p>
                                 </div>
                             )}
