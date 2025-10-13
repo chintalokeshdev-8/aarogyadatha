@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger, DialogClose } from "@/components/ui/dialog";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogTrigger, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter } from '@/components/ui/alert-dialog';
 import { analyzeReport, ReportAnalysisInput, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -333,18 +333,18 @@ export function LabReportsClient({
                 {groupedReports.length > 0 ? groupedReports.map(([date, reports]) => (
                     <Collapsible key={date} className="border rounded-lg bg-background">
                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors">
-                             <div className="flex justify-between items-center gap-2">
-                                <div className='flex-1 text-left'>
-                                    <CardTitle>{format(parseISO(date), 'dd MMM, yyyy')}</CardTitle>
-                                    <CardDescription>{getDoctorsForDate(reports)}</CardDescription>
+                             <div className="flex justify-between items-center gap-2 flex-nowrap">
+                                <div className='flex-1 text-left min-w-0'>
+                                    <p className="text-base font-bold truncate">{format(parseISO(date), 'dd MMM, yyyy')}</p>
+                                    <p className="text-sm text-muted-foreground truncate">{getDoctorsForDate(reports)}</p>
                                 </div>
-                                <div className='flex items-center gap-1 border rounded-lg p-1'>
+                                <div className='flex items-center gap-1 border rounded-lg p-1 flex-shrink-0'>
                                      <Button variant="ghost" size="sm" className="text-xs" onClick={(e) => { e.stopPropagation(); onAnalyze(reports)}}>
                                         <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
                                     </Button>
                                     <UploadReportDialog onUpload={onUpload} initialDate={date} />
                                 </div>
-                                <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180 flex-shrink-0" />
                             </div>
                         </CollapsibleTrigger>
                         <CollapsibleContent className="p-4 border-t space-y-2 bg-muted/20">
