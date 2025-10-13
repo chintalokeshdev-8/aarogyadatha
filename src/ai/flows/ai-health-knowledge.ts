@@ -12,21 +12,17 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const HealthAnalysisInputSchema = z.object({
+const HealthAnalysisInputSchema = z.object({
   query: z.string().describe('The user\'s health-related question or description of their issue.'),
   documentDataUri: z.string().describe("A document or image as a data URI. Expected format: 'data:<mimetype>;base64,<encoded_data>'.").optional(),
 });
 export type HealthAnalysisInput = z.infer<typeof HealthAnalysisInputSchema>;
 
-export const HealthAnalysisOutputSchema = z.object({
+const HealthAnalysisOutputSchema = z.object({
   summary: z.string().describe('A simple, easy-to-understand summary of the health issue based on the provided information.'),
   nextSteps: z.array(z.string()).describe('A list of potential next steps or things to consider, such as lifestyle changes or consulting a specific type of specialist.'),
 });
 export type HealthAnalysisOutput = z.infer<typeof HealthAnalysisOutputSchema>;
-
-export async function analyzeHealthIssue(input: HealthAnalysisInput): Promise<HealthAnalysisOutput> {
-  return healthKnowledgeFlow(input);
-}
 
 const prompt = ai.definePrompt({
   name: 'healthKnowledgePrompt',
@@ -44,7 +40,6 @@ const prompt = ai.definePrompt({
   `,
 });
 
-
 const healthKnowledgeFlow = ai.defineFlow(
   {
     name: 'healthKnowledgeFlow',
@@ -56,3 +51,7 @@ const healthKnowledgeFlow = ai.defineFlow(
     return output!;
   }
 );
+
+export async function analyzeHealthIssue(input: HealthAnalysisInput): Promise<HealthAnalysisOutput> {
+  return healthKnowledgeFlow(input);
+}
