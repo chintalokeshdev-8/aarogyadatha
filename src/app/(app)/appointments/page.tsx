@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useState, useMemo, useEffect, useTransition } from 'react';
@@ -1014,6 +1013,12 @@ export default function AppointmentsPage() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingFollowUp, setEditingFollowUp] = useState<{apptIndex: number, pIndex?: number} | null>(null);
 
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
 
     const [appointments, setAppointments] = useState(() => 
         initialAppointmentsData.map(appt => ({
@@ -1192,6 +1197,15 @@ export default function AppointmentsPage() {
             });
         });
     };
+    
+    if (!isClient) {
+        return (
+            <div className="space-y-6">
+                <div className="w-full h-24 rounded-lg bg-muted animate-pulse"></div>
+                <div className="w-full h-96 rounded-lg bg-muted animate-pulse"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -1700,6 +1714,8 @@ export default function AppointmentsPage() {
 
     
 
+
+    
 
     
 
