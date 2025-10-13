@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Sparkles, Loader2, BookOpenCheck, Youtube, Heart, Brain, Bone, Leaf, CheckCircle, Smile, Scissors } from 'lucide-react';
+import { Upload, Sparkles, Loader2, BookOpenCheck, Youtube, Heart, Brain, Bone, Leaf, CheckCircle, Smile, Scissors, PersonStanding, Eye, Utensils, Activity as ActivityIcon } from 'lucide-react';
 import { HealthAnalysisOutput, analyzeHealthIssue } from '@/ai/flows/ai-health-knowledge';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
@@ -27,6 +27,11 @@ const videoCategories = [
     { name: "Skin Care", icon: Sparkles, videoId: "b3G4dJ1PSbM" },
     { name: "Hair Care", icon: Scissors, videoId: "2n5iY4HHe1g" },
     { name: "Mental Wellness", icon: Smile, videoId: "xwB2zD6Rj90" },
+    { name: "Digestive Health", icon: Utensils, videoId: "gD-tS_4i_c4" },
+    { name: "Women's Health", icon: PersonStanding, videoId: "Q32dda-16gQ" },
+    { name: "Men's Health", icon: PersonStanding, videoId: "T7n5h3-G-ew" },
+    { name: "Eye Care", icon: Eye, videoId: "w-p_b-ew2pY" },
+    { name: "Fitness & Exercise", icon: ActivityIcon, videoId: "gC_L9q_1a4k" },
 ];
 
 export default function HealthKnowledgePage() {
