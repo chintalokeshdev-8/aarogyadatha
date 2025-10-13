@@ -39,7 +39,7 @@
     --nav-diagnostics: 84 70% 45%;
     --nav-medicines: 84 70% 45%;
     --nav-blood-bank: 0 70% 45%;
-    --nav-profile: 84_70%_45%;
+    --nav-profile: 84 70% 45%;
     --nav-emergency: 0 84.2% 60.2%;
     --nav-notifications: 84 70% 45%;
   }
@@ -203,3 +203,5 @@
         }
     }
 }
+
+    
