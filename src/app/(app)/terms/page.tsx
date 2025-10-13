@@ -4,7 +4,7 @@ import { FileText } from "lucide-react";
 
 export default function TermsPage() {
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center space-y-2">
                  <div className="inline-block p-3 bg-primary/10 rounded-full">
                      <FileText className="h-8 w-8 text-primary" />
@@ -13,7 +13,7 @@ export default function TermsPage() {
                 <p className="text-muted-foreground text-lg">Last updated: July 25, 2024</p>
             </div>
 
-            <Card>
+            <Card className="border-2">
                 <CardContent className="p-6 space-y-6 text-muted-foreground">
                     <section className="space-y-2">
                         <h2 className="text-2xl font-semibold text-foreground">1. Introduction</h2>

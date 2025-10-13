@@ -11,7 +11,7 @@ import Link from 'next/link';
 
 const NotificationItem = ({ notification }: { notification: (typeof notifications)[0] }) => (
     <Link href={notification.href} key={notification.id} passHref>
-        <div className="flex items-start gap-4 p-4 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-b last:border-b-0">
+        <div className="flex items-start gap-4 p-4 rounded-lg hover:bg-muted/50 transition-colors cursor-pointer border-b-2 last:border-b-0">
             <div className={`mt-1 p-2 rounded-full ${notification.read ? 'bg-muted' : 'bg-primary/10'}`}>
                 <notification.icon className={`h-6 w-6 ${notification.read ? 'text-muted-foreground' : 'text-primary'}`} style={{color: 'hsl(var(--nav-notifications))'}}/>
             </div>
@@ -61,13 +61,13 @@ export default function NotificationsPage() {
     const notificationCategories = ['All', 'Appointments', 'Reports', 'Medications', 'General', 'Settings'];
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-notifications))'}}>Notifications</h1>
                 <p className="text-muted-foreground mt-2">A complete history of your account alerts and updates.</p>
             </div>
 
-            <Card>
+            <Card className="border-2">
                 <CardHeader>
                     <CardTitle>Filter Notifications</CardTitle>
                     <CardDescription>Select a category to view specific notifications.</CardDescription>
@@ -86,7 +86,7 @@ export default function NotificationsPage() {
             <div className="space-y-6">
                 {Object.keys(groupedNotifications).length > 0 ? (
                     Object.entries(groupedNotifications).map(([group, notifs]) => (
-                        <Card key={group}>
+                        <Card key={group} className="border-2">
                             <CardHeader>
                                 <CardTitle className="text-lg">{group}</CardTitle>
                             </CardHeader>
@@ -98,7 +98,7 @@ export default function NotificationsPage() {
                         </Card>
                     ))
                 ) : (
-                    <Card className="text-center p-12">
+                    <Card className="text-center p-12 border-2">
                         <Bell className="mx-auto h-12 w-12 text-muted-foreground" />
                         <h3 className="mt-4 text-lg font-semibold">No Notifications</h3>
                         <p className="mt-2 text-sm text-muted-foreground">

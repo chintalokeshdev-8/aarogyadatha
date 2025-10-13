@@ -52,13 +52,13 @@ export default function InsurancesPage() {
     );
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>Insurances</h1>
                 <p className="text-muted-foreground mt-2">Manage your insurance policies and network hospitals.</p>
             </div>
             
-            <Card>
+            <Card className="border-2">
                 <CardHeader>
                     <CardTitle>Health Insurance</CardTitle>
                     <CardDescription>Star Health - Family Plan</CardDescription>
@@ -71,7 +71,7 @@ export default function InsurancesPage() {
                         <DialogTrigger asChild>
                             <Button variant="link" className="p-0 h-auto text-base" style={{color: 'hsl(var(--nav-profile))'}}>View Network Hospitals</Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-[625px]">
+                        <DialogContent className="sm:max-w-[625px] border-2">
                             <DialogHeader>
                                 <DialogTitle>Network Hospitals</DialogTitle>
                             </DialogHeader>
@@ -79,14 +79,14 @@ export default function InsurancesPage() {
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                 <Input
                                     placeholder="Search hospital name or address..."
-                                    className="pl-10"
+                                    className="pl-10 border-2"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                             <div className="max-h-[400px] overflow-y-auto space-y-4 pr-3">
                                 {filteredHospitals.map((hospital, index) => (
-                                    <div key={index} className="flex items-start gap-4 p-3 border rounded-lg">
+                                    <div key={index} className="flex items-start gap-4 p-3 border-2 rounded-lg">
                                         <div className="p-2 bg-muted rounded-full mt-1">
                                             <Hospital className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
                                         </div>
@@ -102,7 +102,7 @@ export default function InsurancesPage() {
                 </CardContent>
             </Card>
 
-            <Card id="gov-health-ids">
+            <Card id="gov-health-ids" className="border-2">
                 <CardHeader>
                     <div className="flex items-center gap-3">
                         <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--nav-profile))'}}/>
@@ -118,7 +118,7 @@ export default function InsurancesPage() {
                             <div className="flex justify-between items-center">
                                 <CardTitle>Ayushman Bharat Health Account (ABHA)</CardTitle>
                                 <div className="flex gap-2">
-                                     <Button variant="outline" onClick={() => setShowAbha(!showAbha)}>
+                                     <Button variant="outline" onClick={() => setShowAbha(!showAbha)} className="border-2">
                                         {showAbha ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
                                         {showAbha ? "Hide Details" : "Show Card"}
                                      </Button>
@@ -126,7 +126,7 @@ export default function InsurancesPage() {
                             </div>
                         </CardHeader>
                         {showAbha ? (
-                             <div className="border rounded-lg p-4 bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
+                             <div className="border-2 rounded-lg p-4 bg-blue-50/50" style={{borderColor: 'hsl(var(--primary))'}}>
                                 <div className="flex justify-between items-start mb-2">
                                     <p className="font-bold text-xs">National Health Authority</p>
                                 </div>
@@ -169,14 +169,14 @@ export default function InsurancesPage() {
                                         </div>
                                     </div>
                                     <div className="flex flex-col items-center justify-center space-y-1 self-center pt-4 sm:pt-0">
-                                        <div className="bg-white p-1 rounded-md border shadow-sm">
+                                        <div className="bg-white p-1 rounded-md border-2 shadow-sm">
                                             <Image src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Commons_QR_code.png" alt="ABHA QR Code" width={100} height={100} data-ai-hint="qr code" />
                                         </div>
                                         <p className="text-xs font-medium text-muted-foreground">Scan to verify</p>
                                     </div>
                                 </div>
                                 <div className="mt-4 flex gap-2 justify-end">
-                                    <Button variant="outline" size="sm"><Printer className="mr-2 h-4 w-4"/> Print</Button>
+                                    <Button variant="outline" size="sm" className="border-2"><Printer className="mr-2 h-4 w-4"/> Print</Button>
                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--primary))'}}><Download className="mr-2 h-4 w-4"/> Download</Button>
                                 </div>
                             </div>
@@ -200,7 +200,7 @@ export default function InsurancesPage() {
                                 </div>
                             </div>
                         </CardHeader>
-                        <div className="p-4 border rounded-lg bg-muted/40 flex justify-between items-center">
+                        <div className="p-4 border-2 rounded-lg bg-muted/40 flex justify-between items-center">
                             <div>
                                 <p className="font-semibold text-lg">Universal Health ID (UHID)</p>
                                 <p className="text-base text-muted-foreground tracking-wider">

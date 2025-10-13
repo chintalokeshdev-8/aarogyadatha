@@ -114,7 +114,7 @@ export default function SymptomCheckerPage() {
     }
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6">
             {isPending && (
                 <div className="fixed inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center z-50">
                     <Loader2 className="h-16 w-16 animate-spin mb-4" style={{color: 'hsl(var(--nav-symptoms))'}} />
@@ -127,7 +127,7 @@ export default function SymptomCheckerPage() {
                 <p className="text-muted-foreground mt-2">Describe your symptoms to get intelligent health guidance.</p>
             </div>
             
-            <Card>
+            <Card className="border-2">
                 <CardHeader>
                     <CardTitle>1. Select Common Symptoms</CardTitle>
                 </CardHeader>
@@ -148,7 +148,7 @@ export default function SymptomCheckerPage() {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card className="border-2">
                 <CardHeader>
                     <CardTitle>2. Describe Your Symptoms in Detail</CardTitle>
                 </CardHeader>
@@ -171,7 +171,7 @@ export default function SymptomCheckerPage() {
             
 
             {analysis && !isPending && (
-                <Card>
+                <Card className="border-2">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
                             <Sparkles /> AI Analysis Result
@@ -211,7 +211,7 @@ export default function SymptomCheckerPage() {
                 </Card>
             )}
 
-            <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/40">
+            <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/40 border-2">
                 <CardContent className="p-4 flex items-start gap-4">
                     <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-1 flex-shrink-0" />
                     <div>

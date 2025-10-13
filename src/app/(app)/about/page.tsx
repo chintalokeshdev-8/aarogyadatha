@@ -4,7 +4,7 @@ import { Activity } from "lucide-react";
 
 export default function AboutPage() {
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center space-y-2">
                 <div className="inline-block p-3 bg-primary/10 rounded-full">
                      <Activity className="h-8 w-8 text-primary" />
@@ -13,7 +13,7 @@ export default function AboutPage() {
                 <p className="text-muted-foreground text-lg">Your Comprehensive Health Companion</p>
             </div>
 
-            <Card>
+            <Card className="border-2">
                 <CardHeader>
                     <CardTitle>Introduction</CardTitle>
                 </CardHeader>
@@ -27,7 +27,7 @@ export default function AboutPage() {
                 </CardContent>
             </Card>
 
-             <Card>
+             <Card className="border-2">
                 <CardHeader>
                     <CardTitle>Core Features</CardTitle>
                 </CardHeader>

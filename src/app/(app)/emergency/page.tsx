@@ -22,7 +22,7 @@ const emergencyContacts = [
 
 export default function EmergencyPage() {
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center">
                 <h1 className="text-4xl font-bold text-destructive">Emergency Services</h1>
                 <p className="text-muted-foreground mt-2">In case of emergency, use the options below immediately.</p>
@@ -37,7 +37,7 @@ export default function EmergencyPage() {
                 </Button>
             </div>
             
-            <Card className="border-destructive/50 bg-destructive/5">
+            <Card className="border-destructive/50 bg-destructive/5 border-2">
                 <CardHeader>
                     <CardTitle className="text-destructive flex items-center gap-2"><ShieldAlert/> Critical Information</CardTitle>
                     <CardDescription>Share this with emergency services.</CardDescription>
@@ -50,15 +50,15 @@ export default function EmergencyPage() {
                 </CardContent>
             </Card>
 
-            <div className="grid lg:grid-cols-2 gap-8">
-                 <Card>
+            <div className="grid lg:grid-cols-2 gap-6">
+                 <Card className="border-2">
                     <CardHeader>
                         <CardTitle>Emergency Contacts</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <ul className="space-y-3">
                             {emergencyContacts.map(contact => (
-                                <li key={contact.name} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                                <li key={contact.name} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border-2">
                                     <div>
                                         <p className="font-semibold">{contact.name}</p>
                                         <p className="text-sm text-muted-foreground">{contact.distance}</p>
@@ -67,7 +67,7 @@ export default function EmergencyPage() {
                                         <Badge variant={contact.available ? 'default' : 'destructive'} className={cn('font-bold', contact.available ? 'bg-green-500' : '')}>
                                             {contact.available ? 'Available' : 'Unavailable'}
                                         </Badge>
-                                        <Button size="icon" variant="outline"><Phone className="h-4 w-4"/></Button>
+                                        <Button size="icon" variant="outline" className="border-2"><Phone className="h-4 w-4"/></Button>
                                     </div>
                                 </li>
                             ))}
@@ -75,8 +75,8 @@ export default function EmergencyPage() {
                     </CardContent>
                 </Card>
 
-                 <div className="space-y-8">
-                     <Card>
+                 <div className="space-y-6">
+                     <Card className="border-2">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2"><AlertTriangle/> Medical Alerts</CardTitle>
                         </CardHeader>
@@ -92,7 +92,7 @@ export default function EmergencyPage() {
                         </CardContent>
                     </Card>
 
-                     <Card>
+                     <Card className="border-2">
                         <CardHeader>
                             <CardTitle>Emergency Instructions</CardTitle>
                         </CardHeader>
@@ -109,3 +109,4 @@ export default function EmergencyPage() {
     )
 
     
+

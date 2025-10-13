@@ -171,7 +171,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
         
         <section>
-            <Card>
+            <Card className="border-2">
                 <CardHeader>
                     <CardTitle className="text-lg font-semibold">Quick Access</CardTitle>
                 </CardHeader>
@@ -195,7 +195,7 @@ export default function DashboardPage() {
         </section>
         
         <section>
-          <Card>
+          <Card className="border-2">
             <CardHeader>
                 <h2 className="text-lg font-semibold">Organ Health Overview</h2>
                 <p className="text-sm text-muted-foreground">A summary of your key organ health based on recent reports.</p>
@@ -215,7 +215,7 @@ export default function DashboardPage() {
                <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6 gap-2">
                     {organHealthData.map((organ) => (
                          <OrganHealthDialog key={organ.name} organ={organ}>
-                            <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50">
+                            <Card className="p-2 flex flex-col items-center text-center cursor-pointer hover:bg-muted/50 border-2">
                                 <CircularProgress percentage={organ.healthScore} size={60} strokeWidth={5} color={organ.color}>
                                     <Image
                                         src={organ.image}
@@ -246,7 +246,7 @@ export default function DashboardPage() {
           <Carousel
               setApi={setApi}
               plugins={[plugin.current]}
-              className="w-full border rounded-lg overflow-hidden"
+              className="w-full border-2 rounded-lg overflow-hidden"
               onMouseEnter={plugin.current.stop}
               onMouseLeave={plugin.current.reset}
           >
@@ -291,7 +291,7 @@ export default function DashboardPage() {
           <div className="space-y-4">
             {medicineAssistanceItems.map((item) => (
                <Link key={item.title} href={item.href} passHref>
-                  <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                  <Card className="hover:shadow-md transition-shadow cursor-pointer border-2">
                       <CardContent className="p-4 flex items-center gap-4">
                           <div className="bg-primary/10 p-3 rounded-full">
                               <item.icon className="h-6 w-6 text-primary" />
