@@ -365,7 +365,7 @@ export function LabReportsClient({
         return (
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                     <Button variant={initialDate ? 'ghost' : 'outline'} size={initialDate ? 'sm' : 'default'}>
+                     <Button variant={initialDate ? 'ghost' : 'outline'} size={initialDate ? 'sm' : 'default'} className={cn(initialDate && "text-xs")}>
                         <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload' : 'Upload New Report'}
                     </Button>
                 </DialogTrigger>
@@ -457,7 +457,7 @@ export function LabReportsClient({
                                 </div>
                                 <div className='flex gap-2 items-center flex-shrink-0'>
                                     <UploadReportDialog onUpload={onUpload} initialDate={date} />
-                                    <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10" onClick={() => onAnalyze(reports)}>
+                                    <Button variant="outline" size="sm" className="border-primary/50 text-primary hover:text-primary hover:bg-primary/10 text-xs" onClick={() => onAnalyze(reports)}>
                                         <Sparkles className="mr-2 h-4 w-4" /> AI Analysis
                                     </Button>
                                 </div>
