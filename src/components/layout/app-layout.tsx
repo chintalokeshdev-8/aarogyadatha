@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -369,6 +370,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             <span className="font-semibold">Settings</span>
                                         </DropdownMenuItem>
                                     </Link>
+                                    <DropdownMenuItem className="p-3">
+                                        <a href="tel:+918008443938" className="flex items-center w-full">
+                                            <Phone className="mr-3 text-primary" />
+                                            <span className="font-semibold">Customer Support</span>
+                                        </a>
+                                    </DropdownMenuItem>
                                      <Link href="/terms" passHref>
                                         <DropdownMenuItem className="p-3">
                                             <FileText className="mr-3 text-primary" />
@@ -381,12 +388,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             <span className="font-semibold">About medibridge</span>
                                         </DropdownMenuItem>
                                     </Link>
-                                    <DropdownMenuItem className="p-3">
-                                        <a href="tel:+918008443938" className="flex items-center w-full">
-                                            <Phone className="mr-3 text-primary" />
-                                            <span className="font-semibold">Customer Support</span>
-                                        </a>
-                                    </DropdownMenuItem>
                                 </div>
                                 <DropdownMenuSeparator />
                                 <div className="p-1">
