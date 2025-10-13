@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React, { useState, useTransition, useMemo, useEffect } from 'react';
@@ -23,6 +22,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { Separator } from '@/components/ui/separator';
 
 
 const getStatusBadgeClass = (status: string) => {
@@ -332,16 +332,17 @@ export function LabReportsClient({
     return (
         <div className="space-y-6">
              <div className="flex items-baseline gap-4">
-                <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics &amp; Reports</h1>
-                <p className="text-muted-foreground hidden sm:block">Find labs, book tests, and manage your reports.</p>
+                <h1 className="text-2xl font-bold" style={{color: 'hsl(var(--nav-diagnostics))'}}>Diagnostics & Reports</h1>
             </div>
             
             <Tabs defaultValue="find-lab" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="find-lab">Find a Lab</TabsTrigger>
-                    <TabsTrigger value="lab-reports">Lab Reports</TabsTrigger>
-                    <TabsTrigger value="imaging-reports">Imaging Reports</TabsTrigger>
-                </TabsList>
+                 <div className="border rounded-lg p-1 bg-muted">
+                    <TabsList className="grid w-full grid-cols-3 h-auto">
+                         <TabsTrigger value="find-lab" className="text-sm font-semibold h-10">Find a Lab</TabsTrigger>
+                         <TabsTrigger value="lab-reports" className="text-sm font-semibold h-10">Lab Reports</TabsTrigger>
+                         <TabsTrigger value="imaging-reports" className="text-sm font-semibold h-10">Imaging Reports</TabsTrigger>
+                    </TabsList>
+                </div>
 
                 <TabsContent value="find-lab" className="mt-6">
                     <Card>
