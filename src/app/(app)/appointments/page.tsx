@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -129,6 +129,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc1/100/100",
         dataAiHint: "male doctor portrait",
         opFee: 800,
+        availability: "Mon - Sat, 10 AM - 1 PM",
+        consultationType: "Online",
     },
     {
         name: "Dr. Lakshmi Narasaiah",
@@ -140,6 +142,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc2/100/100",
         dataAiHint: "female doctor",
         opFee: 700,
+        availability: "Mon - Fri, 9 AM - 5 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
      {
         name: "Dr. Ramesh Babu",
@@ -151,6 +155,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc8/100/100",
         dataAiHint: "male doctor professional",
         opFee: 1000,
+        availability: "Mon - Sat, 11 AM - 4 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. Padmavathi",
@@ -162,6 +168,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc9/100/100",
         dataAiHint: "female doctor professional",
         opFee: 1200,
+        availability: "Tue, Thu, Sat, 10 AM - 2 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. Rupa",
@@ -173,6 +181,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc3/100/100",
         dataAiHint: "female doctor professional",
         opFee: 900,
+        availability: "Mon - Fri, 2 PM - 6 PM",
+        consultationType: "Online",
     },
      {
         name: "Dr. Gondi Siva Rama Krishna",
@@ -184,6 +194,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc15/100/100",
         dataAiHint: "male doctor glasses",
         opFee: 850,
+        availability: "Mon - Sat, 9 AM - 1 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. Posani Srinivasarao",
@@ -196,6 +208,8 @@ const doctors = [
         dataAiHint: "male doctor senior",
         recommended: true,
         opFee: 1500,
+        availability: "Mon - Sat, 10 AM - 5 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. Anjali",
@@ -207,6 +221,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc4/100/100",
         dataAiHint: "female doctor smile",
         opFee: 500,
+        availability: "Mon - Sun, 9 AM - 9 PM",
+        consultationType: "Online",
     },
      {
         name: "Dr. Srinivas",
@@ -218,6 +234,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc10/100/100",
         dataAiHint: "male doctor serious",
         opFee: 750,
+        availability: "Mon - Sat, 4 PM - 8 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. Anusha",
@@ -229,6 +247,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc5/100/100",
         dataAiHint: "female doctor glasses",
         opFee: 600,
+        availability: "Mon - Sat, 9 AM - 12 PM, 4 PM - 7 PM",
+        consultationType: "Online",
     },
     {
         name: "Dr. V. Venkata Naidu",
@@ -240,6 +260,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc11/100/100",
         dataAiHint: "male doctor experienced",
         opFee: 1100,
+        availability: "Mon - Fri, 10 AM - 1 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. G. Ravi Shankara Reddy",
@@ -251,6 +273,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc14/100/100",
         dataAiHint: "male doctor professional",
         opFee: 650,
+        availability: "Mon, Wed, Fri, 5 PM - 8 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. Subbamma",
@@ -262,6 +286,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc6/100/100",
         dataAiHint: "female doctor professional",
         opFee: 550,
+        availability: "Mon - Sat, 11 AM - 5 PM",
+        consultationType: "Online",
     },
     {
         name: "Dr. Murali",
@@ -273,6 +299,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc17/100/100",
         dataAiHint: "male doctor portrait",
         opFee: 800,
+        availability: "Mon - Sat, 3 PM - 7 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. V. Sasikala",
@@ -284,6 +312,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc12/100/100",
         dataAiHint: "female doctor serious",
         opFee: 950,
+        availability: "On-call / Emergency",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. Jaya Lakshmi",
@@ -295,6 +325,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc7/100/100",
         dataAiHint: "female doctor professional",
         opFee: 850,
+        availability: "Mon - Sat, 10 AM - 3 PM",
+        consultationType: "Online",
     },
     {
         name: "Dr. Sunitha",
@@ -306,6 +338,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc18/100/100",
         dataAiHint: "female doctor professional",
         opFee: 700,
+        availability: "Tue, Thu, Sat, 9 AM - 1 PM",
+        consultationType: "Offline (Hospital Visit)",
     },
     {
         name: "Dr. K. Sai Mounica Reddy",
@@ -317,6 +351,8 @@ const doctors = [
         avatar: "https://picsum.photos/seed/doc13/100/100",
         dataAiHint: "female doctor glasses",
         opFee: 450,
+        availability: "Mon - Sat, 9 AM - 6 PM",
+        consultationType: "Online",
     },
 ];
 
@@ -775,7 +811,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                         </Button>
                     )}
                     <DialogTitle className={cn(step === 2 && "text-center flex-1")}>
-                        {step === 1 ? 'Book Online Consult' : 'Payment Summary'}
+                        {step === 1 ? `Book ${doctor.consultationType} Consult` : 'Payment Summary'}
                     </DialogTitle>
                      <DialogClose asChild>
                         <Button variant="ghost" size="icon" className="ml-auto absolute right-4 top-4">
@@ -827,7 +863,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                              <Card>
                                 <CardContent className="p-4 flex justify-between items-center">
                                     <div>
-                                        <h3 className="font-bold">1 Online Consultation</h3>
+                                        <h3 className="font-bold">1 {doctor.consultationType} Consultation</h3>
                                         <p className="text-sm text-muted-foreground">Dr. {doctor.name}</p>
                                     </div>
                                     <p className="text-xl font-bold">₹{doctor.opFee.toFixed(2)}</p>
@@ -1069,7 +1105,7 @@ export default function AppointmentsPage() {
         <div className="space-y-6">
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <div className="border-2 rounded-lg p-1 bg-muted">
+                <div className="border-2 rounded-lg p-1 bg-muted border-black">
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
                         <TabsTrigger value="history">Appointments History</TabsTrigger>
@@ -1077,7 +1113,7 @@ export default function AppointmentsPage() {
                 </div>
                 <TabsContent value="find-doctor" className="mt-6">
                     <div className="space-y-6">
-                        <Card className="shadow-sm border-2">
+                        <Card className="shadow-sm border-2 border-black">
                              <CardContent className="p-4 pt-4">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-end">
                                     <div className="relative sm:col-span-2 lg:col-span-1">
@@ -1129,7 +1165,7 @@ export default function AppointmentsPage() {
                             {filteredDoctors.map((doctor, index) => {
                                 const discountedFee = doctor.opFee * 0.5;
                                 return (
-                                    <Card key={index} className="transition-shadow hover:shadow-md border-2">
+                                    <Card key={index} className="transition-shadow hover:shadow-md border-2 border-black">
                                         <CardContent className="p-4">
                                             <div className="flex flex-row gap-4">
                                                 <Avatar className="h-20 w-20 border-4 flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
@@ -1155,8 +1191,8 @@ export default function AppointmentsPage() {
                                                 <p><strong>Surgeries:</strong> {doctor.surgeries}</p>
                                                 <p><strong>Focus:</strong> {doctor.mainDealing}</p>
                                             </div>
-                                             <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                                <div className="flex items-baseline gap-2 self-start sm:self-center">
+                                             <div className="mt-4 flex flex-col sm:flex-row justify-between items-start gap-2">
+                                                <div className="flex items-baseline gap-2">
                                                     <p className="text-sm font-semibold text-muted-foreground">Consultation Fee:</p>
                                                     <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
                                                 </div>
@@ -1175,7 +1211,7 @@ export default function AppointmentsPage() {
                     </div>
                 </TabsContent>
                 <TabsContent value="history" className="mt-6">
-                     <Card className="border-2">
+                     <Card className="border-2 border-black">
                         <CardHeader>
                              <div className="flex items-center gap-2">
                                 <History className="h-6 w-6"/>
@@ -1238,7 +1274,7 @@ export default function AppointmentsPage() {
                         <CardContent>
                              <div className="grid grid-cols-1 gap-6">
                                 {filteredAppointments.length > 0 ? filteredAppointments.map((appt, index) => (
-                                    <Collapsible key={index} className="border-2 rounded-lg bg-background">
+                                    <Collapsible key={index} className="border-2 border-black rounded-lg bg-background">
                                         <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-start justify-between text-left">
                                             <div className="flex-1 flex items-start gap-3">
                                                 <span className="text-2xl font-bold text-blue-900 dark:text-blue-400">{filteredAppointments.indexOf(appt) + 1})</span>
@@ -1262,7 +1298,7 @@ export default function AppointmentsPage() {
                                                     {appt.prescriptions.map((item, pIndex) => (
                                                         <div key={pIndex}>
                                                             {item.title === 'Condition Status' && item.status === 'Resolved' ? (
-                                                                 <div className='p-4 border-2 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-800 rounded-lg text-center relative overflow-hidden'>
+                                                                 <div className='p-4 border-2 border-black bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border-blue-200 dark:border-blue-800 rounded-lg text-center relative overflow-hidden'>
                                                                     <FlowerFall />
                                                                     <div className="relative z-10">
                                                                         <PartyPopper className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-2"/>
@@ -1271,7 +1307,7 @@ export default function AppointmentsPage() {
                                                                     </div>
                                                                  </div>
                                                             ) : (
-                                                                <div className='p-4 border-2 bg-background rounded-lg'>
+                                                                <div className='p-4 border-2 border-black bg-background rounded-lg'>
                                                                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
                                                                         <div className="font-semibold text-sm flex items-center gap-2 flex-wrap">
                                                                             <span className="text-lg font-bold text-blue-900 dark:text-blue-400">{filteredAppointments.indexOf(appt) + 1}.{pIndex + 1})</span>
@@ -1291,7 +1327,7 @@ export default function AppointmentsPage() {
                                                                                     <View className="mr-2 h-4 w-4" /> View Details
                                                                                 </Button>
                                                                             </DialogTrigger>
-                                                                            <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0 border-2">
+                                                                            <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0 border-2 border-black">
                                                                                 <DialogHeader className="p-6 pb-4">
                                                                                     <DialogTitle>{item.title}</DialogTitle>
                                                                                     <DialogDescription>
@@ -1312,7 +1348,7 @@ export default function AppointmentsPage() {
                                                                                                             width={150}
                                                                                                             height={210}
                                                                                                             data-ai-hint={img.dataAiHint}
-                                                                                                            className="rounded-lg border-2 group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
+                                                                                                            className="rounded-lg border-2 border-black group-hover:opacity-80 transition-opacity w-full h-auto object-cover"
                                                                                                         />
                                                                                                         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
                                                                                                             <Search className="text-white h-6 w-6" />
@@ -1347,7 +1383,7 @@ export default function AppointmentsPage() {
                                                                                             <h4 className='font-semibold mb-2 text-base'>Test Results</h4>
                                                                                             <div className="space-y-2">
                                                                                                 {item.details.map((detail, dIndex) => (
-                                                                                                    <div key={dIndex} className="p-3 border-2 rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                                                                                                    <div key={dIndex} className="p-3 border-2 border-black rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                                                                                                         <div className='mb-2 sm:mb-0'>
                                                                                                             <p className="font-bold">{detail.name}</p>
                                                                                                             <Badge variant={getReportStatusBadge(detail.status)}>{detail.status}</Badge>
@@ -1426,7 +1462,7 @@ export default function AppointmentsPage() {
             />
 
             <Dialog open={isProfileOpen} onOpenChange={setProfileOpen}>
-                <DialogContent className="sm:max-w-2xl border-2">
+                <DialogContent className="sm:max-w-2xl border-2 border-black">
                     {selectedDoctor && (
                         <>
                             <DialogHeader>
@@ -1443,7 +1479,20 @@ export default function AppointmentsPage() {
                                 </div>
                             </DialogHeader>
                             <div className="space-y-4 py-4">
-                                <div className="p-4 rounded-lg bg-muted/50 border-2">
+                                <div className="p-4 rounded-lg bg-muted/50 border-2 border-black">
+                                    <h4 className="font-semibold text-lg mb-2 flex items-center gap-2">
+                                        {selectedDoctor.consultationType === 'Online' ? <Wifi style={{color: 'hsl(var(--nav-appointments))'}}/> : <Hospital style={{color: 'hsl(var(--nav-appointments))'}}/>}
+                                        Availability
+                                    </h4>
+                                    <div className="space-y-2 text-sm">
+                                        <p className="flex items-center gap-2"><Clock className="h-4 w-4"/> {selectedDoctor.availability}</p>
+                                        <p className="flex items-center gap-2">
+                                            {selectedDoctor.consultationType === 'Online' ? <Wifi className="h-4 w-4"/> : <Hospital className="h-4 w-4"/>}
+                                            {selectedDoctor.consultationType}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="p-4 rounded-lg bg-muted/50 border-2 border-black">
                                     <h4 className="font-semibold text-lg mb-2">{selectedDoctor.hospital}</h4>
                                     <div className="space-y-2 text-sm">
                                         <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-1 flex-shrink-0"/> {hospitalsData[selectedDoctor.hospital as keyof typeof hospitalsData]?.address}</p>
@@ -1453,7 +1502,7 @@ export default function AppointmentsPage() {
                                         </a>
                                     </div>
                                 </div>
-                                <div className="p-4 rounded-lg bg-muted/50 border-2">
+                                <div className="p-4 rounded-lg bg-muted/50 border-2 border-black">
                                     <h4 className="font-semibold text-lg mb-2">Consultation Fee</h4>
                                     <div className="flex items-baseline gap-2">
                                         <p className="text-3xl font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{selectedDoctor.opFee}</p>
@@ -1522,3 +1571,4 @@ export default function AppointmentsPage() {
 }
 
     
+
