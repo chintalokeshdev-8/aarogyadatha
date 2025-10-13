@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Upload, Sparkles, Loader2, BookOpenCheck, Heart, Brain, Bone, Leaf, Droplets, Wind } from 'lucide-react';
+import { Upload, Sparkles, Loader2, BookOpenCheck, Heart, Brain, Bone, Leaf, Droplets, Wind, User, Baby, Smile, Eye } from 'lucide-react';
 import { HealthAnalysisOutput, analyzeHealthIssue } from '@/ai/flows/ai-health-knowledge';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
@@ -19,6 +19,12 @@ const healthCategories = [
     { name: "Mental Wellness", icon: Brain },
     { name: "Bone & Joint", icon: Bone },
     { name: "Digestive Issues", icon: Wind },
+    { name: "Child Health", icon: Baby },
+    { name: "Women's Health", icon: User },
+    { name: "Men's Health", icon: User },
+    { name: "Dental Care", icon: Smile },
+    { name: "Eye Care", icon: Eye },
+    { name: "Nutrition & Diet", icon: Leaf },
 ];
 
 export default function HealthKnowledgePage() {
@@ -70,7 +76,7 @@ export default function HealthKnowledgePage() {
                 <CardContent className="space-y-6">
                      <div>
                         <Label>First, select a category (optional)</Label>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
                             {healthCategories.map((category) => (
                                 <Button
                                     key={category.name}
