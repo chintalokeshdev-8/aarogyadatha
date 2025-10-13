@@ -1,9 +1,9 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Bell, FileDown, Lock, Palette, Trash2, User, Loader2, HelpCircle, FileText, Info, Phone } from "lucide-react";
+import { Bell, FileDown, Lock, Palette, Trash2, Loader2, HelpCircle, FileText, Info, Phone } from "lucide-react";
 import React from "react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -34,17 +34,10 @@ export default function SettingsPage() {
         <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center">
                 <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-profile))'}}>Settings</h1>
-                <p className="text-muted-foreground mt-2">Manage your account and application settings.</p>
             </div>
 
             <Card className="border-2">
                 <CardContent className="p-4 space-y-2">
-                    <Link href="/profile">
-                        <Button variant="outline" className="w-full justify-start gap-3 border-2 text-base py-6">
-                            <User className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
-                            <span>Edit Profile Information</span>
-                        </Button>
-                    </Link>
                      <Button variant="outline" className="w-full justify-start gap-3 border-2 text-base py-6">
                         <Lock className="h-5 w-5" style={{color: 'hsl(var(--nav-profile))'}}/>
                         <span>Change Password</span>
