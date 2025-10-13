@@ -32,7 +32,7 @@ export interface MenuItem {
 export const allMenuItems: MenuItem[] = [
   { id: 'home', href: "/", label: "Home", telugu: "హోమ్", icon: LayoutGrid, color: "hsl(var(--nav-home))", defaultVisible: true, customizable: false },
   { id: 'symptoms', href: "/symptom-checker", label: "AI Symptom Checker", telugu: "లక్షణాలు", icon: HeartPulse, color: "hsl(var(--nav-symptoms))", defaultVisible: true, customizable: false },
-  { id: 'appointments', href: "/appointments", label: "book appointment & History", telugu: "నమోదులు", icon: CalendarCheck, color: "hsl(var(--nav-appointments))", defaultVisible: true, customizable: false },
+  { id: 'appointments', href: "/appointments", label: "Book appointment & History", telugu: "నమోదులు", icon: CalendarCheck, color: "hsl(var(--nav-appointments))", defaultVisible: true, customizable: false },
   { id: 'opd', href: "/opd-queue", label: "OP STATUS", telugu: "OP స్థితి", icon: MessageSquare, color: "hsl(var(--nav-chat))", defaultVisible: true, customizable: false },
   { id: 'diagnostics', href: "/lab-reports", label: "Diagnostics", telugu: "రిపోర్టులు", icon: TestTube, color: "hsl(var(--nav-diagnostics))", defaultVisible: true, customizable: false },
   { id: 'medicines', href: "/medicines", label: "Medicines", telugu: "మందులు", icon: Pill, color: "hsl(var(--nav-medicines))", defaultVisible: true, customizable: false },

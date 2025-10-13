@@ -25,7 +25,7 @@ import { Separator } from '@/components/ui/separator';
 
 const quickAccessItems = [
   { href: '/symptom-checker', icon: HeartPulse, label: 'AI Symptom Checker', telugu: 'వైద్య లక్షణాలు తనిఖీ', color: 'hsl(var(--nav-symptoms))' },
-  { href: '/appointments', icon: CalendarCheck, label: 'book appointment & History', telugu: 'సమయం నమోదు చేసుకోండి', color: 'hsl(var(--nav-appointments))' },
+  { href: '/appointments', icon: CalendarCheck, label: 'Book appointment & History', telugu: 'సమయం నమోదు చేసుకోండి', color: 'hsl(var(--nav-appointments))' },
   { href: '/opd-queue', icon: MessageSquare, label: 'OP STATUS', telugu: 'OP స్థితి', color: 'hsl(var(--nav-chat))' },
   { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', telugu: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
   { href: '/medicines', icon: Pill, label: 'My Medicines', telugu: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
@@ -173,8 +173,8 @@ export default function DashboardPage() {
             <p className="text-sm md:text-base font-bold text-foreground">Right disease for right doctor + Right Diet = 99% cure</p>
         </div>
 
-        <section>
-            <Card className="border -mt-4">
+        <section className="-mt-4">
+            <Card className="border">
                 <CardHeader>
                     <CardTitle className="text-lg font-semibold">Quick Access</CardTitle>
                 </CardHeader>
@@ -337,5 +337,3 @@ export default function DashboardPage() {
       </div>
   );
 }
-
-    
