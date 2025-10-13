@@ -96,7 +96,6 @@ export default function ProfilePage() {
             <Card>
                  <CardHeader>
                     <CardTitle className="flex items-center gap-2"><MapPin style={{color: 'hsl(var(--nav-profile))'}}/> Address & Contact</CardTitle>
-                    <CardDescription>Your primary contact information for communication and medicine delivery.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm">
                     <div className="flex items-center gap-3">
