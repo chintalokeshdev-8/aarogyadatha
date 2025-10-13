@@ -2,12 +2,14 @@
 'use client';
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Hospital, Search, Eye, EyeOff, Download, Printer, ShieldAlert } from "lucide-react";
+import { Shield, Hospital, Search, Eye, EyeOff, Download, Printer, ShieldAlert, Upload, Loader2, FileUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GovIdIcon } from "@/components/icons/gov-id-icon";
 import Image from 'next/image';
 import { Separator } from "@/components/ui/separator";
@@ -40,6 +42,77 @@ const networkHospitals = [
     address: "Mangalagiri Road, Nri Hospital Campus, Chinakakani, Guntur, Andhra Pradesh",
   },
 ];
+
+function UploadIdDialog() {
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
+    const [fileName, setFileName] = React.useState('');
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setTimeout(() => {
+            setIsSubmitting(false);
+            // Typically you'd close the dialog and show a toast message here.
+        }, 1500);
+    };
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="border-primary text-primary hover:bg-primary/10 hover:text-primary">
+                    <Upload className="mr-2 h-4 w-4" /> Upload ID
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Upload Health ID</DialogTitle>
+                    <DialogDescription>
+                        Upload a photo or PDF of your government health ID card.
+                    </DialogDescription>
+                </DialogHeader>
+                <form onSubmit={handleSubmit} className="space-y-4 py-2">
+                    <div className="space-y-2">
+                        <Label htmlFor="id-type">ID Type</Label>
+                        <Select>
+                            <SelectTrigger id="id-type" className="border">
+                                <SelectValue placeholder="Select ID Type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="abha">ABHA Card</SelectItem>
+                                <SelectItem value="aarogyasri">Aarogyasri Card</SelectItem>
+                                <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="id-number">ID Number (Optional)</Label>
+                        <Input id="id-number" placeholder="Enter the number on your card" className="border" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="id-file">Card Photo/PDF</Label>
+                        <div className="flex items-center gap-2">
+                            <Button asChild variant="outline" className="flex-1">
+                                <label htmlFor="file-upload" className="cursor-pointer">
+                                    <FileUp className="mr-2 h-4 w-4" />
+                                    {fileName || 'Choose File'}
+                                </label>
+                            </Button>
+                            <input id="file-upload" type="file" className="hidden" onChange={(e) => setFileName(e.target.files?.[0]?.name || '')} accept="image/*,.pdf" />
+                        </div>
+                        {fileName && <p className="text-xs text-muted-foreground mt-1">Selected: {fileName}</p>}
+                    </div>
+                    <DialogFooter className="pt-4">
+                        <Button type="submit" style={{ backgroundColor: 'hsl(var(--primary))' }} disabled={isSubmitting || !fileName}>
+                            {isSubmitting ? (
+                                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Uploading...</>
+                            ) : <><Upload className="mr-2 h-4 w-4" /> Upload Document</>}
+                        </Button>
+                    </DialogFooter>
+                </form>
+            </DialogContent>
+        </Dialog>
+    )
+}
 
 export default function InsurancesPage() {
     const [searchTerm, setSearchTerm] = React.useState('');
@@ -104,12 +177,15 @@ export default function InsurancesPage() {
 
             <Card id="gov-health-ids" className="border">
                 <CardHeader>
-                    <div className="flex items-center gap-3">
-                        <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--nav-profile))'}}/>
-                        <div>
-                            <CardTitle>Government Health IDs</CardTitle>
-                            <CardDescription>Aarogyasri (UHID) & ABHA ID</CardDescription>
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                            <GovIdIcon className="h-8 w-8" style={{color: 'hsl(var(--primary))'}}/>
+                            <div>
+                                <CardTitle>Government Health IDs</CardTitle>
+                                <CardDescription>Aarogyasri (UHID) & ABHA ID</CardDescription>
+                            </div>
                         </div>
+                        <UploadIdDialog />
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -120,7 +196,7 @@ export default function InsurancesPage() {
                                 <div className="flex gap-2">
                                      <Button variant="outline" onClick={() => setShowAbha(!showAbha)} className="border">
                                         {showAbha ? <EyeOff className="mr-2"/> : <Eye className="mr-2"/>}
-                                        {showAbha ? "Hide Details" : "Show Card"}
+                                        {showAbha ? "Hide Card" : "Show Card"}
                                      </Button>
                                 </div>
                             </div>
