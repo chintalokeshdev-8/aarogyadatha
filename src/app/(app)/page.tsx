@@ -189,7 +189,7 @@ export default function DashboardPage() {
                                 <div className="p-3 rounded-full mb-1 bg-primary/10">
                                     <item.icon className="h-6 w-6 text-primary" />
                                 </div>
-                                <p className="font-semibold text-xs leading-tight text-foreground">{item.label}</p>
+                                <p className="font-bold text-xs leading-tight text-foreground">{item.label}</p>
                                 </div>
                             </Link>
                         ))}
