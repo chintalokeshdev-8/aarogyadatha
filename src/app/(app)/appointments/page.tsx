@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +29,7 @@ import { Separator } from '@/components/ui/separator';
 import { FlowerFall } from '@/components/ui/flower-fall';
 import { analyzeReport, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from 'next/link';
 
 
 const hospitalsData: Record<string, { location: string; address: string; phone: string; website: string; }> = {
@@ -768,15 +769,16 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-md p-0 flex flex-col h-[90vh] sm:h-auto max-h-[90vh]">
-                
-                 <DialogHeader className="p-4 border-b flex-row items-center">
+                <DialogHeader className="p-4 border-b flex-row items-center">
                     {step === 2 && (
                         <Button variant="ghost" size="icon" onClick={handleBack} className="mr-2">
                             <ArrowLeft className="h-5 w-5" />
                         </Button>
                     )}
-                    <DialogTitle className={cn(step === 2 && "mx-auto")}>{step === 1 ? 'Book Online Consult' : 'Payment Summary'}</DialogTitle>
-                     {step === 2 && <div className='w-9'></div>}
+                    <DialogTitle className={cn(step === 2 && "text-center flex-1")}>
+                        {step === 1 ? 'Book Online Consult' : 'Payment Summary'}
+                    </DialogTitle>
+                    {step === 2 && <div className="w-9"></div>}
                 </DialogHeader>
 
                 <div className="flex-1 overflow-y-auto">
@@ -814,40 +816,48 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                         </div>
                     ) : (
                          <div className="p-4 space-y-4">
-                            <div className="flex justify-between items-center text-lg font-semibold">
-                                <p>{format(selectedDate, "EEEE, d MMM")}</p>
-                                <p>{selectedTime}</p>
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center">
+                                    <h3 className="font-bold text-lg">Your details</h3>
+                                    <Button variant="link" className="p-0 h-auto">Edit</Button>
+                                </div>
+                                <Card>
+                                    <CardContent className="p-4 space-y-2">
+                                        <div className="flex items-center gap-3">
+                                            <Avatar className="h-10 w-10">
+                                                <AvatarImage src="/images/profile.jpg" />
+                                                <AvatarFallback>CL</AvatarFallback>
+                                            </Avatar>
+                                            <div>
+                                                <p className="font-semibold">Lokesh Babu chinta</p>
+                                                <p className="text-sm text-muted-foreground">+91-8008334948</p>
+                                            </div>
+                                        </div>
+                                         <p className="text-sm text-muted-foreground">lokeshbabu9298@gmail.com</p>
+                                         <p className="text-sm text-muted-foreground">Andhra Pradesh</p>
+                                    </CardContent>
+                                </Card>
                             </div>
+                            <Link href="/terms" passHref>
+                                <div className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50">
+                                    <div className="flex items-center gap-3">
+                                        <HelpCircle className="h-5 w-5 text-muted-foreground" />
+                                        <p className="font-semibold">Terms and conditions</p>
+                                    </div>
+                                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                                </div>
+                            </Link>
 
-                            <Card>
-                                <CardContent className="p-4 flex justify-between items-center">
-                                     <div>
-                                        <p className="font-bold">1 Online Consultation</p>
-                                        <p className="text-sm text-muted-foreground">For {doctor.name}</p>
-                                     </div>
-                                     <p className="font-bold text-lg">₹{doctor.opFee.toFixed(2)}</p>
-                                </CardContent>
-                            </Card>
-                            
-                            <Collapsible defaultOpen className="space-y-2">
-                                <CollapsibleTrigger className="flex justify-between items-center w-full text-sm font-semibold text-muted-foreground">
-                                    <span>Payment Details</span>
-                                   <ChevronDown className="h-4 w-4 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                                </CollapsibleTrigger>
-                                <CollapsibleContent className="space-y-2 pt-2">
-                                    <div className="flex justify-between text-sm">
-                                        <p className="text-muted-foreground">Consultation Fee</p>
-                                        <p>₹{doctor.opFee.toFixed(2)}</p>
+                            <div className="flex items-center justify-between p-4 border rounded-lg">
+                                <div className="flex items-center gap-3">
+                                    <Phone className="h-5 w-5 text-muted-foreground" />
+                                    <div>
+                                        <p className="font-semibold">Cancellation & Reschedule Policy</p>
+                                        <p className="text-sm text-muted-foreground">Please contact customer care for assistance.</p>
                                     </div>
-                                     <div className="flex justify-between text-sm">
-                                        <p className="text-muted-foreground">Booking charge (inc. of GST)</p>
-                                        <p>₹{gst.toFixed(2)}</p>
-                                    </div>
-                                </CollapsibleContent>
-                            </Collapsible>
-                            
-                            <Separator />
-                        </div>
+                                </div>
+                            </div>
+                         </div>
                     )}
                 </div>
 
@@ -858,12 +868,16 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
                         </Button>
                     ) : (
                          <div className="flex justify-between items-center w-full">
-                            <div>
-                                <p className="font-bold text-lg">₹{total.toFixed(2)}</p>
-                                <p className="text-xs text-muted-foreground">Total Amount</p>
+                            <div className="flex-1">
+                                <p className="text-xs text-muted-foreground">Pay Using</p>
+                                <p className="font-bold">balakrishnaips5@o...</p>
                             </div>
-                            <Button className="h-12 px-8 text-lg" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handlePay}>
-                               Pay & Confirm
+                            <Button className="h-12 px-6" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handlePay}>
+                                <div className="flex flex-col items-end -my-1">
+                                    <span className="text-lg font-bold leading-tight">Pay Now</span>
+                                    <span className="text-xs font-bold leading-tight">₹{total.toFixed(2)} Total</span>
+                                </div>
+                                <ChevronRight className="ml-2 h-5 w-5" />
                             </Button>
                         </div>
                     )}
@@ -1084,7 +1098,7 @@ export default function AppointmentsPage() {
             </div>
 
             <Tabs defaultValue="find-doctor" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 p-1.5 rounded-lg border-2 border-primary/20 bg-muted">
+                <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="find-doctor">Find a Doctor</TabsTrigger>
                     <TabsTrigger value="history">Appointments History</TabsTrigger>
                 </TabsList>
