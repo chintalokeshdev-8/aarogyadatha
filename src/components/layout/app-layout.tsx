@@ -370,12 +370,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             <span className="font-semibold">Settings</span>
                                         </DropdownMenuItem>
                                     </Link>
-                                    <DropdownMenuItem className="p-3">
-                                        <a href="tel:+918008443938" className="flex items-center w-full">
+                                    <a href="tel:+918008443938" className="w-full">
+                                        <DropdownMenuItem className="p-3">
                                             <Phone className="mr-3 text-primary" />
                                             <span className="font-semibold">Customer Support</span>
-                                        </a>
-                                    </DropdownMenuItem>
+                                        </DropdownMenuItem>
+                                    </a>
                                      <Link href="/terms" passHref>
                                         <DropdownMenuItem className="p-3">
                                             <FileText className="mr-3 text-primary" />
