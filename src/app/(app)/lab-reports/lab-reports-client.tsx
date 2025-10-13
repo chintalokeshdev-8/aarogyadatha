@@ -366,7 +366,7 @@ export function LabReportsClient({
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                      <Button variant={initialDate ? 'ghost' : 'outline'} size={initialDate ? 'sm' : 'default'}>
-                        <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload to this date' : 'Upload New Report'}
+                        <Upload className="mr-2 h-4 w-4" /> {initialDate ? 'Upload' : 'Upload New Report'}
                     </Button>
                 </DialogTrigger>
                 <DialogContent>
@@ -403,7 +403,7 @@ export function LabReportsClient({
                                     mode="single"
                                     selected={date}
                                     onSelect={setDate}
-                                    captionLayout="dropdown"
+                                    captionLayout="dropdown-buttons"
                                     fromYear={new Date().getFullYear() - 10}
                                     toYear={new Date().getFullYear()}
                                     initialFocus
