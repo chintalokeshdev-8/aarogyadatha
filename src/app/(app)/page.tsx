@@ -198,16 +198,15 @@ export default function DashboardPage() {
           <Card className="border-2">
             <CardHeader>
                 <h2 className="text-lg font-semibold">Organ Health Overview</h2>
-                <p className="text-sm text-muted-foreground">A summary of your key organ health based on recent reports.</p>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                    <div className="flex items-start gap-3">
                         <AlertTriangle className="h-5 w-5 text-yellow-700 mt-0.5 flex-shrink-0"/>
                         <div>
-                            <h4 className="font-semibold text-yellow-800 text-sm">AI Disclaimer: For Your Safety</h4>
+                            <h4 className="font-semibold text-yellow-800 text-sm">Disclaimer: For Your Safety</h4>
                             <p className="text-xs text-yellow-700">
-                                As an AI, I provide information based on the data you provide. This overview is **not** a medical diagnosis. For any health concerns or before taking any action, you must **always consult a qualified human doctor.**
+                                This 'Organ Health Overview' is for informational purposes only. I am an AI, and my analysis is based on your uploaded health data—it is **not** a medical diagnosis. For any health concerns or before taking any action, you must **always consult a qualified human doctor.**
                             </p>
                         </div>
                    </div>
