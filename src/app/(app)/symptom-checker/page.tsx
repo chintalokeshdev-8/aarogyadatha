@@ -388,21 +388,16 @@ export default function SymptomCheckerPage() {
                     <h2 className="text-2xl font-bold">{t.analyzing}</h2>
                 </div>
             )}
-            <div className="space-y-2 text-left">
+            <div className="space-y-4 text-left">
                 <div className="flex justify-between items-center">
                     <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
                      <Button onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} size="sm" className="flex items-center gap-2" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
                         <Languages className="h-4 w-4" />
                     </Button>
                 </div>
-                <p className="text-muted-foreground mt-2">{t.description}</p>
-            </div>
-            
-            <div className="p-2 flex items-start gap-2 text-xs rounded-lg bg-yellow-50 border-yellow-200 text-yellow-700">
-                <AlertTriangle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                <div>
-                    <span className="font-bold">{t.disclaimerTitle}:</span> {t.disclaimerText}
-                </div>
+                <p className="text-muted-foreground text-sm">
+                    {t.description} <span className="font-semibold">{t.disclaimerTitle}:</span> {t.disclaimerText}
+                </p>
             </div>
 
             {analysis && (
