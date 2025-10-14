@@ -389,14 +389,22 @@ export default function SymptomCheckerPage() {
                 </div>
             )}
             <div className="space-y-2 text-left">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
+                <div className="flex justify-between items-center">
+                    <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
+                     <Button onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} size="sm" className="flex items-center gap-2" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
+                        <Languages className="h-4 w-4" />
+                    </Button>
+                </div>
                 <p className="text-muted-foreground mt-2">{t.description}</p>
-                <Button onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} size="sm" className="flex items-center gap-2" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
-                    <Languages className="h-4 w-4" />
-                    <span className='hidden sm:inline'>{t.language}</span>
-                </Button>
             </div>
             
+            <div className="p-2 flex items-start gap-2 text-xs rounded-lg bg-yellow-50 border-yellow-200 text-yellow-700">
+                <AlertTriangle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                <div>
+                    <span className="font-bold">{t.disclaimerTitle}:</span> {t.disclaimerText}
+                </div>
+            </div>
+
             {analysis && (
                 <Button onClick={handleBack} className="font-bold" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
                     <ArrowLeft className="mr-2 h-4 w-4"/>
@@ -538,18 +546,6 @@ export default function SymptomCheckerPage() {
                     </>
                 )}
             </div>
-
-            <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/40 border">
-                <CardContent className="p-4 flex items-start gap-4">
-                    <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-1 flex-shrink-0" />
-                    <div>
-                        <h3 className="font-bold text-yellow-800 dark:text-yellow-300">{t.disclaimerTitle}</h3>
-                        <p className="text-sm text-yellow-700 dark:text-yellow-400/80 mt-1">
-                           {t.disclaimerText}
-                        </p>
-                    </div>
-                </CardContent>
-            </Card>
         </div>
     );
 }
