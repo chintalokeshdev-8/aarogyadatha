@@ -38,6 +38,7 @@ import {
   Globe,
   FileText,
   Info,
+  Languages,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -313,6 +314,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                             <Search className="h-5 w-5" />
                         </Button>
                     )}
+                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setLangSwitcherOpen(true)}>
+                        <Languages className="h-5 w-5" />
+                    </Button>
                     <NotificationsDropdown />
                     <Dialog>
                         <DropdownMenu>
@@ -490,5 +494,3 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-    
