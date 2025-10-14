@@ -134,6 +134,8 @@ export default function HealthKnowledgePage() {
     const [deepDiveResult, setDeepDiveResult] = useState<DeepDiveOutput | null>(null);
     const [isDeepDivePending, startDeepDiveTransition] = useTransition();
     
+    const resultsRef = useRef<HTMLDivElement>(null);
+    
     const t = translations[language];
 
     const handleDiseaseClick = (disease: string) => {
@@ -144,6 +146,9 @@ export default function HealthKnowledgePage() {
         startTransition(async () => {
             const result = await getDiseaseInfo({ diseaseName: disease, language });
             setAnalysisResult(result);
+            setTimeout(() => {
+                resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
         });
     };
 
@@ -182,6 +187,7 @@ export default function HealthKnowledgePage() {
         const newLang = language === 'en' ? 'te' : 'en';
         setLanguage(newLang);
         if (selectedDisease) {
+            // Refetch data in the new language
             handleDiseaseClick(selectedDisease);
         }
     };
@@ -195,9 +201,9 @@ export default function HealthKnowledgePage() {
                             <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}>
                                 <BookOpenCheck /> {t.title}
                             </CardTitle>
-                             <Button variant="ghost" onClick={toggleLanguage} className="gap-2">
+                             <Button variant="outline" onClick={toggleLanguage} className="gap-2">
                                 <Globe className="h-5 w-5" />
-                                <span className="text-sm font-bold">{t.translateButton}</span>
+                                <span className="text-sm font-bold">{language === 'en' ? 'తెలుగు' : 'English'}</span>
                             </Button>
                         </div>
                         <CardDescription>{t.description}</CardDescription>
@@ -231,13 +237,16 @@ export default function HealthKnowledgePage() {
                             ))}
                         </div>
                         <ScrollArea className="h-[50vh] lg:h-[45vh]">
-                            <div className="flex flex-col gap-1 pr-4">
+                            <div className="flex flex-row flex-wrap gap-2 pr-4">
                                 {filteredDiseases.map((disease) => (
                                     <Button
                                         key={disease}
                                         variant={selectedDisease === disease ? "default" : "ghost"}
                                         size="sm"
-                                        className={cn("text-sm h-auto py-1.5 px-2 justify-start", selectedDisease === disease ? "bg-primary" : "")}
+                                        className={cn(
+                                            "text-sm h-auto py-1.5 px-2 justify-start", 
+                                            selectedDisease === disease ? "bg-primary" : "bg-muted/50"
+                                        )}
                                         style={selectedDisease === disease ? {backgroundColor: 'hsl(var(--nav-profile))'} : {}}
                                         onClick={() => handleDiseaseClick(disease)}
                                         disabled={isPending && selectedDisease === disease}
@@ -252,7 +261,7 @@ export default function HealthKnowledgePage() {
                 </Card>
             </div>
 
-            <div className="lg:col-span-2 space-y-6">
+            <div ref={resultsRef} className="lg:col-span-2 space-y-6">
                 {isPending && (
                     <Card className="flex flex-col items-center justify-center p-8 min-h-[50vh]">
                         <Loader2 className="h-12 w-12 animate-spin mb-4" style={{ color: 'hsl(var(--nav-profile))' }} />
@@ -365,4 +374,3 @@ export default function HealthKnowledgePage() {
         </div>
     );
 }
-
