@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useTransition, useEffect, useRef } from 'react';
+import React, { useState, useTransition, useEffect, useRef, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getDiseaseInfo, DiseaseInfoOutput } from '@/ai/flows/ai-disease-info';
@@ -11,20 +11,243 @@ import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 
-const commonTopics = [
-    { english: "Fever", telugu: "జ్వరం" },
-    { english: "Headache", telugu: "తలనొప్పి" },
-    { english: "Cough", telugu: "దగ్గు" },
-    { english: "Diabetes", telugu: "మధుమేహం" },
-    { english: "Hypertension", telugu: "అధిక రక్తపోటు" },
-    { english: "Stomach Pain", telugu: "కడుపునొప్పి" },
-    { english: "Skin Rash", telugu: "చర్మపు దద్దుర్లు" },
+const allTopics = [
     { english: "Acne", telugu: "మొటిమలు" },
+    { english: "ADHD", telugu: "ADHD (ఏకాగ్రత లోపం)" },
+    { english: "Allergic Rhinitis (Hay Fever)", telugu: "అలెర్జీ రినిటిస్ (గవత జ్వరం)" },
+    { english: "Allergies", telugu: "అలెర్జీలు" },
+    { english: "Alzheimer's Disease", telugu: "అల్జీమర్స్ వ్యాధి" },
+    { english: "Anemia", telugu: "రక్తహీనత" },
+    { english: "Ankylosing Spondylitis", telugu: "యాంకైలోజింగ్ స్పాండిలైటిస్" },
+    { english: "Anxiety", telugu: "ఆందోళన" },
+    { english: "Appendicitis", telugu: "అపెండిసైటిస్" },
+    { english: "Arthritis", telugu: "కీళ్లనొప్పులు" },
+    { english: "Asthma", telugu: "ఉబ్బసం" },
+    { english: "Atherosclerosis", telugu: "అథెరోస్క్లెరోసిస్" },
+    { english: "Atrial Fibrillation", telugu: "ఏట్రియల్ ఫిబ్రిలేషన్" },
+    { english: "Autism", telugu: "ఆటిజం" },
     { english: "Back Pain", telugu: "వీపు నొప్పి" },
-    { english: "Dengue", telugu: "డెంగ్యూ" },
-    { english: "Typhoid", telugu: "టైఫాయిడ్" },
+    { english: "Bacterial Vaginosis", telugu: "బాక్టీరియల్ వాగినోసిస్" },
+    { english: "Bell's Palsy", telugu: "బెల్స్ పాల్సీ" },
+    { english: "Benign Prostatic Hyperplasia (BPH)", telugu: "బినైన్ ప్రోస్టాటిక్ హైపర్‌ప్లాసియా" },
+    { english: "Bipolar Disorder", telugu: "బైపోలార్ డిజార్డర్" },
+    { english: "Bladder Cancer", telugu: "మూత్రాశయ క్యాన్సర్" },
+    { english: "Blood Clots", telugu: "రక్తం గడ్డకట్టడం" },
+    { english: "Bone Cancer", telugu: "ఎముక క్యాన్సర్" },
+    { english: "Brain Tumor", telugu: "మెదడు కణితి" },
+    { english: "Breast Cancer", telugu: "రొమ్ము క్యాన్సర్" },
+    { english: "Bronchitis", telugu: "బ్రోంకైటిస్" },
+    { english: "Bulimia Nervosa", telugu: "బులిమియా నెర్వోసా" },
+    { english: "Bursitis", telugu: "బుర్సిటిస్" },
+    { english: "Cataract", telugu: "శుక్లాలు" },
+    { english: "Celiac Disease", telugu: "సెలియాక్ వ్యాధి" },
+    { english: "Cervical Cancer", telugu: "గర్భాశయ క్యాన్సర్" },
+    { english: "Cervical Spondylosis", telugu: "సెర్వికల్ స్పాండిలోసిస్" },
+    { english: "Chikungunya", telugu: "చికున్‌గున్యా" },
+    { english: "Chlamydia", telugu: "క్లమిడియా" },
+    { english: "Cholera", telugu: "కలరా" },
+    { english: "Chronic Fatigue Syndrome", telugu: "దీర్ఘకాలిక అలసట సిండ్రోమ్" },
+    { english: "Chronic Kidney Disease", telugu: "దీర్ఘకాలిక మూత్రపిండాల వ్యాధి" },
+    { english: "Chronic Pain", telugu: "దీర్ఘకాలిక నొప్పి" },
+    { english: "Cirrhosis", telugu: "సిర్రోసిస్" },
+    { english: "Cluster Headaches", telugu: "క్లస్టర్ తలనొప్పి" },
+    { english: "Colitis", telugu: "పెద్దప్రేగు శోథ" },
+    { english: "Colon Cancer", telugu: "పెద్దప్రేగు క్యాన్సర్" },
+    { english: "Common Cold", telugu: "సాధారణ జలుబు" },
+    { english: "Congestive Heart Failure", telugu: "గుండె వైఫల్యం" },
+    { english: "Conjunctivitis (Pink Eye)", telugu: "కండ్లకలక" },
+    { english: "COPD", telugu: "సిఓపిడి" },
+    { english: "Coronary Artery Disease", telugu: "కరోనరీ ఆర్టరీ వ్యాధి" },
+    { english: "Cough", telugu: "దగ్గు" },
+    { english: "COVID-19", telugu: "కోవిడ్-19" },
+    { english: "Crohn's Disease", telugu: "క్రోన్స్ వ్యాధి" },
+    { english: "Cushing's Syndrome", telugu: "కుషింగ్స్ సిండ్రోమ్" },
+    { english: "Cystic Fibrosis", telugu: "సిస్టిక్ ఫైబ్రోసిస్" },
+    { english: "Dandruff", telugu: "చుండ్రు" },
+    { english: "Deep Vein Thrombosis (DVT)", telugu: "డీప్ వెయిన్ థ్రాంబోసిస్" },
+    { english: "Dehydration", telugu: "డీహైడ్రేషన్" },
+    { english: "Dementia", telugu: "చిత్తవైకల్యం" },
+    { english: "Dengue Fever", telugu: "డెంగ్యూ జ్వరం" },
+    { english: "Depression", telugu: "కుంగుబాటు" },
+    { english: "Diabetes (Type 1 & 2)", telugu: "మధుమేహం (రకం 1 & 2)" },
+    { english: "Diabetic Ketoacidosis", telugu: "డయాబెటిక్ కీటోయాసిడోసిస్" },
+    { english: "Diabetic Neuropathy", telugu: "డయాబెటిక్ న్యూరోపతి" },
+    { english: "Diabetic Retinopathy", telugu: "డయాబెటిక్ రెటినోపతి" },
+    { english: "Diarrhea", telugu: "విరేచనాలు" },
+    { english: "Down Syndrome", telugu: "డౌన్ సిండ్రోమ్" },
+    { english: "Dry Eye", telugu: "పొడి కన్ను" },
+    { english: "Dysentery", telugu: "విరేచనాలు (రక్తంతో)" },
+    { english: "Dyslexia", telugu: "డైస్లెక్సియా" },
+    { english: "Ear Infection", telugu: "చెవి ఇన్ఫెక్షన్" },
+    { english: "Eating Disorders", telugu: "ఆహార లోపాలు" },
+    { english: "Eczema (Atopic Dermatitis)", telugu: "తామర (అటోపిక్ డెర్మటైటిస్)" },
+    { english: "Endometriosis", telugu: "ఎండోమెట్రియోసిస్" },
+    { english: "Epilepsy", telugu: "మూర్ఛ" },
+    { english: "Erectile Dysfunction", telugu: "అంగస్తంభన సమస్య" },
+    { english: "Esophageal Cancer", telugu: "అన్నవాహిక క్యాన్సర్" },
+    { english: "Fatty Liver Disease", telugu: "ఫ్యాటీ లివర్ వ్యాధి" },
+    { english: "Fever", telugu: "జ్వరం" },
+    { english: "Fibroids", telugu: "ఫైబ్రాయిడ్లు" },
+    { english: "Fibromyalgia", telugu: "ఫైబ్రోమైయాల్జియా" },
+    { english: "Fistula", telugu: "ఫిస్టులా" },
+    { english: "Flu (Influenza)", telugu: "ఫ్లూ (ఇన్ఫ్లుఎంజా)" },
+    { english: "Food Poisoning", telugu: "ఫుడ్ పాయిజనింగ్" },
+    { english: "Gallstones", telugu: "పిత్తాశయ రాళ్ళు" },
+    { english: "Gastroenteritis", telugu: "గ్యాస్ట్రోఎంటరైటిస్" },
+    { english: "GERD (Acid Reflux)", telugu: "GERD (యాసిడ్ రిఫ్లక్స్)" },
+    { english: "Gestational Diabetes", telugu: "గర్భధారణ మధుమేహం" },
+    { english: "Glaucoma", telugu: "గ్లాకోమా" },
+    { english: "Goiter", telugu: "గాయిటర్" },
+    { english: "Gonorrhea", telugu: "గోనేరియా" },
+    { english: "Gout", telugu: "గౌట్" },
+    { english: "Graves' Disease", telugu: "గ్రేవ్స్ వ్యాధి" },
+    { english: "Guillain-Barré Syndrome", telugu: "గుల్లెన్-బారే సిండ్రోమ్" },
+    { english: "Gum Disease", telugu: "చిగుళ్ళ వ్యాధి" },
+    { english: "Hair Loss", telugu: "జుట్టు రాలడం" },
+    { english: "Hashimoto's Thyroiditis", telugu: "హషిమోటోస్ థైరాయిడైటిస్" },
+    { english: "Headache", telugu: "తలనొప్పి" },
+    { english: "Heart Attack", telugu: "గుండెపోటు" },
+    { english: "Heart Failure", telugu: "గుండె వైఫల్యం" },
+    { english: "Hepatitis (A, B, C)", telugu: "హెపటైటిస్ (A, B, C)" },
+    { english: "Hernia", telugu: "హెర్నియా" },
+    { english: "Herpes", telugu: "హెర్పెస్" },
+    { english: "High Cholesterol", telugu: "అధిక కొలెస్ట్రాల్" },
+    { english: "Hives", telugu: "దద్దుర్లు" },
+    { english: "HIV/AIDS", telugu: "HIV/AIDS" },
+    { english: "Hodgkin's Lymphoma", telugu: "హాడ్కిన్స్ లింఫోమా" },
+    { english: "Human Papillomavirus (HPV)", telugu: "హ్యూమన్ పాపిల్లోమావైరస్ (HPV)" },
+    { english: "Huntington's Disease", telugu: "హంటింగ్టన్ వ్యాధి" },
+    { english: "Hypertension (High Blood Pressure)", telugu: "అధిక రక్తపోటు" },
+    { english: "Hyperthyroidism", telugu: "హైపర్ థైరాయిడిజం" },
+    { english: "Hypoglycemia", telugu: "హైపోగ్లైసీమియా" },
+    { english: "Hypothyroidism", telugu: "హైపోథైరాయిడిజం" },
+    { english: "Impetigo", telugu: "ఇంపెటిగో" },
+    { english: "Insomnia", telugu: "నిద్రలేమి" },
+    { english: "Irritable Bowel Syndrome (IBS)", telugu: "ఇరిటబుల్ బవెల్ సిండ్రోమ్ (IBS)" },
+    { english: "Jaundice", telugu: "పచ్చ కామెర్లు" },
+    { english: "Kidney Cancer", telugu: "మూత్రపిండాల క్యాన్సర్" },
+    { english: "Kidney Stones", telugu: "మూత్రపిండాల్లో రాళ్లు" },
+    { english: "Klinefelter Syndrome", telugu: "క్లైన్‌ఫెల్టర్ సిండ్రోమ్" },
+    { english: "Lactose Intolerance", telugu: "లాక్టోస్ అసహనం" },
+    { english: "Laryngitis", telugu: "గొంతు వాపు" },
+    { english: "Leukemia", telugu: "లుకేమియా" },
+    { english: "Lichen Planus", telugu: "లైకెన్ ప్లానస్" },
+    { english: "Liver Cancer", telugu: "కాలేయ క్యాన్సర్" },
+    { english: "Lung Cancer", telugu: "ఊపిరితిత్తుల క్యాన్సర్" },
+    { english: "Lupus", telugu: "లూపస్" },
+    { english: "Lyme Disease", telugu: "లైమ్ వ్యాధి" },
+    { english: "Lymphoma", telugu: "లింఫోమా" },
+    { english: "Macular Degeneration", telugu: "మాక్యులార్ డిజెనరేషన్" },
     { english: "Malaria", telugu: "మలేరియా" },
-];
+    { english: "Marfan Syndrome", telugu: "మార్ఫాన్ సిండ్రోమ్" },
+    { english: "Measles", telugu: "తట్టు" },
+    { english: "Melanoma", telugu: "మెలనోమా" },
+    { english: "Meningitis", telugu: "మెనింజైటిస్" },
+    { english: "Menopause", telugu: "రుతువిరతి" },
+    { english: "Migraine", telugu: "మైగ్రేన్" },
+    { english: "Miscarriage", telugu: "గర్భస్రావం" },
+    { english: "Mononucleosis", telugu: "మోనోన్యూక్లియోసిస్" },
+    { english: "Multiple Myeloma", telugu: "మల్టిపుల్ మైలోమా" },
+    { english: "Multiple Sclerosis", telugu: "మల్టిపుల్ స్క్లెరోసిస్" },
+    { english: "Mumps", telugu: "గవదబిళ్లలు" },
+    { english: "Muscle Spasms", telugu: "కండరాల నొప్పులు" },
+    { english: "Muscular Dystrophy", telugu: "కండరాల బలహీనత" },
+    { english: "Myasthenia Gravis", telugu: "మస్తీనియా గ్రేవిస్" },
+    { english: "Narcolepsy", telugu: "నార్కోలెప్సీ" },
+    { english: "Obesity", telugu: "ఊబకాయం" },
+    { english: "Obsessive-Compulsive Disorder (OCD)", telugu: "అబ్సెసివ్-కంపల్సివ్ డిజార్డర్ (OCD)" },
+    { english: "Oral Cancer", telugu: "నోటి క్యాన్సర్" },
+    { english: "Osteoarthritis", telugu: "ఆస్టియో ఆర్థరైటిస్" },
+    { english: "Osteomyelitis", telugu: "ఎముకల ఇన్ఫెక్షన్" },
+    { english: "Osteoporosis", telugu: "బోలు ఎముకల వ్యాధి" },
+    { english: "Ovarian Cancer", telugu: "అండాశయ క్యాన్సర్" },
+    { english: "Ovarian Cysts", telugu: "అండాశయ తిత్తులు" },
+    { english: "Paget's Disease of Bone", telugu: "పేజెట్స్ వ్యాధి" },
+    { english: "Pancreatic Cancer", telugu: "క్లోమ క్యాన్సర్" },
+    { english: "Pancreatitis", telugu: "పాంక్రియాటైటిస్" },
+    { english: "Panic Disorder", telugu: "పానిక్ డిజార్డర్" },
+    { english: "Parkinson's Disease", telugu: "పార్కిన్సన్స్ వ్యాధి" },
+    { english: "Pelvic Inflammatory Disease (PID)", telugu: "పెల్విక్ ఇన్ఫ్లమేటరీ డిసీజ్ (PID)" },
+    { english: "Peptic Ulcers", telugu: "పెప్టిక్ అల్సర్లు" },
+    { english: "Peripheral Artery Disease (PAD)", telugu: "పెరిఫెరల్ ఆర్టరీ డిసీజ్ (PAD)" },
+    { english: "Periodontitis", telugu: "చిగుళ్ళ వ్యాధి" },
+    { english: "Pharyngitis", telugu: "గొంతు నొప్పి" },
+    { english: "Piles/Hemorrhoids", telugu: "పైల్స్/మొలలు" },
+    { english: "Plague", telugu: "ప్లేగు" },
+    { english: "Pleurisy", telugu: "ప్లూరిసీ" },
+    { english: "Pneumonia", telugu: "న్యుమోనియా" },
+    { english: "Polio", telugu: "పోలియో" },
+    { english: "Polycystic Ovary Syndrome (PCOS)", telugu: "పాలిసిస్టిక్ ఓవరీ సిండ్రోమ్ (PCOS)" },
+    { english: "Post-Traumatic Stress Disorder (PTSD)", telugu: "పోస్ట్-ట్రామాటిక్ స్ట్రెస్ డిజార్డర్ (PTSD)" },
+    { english: "Preeclampsia", telugu: "ప్రీఎక్లాంప్సియా" },
+    { english: "Premenstrual Syndrome (PMS)", telugu: "ప్రీమెన్‌స్ట్రువల్ సిండ్రోమ్ (PMS)" },
+    { english: "Prostate Cancer", telugu: "ప్రోస్టేట్ క్యాన్సర్" },
+    { english: "Psoriasis", telugu: "సోరియాసిస్" },
+    { english: "Psoriatic Arthritis", telugu: "సోరియాటిక్ ఆర్థరైటిస్" },
+    { english: "Pulmonary Embolism", telugu: "పల్మనరీ ఎంబాలిజం" },
+    { english: "Rabies", telugu: "రేబిస్" },
+    { english: "Raynaud's Disease", telugu: "రేనాడ్స్ వ్యాధి" },
+    { english: "Restless Legs Syndrome", telugu: "రెస్ట్‌లెస్ లెగ్స్ సిండ్రోమ్" },
+    { english: "Retinal Detachment", telugu: "రెటీనా డిటాచ్‌మెంట్" },
+    { english: "Rheumatic Fever", telugu: "రుమాటిక్ జ్వరం" },
+    { english: "Rheumatoid Arthritis", telugu: "రుమటాయిడ్ ఆర్థరైటిస్" },
+    { english: "Ringworm", telugu: "తామర" },
+    { english: "Rosacea", telugu: "రోసేసియా" },
+    { english: "Rubella", telugu: "రుబెల్లా" },
+    { english: "Sarcoidosis", telugu: "సార్కోయిడోసిస్" },
+    { english: "Scabies", telugu: "గజ్జి" },
+    { english: "Scarlet Fever", telugu: "స్కార్లెట్ జ్వరం" },
+    { english: "Schizophrenia", telugu: "స్కిజోఫ్రెనియా" },
+    { english: "Sciatica", telugu: "సయాటికా" },
+    { english: "Scoliosis", telugu: "వెన్నెముక వంకర" },
+    { english: "Sepsis", telugu: "సెప్సిస్" },
+    { english: "Shingles", telugu: "షింగిల్స్" },
+    { english: "Sickle Cell Anemia", telugu: "సికిల్ సెల్ అనీమియా" },
+    { english: "Sinusitis", telugu: "సైనసైటిస్" },
+    { english: "Sjogren's Syndrome", telugu: "జోగ్రెన్స్ సిండ్రోమ్" },
+    { english: "Skin Cancer", telugu: "చర్మ క్యాన్సర్" },
+    { english: "Skin Rash", telugu: "చర్మపు దద్దుర్లు" },
+    { english: "Sleep Apnea", telugu: "స్లీప్ అప్నియా" },
+    { english: "Smallpox", telugu: "మశూచి" },
+    { english: "Spina Bifida", telugu: "స్పైనా బైఫిడా" },
+    { english: "Sprains and Strains", telugu: "బెణుకులు మరియు బెణుకులు" },
+    { english: "Stomach Cancer", telugu: "కడుపు క్యాన్సర్" },
+    { english: "Stomach Pain", telugu: "కడుపునొప్పి" },
+    { english: "Stomach Ulcer", telugu: "కడుపు పుండు" },
+    { english: "Strep Throat", telugu: "గొంతు నొప్పి" },
+    { english: "Stroke", telugu: "పక్షవాతం" },
+    { english: "Syphilis", telugu: "సిఫిలిస్" },
+    { english: "Tay-Sachs Disease", telugu: "టే-సాక్స్ వ్యాధి" },
+    { english: "Tetanus", telugu: "ధనుర్వాతం" },
+    { english: "Thalassemia", telugu: "థలసేమియా" },
+    { english: "Thyroid Cancer", telugu: "థైరాయిడ్ క్యాన్సర్" },
+    { english: "Tinnitus", telugu: "టిన్నిటస్" },
+    { english: "Tonsillitis", telugu: "టాన్సిలిటిస్" },
+    { english: "Tourette Syndrome", telugu: "టూరెట్ సిండ్రోమ్" },
+    { english: "Toxic Shock Syndrome", telugu: "టాక్సిక్ షాక్ సిండ్రోమ్" },
+    { english: "Trichomoniasis", telugu: "ట్రైకోమోనియాసిస్" },
+    { english: "Tuberculosis (TB)", telugu: "క్షయవ్యాధి (TB)" },
+    { english: "Turner Syndrome", telugu: "టర్నర్ సిండ్రోమ్" },
+    { english: "Typhoid", telugu: "టైఫాయిడ్" },
+    { english: "Typhoid Fever", telugu: "టైఫాయిడ్ జ్వరం" },
+    { english: "Ulcerative Colitis", telugu: "అల్సరేటివ్ కొలిటిస్" },
+    { english: "Urinary Tract Infection (UTI)", telugu: "మూత్ర నాళాల ఇన్ఫెక్షన్ (UTI)" },
+    { english: "Uterine Cancer", telugu: "గర్భాశయ క్యాన్సర్" },
+    { english: "Varicose Veins", telugu: "వెరికోస్ వెయిన్స్" },
+    { english: "Vertigo", telugu: "వెర్టిగో" },
+    { english: "Vitamin B12 Deficiency", telugu: "విటమిన్ B12 లోపం" },
+    { english: "Vitamin D Deficiency", telugu: "విటమిన్ D లోపం" },
+    { english: "Vitiligo", telugu: "బొల్లి" },
+    { english: "West Nile Virus", telugu: "వెస్ట్ నైల్ వైరస్" },
+    { english: "Whooping Cough", telugu: "కోరింత దగ్గు" },
+    { english: "Wilson's Disease", telugu: "విల్సన్స్ వ్యాధి" },
+    { english: "Yeast Infection", telugu: "ఈస్ట్ ఇన్ఫెక్షన్" },
+    { english: "Yellow Fever", telugu: "పసుపు జ్వరం" },
+    { english: "Zika Virus", telugu: "జికా వైరస్" },
+].sort((a, b) => a.english.localeCompare(b.english));
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
 
 export default function SymptomCheckerPage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,6 +255,7 @@ export default function SymptomCheckerPage() {
     const [isPending, startTransition] = useTransition();
     const [isListening, setIsListening] = useState(false);
     const [language, setLanguage] = useState<'en' | 'te'>('en');
+    const [activeFilter, setActiveFilter] = useState<string | null>(null);
     
     const recognitionRef = useRef<any>(null);
     const resultsRef = useRef<HTMLDivElement>(null);
@@ -86,6 +310,11 @@ export default function SymptomCheckerPage() {
     };
 
     const t = translations[language];
+
+    const filteredTopics = useMemo(() => {
+        if (!activeFilter) return allTopics;
+        return allTopics.filter(topic => topic.english.toUpperCase().startsWith(activeFilter!));
+    }, [activeFilter]);
 
     useEffect(() => {
         // Speech recognition setup
@@ -177,20 +406,45 @@ export default function SymptomCheckerPage() {
                         {t.language}
                     </Button>
                 </CardHeader>
-                <CardContent className="flex flex-wrap gap-2">
-                    {commonTopics.map(topic => (
+                <CardContent>
+                    <div className="flex flex-wrap gap-1 mb-4">
                         <Button
-                            key={topic.english}
-                            variant="outline"
                             size="sm"
-                            className="h-auto"
-                            onClick={() => handleTopicClick(language === 'en' ? topic.english : topic.telugu)}
+                            variant={activeFilter === null ? 'default' : 'outline'}
+                            onClick={() => setActiveFilter(null)}
+                            className="h-8 w-8 p-0"
                         >
-                            <div className="text-center p-1">
-                                <p className="font-semibold text-sm">{language === 'en' ? topic.english : topic.telugu}</p>
-                            </div>
+                           All
                         </Button>
-                    ))}
+                        {alphabet.map(letter => (
+                            <Button
+                                key={letter}
+                                size="sm"
+                                variant={activeFilter === letter ? 'default' : 'outline'}
+                                onClick={() => setActiveFilter(letter)}
+                                className="h-8 w-8 p-0"
+                            >
+                                {letter}
+                            </Button>
+                        ))}
+                    </div>
+                    <div className="max-h-60 overflow-y-auto pr-2">
+                        <div className="flex flex-wrap gap-2">
+                            {filteredTopics.map(topic => (
+                                <Button
+                                    key={topic.english}
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-auto"
+                                    onClick={() => handleTopicClick(language === 'en' ? topic.english : topic.telugu)}
+                                >
+                                    <div className="text-center p-1">
+                                        <p className="font-semibold text-sm">{language === 'en' ? topic.english : topic.telugu}</p>
+                                    </div>
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
                 </CardContent>
             </Card>
 
