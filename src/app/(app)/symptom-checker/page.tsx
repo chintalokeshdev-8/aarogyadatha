@@ -333,7 +333,7 @@ export default function SymptomCheckerPage() {
                 const searchCardHeight = searchCardRef.current?.offsetHeight || 0;
                 const resultsTop = resultsRef.current?.offsetTop || 0;
                 window.scrollTo({
-                    top: resultsTop - searchCardHeight - 80,
+                    top: resultsTop - searchCardHeight - 80, // 80px buffer
                     behavior: 'smooth'
                 });
             }, 100);
@@ -468,9 +468,9 @@ export default function SymptomCheckerPage() {
             <div ref={resultsRef} className="space-y-4">
                 {analysis && !isPending && (
                     <>
-                        <Button variant="ghost" onClick={handleBack} style={{color: 'hsl(var(--nav-symptoms))'}}>
+                        <Button onClick={handleBack} className="font-bold" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
                             <ArrowLeft className="mr-2 h-4 w-4"/>
-                            {t.backToSymptoms}
+                            Back
                         </Button>
                         <Card className="border">
                             <CardHeader>
@@ -509,21 +509,19 @@ export default function SymptomCheckerPage() {
                                     );
                                 })}
                             </CardContent>
-                            {analysis.recommendedSpecialist && (
-                                <CardFooter className="flex-col items-start gap-4 bg-muted/40 p-4">
-                                    <div>
-                                        <h4 className="font-semibold">{t.nextSteps}</h4>
-                                        <p className="text-sm text-muted-foreground">
-                                            {t.specialistRec} <span className="font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{analysis.recommendedSpecialist}</span>.
-                                        </p>
-                                    </div>
-                                    <Link href="/appointments" className="w-full">
-                                        <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
-                                           {t.bookAppointment}
-                                        </Button>
-                                    </Link>
-                                </CardFooter>
-                            )}
+                            <CardFooter className="flex-col items-start gap-4 bg-muted/40 p-4">
+                                <div>
+                                    <h4 className="font-semibold">{t.nextSteps}</h4>
+                                    <p className="text-sm text-muted-foreground">
+                                        {t.specialistRec} <span className="font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{analysis.recommendedSpecialist}</span>.
+                                    </p>
+                                </div>
+                                <Link href="/appointments" className="w-full">
+                                    <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
+                                       {t.bookAppointment}
+                                    </Button>
+                                </Link>
+                            </CardFooter>
                         </Card>
                     </>
                 )}
