@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import * as React from "react";
 import {
   HeartPulse,
@@ -162,6 +162,7 @@ function AiAssistantDialog() {
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const viewportRef = React.useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
@@ -263,12 +264,20 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
         ) : (
             <>
-                <Link href="/" className="flex items-center gap-2">
-                    <div className="p-1.5 bg-primary-foreground rounded-lg">
-                        <AnimatedActivityIcon className="w-6 h-6 text-primary" />
-                    </div>
-                    <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
-                </Link>
+                <div className="flex items-center gap-2">
+                    {pathname !== '/' ? (
+                        <Button variant="ghost" size="icon" onClick={() => router.back()} className="h-10 w-10 text-primary-foreground">
+                            <ArrowLeft className="h-6 w-6" />
+                        </Button>
+                    ) : (
+                        <Link href="/" className="flex items-center gap-2">
+                            <div className="p-1.5 bg-primary-foreground rounded-lg">
+                                <AnimatedActivityIcon className="w-6 h-6 text-primary" />
+                            </div>
+                        </Link>
+                    )}
+                     <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
+                </div>
 
                 <div className="hidden md:block flex-1 max-w-xl">
                     <div className="relative">
