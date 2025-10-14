@@ -5,7 +5,7 @@ import React, { useState, useTransition, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getDiseaseInfo, DiseaseInfoOutput } from '@/ai/flows/ai-disease-info';
-import { Loader2, Mic, Sparkles, Search, AlertTriangle, CheckCircle2, Globe, Heart, Utensils, FileText, Microscope, Stethoscope } from 'lucide-react';
+import { Loader2, Mic, Sparkles, Search, AlertTriangle, CheckCircle2, Globe, Heart, Utensils, FileText, Microscope, Stethoscope, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
