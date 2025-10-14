@@ -5,7 +5,7 @@ import React, { useState, useTransition, useEffect, useRef, useMemo } from 'reac
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getDiseaseInfo, DiseaseInfoOutput } from '@/ai/flows/ai-disease-info';
-import { Loader2, Mic, Sparkles, Search, AlertTriangle, CheckCircle2, Globe, Heart, Utensils, FileText, Microscope, Stethoscope, User, ArrowLeft } from 'lucide-react';
+import { Loader2, Mic, Sparkles, Search, AlertTriangle, CheckCircle2, Globe, Heart, Utensils, FileText, Microscope, Stethoscope, User, ArrowLeft, Languages } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
@@ -283,7 +283,7 @@ export default function SymptomCheckerPage() {
             tests: "Recommended Tests",
             affectedOrgans: "Affected Organs",
             specialist: "Recommended Specialist",
-            language: "తెలుగు",
+            language: "Translate to తెలుగు",
             backToSymptoms: "Back",
         },
         te: {
@@ -306,7 +306,7 @@ export default function SymptomCheckerPage() {
             tests: "సిఫార్సు చేయబడిన పరీక్షలు",
             affectedOrgans: "ప్రభావిత అవయవాలు",
             specialist: "సిఫార్సు చేయబడిన నిపుణులు",
-            language: "English",
+            language: "Translate to English",
             backToSymptoms: "వెనుకకు",
         }
     };
@@ -327,7 +327,6 @@ export default function SymptomCheckerPage() {
         setSearchTerm(term);
 
         startTransition(async () => {
-            setAnalysis(null);
             const result = await getDiseaseInfo({ diseaseName: term, language });
             setAnalysis(result);
             setTimeout(() => {
@@ -394,6 +393,13 @@ export default function SymptomCheckerPage() {
                 <p className="text-muted-foreground mt-2">{t.description}</p>
             </div>
             
+            {analysis && (
+                <Button onClick={handleBack} className="font-bold" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
+                    <ArrowLeft className="mr-2 h-4 w-4"/>
+                    {t.backToSymptoms}
+                </Button>
+            )}
+
             <div ref={searchCardRef}>
                 <Card className="border sticky top-16 z-10">
                     <CardContent className="p-4 space-y-4">
@@ -426,7 +432,7 @@ export default function SymptomCheckerPage() {
                             <CardTitle>{t.commonTopics}</CardTitle>
                         </div>
                         <Button variant="outline" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} className="flex items-center gap-2">
-                            <Globe className="h-4 w-4" />
+                            <Languages className="h-4 w-4" />
                             {t.language}
                         </Button>
                     </CardHeader>
@@ -480,10 +486,6 @@ export default function SymptomCheckerPage() {
             <div ref={resultsRef} className="space-y-4">
                 {analysis && !isPending && (
                     <>
-                         <Button onClick={handleBack} className="font-bold" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
-                            <ArrowLeft className="mr-2 h-4 w-4"/>
-                            Back
-                        </Button>
                         <Card className="border">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
