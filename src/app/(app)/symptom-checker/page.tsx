@@ -262,7 +262,7 @@ export default function SymptomCheckerPage() {
 
     const translations = {
         en: {
-            title: "AI Health Library",
+            title: "AI Symptom Checker",
             description: "Describe symptoms or search for a health condition to get AI-powered information.",
             searchPlaceholder: "e.g., 'fever and headache' or 'Diabetes'",
             commonTopics: "Common Topics",
@@ -285,7 +285,7 @@ export default function SymptomCheckerPage() {
             language: "తెలుగు"
         },
         te: {
-            title: "AI హెల్త్ లైబ్రరీ",
+            title: "AI లక్షణాల తనిఖీ",
             description: "AI-ఆధారిత సమాచారం పొందడానికి లక్షణాలను వివరించండి లేదా ఆరోగ్య పరిస్థితి కోసం శోధించండి.",
             searchPlaceholder: "ఉదా., 'జ్వరం మరియు తలనొప్పి' లేదా 'డయాబెటిస్'",
             commonTopics: "సాధారణ అంశాలు",
