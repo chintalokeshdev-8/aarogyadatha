@@ -183,7 +183,7 @@ const allTopics = [
     { english: "Premenstrual Syndrome (PMS)", telugu: "ప్రీమెన్‌స్ట్రువల్ సిండ్రోమ్ (PMS)" },
     { english: "Prostate Cancer", telugu: "ప్రోస్టేట్ క్యాన్సర్" },
     { english: "Psoriasis", telugu: "సోరియాసిస్" },
-    { english: "Psoriatic Arthritis", telugu: "సోరియాటిక్ ఆర్థరైటిస్" },
+    { english: "Psoriatic Arthritis", telugu: "సోరియాటిక్ ఆर्थరైటిస్" },
     { english: "Pulmonary Embolism", telugu: "పల్మనరీ ఎంబాలిజం" },
     { english: "Rabies", telugu: "రేబిస్" },
     { english: "Raynaud's Disease", telugu: "రేనాడ్స్ వ్యాధి" },
@@ -388,11 +388,9 @@ export default function SymptomCheckerPage() {
                     <h2 className="text-2xl font-bold">{t.analyzing}</h2>
                 </div>
             )}
-            <div className="flex justify-between items-center">
-                <div className="text-left">
-                    <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
-                    <p className="text-muted-foreground mt-2">{t.description}</p>
-                </div>
+            <div className="space-y-2 text-left">
+                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
+                <p className="text-muted-foreground mt-2">{t.description}</p>
                 <Button onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} size="sm" className="flex items-center gap-2" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
                     <Languages className="h-4 w-4" />
                     <span className='hidden sm:inline'>{t.language}</span>
