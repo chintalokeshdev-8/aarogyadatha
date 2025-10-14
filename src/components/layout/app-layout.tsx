@@ -56,6 +56,7 @@ import { Textarea } from "../ui/textarea";
 import { allMenuItems, type MenuItem } from "@/lib/nav-config";
 import { Switch } from "../ui/switch";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/context/language-context";
 
 
 const familyAccounts = [
@@ -159,37 +160,6 @@ function AiAssistantDialog() {
     );
 }
 
-function LanguageSwitcherDialog({ open, onOpenChange }: { open: boolean, onOpenChange: (open: boolean) => void }) {
-    const [selectedLanguage, setSelectedLanguage] = React.useState('en');
-
-    return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-xs">
-                <DialogHeader>
-                    <DialogTitle>Select Language</DialogTitle>
-                </DialogHeader>
-                <div className="flex justify-around py-4">
-                    <Button
-                        variant={selectedLanguage === 'en' ? 'default' : 'outline'}
-                        onClick={() => setSelectedLanguage('en')}
-                    >
-                        English
-                    </Button>
-                    <Button
-                        variant={selectedLanguage === 'te' ? 'default' : 'outline'}
-                        onClick={() => setSelectedLanguage('te')}
-                    >
-                        తెలుగు
-                    </Button>
-                </div>
-                <DialogDescription className="text-center text-xs">
-                    Language preference will be updated across the app.
-                </DialogDescription>
-            </DialogContent>
-        </Dialog>
-    );
-}
-
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const viewportRef = React.useRef<HTMLDivElement>(null);
@@ -199,8 +169,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [visibleMenuItems, setVisibleMenuItems] = React.useState<MenuItem[]>([]);
   const [navSettings, setNavSettings] = React.useState<Record<string, boolean>>({});
   const { toast } = useToast();
-  const [isLangSwitcherOpen, setLangSwitcherOpen] = React.useState(false);
-
+  const { language, setLanguage } = useLanguage();
 
   React.useEffect(() => {
     setIsClient(true);
@@ -275,7 +244,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const handleNavItemClick = (href: string, e: React.MouseEvent) => {
     if (href === '#') {
         e.preventDefault();
-        setLangSwitcherOpen(true);
+        setLanguage(lang => lang === 'en' ? 'te' : 'en');
     }
   };
 
@@ -314,7 +283,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                             <Search className="h-5 w-5" />
                         </Button>
                     )}
-                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setLangSwitcherOpen(true)}>
+                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')}>
                         <Languages className="h-5 w-5" />
                     </Button>
                     <NotificationsDropdown />
@@ -442,7 +411,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
       <AiAssistantDialog />
-      <LanguageSwitcherDialog open={isLangSwitcherOpen} onOpenChange={setLangSwitcherOpen} />
       <footer className="fixed bottom-0 z-20 w-full bg-background border-t">
         <div className="relative">
             <div className="absolute top-0 left-0 h-full flex items-center pl-2 bg-gradient-to-r from-background via-background to-transparent w-12 z-10">
@@ -474,7 +442,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                    <div className="text-center leading-tight">
                                         <p className="text-xs font-bold whitespace-normal transition-colors"
                                            style={{color: isActive ? 'hsl(var(--primary))' : 'hsl(var(--foreground))'}}>
-                                           {item.label}
+                                           {language === 'te' ? item.telugu : item.label}
                                         </p>
                                    </div>
                                </div>

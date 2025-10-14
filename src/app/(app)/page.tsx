@@ -21,6 +21,7 @@ import { organHealthData } from '@/lib/organ-health-data';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import Autoplay from "embla-carousel-autoplay";
 import { Separator } from '@/components/ui/separator';
+import { useLanguage } from '@/context/language-context';
 
 
 const quickAccessItems = [
@@ -152,6 +153,7 @@ export default function DashboardPage() {
   );
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
+  const { language } = useLanguage();
  
   useEffect(() => {
     if (!api) {
@@ -170,13 +172,19 @@ export default function DashboardPage() {
     <div className="space-y-6">
         
         <div className="text-center">
-            <p className="text-sm md:text-base font-bold text-foreground">Right disease for right doctor + Right Diet = 99% cure</p>
+            <p className="text-sm md:text-base font-bold text-foreground">
+                {language === 'en'
+                    ? "Right disease for right doctor + Right Diet = 99% cure"
+                    : "సరైన వ్యాధికి సరైన డాక్టర్ + సరైన ఆహారం = 99% నివారణ"
+                }
+            </p>
         </div>
+
 
         <section className="-mt-4">
             <Card className="border">
                 <CardHeader>
-                    <CardTitle className="text-lg font-semibold">Quick Access</CardTitle>
+                    <CardTitle className="text-lg font-semibold">{language === 'en' ? 'Quick Access' : 'త్వరిత యాక్సెస్'}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-4 gap-2">
@@ -188,7 +196,7 @@ export default function DashboardPage() {
                                 <div className="p-3 rounded-full mb-1 bg-primary/10">
                                     <item.icon className="h-6 w-6 text-primary" />
                                 </div>
-                                <p className="font-bold text-xs leading-tight text-foreground">{item.label}</p>
+                                <p className="font-bold text-xs leading-tight text-foreground">{language === 'en' ? item.label : item.telugu}</p>
                                 </div>
                             </Link>
                         ))}
@@ -200,16 +208,19 @@ export default function DashboardPage() {
         <section>
           <Card className="border">
             <CardHeader>
-                <h2 className="text-lg font-semibold">Organ Health Overview</h2>
+                <h2 className="text-lg font-semibold">{language === 'en' ? 'Organ Health Overview' : 'అవయవాల ఆరోగ్య స్థూలదృష్టి'}</h2>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="bg-yellow-50 border-yellow-200 rounded-lg p-3">
                    <div className="flex items-start gap-3">
                         <AlertTriangle className="h-5 w-5 text-yellow-700 mt-0.5 flex-shrink-0"/>
                         <div>
-                            <h4 className="font-semibold text-yellow-800 text-sm">Disclaimer: For Your Safety</h4>
+                            <h4 className="font-semibold text-yellow-800 text-sm">{language === 'en' ? 'Disclaimer: For Your Safety' : 'గమనిక: మీ భద్రత కోసం'}</h4>
                             <p className="text-xs text-yellow-700">
-                                This 'Organ Health Overview' is for informational purposes only. I am an AI, and my analysis is based on your uploaded health data—it is **not** a medical diagnosis. For any health concerns or before taking any action, you must **always consult a qualified human doctor.**
+                                {language === 'en' 
+                                    ? "This 'Organ Health Overview' is for informational purposes only. I am an AI, and my analysis is based on your uploaded health data—it is **not** a medical diagnosis. For any health concerns or before taking any action, you must **always consult a qualified human doctor.**"
+                                    : "ఈ 'అవయవాల ఆరోగ్య స్థూలదృష్టి' కేవలం సమాచార ప్రయోజనాల కోసం మాత్రమే. నేను ఒక AI, మరియు నా విశ్లేషణ మీరు అప్‌లోడ్ చేసిన ఆరోగ్య డేటాపై ఆధారపడి ఉంటుంది—ఇది వైద్య నిర్ధారణ **కాదు**. ఏవైనా ఆరోగ్య సమస్యల కోసం లేదా ఏదైనా చర్య తీసుకునే ముందు, మీరు తప్పనిసరిగా **అర్హతగల మానవ వైద్యుడిని సంప్రదించాలి.**"
+                                }
                             </p>
                         </div>
                    </div>
@@ -244,7 +255,7 @@ export default function DashboardPage() {
         </section>
 
         <div className="space-y-2">
-          <h2 className="text-lg font-semibold mb-2">App Updates &amp; Health Tips</h2>
+          <h2 className="text-lg font-semibold mb-2">{language === 'en' ? 'App Updates & Health Tips' : 'యాప్ అప్‌డేట్‌లు & ఆరోగ్య చిట్కాలు'}</h2>
           <Carousel
               setApi={setApi}
               plugins={[plugin.current]}
@@ -289,7 +300,7 @@ export default function DashboardPage() {
         </div>
 
         <section>
-          <h2 className="text-lg font-semibold mb-2">Medicine Assistance</h2>
+          <h2 className="text-lg font-semibold mb-2">{language === 'en' ? 'Medicine Assistance' : 'మందుల సహాయం'}</h2>
           <div className="space-y-4">
             {medicineAssistanceItems.map((item) => (
                <Link key={item.title} href={item.href} passHref>
@@ -312,7 +323,7 @@ export default function DashboardPage() {
         </section>
         
         <section className="text-center py-6">
-          <h2 className="text-lg font-semibold mb-2">Download The App</h2>
+          <h2 className="text-lg font-semibold mb-2">{language === 'en' ? 'Download The App' : 'యాప్‌ను డౌన్‌లోడ్ చేసుకోండి'}</h2>
           <div className="flex justify-center gap-4">
             <Link href="https://play.google.com/store" target="_blank" rel="noopener noreferrer">
               <Image

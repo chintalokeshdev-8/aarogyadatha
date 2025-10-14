@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useLanguage } from '@/context/language-context';
 
 const allTopics = [
     { english: "Acne", telugu: "మొటిమలు" },
@@ -196,7 +197,7 @@ const allTopics = [
     { english: "Rubella", telugu: "రుబెల్లా" },
     { english: "Sarcoidosis", telugu: "సార్కోయిడోసిస్" },
     { english: "Scabies", telugu: "గజ్జి" },
-    { english: "Scarlet Fever", telugu: "స్కార్లెట్ జ్వரம்" },
+    { english: "Scarlet Fever", telugu: "స్కార్లెట్ జ్వరం" },
     { english: "Schizophrenia", telugu: "స్కిజోఫ్రెనియా" },
     { english: "Sciatica", telugu: "సయాటికా" },
     { english: "Scoliosis", telugu: "వెన్నెముక వంకర" },
@@ -255,7 +256,7 @@ export default function SymptomCheckerPage() {
     const [analysis, setAnalysis] = useState<DiseaseInfoOutput | null>(null);
     const [isPending, startTransition] = useTransition();
     const [isListening, setIsListening] = useState(false);
-    const [language, setLanguage] = useState<'en' | 'te'>('en');
+    const { language } = useLanguage();
     const [activeFilter, setActiveFilter] = useState<string | null>(null);
     
     const recognitionRef = useRef<any>(null);
@@ -265,7 +266,7 @@ export default function SymptomCheckerPage() {
     const translations = {
         en: {
             title: "AI Symptom Checker",
-            description: "Describe symptoms or search for a health condition to get AI-powered information.",
+            description: "Describe your symptoms or search for a health condition to get AI-powered information.",
             searchPlaceholder: "e.g., 'fever and headache' or 'Diabetes'",
             commonTopics: "Common Symptoms and Diseases",
             getAnalysis: "Get AI Analysis",
@@ -288,7 +289,7 @@ export default function SymptomCheckerPage() {
         },
         te: {
             title: "AI లక్షణాల తనిఖీ",
-            description: "AI-ఆధారిత సమాచారం పొందడానికి లక్షణాలను వివరించండి లేదా ఆరోగ్య పరిస్థితి కోసం శోధించండి.",
+            description: "AI-ఆధారిత సమాచారం పొందడానికి మీ లక్షణాలను వివరించండి లేదా ఆరోగ్య పరిస్థితి కోసం శోధించండి.",
             searchPlaceholder: "ఉదా., 'జ్వరం మరియు తలనొప్పి' లేదా 'డయాబెటిస్'",
             commonTopics: "సాధారణ లక్షణాలు మరియు వ్యాధులు",
             getAnalysis: "AI విశ్లేషణ పొందండి",
@@ -388,18 +389,14 @@ export default function SymptomCheckerPage() {
                     <h2 className="text-2xl font-bold">{t.analyzing}</h2>
                 </div>
             )}
-            <div className="space-y-4 text-left">
-                <div className="flex justify-between items-center">
-                    <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
-                     <Button onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} size="sm" className="flex items-center gap-2" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
-                        <Languages className="h-4 w-4" />
-                    </Button>
-                </div>
+            <div className="space-y-2 text-left">
+                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
                 <p className="text-muted-foreground text-sm">
                     {t.description}{' '}
                     <span className="font-semibold text-yellow-600 dark:text-yellow-500">{t.disclaimerTitle}: {t.disclaimerText}</span>
                 </p>
             </div>
+
 
             {analysis && (
                 <Button onClick={handleBack} className="font-bold" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
