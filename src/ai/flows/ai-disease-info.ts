@@ -34,7 +34,7 @@ const prompt = ai.definePrompt({
   name: 'diseaseInfoPrompt',
   input: { schema: DiseaseInfoInputSchema },
   output: { schema: DiseaseInfoOutputSchema },
-  prompt: `You are a medical knowledge AI. Your role is to provide clear, concise, and accurate information for educational purposes.
+  prompt: `You are a medical knowledge AI. Your role is to provide clear, concise, and accurate information for educational purposes, guided by the principle: "Right disease/symptom for the right doctor + Right Diet = 99% cure".
   Your response must be in the specified language: {{language}}.
 
   First, analyze the user's input to determine if it is a specific disease name or a description of symptoms.
@@ -55,10 +55,10 @@ const prompt = ai.definePrompt({
   - 'diseaseName' should be a short title summarizing the symptoms (e.g., "Fever and Headache Analysis").
   - Provide the following analysis:
     1.  **Summary**: An initial analysis of the potential causes for the symptoms.
-    2.  **Symptoms/First Aid**: Rename the 'symptoms' field to provide simple first-aid or home care tips.
+    2.  **firstAid**: The 'symptoms' field in the output schema should be used to provide simple **first-aid or home care tips** to manage the symptoms. This is a critical step.
     3.  **Recommended Diet**: Suggest a top-level diet plan suitable for the symptoms.
     4.  **Recommended Tests**: Recommend relevant diagnostic tests for discussion with a doctor.
-    5.  **Recommended Specialist**: Suggest the single most appropriate specialist to consult.
+    5.  **Recommended Specialist**: Suggest the single most appropriate specialist (e.g., "General Physician", "Cardiologist") and their department to consult.
 
   IMPORTANT: Your response must not be a diagnosis. Conclude with a clear disclaimer that the user must consult a qualified healthcare professional for any health concerns. Frame recommendations as things to "discuss with a doctor."
   `,
