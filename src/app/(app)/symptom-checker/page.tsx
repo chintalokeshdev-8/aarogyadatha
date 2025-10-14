@@ -431,7 +431,7 @@ export default function SymptomCheckerPage() {
                         <div>
                             <CardTitle>{t.commonTopics}</CardTitle>
                         </div>
-                        <Button variant="outline" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} className="flex items-center gap-2">
+                        <Button onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} className="flex items-center gap-2" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
                             <Languages className="h-4 w-4" />
                             {t.language}
                         </Button>
