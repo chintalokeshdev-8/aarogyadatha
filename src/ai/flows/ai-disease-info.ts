@@ -14,6 +14,7 @@ import { z } from 'zod';
 
 const DiseaseInfoInputSchema = z.object({
   diseaseName: z.string().describe('The name of the disease or health condition.'),
+  language: z.string().describe("The language for the response (e.g., 'en' for English, 'te' for Telugu)."),
 });
 type DiseaseInfoInput = z.infer<typeof DiseaseInfoInputSchema>;
 
@@ -31,6 +32,7 @@ const prompt = ai.definePrompt({
   input: { schema: DiseaseInfoInputSchema },
   output: { schema: DiseaseInfoOutputSchema },
   prompt: `You are a medical knowledge AI. Your role is to provide clear, concise, and accurate information about a specific health condition for educational purposes.
+  Your response must be in the specified language: {{language}}.
 
   Analyze the following disease: {{{diseaseName}}}
 

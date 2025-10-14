@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Sparkles, BookOpenCheck, Heart, FileText, Utensils, AlertTriangle, Search, ShieldAlert, TestTube2, Microscope, Brain } from 'lucide-react';
+import { Loader2, Sparkles, BookOpenCheck, Heart, FileText, Utensils, AlertTriangle, Search, ShieldAlert, TestTube2, Microscope, Brain, Globe } from 'lucide-react';
 import { getDiseaseInfo } from '@/ai/flows/ai-disease-info';
 import { getDeepDive } from '@/ai/flows/ai-deep-dive';
 
@@ -69,18 +69,70 @@ const diseaseCategories = [
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
+const translations = {
+    en: {
+        title: "Health Library",
+        description: "Look up health conditions from A-Z.",
+        searchPlaceholder: "Search diseases...",
+        welcomeTitle: "Welcome to the Health Library",
+        welcomeDescription: "Select a health topic from the list to get started.",
+        loading: "Loading information for",
+        loadingSub: "Our AI is preparing the data for you.",
+        summary: "Summary",
+        symptoms: "Common Symptoms",
+        diet: "Recommended Diet",
+        tests: "Recommended Tests",
+        organs: "Affected Organs (If Neglected)",
+        disclaimerTitle: "Disclaimer",
+        disclaimerText: "This AI-generated information is for educational purposes only. It is not a substitute for professional medical advice. Always consult a qualified doctor for diagnosis and treatment.",
+        deepDiveTitle: "Deep Dive Analysis",
+        deepDiveDescription: "Ask for more detailed information on specific aspects of",
+        deepDivePlaceholder: "e.g., 'deep diet' or 'treatment options'",
+        deepDiveButton: "Search",
+        deepDiveTopicDiet: "Deep Diet",
+        deepDiveTopicTests: "Deep Tests",
+        deepDiveTopicOrgans: "Affected Organs",
+        deepDiveLoading: "The AI is analyzing your request...",
+    },
+    te: {
+        title: "ఆరోగ్య గ్రంథాలయం",
+        description: "A-Z వరకు ఆరోగ్య పరిస్థితులను చూడండి.",
+        searchPlaceholder: "వ్యాధులను శోధించండి...",
+        welcomeTitle: "ఆరోగ్య గ్రంథాలయానికి స్వాగతం",
+        welcomeDescription: "ప్రారంభించడానికి జాబితా నుండి ఆరోగ్య అంశాన్ని ఎంచుకోండి.",
+        loading: "సమాచారం లోడ్ అవుతోంది",
+        loadingSub: "మా AI మీ కోసం డేటాను సిద్ధం చేస్తోంది.",
+        summary: "సారాంశం",
+        symptoms: "సాధారణ లక్షణాలు",
+        diet: "సిఫార్సు చేయబడిన ఆహారం",
+        tests: "సిఫార్సు చేయబడిన పరీక్షలు",
+        organs: "ప్రభావిత అవయవాలు (నిర్లక్ష్యం చేస్తే)",
+        disclaimerTitle: "నిరాకరణ",
+        disclaimerText: "ఈ AI- రూపొందించిన సమాచారం విద్యా ప్రయోజనాల కోసం మాత్రమే. ఇది వృత్తిపరమైన వైద్య సలహాకు ప్రత్యామ్నాయం కాదు. రోగ నిర్ధారణ మరియు చికిత్స కోసం ఎల్లప్పుడూ అర్హత కలిగిన వైద్యుడిని సంప్రదించండి.",
+        deepDiveTitle: "లోతైన విశ్లేషణ",
+        deepDiveDescription: "యొక్క నిర్దిష్ట అంశాలపై మరింత వివరమైన సమాచారం కోసం అడగండి",
+        deepDivePlaceholder: "ఉదా., 'లోతైన ఆహారం' లేదా 'చికిత్స ఎంపికలు'",
+        deepDiveButton: "వెతకండి",
+        deepDiveTopicDiet: "లోతైన ఆహారం",
+        deepDiveTopicTests: "లోతైన పరీక్షలు",
+        deepDiveTopicOrgans: "ప్రభావిత అవయవాలు",
+        deepDiveLoading: "AI మీ అభ్యర్థనను విశ్లేషిస్తోంది...",
+    }
+};
+
 export default function HealthKnowledgePage() {
     const [selectedDisease, setSelectedDisease] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [activeLetter, setActiveLetter] = useState<string | null>(null);
     const [analysisResult, setAnalysisResult] = useState<DiseaseInfoOutput | null>(null);
     const [isPending, startTransition] = useTransition();
+    const [language, setLanguage] = useState<'en' | 'te'>('en');
 
     const [deepDiveQuery, setDeepDiveQuery] = useState('');
     const [deepDiveResult, setDeepDiveResult] = useState<DeepDiveOutput | null>(null);
     const [isDeepDivePending, startDeepDiveTransition] = useTransition();
-
-    const scrollRefs = useRef<{[key: string]: HTMLDivElement | null}>({});
+    
+    const t = translations[language];
 
     const handleDiseaseClick = (disease: string) => {
         setSelectedDisease(disease);
@@ -88,7 +140,7 @@ export default function HealthKnowledgePage() {
         setDeepDiveResult(null);
         setDeepDiveQuery('');
         startTransition(async () => {
-            const result = await getDiseaseInfo({ diseaseName: disease });
+            const result = await getDiseaseInfo({ diseaseName: disease, language });
             setAnalysisResult(result);
         });
     };
@@ -98,7 +150,7 @@ export default function HealthKnowledgePage() {
         if (!selectedDisease || !finalQuery) return;
         
         startDeepDiveTransition(async () => {
-            const result = await getDeepDive({ diseaseName: selectedDisease, topic: finalQuery });
+            const result = await getDeepDive({ diseaseName: selectedDisease, topic: finalQuery, language });
             setDeepDiveResult(result);
         });
     }
@@ -121,7 +173,15 @@ export default function HealthKnowledgePage() {
     const handleLetterClick = (letter: string) => {
         const newActiveLetter = activeLetter === letter ? null : letter;
         setActiveLetter(newActiveLetter);
-        setSearchTerm(''); // Reset search term when a letter is clicked
+        setSearchTerm(''); 
+    };
+
+    const toggleLanguage = () => {
+        const newLang = language === 'en' ? 'te' : 'en';
+        setLanguage(newLang);
+        if (selectedDisease) {
+            handleDiseaseClick(selectedDisease);
+        }
     };
 
     return (
@@ -129,22 +189,27 @@ export default function HealthKnowledgePage() {
             <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-24">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}>
-                            <BookOpenCheck /> Health Library
-                        </CardTitle>
-                        <CardDescription>Look up health conditions from A-Z.</CardDescription>
+                        <div className="flex justify-between items-center">
+                            <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}>
+                                <BookOpenCheck /> {t.title}
+                            </CardTitle>
+                             <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+                                <Globe className="h-5 w-5" />
+                            </Button>
+                        </div>
+                        <CardDescription>{t.description}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="relative mb-2">
                             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                             <Input
                                 type="search"
-                                placeholder="Search diseases..."
+                                placeholder={t.searchPlaceholder}
                                 className="pl-8"
                                 value={searchTerm}
                                 onChange={(e) => {
                                     setSearchTerm(e.target.value);
-                                    setActiveLetter(null); // Reset letter filter when searching
+                                    setActiveLetter(null); 
                                 }}
                             />
                         </div>
@@ -163,13 +228,13 @@ export default function HealthKnowledgePage() {
                             ))}
                         </div>
                         <ScrollArea className="h-[50vh] lg:h-[45vh]">
-                            <div className="flex flex-wrap gap-2 pr-4">
+                            <div className="flex flex-col gap-1 pr-4">
                                 {filteredDiseases.map((disease) => (
                                     <Button
                                         key={disease}
-                                        variant={selectedDisease === disease ? "default" : "outline"}
+                                        variant={selectedDisease === disease ? "default" : "ghost"}
                                         size="sm"
-                                        className={cn("text-xs h-auto py-1 px-2", selectedDisease === disease ? "bg-primary" : "")}
+                                        className={cn("text-sm h-auto py-1.5 px-2 justify-start", selectedDisease === disease ? "bg-primary" : "")}
                                         style={selectedDisease === disease ? {backgroundColor: 'hsl(var(--nav-profile))'} : {}}
                                         onClick={() => handleDiseaseClick(disease)}
                                         disabled={isPending && selectedDisease === disease}
@@ -188,16 +253,16 @@ export default function HealthKnowledgePage() {
                 {isPending && (
                     <Card className="flex flex-col items-center justify-center p-8 min-h-[50vh]">
                         <Loader2 className="h-12 w-12 animate-spin mb-4" style={{ color: 'hsl(var(--nav-profile))' }} />
-                        <h2 className="text-xl font-bold">Loading information for {selectedDisease}...</h2>
-                        <p className="text-muted-foreground">Our AI is preparing the data for you.</p>
+                        <h2 className="text-xl font-bold">{t.loading} {selectedDisease}...</h2>
+                        <p className="text-muted-foreground">{t.loadingSub}</p>
                     </Card>
                 )}
 
                 {!selectedDisease && !isPending && (
                     <Card className="flex flex-col items-center justify-center text-center p-8 min-h-[50vh]">
                         <BookOpenCheck className="h-16 w-16 text-muted-foreground mb-4" />
-                        <h2 className="text-xl font-bold">Welcome to the Health Library</h2>
-                        <p className="text-muted-foreground">Select a health topic from the list to get started.</p>
+                        <h2 className="text-xl font-bold">{t.welcomeTitle}</h2>
+                        <p className="text-muted-foreground">{t.welcomeDescription}</p>
                     </Card>
                 )}
 
@@ -209,41 +274,41 @@ export default function HealthKnowledgePage() {
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div>
-                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><FileText className="h-5 w-5"/>Summary</h3>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><FileText className="h-5 w-5"/>{t.summary}</h3>
                                 <p className="text-muted-foreground">{analysisResult.summary}</p>
                             </div>
                             
                             <div>
-                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Heart className="h-5 w-5"/>Common Symptoms</h3>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Heart className="h-5 w-5"/>{t.symptoms}</h3>
                                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                                     {analysisResult.symptoms.map((symptom, index) => <li key={index}>{symptom}</li>)}
                                 </ul>
                             </div>
 
                             <div>
-                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Utensils className="h-5 w-5"/>Recommended Diet</h3>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Utensils className="h-5 w-5"/>{t.diet}</h3>
                                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                                     {analysisResult.recommendedDiet.map((item, index) => <li key={index}>{item}</li>)}
                                 </ul>
                             </div>
                             
                             <div>
-                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Microscope className="h-5 w-5"/>Recommended Tests</h3>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><Microscope className="h-5 w-5"/>{t.tests}</h3>
                                 <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                                     {analysisResult.recommendedTests.map((test, index) => <li key={index}>{test}</li>)}
                                 </ul>
                             </div>
 
                             <div>
-                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><ShieldAlert className="h-5 w-5"/>Affected Organs (If Neglected)</h3>
+                                <h3 className="font-semibold text-lg flex items-center gap-2 mb-2"><ShieldAlert className="h-5 w-5"/>{t.organs}</h3>
                                 <p className="text-muted-foreground">{analysisResult.affectedOrgans}</p>
                             </div>
 
                             <Alert variant="destructive">
                                 <AlertTriangle className="h-4 w-4" />
-                                <AlertTitle>Disclaimer</AlertTitle>
+                                <AlertTitle>{t.disclaimerTitle}</AlertTitle>
                                 <AlertDescription>
-                                    This AI-generated information is for educational purposes only. It is not a substitute for professional medical advice. Always consult a qualified doctor for diagnosis and treatment.
+                                    {t.disclaimerText}
                                 </AlertDescription>
                             </Alert>
                         </CardContent>
@@ -251,13 +316,13 @@ export default function HealthKnowledgePage() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle className="text-xl font-bold flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}><Sparkles /> Deep Dive Analysis</CardTitle>
-                             <CardDescription>Ask for more detailed information on specific aspects of {selectedDisease}.</CardDescription>
+                            <CardTitle className="text-xl font-bold flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}><Sparkles /> {t.deepDiveTitle}</CardTitle>
+                             <CardDescription>{t.deepDiveDescription} {selectedDisease}.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="flex gap-2">
                                 <Input 
-                                    placeholder="e.g., 'deep diet' or 'treatment options'"
+                                    placeholder={t.deepDivePlaceholder}
                                     value={deepDiveQuery}
                                     onChange={(e) => setDeepDiveQuery(e.target.value)}
                                 />
@@ -266,14 +331,15 @@ export default function HealthKnowledgePage() {
                                 </Button>
                             </div>
                             <div className="flex flex-wrap gap-2 mt-2">
-                                <Button variant="outline" size="sm" onClick={() => handleDeepDive("Deep Diet Plan")}>Deep Diet</Button>
-                                <Button variant="outline" size="sm" onClick={() => handleDeepDive("Deep Diagnostic Tests")}>Deep Tests</Button>
-                                <Button variant="outline" size="sm" onClick={() => handleDeepDive("Deep Organ Damage Details")}>Affected Organs</Button>
+                                <Button variant="outline" size="sm" onClick={() => handleDeepDive(t.deepDiveTopicDiet)}>{t.deepDiveTopicDiet}</Button>
+                                <Button variant="outline" size="sm" onClick={() => handleDeepDive(t.deepDiveTopicTests)}>{t.deepDiveTopicTests}</Button>
+                                <Button variant="outline" size="sm" onClick={() => handleDeepDive(t.deepDiveTopicOrgans)}>{t.deepDiveTopicOrgans}</Button>
                             </div>
 
                             {isDeepDivePending && (
-                                <div className="mt-4 flex items-center justify-center p-6">
+                                <div className="mt-4 flex flex-col items-center justify-center p-6">
                                     <Loader2 className="h-8 w-8 animate-spin text-primary" style={{color: 'hsl(var(--nav-profile))'}}/>
+                                    <p className="text-sm text-muted-foreground mt-2">{t.deepDiveLoading}</p>
                                 </div>
                             )}
 

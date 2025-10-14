@@ -15,6 +15,7 @@ import { z } from 'zod';
 const DeepDiveInputSchema = z.object({
   diseaseName: z.string().describe('The name of the main disease or health condition.'),
   topic: z.string().describe('The specific sub-topic to get detailed information about (e.g., "deep diet", "treatment options").'),
+  language: z.string().describe("The language for the response (e.g., 'en' for English, 'te' for Telugu)."),
 });
 type DeepDiveInput = z.infer<typeof DeepDiveInputSchema>;
 
@@ -30,6 +31,7 @@ const prompt = ai.definePrompt({
   input: { schema: DeepDiveInputSchema },
   output: { schema: DeepDiveOutputSchema },
   prompt: `You are a highly specialized medical AI expert. Your task is to provide a detailed, in-depth explanation about a specific aspect of a health condition.
+  The response must be in the specified language: {{language}}.
 
   The user is asking for a deep dive on the topic: "{{topic}}" for the disease: "{{diseaseName}}".
 
