@@ -283,7 +283,7 @@ export default function SymptomCheckerPage() {
             affectedOrgans: "Affected Organs",
             specialist: "Recommended Specialist",
             language: "తెలుగు",
-            backToSymptoms: "Back to Symptoms",
+            backToSymptoms: "Back",
         },
         te: {
             title: "AI లక్షణాల తనిఖీ",
@@ -306,7 +306,7 @@ export default function SymptomCheckerPage() {
             affectedOrgans: "ప్రభావిత అవయవాలు",
             specialist: "సిఫార్సు చేయబడిన నిపుణులు",
             language: "English",
-            backToSymptoms: "లక్షణాలకు తిరిగి వెళ్ళు",
+            backToSymptoms: "వెనుకకు",
         }
     };
 
@@ -465,68 +465,68 @@ export default function SymptomCheckerPage() {
                 </Card>
             )}
 
-            <div ref={resultsRef}>
-            {analysis && !isPending && (
-                <Card className="border">
-                    <CardHeader>
-                        <div className="flex justify-between items-center">
-                            <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
-                                <Sparkles /> {t.analysisResult}
-                            </CardTitle>
-                            <Button variant="ghost" onClick={handleBack}>
-                                <ArrowLeft className="mr-2 h-4 w-4"/>
-                                {t.backToSymptoms}
-                            </Button>
-                        </div>
-                        <CardDescription>
-                            Analysis for: <span className="font-bold">{analysis.diseaseName}</span>
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        {Object.entries(analysis).map(([key, value]) => {
-                            if (['isDisease', 'diseaseName'].includes(key) || !value || (Array.isArray(value) && value.length === 0)) return null;
+            <div ref={resultsRef} className="space-y-4">
+                {analysis && !isPending && (
+                    <>
+                        <Button variant="ghost" onClick={handleBack} style={{color: 'hsl(var(--nav-symptoms))'}}>
+                            <ArrowLeft className="mr-2 h-4 w-4"/>
+                            {t.backToSymptoms}
+                        </Button>
+                        <Card className="border">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
+                                    <Sparkles /> {t.analysisResult}
+                                </CardTitle>
+                                <CardDescription>
+                                    Analysis for: <span className="font-bold">{analysis.diseaseName}</span>
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                {Object.entries(analysis).map(([key, value]) => {
+                                    if (['isDisease', 'diseaseName'].includes(key) || !value || (Array.isArray(value) && value.length === 0)) return null;
 
-                            const sectionTitle = getSectionTitle(key, analysis.isDisease);
-                            const icon = getSectionIcon(key);
+                                    const sectionTitle = getSectionTitle(key, analysis.isDisease);
+                                    const icon = getSectionIcon(key);
 
-                            return (
-                                <div key={key}>
-                                    <h3 className="font-bold text-lg mb-2 flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
-                                         {icon} {sectionTitle}
-                                    </h3>
-                                    {Array.isArray(value) ? (
-                                        <ul className="space-y-2">
-                                            {(value as string[]).map((point, i) => (
-                                                <li key={i} className="flex items-start gap-3">
-                                                    <CheckCircle2 className="h-5 w-5 mt-1 text-green-500 flex-shrink-0" />
-                                                    <span className="text-muted-foreground">{point}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <p className="text-muted-foreground">{value.toString()}</p>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </CardContent>
-                    {analysis.recommendedSpecialist && (
-                        <CardFooter className="flex-col items-start gap-4 bg-muted/40 p-4">
-                            <div>
-                                <h4 className="font-semibold">{t.nextSteps}</h4>
-                                <p className="text-sm text-muted-foreground">
-                                    {t.specialistRec} <span className="font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{analysis.recommendedSpecialist}</span>.
-                                </p>
-                            </div>
-                            <Link href="/appointments" className="w-full">
-                                <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
-                                   {t.bookAppointment}
-                                </Button>
-                            </Link>
-                        </CardFooter>
-                    )}
-                </Card>
-            )}
+                                    return (
+                                        <div key={key}>
+                                            <h3 className="font-bold text-lg mb-2 flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
+                                                 {icon} {sectionTitle}
+                                            </h3>
+                                            {Array.isArray(value) ? (
+                                                <ul className="space-y-2">
+                                                    {(value as string[]).map((point, i) => (
+                                                        <li key={i} className="flex items-start gap-3">
+                                                            <CheckCircle2 className="h-5 w-5 mt-1 text-green-500 flex-shrink-0" />
+                                                            <span className="text-muted-foreground">{point}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            ) : (
+                                                <p className="text-muted-foreground">{value.toString()}</p>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </CardContent>
+                            {analysis.recommendedSpecialist && (
+                                <CardFooter className="flex-col items-start gap-4 bg-muted/40 p-4">
+                                    <div>
+                                        <h4 className="font-semibold">{t.nextSteps}</h4>
+                                        <p className="text-sm text-muted-foreground">
+                                            {t.specialistRec} <span className="font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{analysis.recommendedSpecialist}</span>.
+                                        </p>
+                                    </div>
+                                    <Link href="/appointments" className="w-full">
+                                        <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
+                                           {t.bookAppointment}
+                                        </Button>
+                                    </Link>
+                                </CardFooter>
+                            )}
+                        </Card>
+                    </>
+                )}
             </div>
 
             <Card className="bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800/40 border">
