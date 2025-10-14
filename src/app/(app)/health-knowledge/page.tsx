@@ -93,6 +93,7 @@ const translations = {
         deepDiveTopicTests: "Deep Tests",
         deepDiveTopicOrgans: "Affected Organs",
         deepDiveLoading: "The AI is analyzing your request...",
+        translateButton: "Translate to Telugu",
     },
     te: {
         title: "ఆరోగ్య గ్రంథాలయం",
@@ -117,6 +118,7 @@ const translations = {
         deepDiveTopicTests: "లోతైన పరీక్షలు",
         deepDiveTopicOrgans: "ప్రభావిత అవయవాలు",
         deepDiveLoading: "AI మీ అభ్యర్థనను విశ్లేషిస్తోంది...",
+        translateButton: "Translate to English",
     }
 };
 
@@ -193,8 +195,9 @@ export default function HealthKnowledgePage() {
                             <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}>
                                 <BookOpenCheck /> {t.title}
                             </CardTitle>
-                             <Button variant="ghost" size="icon" onClick={toggleLanguage}>
+                             <Button variant="ghost" onClick={toggleLanguage} className="gap-2">
                                 <Globe className="h-5 w-5" />
+                                <span className="text-sm font-bold">{t.translateButton}</span>
                             </Button>
                         </div>
                         <CardDescription>{t.description}</CardDescription>
@@ -362,3 +365,4 @@ export default function HealthKnowledgePage() {
         </div>
     );
 }
+
