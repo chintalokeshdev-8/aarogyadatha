@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useTransition, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getDiseaseInfo, DiseaseInfoOutput } from '@/ai/flows/ai-disease-info';
 import { Loader2, Mic, Sparkles, Search, AlertTriangle, CheckCircle2, Globe, Heart, Utensils, FileText, Microscope, Stethoscope, User } from 'lucide-react';
