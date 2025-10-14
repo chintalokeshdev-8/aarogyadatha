@@ -388,9 +388,15 @@ export default function SymptomCheckerPage() {
                     <h2 className="text-2xl font-bold">{t.analyzing}</h2>
                 </div>
             )}
-            <div className="text-center">
-                <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
-                <p className="text-muted-foreground mt-2">{t.description}</p>
+            <div className="flex justify-between items-center">
+                <div className="text-left">
+                    <h1 className="text-3xl font-bold" style={{color: 'hsl(var(--nav-symptoms))'}}>{t.title}</h1>
+                    <p className="text-muted-foreground mt-2">{t.description}</p>
+                </div>
+                <Button onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} size="sm" className="flex items-center gap-2" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
+                    <Languages className="h-4 w-4" />
+                    <span className='hidden sm:inline'>{t.language}</span>
+                </Button>
             </div>
             
             {analysis && (
@@ -427,14 +433,8 @@ export default function SymptomCheckerPage() {
             
             { !analysis && (
                 <Card className="border">
-                     <CardHeader className="flex flex-row justify-between items-center">
-                        <div>
-                            <CardTitle>{t.commonTopics}</CardTitle>
-                        </div>
-                        <Button onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} className="flex items-center gap-2" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
-                            <Languages className="h-4 w-4" />
-                            {t.language}
-                        </Button>
+                     <CardHeader>
+                        <CardTitle>{t.commonTopics}</CardTitle>
                     </CardHeader>
                     <CardContent>
                         <div className="flex flex-wrap gap-1 mb-4">
