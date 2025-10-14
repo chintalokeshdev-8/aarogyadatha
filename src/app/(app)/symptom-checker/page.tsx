@@ -196,7 +196,7 @@ const allTopics = [
     { english: "Rubella", telugu: "రుబెల్లా" },
     { english: "Sarcoidosis", telugu: "సార్కోయిడోసిస్" },
     { english: "Scabies", telugu: "గజ్జి" },
-    { english: "Scarlet Fever", telugu: "స్కార్లెట్ జ్వరం" },
+    { english: "Scarlet Fever", telugu: "స్కార్లెట్ జ్వரம்" },
     { english: "Schizophrenia", telugu: "స్కిజోఫ్రెనియా" },
     { english: "Sciatica", telugu: "సయాటికా" },
     { english: "Scoliosis", telugu: "వెన్నెముక వంకర" },
@@ -396,7 +396,8 @@ export default function SymptomCheckerPage() {
                     </Button>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                    {t.description} <span className="font-semibold">{t.disclaimerTitle}:</span> {t.disclaimerText}
+                    {t.description}{' '}
+                    <span className="font-semibold text-yellow-600 dark:text-yellow-500">{t.disclaimerTitle}: {t.disclaimerText}</span>
                 </p>
             </div>
 
