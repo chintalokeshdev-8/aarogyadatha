@@ -269,13 +269,12 @@ export default function SymptomCheckerPage() {
             getAnalysis: "Get AI Analysis",
             analyzing: "Analyzing...",
             analysisResult: "AI Analysis Result",
+            likelyCondition: "Likely Condition",
             nextSteps: "Next Steps",
-            bookAppointment: "Book an Appointment",
+            bookAppointment: "Book Appointment",
             specialistRec: "Based on the analysis, consider booking an appointment with a",
             disclaimerTitle: "Disclaimer",
             disclaimerText: "This is for informational purposes only, not a medical diagnosis. Always consult a doctor.",
-            summary: "Summary",
-            initialAnalysis: "Initial Analysis",
             symptoms: "Symptoms",
             firstAid: "Suggested First Aid",
             diet: "Recommended Diet",
@@ -292,13 +291,12 @@ export default function SymptomCheckerPage() {
             getAnalysis: "AI విశ్లేషణ పొందండి",
             analyzing: "విశ్లేషిస్తోంది...",
             analysisResult: "AI విశ్లేషణ ఫలితం",
+            likelyCondition: "బహుశా వ్యాధి",
             nextSteps: "తదుపరి చర్యలు",
             bookAppointment: "అపాయింట్‌మెంట్ బుక్ చేసుకోండి",
             specialistRec: "విశ్లేషణ ఆధారంగా, ఒకరితో అపాయింట్‌మెంట్ బుక్ చేసుకోవడాన్ని పరిగణించండి",
             disclaimerTitle: "గమనిక",
             disclaimerText: "ఇది సమాచార ప్రయోజనాల కోసం మాత్రమే, వైద్య నిర్ధారణ కాదు. ఎల్లప్పుడూ వైద్యుడిని సంప్రదించండి.",
-            summary: "సారాంశం",
-            initialAnalysis: "ప్రారంభ విశ్లేషణ",
             symptoms: "లక్షణాలు",
             firstAid: "సూచించబడిన ప్రథమ చికిత్స",
             diet: "సిఫార్సు చేయబడిన ఆహారం",
@@ -337,7 +335,7 @@ export default function SymptomCheckerPage() {
     };
 
     const getSectionTitle = (key: string, isDisease: boolean) => {
-        if (key === 'summary') return t.summary;
+        if (key === 'summary') return t.likelyCondition;
         if (key === 'symptoms' && !isDisease) return t.firstAid;
         if (key === 'symptoms' && isDisease) return t.symptoms;
         if (key === 'recommendedDiet') return t.diet;
@@ -453,8 +451,11 @@ export default function SymptomCheckerPage() {
                 <Card className="border">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
-                            <Sparkles /> {t.analysisResult}: {analysis.diseaseName}
+                            <Sparkles /> {t.analysisResult}
                         </CardTitle>
+                        <CardDescription>
+                            Analysis for: <span className="font-bold">{analysis.diseaseName}</span>
+                        </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         {Object.entries(analysis).map(([key, value]) => {
@@ -484,7 +485,7 @@ export default function SymptomCheckerPage() {
                             );
                         })}
                     </CardContent>
-                    {!analysis.isDisease && analysis.recommendedSpecialist && (
+                    {analysis.recommendedSpecialist && (
                         <CardFooter className="flex-col items-start gap-4 bg-muted/40 p-4">
                             <div>
                                 <h4 className="font-semibold">{t.nextSteps}</h4>
