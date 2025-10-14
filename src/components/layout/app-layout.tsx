@@ -337,7 +337,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                         </DropdownMenuItem>
                                     </DialogTrigger>
                                     
-                                    {allMenuItems.filter(item => ['surgery', 'language', 'bloodBank', 'healthTracker', 'jrDoctors', 'pregnancy', 'insurances'].includes(item.id)).map(item => (
+                                    {allMenuItems.filter(item => ['surgery', 'healthKnowledge', 'bloodBank', 'healthTracker', 'jrDoctors', 'pregnancy', 'insurances'].includes(item.id)).map(item => (
                                         <Link href={item.href} key={item.id} passHref>
                                             <DropdownMenuItem className="p-3" onClick={(e) => handleNavItemClick(item.href, e)}>
                                                 <item.icon className="mr-3" style={{color: item.color}} />
