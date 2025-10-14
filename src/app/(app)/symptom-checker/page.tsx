@@ -259,6 +259,7 @@ export default function SymptomCheckerPage() {
     
     const recognitionRef = useRef<any>(null);
     const resultsRef = useRef<HTMLDivElement>(null);
+    const searchCardRef = useRef<HTMLDivElement>(null);
 
     const translations = {
         en: {
@@ -326,7 +327,14 @@ export default function SymptomCheckerPage() {
             setAnalysis(null);
             const result = await getDiseaseInfo({ diseaseName: term, language });
             setAnalysis(result);
-            setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+            setTimeout(() => {
+                const searchCardHeight = searchCardRef.current?.offsetHeight || 0;
+                const resultsTop = resultsRef.current?.offsetTop || 0;
+                window.scrollTo({
+                    top: resultsTop - searchCardHeight - 80, // 20px buffer
+                    behavior: 'smooth'
+                });
+            }, 100);
         });
     };
     
@@ -371,80 +379,84 @@ export default function SymptomCheckerPage() {
                 <p className="text-muted-foreground mt-2">{t.description}</p>
             </div>
             
-            <Card className="border sticky top-16 z-10">
-                <CardContent className="p-4 space-y-4">
-                    <div className="relative">
-                        <Textarea 
-                            placeholder={t.searchPlaceholder}
-                            className="min-h-[80px] pr-24 text-base"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSearch(searchTerm); }}}
-                        />
-                        <div className='absolute top-2 right-2 flex flex-col gap-2'>
-                            <Button variant="ghost" size="icon" onClick={() => {}}>
-                                 <Mic className={cn("h-5 w-5", isListening ? "text-destructive animation-blink" : "")} style={{color: 'hsl(var(--nav-symptoms))'}}/>
-                            </Button>
+            <div ref={searchCardRef}>
+                <Card className="border sticky top-16 z-10">
+                    <CardContent className="p-4 space-y-4">
+                        <div className="relative">
+                            <Textarea 
+                                placeholder={t.searchPlaceholder}
+                                className="min-h-[80px] pr-24 text-base"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSearch(searchTerm); }}}
+                            />
+                            <div className='absolute top-2 right-2 flex flex-col gap-2'>
+                                <Button variant="ghost" size="icon" onClick={() => {}}>
+                                     <Mic className={cn("h-5 w-5", isListening ? "text-destructive animation-blink" : "")} style={{color: 'hsl(var(--nav-symptoms))'}}/>
+                                </Button>
+                            </div>
                         </div>
-                    </div>
-                     <Button onClick={() => handleSearch(searchTerm)} disabled={isPending || !searchTerm.trim()} className="w-full h-11 text-base">
-                        {isPending ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Search className="mr-2 h-5 w-5" />}
-                        {t.getAnalysis}
-                    </Button>
-                </CardContent>
-            </Card>
-            
-            <Card className="border">
-                 <CardHeader className="flex flex-row justify-between items-center">
-                    <div>
-                        <CardTitle>{t.commonTopics}</CardTitle>
-                    </div>
-                    <Button variant="outline" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} className="flex items-center gap-2">
-                        <Globe className="h-4 w-4" />
-                        {t.language}
-                    </Button>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-wrap gap-1 mb-4">
-                        <Button
-                            size="sm"
-                            variant={activeFilter === null ? 'default' : 'outline'}
-                            onClick={() => setActiveFilter(null)}
-                            className="h-8 w-8 p-0"
-                        >
-                           All
+                         <Button onClick={() => handleSearch(searchTerm)} disabled={isPending || !searchTerm.trim()} className="w-full h-11 text-base">
+                            {isPending ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Search className="mr-2 h-5 w-5" />}
+                            {t.getAnalysis}
                         </Button>
-                        {alphabet.map(letter => (
+                    </CardContent>
+                </Card>
+            </div>
+            
+            { !analysis && (
+                <Card className="border">
+                     <CardHeader className="flex flex-row justify-between items-center">
+                        <div>
+                            <CardTitle>{t.commonTopics}</CardTitle>
+                        </div>
+                        <Button variant="outline" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')} className="flex items-center gap-2">
+                            <Globe className="h-4 w-4" />
+                            {t.language}
+                        </Button>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex flex-wrap gap-1 mb-4">
                             <Button
-                                key={letter}
                                 size="sm"
-                                variant={activeFilter === letter ? 'default' : 'outline'}
-                                onClick={() => setActiveFilter(letter)}
+                                variant={activeFilter === null ? 'default' : 'outline'}
+                                onClick={() => setActiveFilter(null)}
                                 className="h-8 w-8 p-0"
                             >
-                                {letter}
+                               All
                             </Button>
-                        ))}
-                    </div>
-                    <div className="max-h-60 overflow-y-auto pr-2">
-                        <div className="flex flex-wrap gap-2">
-                            {filteredTopics.map(topic => (
+                            {alphabet.map(letter => (
                                 <Button
-                                    key={topic.english}
-                                    variant="outline"
+                                    key={letter}
                                     size="sm"
-                                    className="h-auto"
-                                    onClick={() => handleTopicClick(language === 'en' ? topic.english : topic.telugu)}
+                                    variant={activeFilter === letter ? 'default' : 'outline'}
+                                    onClick={() => setActiveFilter(letter)}
+                                    className="h-8 w-8 p-0"
                                 >
-                                    <div className="text-center p-1">
-                                        <p className="font-semibold text-sm">{language === 'en' ? topic.english : topic.telugu}</p>
-                                    </div>
+                                    {letter}
                                 </Button>
                             ))}
                         </div>
-                    </div>
-                </CardContent>
-            </Card>
+                        <div className="max-h-60 overflow-y-auto pr-2">
+                            <div className="flex flex-wrap gap-2">
+                                {filteredTopics.map(topic => (
+                                    <Button
+                                        key={topic.english}
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-auto"
+                                        onClick={() => handleTopicClick(language === 'en' ? topic.english : topic.telugu)}
+                                    >
+                                        <div className="text-center p-1">
+                                            <p className="font-semibold text-sm">{language === 'en' ? topic.english : topic.telugu}</p>
+                                        </div>
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
 
             <div ref={resultsRef}>
             {analysis && !isPending && (
