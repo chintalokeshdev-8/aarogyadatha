@@ -23,7 +23,7 @@ const diseaseCategories = [
     "Cervical Cancer", "Cervical Spondylosis", "Chikungunya", "Chlamydia", "Cholera", "Chronic Fatigue Syndrome", 
     "Chronic Kidney Disease", "Chronic Pain", "Cirrhosis", "Cluster Headaches", "Colitis", "Colon Cancer", "Common Cold", 
     "Congestive Heart Failure", "Conjunctivitis (Pink Eye)", "COPD", "Coronary Artery Disease", "COVID-19", "Crohn's Disease", 
-    "Cushing's Syndrome", "Cystic Fibrosis", "Dandruff", "Deep Vein Thrombosis (DVT)", "Dehydration", "Dementia", "Dengue Fever", d"Depression", "Diabetes (Type 1 & 2)", "Diabetic Ketoacidosis", "Diabetic Neuropathy", "Diabetic Retinopathy", "Diarrhea", 
+    "Cushing's Syndrome", "Cystic Fibrosis", "Dandruff", "Deep Vein Thrombosis (DVT)", "Dehydration", "Dementia", "Dengue Fever", "Depression", "Diabetes (Type 1 & 2)", "Diabetic Ketoacidosis", "Diabetic Neuropathy", "Diabetic Retinopathy", "Diarrhea", 
     "Down Syndrome", "Dry Eye", "Dysentery", "Dyslexia", "Ear Infection", "Eating Disorders", "Eczema (Atopic Dermatitis)", 
     "Endometriosis", "Epilepsy", "Erectile Dysfunction", "Esophageal Cancer", "Fatty Liver Disease", "Fibroids", "Fibromyalgia", 
     "Fistula", "Flu (Influenza)", "Food Poisoning", "Gallstones", "Gastroenteritis", "GERD (Acid Reflux)", "Gestational Diabetes", 
