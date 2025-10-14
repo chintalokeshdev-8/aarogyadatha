@@ -130,9 +130,9 @@ export default function HealthKnowledgePage() {
                 <Card>
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-profile))'}}>
-                            <BookOpenCheck /> Health Encyclopedia
+                            <BookOpenCheck /> Health Library
                         </CardTitle>
-                        <CardDescription>Select a topic to learn more.</CardDescription>
+                        <CardDescription>Look up health conditions from A-Z.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="relative mb-2">
@@ -196,8 +196,8 @@ export default function HealthKnowledgePage() {
                 {!selectedDisease && !isPending && (
                     <Card className="flex flex-col items-center justify-center text-center p-8 min-h-[50vh]">
                         <BookOpenCheck className="h-16 w-16 text-muted-foreground mb-4" />
-                        <h2 className="text-xl font-bold">Welcome to the Health Encyclopedia</h2>
-                        <p className="text-muted-foreground">Select a disease from the list to get started.</p>
+                        <h2 className="text-xl font-bold">Welcome to the Health Library</h2>
+                        <p className="text-muted-foreground">Select a health topic from the list to get started.</p>
                     </Card>
                 )}
 

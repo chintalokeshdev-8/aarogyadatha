@@ -29,7 +29,7 @@ const quickAccessItems = [
   { href: '/opd-queue', icon: MessageSquare, label: 'OP STATUS', telugu: 'OP స్థితి', color: 'hsl(var(--nav-chat))' },
   { href: '/lab-reports', icon: TestTube, label: 'Diagnostics', telugu: 'రిపోర్టులు చూడండి', color: 'hsl(var(--nav-diagnostics))' },
   { href: '/medicines', icon: Pill, label: 'My Medicines', telugu: 'మీ మందులు', color: 'hsl(var(--nav-medicines))' },
-  { href: '/health-knowledge', icon: BookOpenCheck, label: 'Health Knowledge', telugu: 'ఆరోగ్య పరిజ్ఞానం', color: 'hsl(var(--nav-profile))' },
+  { href: '/health-knowledge', icon: BookOpenCheck, label: 'Health Library', telugu: 'ఆరోగ్య గ్రంథాలయం', color: 'hsl(var(--nav-profile))' },
   { href: '/insurances', icon: Shield, label: 'Insurances', telugu: 'భీమా', color: 'hsl(var(--nav-profile))' },
   { href: '/surgery-care', label: 'Surgery Care', telugu: 'సర్జరీ కేర్', icon: Stethoscope, color: 'hsl(var(--nav-appointments))'},
   { href: '/blood-bank', icon: Droplets, label: 'Blood Bank', telugu: 'రక్త నిధి', color: 'hsl(var(--nav-blood-bank))' },
