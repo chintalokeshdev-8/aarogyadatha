@@ -251,6 +251,7 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 export default function SymptomCheckerPage() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
     const [analysis, setAnalysis] = useState<DiseaseInfoOutput | null>(null);
     const [isPending, startTransition] = useTransition();
     const [isListening, setIsListening] = useState(false);
@@ -318,8 +319,8 @@ export default function SymptomCheckerPage() {
     }, [activeFilter]);
 
     useEffect(() => {
-        // Speech recognition setup
-    }, []);
+        setSearchTerm(selectedTopics.join(', '));
+    }, [selectedTopics]);
 
     const handleSearch = (term: string) => {
         if (!term) return;
@@ -341,12 +342,19 @@ export default function SymptomCheckerPage() {
     };
     
     const handleTopicClick = (topic: string) => {
-        handleSearch(topic);
+        setSelectedTopics(prev => {
+            if (prev.includes(topic)) {
+                return prev.filter(t => t !== topic);
+            } else {
+                return [...prev, topic];
+            }
+        });
     };
 
     const handleBack = () => {
         setAnalysis(null);
         setSearchTerm('');
+        setSelectedTopics([]);
     };
 
     const getSectionTitle = (key: string, isDisease: boolean) => {
@@ -446,19 +454,23 @@ export default function SymptomCheckerPage() {
                         </div>
                         <div className="max-h-60 overflow-y-auto pr-2">
                             <div className="flex flex-wrap gap-2">
-                                {filteredTopics.map(topic => (
-                                    <Button
-                                        key={topic.english}
-                                        variant="outline"
-                                        size="sm"
-                                        className="h-auto"
-                                        onClick={() => handleTopicClick(language === 'en' ? topic.english : topic.telugu)}
-                                    >
-                                        <div className="text-center p-1">
-                                            <p className="font-semibold text-sm">{language === 'en' ? topic.english : topic.telugu}</p>
-                                        </div>
-                                    </Button>
-                                ))}
+                                {filteredTopics.map(topic => {
+                                    const currentTopic = language === 'en' ? topic.english : topic.telugu;
+                                    const isSelected = selectedTopics.includes(currentTopic);
+                                    return (
+                                        <Button
+                                            key={topic.english}
+                                            variant={isSelected ? "default" : "outline"}
+                                            size="sm"
+                                            className="h-auto"
+                                            onClick={() => handleTopicClick(currentTopic)}
+                                        >
+                                            <div className="text-center p-1">
+                                                <p className="font-semibold text-sm">{currentTopic}</p>
+                                            </div>
+                                        </Button>
+                                    )
+                                })}
                             </div>
                         </div>
                     </CardContent>
@@ -468,7 +480,7 @@ export default function SymptomCheckerPage() {
             <div ref={resultsRef} className="space-y-4">
                 {analysis && !isPending && (
                     <>
-                        <Button onClick={handleBack} className="font-bold" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
+                         <Button onClick={handleBack} className="font-bold" style={{backgroundColor: 'hsl(var(--nav-symptoms))'}}>
                             <ArrowLeft className="mr-2 h-4 w-4"/>
                             Back
                         </Button>
