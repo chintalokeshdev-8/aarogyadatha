@@ -5,7 +5,7 @@ import React, { useState, useTransition, useEffect, useRef, useMemo } from 'reac
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getDiseaseInfo, DiseaseInfoOutput } from '@/ai/flows/ai-disease-info';
-import { Loader2, Mic, Sparkles, Search, AlertTriangle, CheckCircle2, Globe, Heart, Utensils, FileText, Microscope, Stethoscope, User } from 'lucide-react';
+import { Loader2, Mic, Sparkles, Search, AlertTriangle, CheckCircle2, Globe, Heart, Utensils, FileText, Microscope, Stethoscope, User, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
@@ -282,7 +282,8 @@ export default function SymptomCheckerPage() {
             tests: "Recommended Tests",
             affectedOrgans: "Affected Organs",
             specialist: "Recommended Specialist",
-            language: "తెలుగు"
+            language: "తెలుగు",
+            backToSymptoms: "Back to Symptoms",
         },
         te: {
             title: "AI లక్షణాల తనిఖీ",
@@ -304,7 +305,8 @@ export default function SymptomCheckerPage() {
             tests: "సిఫార్సు చేయబడిన పరీక్షలు",
             affectedOrgans: "ప్రభావిత అవయవాలు",
             specialist: "సిఫార్సు చేయబడిన నిపుణులు",
-            language: "English"
+            language: "English",
+            backToSymptoms: "లక్షణాలకు తిరిగి వెళ్ళు",
         }
     };
 
@@ -331,7 +333,7 @@ export default function SymptomCheckerPage() {
                 const searchCardHeight = searchCardRef.current?.offsetHeight || 0;
                 const resultsTop = resultsRef.current?.offsetTop || 0;
                 window.scrollTo({
-                    top: resultsTop - searchCardHeight - 80, // 20px buffer
+                    top: resultsTop - searchCardHeight - 80,
                     behavior: 'smooth'
                 });
             }, 100);
@@ -340,6 +342,11 @@ export default function SymptomCheckerPage() {
     
     const handleTopicClick = (topic: string) => {
         handleSearch(topic);
+    };
+
+    const handleBack = () => {
+        setAnalysis(null);
+        setSearchTerm('');
     };
 
     const getSectionTitle = (key: string, isDisease: boolean) => {
@@ -462,9 +469,15 @@ export default function SymptomCheckerPage() {
             {analysis && !isPending && (
                 <Card className="border">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
-                            <Sparkles /> {t.analysisResult}
-                        </CardTitle>
+                        <div className="flex justify-between items-center">
+                            <CardTitle className="flex items-center gap-2" style={{color: 'hsl(var(--nav-symptoms))'}}>
+                                <Sparkles /> {t.analysisResult}
+                            </CardTitle>
+                            <Button variant="ghost" onClick={handleBack}>
+                                <ArrowLeft className="mr-2 h-4 w-4"/>
+                                {t.backToSymptoms}
+                            </Button>
+                        </div>
                         <CardDescription>
                             Analysis for: <span className="font-bold">{analysis.diseaseName}</span>
                         </CardDescription>
