@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Link from "next/link";
@@ -57,6 +58,7 @@ import { allMenuItems, type MenuItem } from "@/lib/nav-config";
 import { Switch } from "../ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/context/language-context";
+import { GlobalSearch } from "./global-search";
 
 
 const familyAccounts = [
@@ -165,7 +167,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const viewportRef = React.useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = React.useState(false);
-  const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const isMobile = useIsMobile();
   const [visibleMenuItems, setVisibleMenuItems] = React.useState<MenuItem[]>([]);
   const [navSettings, setNavSettings] = React.useState<Record<string, boolean>>({});
@@ -239,9 +240,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
-
-  const showMobileSearch = isMobile && isSearchOpen;
-
   const handleNavItemClick = (href: string, e: React.MouseEvent) => {
     if (href === '#') {
         e.preventDefault();
@@ -252,167 +250,147 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-primary text-primary-foreground gap-4 h-16">
-        {showMobileSearch ? (
-            <div className="flex items-center gap-2 w-full">
-                <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(false)}>
-                    <ArrowLeft className="h-5 w-5" />
+        <div className="flex items-center gap-2">
+            {pathname !== '/' ? (
+                <Button variant="ghost" size="icon" onClick={() => router.back()} className="h-10 w-10 text-primary-foreground">
+                    <ArrowLeft className="h-6 w-6" />
                 </Button>
-                <div className="relative w-full">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    <Input placeholder="Search for doctors, medicines, reports..." className="pl-10 text-foreground" autoFocus />
-                </div>
-            </div>
-        ) : (
-            <>
-                <div className="flex items-center gap-2">
-                    {pathname !== '/' ? (
-                        <Button variant="ghost" size="icon" onClick={() => router.back()} className="h-10 w-10 text-primary-foreground">
-                            <ArrowLeft className="h-6 w-6" />
-                        </Button>
-                    ) : (
-                        <Link href="/" className="flex items-center gap-2">
-                            <div className="p-1.5 bg-primary-foreground rounded-lg">
-                                <AnimatedActivityIcon className="w-6 h-6 text-primary" />
-                            </div>
-                        </Link>
-                    )}
-                     <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
-                </div>
-
-                <div className="hidden md:block flex-1 max-w-xl">
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/70" />
-                        <Input placeholder="Search for doctors, medicines, reports..." className="pl-10 bg-primary-foreground/10 border-primary-foreground/30 placeholder:text-primary-foreground/70 text-primary-foreground focus:bg-primary-foreground/20" />
+            ) : (
+                <Link href="/" className="flex items-center gap-2">
+                    <div className="p-1.5 bg-primary-foreground rounded-lg">
+                        <AnimatedActivityIcon className="w-6 h-6 text-primary" />
                     </div>
-                </div>
+                </Link>
+            )}
+             <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
+        </div>
 
-                <div className="flex items-center gap-2">
-                    {isMobile && (
-                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setIsSearchOpen(true)}>
-                            <Search className="h-5 w-5" />
+        <div className="hidden md:flex flex-1 justify-center">
+            <GlobalSearch />
+        </div>
+
+
+        <div className="flex items-center gap-2">
+            {isMobile && <GlobalSearch />}
+            <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')}>
+                <Languages className="h-5 w-5" />
+            </Button>
+            <NotificationsDropdown />
+            <Dialog>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
+                            <Avatar className="h-10 w-10 border border-primary-foreground/50">
+                                <AvatarImage src="/images/profile.jpg" />
+                                <AvatarFallback className="bg-primary-foreground text-primary">CL</AvatarFallback>
+                            </Avatar>
                         </Button>
-                    )}
-                    <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')}>
-                        <Languages className="h-5 w-5" />
-                    </Button>
-                    <NotificationsDropdown />
-                    <Dialog>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                                    <Avatar className="h-10 w-10 border border-primary-foreground/50">
-                                        <AvatarImage src="/images/profile.jpg" />
-                                        <AvatarFallback className="bg-primary-foreground text-primary">CL</AvatarFallback>
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-80" align="end" forceMount>
-                                <DropdownMenuLabel className="font-normal p-3">
-                                <div className="flex items-center gap-3">
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarImage src="/images/profile.jpg" />
-                                        <AvatarFallback>CL</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="text-lg font-bold">Chinta Lokesh Babu</p>
-                                        <div className="space-y-0.5 text-xs text-muted-foreground">
-                                            <p>Patient ID: PAT001</p>
-                                            <p>Blood Group: O+ Positive</p>
-                                        </div>
-                                    </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-80" align="end" forceMount>
+                        <DropdownMenuLabel className="font-normal p-3">
+                        <div className="flex items-center gap-3">
+                            <Avatar className="h-10 w-10">
+                                <AvatarImage src="/images/profile.jpg" />
+                                <AvatarFallback>CL</AvatarFallback>
+                            </Avatar>
+                            <div>
+                                <p className="text-lg font-bold">Chinta Lokesh Babu</p>
+                                <div className="space-y-0.5 text-xs text-muted-foreground">
+                                    <p>Patient ID: PAT001</p>
+                                    <p>Blood Group: O+ Positive</p>
                                 </div>
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <div className="p-1 max-h-[60vh] overflow-y-auto">
-                                    <Link href="/profile" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <User className="mr-3 text-primary" />
-                                            <span className="font-semibold">Profile</span>
-                                        </DropdownMenuItem>
-                                    </Link>
-                                    <DialogTrigger asChild>
-                                        <DropdownMenuItem className="p-3">
-                                            <Users className="mr-3 text-primary" />
-                                            <span className="font-semibold">Switch Account</span>
-                                        </DropdownMenuItem>
-                                    </DialogTrigger>
-                                    
-                                    {allMenuItems.filter(item => ['surgery', 'healthKnowledge', 'bloodBank', 'healthTracker', 'jrDoctors', 'pregnancy', 'insurances'].includes(item.id)).map(item => (
-                                        <Link href={item.href} key={item.id} passHref>
-                                            <DropdownMenuItem className="p-3" onClick={(e) => handleNavItemClick(item.href, e)}>
-                                                <item.icon className="mr-3" style={{color: item.color}} />
-                                                <span className="font-semibold">{item.label}</span>
-                                            </DropdownMenuItem>
-                                        </Link>
-                                    ))}
-                                    
-                                    <Link href="/settings" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <Settings className="mr-3 text-primary" />
-                                            <span className="font-semibold">Settings</span>
-                                        </DropdownMenuItem>
-                                    </Link>
-                                    <a href="tel:+918008443938" className="w-full">
-                                        <DropdownMenuItem className="p-3">
-                                            <Phone className="mr-3 text-primary" />
-                                            <span className="font-semibold">Customer Support</span>
-                                        </DropdownMenuItem>
-                                    </a>
-                                     <Link href="/terms" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <FileText className="mr-3 text-primary" />
-                                            <span className="font-semibold">Terms &amp; Conditions</span>
-                                        </DropdownMenuItem>
-                                    </Link>
-                                     <Link href="/about" passHref>
-                                        <DropdownMenuItem className="p-3">
-                                            <Info className="mr-3 text-primary" />
-                                            <span className="font-semibold">About medibridge</span>
-                                        </DropdownMenuItem>
-                                    </Link>
-                                </div>
-                                <DropdownMenuSeparator />
-                                <div className="p-1">
-                                    <DropdownMenuItem className="p-3 text-red-600 focus:bg-red-50 focus:text-red-700 dark:focus:bg-red-900/50 dark:focus:text-red-500">
-                                        <LogOut className="mr-3" />
-                                        <span className="font-semibold">Sign out</span>
-                                    </DropdownMenuItem>
-                                </div>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                         <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Switch Account</DialogTitle>
-                                <DialogDescription>
-                                    Select a profile to continue.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <div className="space-y-3">
-                                {familyAccounts.map((account, index) => (
-                                    <div key={index} className={cn("p-3 rounded-lg flex items-center justify-between", account.isCurrentUser ? "bg-primary/10 border border-primary/20" : "bg-muted/50")}>
-                                        <div className="flex items-center gap-3">
-                                            <Avatar>
-                                                <AvatarImage src={account.avatar} />
-                                                <AvatarFallback>{account.fallback}</AvatarFallback>
-                                            </Avatar>
-                                            <p className="font-semibold">{account.name}</p>
-                                        </div>
-                                        {account.isCurrentUser ? (
-                                            <div className="flex items-center gap-2 text-primary font-semibold">
-                                                <CheckCircle className="h-5 w-5" />
-                                                Current
-                                            </div>
-                                        ) : (
-                                            <Button variant="outline" size="sm">Switch</Button>
-                                        )}
-                                    </div>
-                                ))}
                             </div>
-                        </DialogContent>
-                    </Dialog>
-                </div>
-            </>
-        )}
+                        </div>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <div className="p-1 max-h-[60vh] overflow-y-auto">
+                            <Link href="/profile" passHref>
+                                <DropdownMenuItem className="p-3">
+                                    <User className="mr-3 text-primary" />
+                                    <span className="font-semibold">Profile</span>
+                                </DropdownMenuItem>
+                            </Link>
+                            <DialogTrigger asChild>
+                                <DropdownMenuItem className="p-3">
+                                    <Users className="mr-3 text-primary" />
+                                    <span className="font-semibold">Switch Account</span>
+                                </DropdownMenuItem>
+                            </DialogTrigger>
+                            
+                            {allMenuItems.filter(item => ['surgery', 'healthKnowledge', 'bloodBank', 'healthTracker', 'jrDoctors', 'pregnancy', 'insurances'].includes(item.id)).map(item => (
+                                <Link href={item.href} key={item.id} passHref>
+                                    <DropdownMenuItem className="p-3" onClick={(e) => handleNavItemClick(item.href, e)}>
+                                        <item.icon className="mr-3" style={{color: item.color}} />
+                                        <span className="font-semibold">{item.label}</span>
+                                    </DropdownMenuItem>
+                                </Link>
+                            ))}
+                            
+                            <Link href="/settings" passHref>
+                                <DropdownMenuItem className="p-3">
+                                    <Settings className="mr-3 text-primary" />
+                                    <span className="font-semibold">Settings</span>
+                                </DropdownMenuItem>
+                            </Link>
+                            <a href="tel:+918008443938" className="w-full">
+                                <DropdownMenuItem className="p-3">
+                                    <Phone className="mr-3 text-primary" />
+                                    <span className="font-semibold">Customer Support</span>
+                                </DropdownMenuItem>
+                            </a>
+                             <Link href="/terms" passHref>
+                                <DropdownMenuItem className="p-3">
+                                    <FileText className="mr-3 text-primary" />
+                                    <span className="font-semibold">Terms &amp; Conditions</span>
+                                </DropdownMenuItem>
+                            </Link>
+                             <Link href="/about" passHref>
+                                <DropdownMenuItem className="p-3">
+                                    <Info className="mr-3 text-primary" />
+                                    <span className="font-semibold">About medibridge</span>
+                                </DropdownMenuItem>
+                            </Link>
+                        </div>
+                        <DropdownMenuSeparator />
+                        <div className="p-1">
+                            <DropdownMenuItem className="p-3 text-red-600 focus:bg-red-50 focus:text-red-700 dark:focus:bg-red-900/50 dark:focus:text-red-500">
+                                <LogOut className="mr-3" />
+                                <span className="font-semibold">Sign out</span>
+                            </DropdownMenuItem>
+                        </div>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+                 <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Switch Account</DialogTitle>
+                        <DialogDescription>
+                            Select a profile to continue.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-3">
+                        {familyAccounts.map((account, index) => (
+                            <div key={index} className={cn("p-3 rounded-lg flex items-center justify-between", account.isCurrentUser ? "bg-primary/10 border border-primary/20" : "bg-muted/50")}>
+                                <div className="flex items-center gap-3">
+                                    <Avatar>
+                                        <AvatarImage src={account.avatar} />
+                                        <AvatarFallback>{account.fallback}</AvatarFallback>
+                                    </Avatar>
+                                    <p className="font-semibold">{account.name}</p>
+                                </div>
+                                {account.isCurrentUser ? (
+                                    <div className="flex items-center gap-2 text-primary font-semibold">
+                                        <CheckCircle className="h-5 w-5" />
+                                        Current
+                                    </div>
+                                ) : (
+                                    <Button variant="outline" size="sm">Switch</Button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </DialogContent>
+            </Dialog>
+        </div>
       </header>
       <main className="flex-1 bg-muted/20">
         <div className="p-4 sm:p-6 lg:p-8 pb-40">
