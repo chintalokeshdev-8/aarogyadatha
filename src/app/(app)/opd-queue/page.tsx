@@ -21,12 +21,12 @@ const queue = [
 
 const appointmentDetails = {
     doctor: {
-        name: "Dr. Ramesh Babu",
+        name: "Dr. V. Venkata Naidu, MS, MCh",
         specialty: "Nephrologist",
-        avatar: "https://picsum.photos/seed/doc8/100/100",
-        dataAiHint: "male doctor professional",
-        surgeries: "300+ kidney transplants",
-        mainDealing: "Chronic kidney disease and dialysis.",
+        avatar: "https://picsum.photos/seed/doc11/100/100",
+        dataAiHint: "male doctor experienced",
+        surgeries: "20,000+ Successful Surgeries",
+        mainDealing: "Urology, advanced surgical procedures, and successful kidney transplants.",
     },
     hospital: {
         name: "Guntur Kidney &amp; Multispeciality Hospital",

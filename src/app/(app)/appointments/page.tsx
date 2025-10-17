@@ -251,7 +251,7 @@ const doctors = [
         consultationType: "Online",
     },
     {
-        name: "Dr. V. Venkata Naidu",
+        name: "Dr. V. Venkata Naidu, MS, MCh",
         specialty: "Urologist",
         experience: "25+ years",
         hospital: "Guntur Kidney & Multispeciality Hospital",
@@ -1221,7 +1221,7 @@ export default function AppointmentsPage() {
                     <div className="space-y-6">
                         <Card className="shadow-sm border">
                              <CardContent className="p-4 pt-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-end">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 items-end">
                                     <div className="relative sm:col-span-2 lg:col-span-1">
                                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                         <Input 
@@ -1246,6 +1246,19 @@ export default function AppointmentsPage() {
                                                         {dep.label}
                                                     </div>
                                                 </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <Select value={selectedHospital} onValueChange={setSelectedHospital}>
+                                        <SelectTrigger>
+                                            <div className="flex items-center gap-2">
+                                               <Hospital className="h-4 w-4 text-muted-foreground" />
+                                               <SelectValue placeholder="Hospital" />
+                                            </div>
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {hospitals.map(hospital => (
+                                                <SelectItem key={hospital} value={hospital}>{hospital}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
