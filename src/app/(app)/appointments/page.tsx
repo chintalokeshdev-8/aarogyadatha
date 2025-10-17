@@ -146,19 +146,6 @@ const doctors = [
         consultationType: "Offline (Hospital Visit)",
     },
      {
-        name: "Dr. Ramesh Babu",
-        specialty: "Nephrologist",
-        experience: "20 years",
-        hospital: "Guntur Kidney & Multispeciality Hospital",
-        surgeries: "300+ kidney transplants",
-        mainDealing: "Chronic kidney disease and dialysis.",
-        avatar: "https://picsum.photos/seed/doc8/100/100",
-        dataAiHint: "male doctor professional",
-        opFee: 1000,
-        availability: "Mon - Sat 11AM - 4PM",
-        consultationType: ["Online", "Offline (Hospital Visit)"],
-    },
-    {
         name: "Dr. Padmavathi",
         specialty: "Gynaecologist",
         experience: "25 years",
@@ -262,6 +249,7 @@ const doctors = [
         opFee: 1100,
         availability: "Mon - Fri 10AM - 1PM",
         consultationType: "Offline (Hospital Visit)",
+        recommended: true,
     },
     {
         name: "Dr. G. Ravi Shankara Reddy",
