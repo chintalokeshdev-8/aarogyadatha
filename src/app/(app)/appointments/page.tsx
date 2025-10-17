@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User, Wallet, Tooth } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User, Wallet } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +29,10 @@ import { FlowerFall } from '@/components/ui/flower-fall';
 import { analyzeReport, ReportAnalysisOutput } from '@/ai/flows/ai-report-analysis';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from 'next/link';
+
+const ToothIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 20a2 2 0 0 0 2-2V9.3a2 2 0 0 0-.6-1.4l-4.2-4.2a2 2 0 0 0-1.4-.6H8.3a2 2 0 0 0-1.4.6L2.7 7.9a2 2 0 0 0-.6 1.4V18a2 2 0 0 0 2 2Z"/><path d="M22 20H2"/><path d="m5 12 1-2h12l1 2"/><path d="M12 12v8"/></svg>
+);
 
 
 const hospitalsData: Record<string, { location: string; address: string; phone: string; website: string; }> = {
@@ -373,7 +377,7 @@ const departments = [
     { value: "Gynaecologist", label: "Gynaecology", icon: Baby },
     { value: "Pediatrician", label: "Pediatrics", icon: Baby },
     { value: "Dermatologist", label: "Dermatology", icon: Leaf },
-    { value: "Implantologist & Laser Specialist", label: "Dental", icon: Tooth },
+    { value: "Implantologist & Laser Specialist", label: "Dental", icon: ToothIcon },
     { value: "General Physician", label: "General Physician", icon: StethoscopeIcon },
     { value: "Gastroenterologist", label: "Gastroenterology", icon: StethoscopeIcon },
     { value: "Nephrologist", label: "Nephrology", icon: StethoscopeIcon },
@@ -1744,3 +1748,4 @@ export default function AppointmentsPage() {
     
 
     
+
