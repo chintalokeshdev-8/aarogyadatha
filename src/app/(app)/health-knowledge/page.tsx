@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useTransition, useMemo, useRef } from 'react';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -80,16 +81,28 @@ const PlaceholderContent = ({ featureName }: { featureName: string }) => (
     </div>
 );
 
-const FirstAidItem = ({ title, children }: { title: string, children: React.ReactNode }) => (
+const FirstAidItem = ({ title, imageUrl, imageAlt, children }: { title: string, imageUrl?: string, imageAlt?: string, children: React.ReactNode }) => (
     <Card className="border">
         <CardHeader>
             <CardTitle className="text-lg">{title}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-muted-foreground">
+             {imageUrl && imageAlt && (
+                <div className="my-4">
+                    <Image
+                        src={imageUrl}
+                        alt={imageAlt}
+                        width={600}
+                        height={400}
+                        data-ai-hint={imageAlt}
+                        className="rounded-lg w-full object-cover"
+                    />
+                </div>
+            )}
             {children}
         </CardContent>
     </Card>
-)
+);
 
 export default function HealthKnowledgePage() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -119,7 +132,11 @@ export default function HealthKnowledgePage() {
                     color="hsl(var(--nav-emergency))"
                 >
                     <div className="space-y-4">
-                        <FirstAidItem title="How to Perform CPR (Cardiopulmonary Resuscitation)">
+                        <FirstAidItem 
+                            title="How to Perform CPR (Cardiopulmonary Resuscitation)"
+                            imageUrl="https://picsum.photos/seed/cpr-steps/600/400"
+                            imageAlt="cpr steps diagram"
+                        >
                             <p className="font-bold text-destructive">Disclaimer: This is a guide for untrained bystanders. Formal training is highly recommended.</p>
                             <h4 className="font-semibold text-foreground">1. Check for Safety & Response</h4>
                             <p>Ensure the scene is safe. Tap the person’s shoulder and shout, "Are you okay?" to check for a response.</p>
@@ -133,7 +150,11 @@ export default function HealthKnowledgePage() {
                             <p>Continue CPR until you see obvious signs of life, an AED is ready to use, or medical personnel take over.</p>
                         </FirstAidItem>
 
-                        <FirstAidItem title="First Aid for Snake Bites">
+                        <FirstAidItem 
+                            title="First Aid for Snake Bites"
+                            imageUrl="https://picsum.photos/seed/snake-bite/600/400"
+                            imageAlt="snake bite do's and dont's"
+                        >
                             <p className="font-bold text-destructive">This is a medical emergency. Get to a hospital immediately.</p>
                             <h4 className="font-semibold text-foreground">What to DO:</h4>
                             <ul className="list-disc list-inside space-y-1">
@@ -153,7 +174,11 @@ export default function HealthKnowledgePage() {
                             </ul>
                         </FirstAidItem>
 
-                        <FirstAidItem title="Responding to a Heart Attack">
+                        <FirstAidItem 
+                            title="Responding to a Heart Attack"
+                            imageUrl="https://picsum.photos/seed/heart-attack-symptoms/600/400"
+                            imageAlt="heart attack symptoms"
+                        >
                              <p className="font-bold text-destructive">A heart attack is a life-threatening emergency. Call for help immediately.</p>
                              <h4 className="font-semibold text-foreground">Recognize the Symptoms:</h4>
                              <p>Common symptoms include chest pain (pressure, squeezing, or aching), pain spreading to the arm, neck, or jaw, shortness of breath, cold sweat, nausea, and lightheadedness.</p>
@@ -246,3 +271,5 @@ export default function HealthKnowledgePage() {
         </div>
     );
 }
+
+    
