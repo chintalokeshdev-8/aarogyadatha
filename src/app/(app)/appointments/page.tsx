@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User, Wallet } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User, Wallet, Tooth } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -115,6 +115,12 @@ const hospitalsData: Record<string, { location: string; address: string; phone: 
         address: "Gunturvari Thota Main Rd, Pottur Vari Thota, Guntur, Andhra Pradesh 522001",
         phone: "099661 77014",
         website: "#"
+    },
+    "Vision Dental Multispeciality Hospital": {
+        location: "Guntur",
+        address: "Main Road, Arundelpet, Guntur, Andhra Pradesh 522002",
+        phone: "098765 43210",
+        website: "#"
     }
 };
 
@@ -183,6 +189,20 @@ const doctors = [
         opFee: 850,
         availability: "Mon - Sat 9AM - 1PM",
         consultationType: "Offline (Hospital Visit)",
+    },
+    {
+        name: "Dr. K. Abhilash, BDS, MRD, FCO",
+        specialty: "Implantologist & Laser Specialist",
+        experience: "15 years",
+        hospital: "Vision Dental Multispeciality Hospital",
+        surgeries: "1500+ successful implants",
+        mainDealing: "Dental implants, laser dentistry, and cosmetic dentistry.",
+        avatar: "https://picsum.photos/seed/doc19/100/100",
+        dataAiHint: "male dentist professional",
+        opFee: 600,
+        availability: "Mon - Sat 10AM - 8PM",
+        consultationType: ["Online", "Offline (Hospital Visit)"],
+        recommended: true,
     },
     {
         name: "Dr. Posani Srinivasarao",
@@ -353,6 +373,7 @@ const departments = [
     { value: "Gynaecologist", label: "Gynaecology", icon: Baby },
     { value: "Pediatrician", label: "Pediatrics", icon: Baby },
     { value: "Dermatologist", label: "Dermatology", icon: Leaf },
+    { value: "Implantologist & Laser Specialist", label: "Dental", icon: Tooth },
     { value: "General Physician", label: "General Physician", icon: StethoscopeIcon },
     { value: "Gastroenterologist", label: "Gastroenterology", icon: StethoscopeIcon },
     { value: "Nephrologist", label: "Nephrology", icon: StethoscopeIcon },
@@ -1059,7 +1080,7 @@ export default function AppointmentsPage() {
             const hospitalMatch = doctor.hospital.toLowerCase().includes(lowercasedQuery);
             const searchMatch = nameMatch || hospitalMatch;
 
-            const departmentMatch = selectedDepartment === 'all' || doctor.specialty === selectedDepartment;
+            const departmentMatch = selectedDepartment === 'all' || doctor.specialty === selectedDepartment || (uniqueDepartments.find(d => d.value === selectedDepartment)?.label === doctor.specialty) || (uniqueDepartments.find(d => d.value === selectedDepartment)?.label === "Dental" && doctor.specialty.includes("Implantologist"));
             
             const hospitalFilterMatch = selectedHospital === 'All Hospitals' || doctor.hospital === selectedHospital;
 
