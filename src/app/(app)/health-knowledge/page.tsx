@@ -80,6 +80,17 @@ const PlaceholderContent = ({ featureName }: { featureName: string }) => (
     </div>
 );
 
+const FirstAidItem = ({ title, children }: { title: string, children: React.ReactNode }) => (
+    <Card className="border">
+        <CardHeader>
+            <CardTitle className="text-lg">{title}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-muted-foreground">
+            {children}
+        </CardContent>
+    </Card>
+)
+
 export default function HealthKnowledgePage() {
     const [searchTerm, setSearchTerm] = useState('');
     const resultsRef = useRef<HTMLDivElement>(null);
@@ -101,6 +112,63 @@ export default function HealthKnowledgePage() {
             </div>
 
             <div className="space-y-4">
+                <HealthKnowledgeCategory 
+                    icon={ShieldAlert} 
+                    title="First Aid" 
+                    description="Learn what to do in critical situations like CPR, snake bites, and heart attacks."
+                    color="hsl(var(--nav-emergency))"
+                >
+                    <div className="space-y-4">
+                        <FirstAidItem title="How to Perform CPR (Cardiopulmonary Resuscitation)">
+                            <p className="font-bold text-destructive">Disclaimer: This is a guide for untrained bystanders. Formal training is highly recommended.</p>
+                            <h4 className="font-semibold text-foreground">1. Check for Safety & Response</h4>
+                            <p>Ensure the scene is safe. Tap the person’s shoulder and shout, "Are you okay?" to check for a response.</p>
+                            <h4 className="font-semibold text-foreground">2. Call for Help</h4>
+                            <p>If there's no response, immediately call your local emergency number (e.g., 108 in India) or ask someone else to call.</p>
+                            <h4 className="font-semibold text-foreground">3. Chest Compressions (C in C-A-B)</h4>
+                            <p>Place the heel of one hand on the center of the person's chest. Place your other hand on top and interlock your fingers. Keep your arms straight and position your shoulders directly above your hands. Push hard and fast at a rate of 100-120 compressions per minute. Let the chest rise completely between compressions.</p>
+                            <h4 className="font-semibold text-foreground">4. Airway & Breathing (A and B - for trained individuals)</h4>
+                            <p>If you are trained in CPR, after 30 compressions, open the airway by tilting the head back and lifting the chin. Give 2 rescue breaths. Continue with cycles of 30 compressions and 2 breaths.</p>
+                             <h4 className="font-semibold text-foreground">5. Continue Until Help Arrives</h4>
+                            <p>Continue CPR until you see obvious signs of life, an AED is ready to use, or medical personnel take over.</p>
+                        </FirstAidItem>
+
+                        <FirstAidItem title="First Aid for Snake Bites">
+                            <p className="font-bold text-destructive">This is a medical emergency. Get to a hospital immediately.</p>
+                            <h4 className="font-semibold text-foreground">What to DO:</h4>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>Remain calm and move away from the snake.</li>
+                                <li>Remove any tight clothing or jewelry near the bite area.</li>
+                                <li>Keep the bitten limb still and, if possible, position it below the level of the heart.</li>
+                                <li>Note the time of the bite and try to remember the snake's appearance (color, shape). Do not try to catch it.</li>
+                                <li>Call for emergency help and transport to a hospital as quickly as possible.</li>
+                            </ul>
+                             <Separator className="my-4" />
+                            <h4 className="font-semibold text-destructive">What NOT to do:</h4>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>Do NOT cut the wound or try to suck out the venom.</li>
+                                <li>Do NOT apply a tourniquet or tie a tight band.</li>
+                                <li>Do NOT apply ice or wash the bite with water.</li>
+                                <li>Do NOT drink alcohol or caffeine.</li>
+                            </ul>
+                        </FirstAidItem>
+
+                        <FirstAidItem title="Responding to a Heart Attack">
+                             <p className="font-bold text-destructive">A heart attack is a life-threatening emergency. Call for help immediately.</p>
+                             <h4 className="font-semibold text-foreground">Recognize the Symptoms:</h4>
+                             <p>Common symptoms include chest pain (pressure, squeezing, or aching), pain spreading to the arm, neck, or jaw, shortness of breath, cold sweat, nausea, and lightheadedness.</p>
+                             <h4 className="font-semibold text-foreground">Immediate Steps:</h4>
+                              <ul className="list-disc list-inside space-y-1">
+                                <li><strong>Call Emergency Services:</strong> Immediately call your local emergency number (e.g., 108). Do not wait.</li>
+                                <li><strong>Chew Aspirin:</strong> If the person is not allergic, have them slowly chew one adult-strength (325 mg) aspirin.</li>
+                                <li><strong>Loosen Clothing:</strong> Loosen any tight clothing around the neck and waist.</li>
+                                <li><strong>Rest Comfortably:</strong> Have the person sit or lie down in a comfortable position.</li>
+                                <li><strong>Be Ready for CPR:</strong> If the person becomes unconscious and stops breathing, be prepared to start CPR if you are trained.</li>
+                            </ul>
+                        </FirstAidItem>
+                    </div>
+                </HealthKnowledgeCategory>
+
                 <HealthKnowledgeCategory 
                     icon={BookOpenCheck} 
                     title="Health Library" 
