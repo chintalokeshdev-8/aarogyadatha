@@ -40,6 +40,7 @@ import {
   FileText,
   Info,
   Languages,
+  HandHeart,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -266,7 +267,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         {!isMobile && (
-          <div className="flex flex-1 justify-center px-4">
+          <div className="flex-1 justify-center px-4 hidden sm:flex">
               <GlobalSearch />
           </div>
         )}
@@ -318,7 +319,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 </DropdownMenuItem>
                             </DialogTrigger>
                             
-                            {allMenuItems.filter(item => ['surgery', 'healthKnowledge', 'bloodBank', 'healthTracker', 'jrDoctors', 'pregnancy', 'insurances'].includes(item.id)).map(item => (
+                            {allMenuItems.filter(item => ['communityFund', 'surgery', 'healthKnowledge', 'bloodBank', 'healthTracker', 'jrDoctors', 'pregnancy', 'insurances'].includes(item.id)).map(item => (
                                 <Link href={item.href} key={item.id} passHref>
                                     <DropdownMenuItem className="p-3" onClick={(e) => handleNavItemClick(item.href, e)}>
                                         <item.icon className="mr-3" style={{color: item.color}} />
@@ -410,8 +411,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <nav className="flex w-max py-1 px-12 justify-center">
                     {visibleMenuItems.map((item, index) => {
                         const isActive = isClient && pathname === item.href;
-                        const isSpecial = item.label === 'Emergency' || item.label === 'Blood Bank';
-                        const specialColor = item.label === 'Emergency' ? 'hsl(var(--destructive))' : 'hsl(var(--nav-blood-bank))';
+                        const isSpecial = item.label === 'Emergency' || item.label === 'Blood Bank' || item.label === 'Community Fund';
+                        const specialColor = item.id === 'emergency' ? 'hsl(var(--destructive))' : item.color;
 
                         return (
                            <Link href={item.href} key={item.label} passHref onClick={(e) => handleNavItemClick(item.href, e)}>
