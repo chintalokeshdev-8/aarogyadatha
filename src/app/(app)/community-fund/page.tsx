@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from 'next/image';
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { RupeeIcon } from "@/components/icons/rupee-icon";
 
 const campaigns = [
   {
@@ -95,6 +96,16 @@ export default function CommunityFundPage() {
                     All campaigns below are <strong className="text-primary">Arogyadhatha Verified</strong>. We confirm each case with doctor reports and BPL status to ensure that every contribution goes towards a <strong className="text-primary">100% genuine need</strong>.
                 </CardDescription>
             </CardHeader>
+        </Card>
+
+        <Card className="border-green-500 bg-green-50/50">
+            <CardContent className="p-4 flex items-center gap-4">
+                <RupeeIcon className="h-10 w-10 text-green-600 flex-shrink-0" />
+                <div>
+                    <h3 className="font-bold text-green-800">Your Donation is Tax-Deductible</h3>
+                    <p className="text-sm text-green-700">Your contribution can save a life and also offers you tax benefits under Section 80G of the Income Tax Act.</p>
+                </div>
+            </CardContent>
         </Card>
         
         <div className="flex flex-wrap items-center gap-2">
@@ -184,3 +195,5 @@ export default function CommunityFundPage() {
     </div>
   );
 }
+
+    
