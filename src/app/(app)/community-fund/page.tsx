@@ -142,6 +142,7 @@ export default function CommunityFundPage() {
     
   return (
     <div className="space-y-6">
+      <div className="relative">
         <Card className="border-0 shadow-none bg-transparent">
             <CardHeader className="text-center p-0">
                 <div className="inline-block p-3 bg-primary/10 rounded-full mx-auto w-fit">
@@ -153,20 +154,23 @@ export default function CommunityFundPage() {
                 </CardDescription>
             </CardHeader>
         </Card>
+        <div className="absolute top-0 right-0">
+            <Button asChild variant="link" className="p-0 h-auto">
+                <a href="tel:8008334948">
+                    <Phone className="mr-1.5 h-4 w-4" /> Contact Us
+                </a>
+            </Button>
+        </div>
+      </div>
         
         <Card>
-            <CardContent className="p-2 grid sm:grid-cols-3 gap-2">
+            <CardContent className="p-2 grid sm:grid-cols-2 gap-2">
                 <DonationDialog />
                  <Button asChild className="w-full text-base h-10" variant="outline">
                     <Link href="/community-fund/start-campaign">
                         <PlusCircle className="mr-2 h-4 w-4"/>
                         Start a Campaign
                     </Link>
-                </Button>
-                <Button asChild className="w-full text-base h-10" variant="outline">
-                    <a href="tel:8008334948">
-                        <Phone className="mr-2 h-4 w-4" /> Contact Us
-                    </a>
                 </Button>
             </CardContent>
         </Card>
