@@ -155,7 +155,7 @@ export default function CommunityFundPage() {
             </CardHeader>
         </Card>
         <div className="absolute top-0 right-0">
-            <Button asChild variant="link" className="p-0 h-auto">
+            <Button asChild variant="outline" className="h-auto p-2">
                 <a href="tel:8008334948">
                     <Phone className="mr-1.5 h-4 w-4" /> Contact Us
                 </a>
