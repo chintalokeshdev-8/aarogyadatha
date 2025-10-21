@@ -144,18 +144,22 @@ export default function CommunityFundPage() {
     <div className="space-y-6">
       <div className="relative">
         <Card className="border-0 shadow-none bg-transparent">
-            <CardHeader className="text-center p-0">
-                <div className="inline-block p-3 bg-primary/10 rounded-full mx-auto w-fit">
-                    <HandHeart className="h-8 w-8 text-primary" />
+            <CardHeader className="p-0">
+                 <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-3">
+                    <div className="p-3 bg-primary/10 rounded-full w-fit flex-shrink-0">
+                        <HandHeart className="h-8 w-8 text-primary" />
+                    </div>
+                    <div>
+                        <CardTitle className="text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
+                    </div>
                 </div>
-                <CardTitle className="text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
-                <CardDescription className="text-base text-muted-foreground max-w-2xl mx-auto">
+                <CardDescription className="text-base text-muted-foreground max-w-3xl mx-auto text-center mt-4">
                     All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a genuine need. Your donation is tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
         </Card>
         <div className="absolute top-0 right-0">
-            <Button asChild variant="outline" className="h-auto p-2">
+            <Button asChild variant="outline" className="h-auto p-2 border">
                 <a href="tel:8008334948">
                     <Phone className="mr-1.5 h-4 w-4" /> Contact Us
                 </a>
