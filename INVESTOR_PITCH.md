@@ -1,5 +1,5 @@
 
-# MedBridge: Investor Pitch Deck
+# Arogyadhatha: Investor Pitch Deck
 
 ---
 
@@ -7,7 +7,7 @@
 
 **(Image: A modern, clean graphic showing a bridge connecting a family to a stylized health icon)**
 
-# **MedBridge**
+# **Arogyadhatha**
 
 ## Your Comprehensive Health Companion
 
@@ -30,9 +30,9 @@ For millions in India, managing health is a stressful, disjointed experience.
 
 ### **Slide 3: The Solution**
 
-## MedBridge: One App for All Your Health Needs
+## Arogyadhatha: One App for All Your Health Needs
 
-MedBridge is an all-in-one digital platform that simplifies healthcare through intelligent integration and AI-powered guidance.
+Arogyadhatha is an all-in-one digital platform that simplifies healthcare through intelligent integration and AI-powered guidance.
 
 *   **Unified Platform:** We bring together appointments, medical records, medication management, and diagnostics into a single, intuitive interface.
 *   **AI-Powered Triage:** Our AI Symptom Checker guides users to the right specialist for their condition, saving time and improving outcomes. **("Right disease for the right doctor")**.
@@ -60,7 +60,7 @@ MedBridge is an all-in-one digital platform that simplifies healthcare through i
     *   **Personalization:** AI generates diet plans and health advice tailored to the user's specific conditions and medications.
 
 *   **End-to-End Integration:**
-    *   From initial symptom to booking, consultation, and follow-up care, MedBridge manages the entire patient journey.
+    *   From initial symptom to booking, consultation, and follow-up care, Arogyadhatha manages the entire patient journey.
 
 *   **Hyper-Local Focus with Bilingual Support:**
     *   By supporting both English and Telugu, we are accessible to a much wider demographic in our target regions.
@@ -77,7 +77,7 @@ MedBridge is an all-in-one digital platform that simplifies healthcare through i
 *   **Huge, Underserved Market:** India's digital health market is projected to exceed **$37 billion by 2030**. A massive population is moving online for their healthcare needs.
 *   **Mobile-First Population:** With over 600 million smartphone users, a mobile-first platform is essential for reaching the market.
 *   **Growing Health Consciousness:** The post-pandemic era has seen a significant increase in health awareness and a demand for proactive wellness tools.
-*   **Government Push:** Initiatives like the Ayushman Bharat Digital Mission (ABDM) are creating a national digital health ecosystem, and MedBridge is perfectly positioned to integrate with it.
+*   **Government Push:** Initiatives like the Ayushman Bharat Digital Mission (ABDM) are creating a national digital health ecosystem, and Arogyadhatha is perfectly positioned to integrate with it.
 
 ---
 
@@ -120,7 +120,7 @@ We are raising **₹[Amount]** to achieve the following milestones over the next
 
 ### **Slide 10: Contact**
 
-**(Image: A clean image of the MedBridge app icon and name)**
+**(Image: A clean image of the Arogyadhatha app icon and name)**
 
 # **Thank You**
 
@@ -129,4 +129,5 @@ We are raising **₹[Amount]** to achieve the following milestones over the next
 **[Your Name/Company Name]**
 **[Your Email]**
 **[Your Phone Number]**
-**[Your Website (e.g., www.medbridge.health)]**
+**[Your Website (e.g., www.arogyadhatha.health)]**
+

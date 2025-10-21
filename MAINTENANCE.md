@@ -1,8 +1,8 @@
-# medibridge Application Maintenance Costs (Estimated)
+# arogyadhatha Application Maintenance Costs (Estimated)
 
 ## Introduction
 
-This document provides a detailed estimate of the potential monthly and yearly maintenance costs for the medibridge application. The costs are broken down by service category and are provided in Indian Rupees (INR).
+This document provides a detailed estimate of the potential monthly and yearly maintenance costs for the arogyadhatha application. The costs are broken down by service category and are provided in Indian Rupees (INR).
 
 Please note that these are **estimates**. Actual costs can vary significantly based on user traffic, the number of API calls made, data storage, and the specific pricing plans of third-party services at the time.
 
@@ -10,7 +10,7 @@ Please note that these are **estimates**. Actual costs can vary significantly ba
 
 ## 1. Cloud Hosting & Backend (Firebase)
 
-medibridge is built on Firebase, which offers a pay-as-you-go pricing model (Blaze Plan) after a generous free tier (Spark Plan). For a new application, it is likely that you will remain within the free tier for some time.
+arogyadhatha is built on Firebase, which offers a pay-as-you-go pricing model (Blaze Plan) after a generous free tier (Spark Plan). For a new application, it is likely that you will remain within the free tier for some time.
 
 #### a. Spark Plan (Free Tier)
 For low-to-moderate traffic, your costs could be **₹0**. The free tier includes:
@@ -55,7 +55,7 @@ This is the most variable cost and is directly tied to how many users use the AI
 
 ## 3. Domain Name
 
-You will need a custom domain name for your application (e.g., `www.medbridge.com`).
+You will need a custom domain name for your application (e.g., `www.arogyadhatha.com`).
 
 - **Cost:** Varies by registrar (.com domains are typically around ₹800 - ₹1,200 per year).
 - **Estimated Yearly Cost:** **~₹1,000**

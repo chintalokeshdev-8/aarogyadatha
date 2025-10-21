@@ -1,7 +1,7 @@
 'use server';
 
 /**
- * @fileOverview A general-purpose AI assistant for the medibridge app.
+ * @fileOverview A general-purpose AI assistant for the arogyadhatha app.
  *
  * - askAiAssistant - A function that answers user questions based on their health data.
  * - AiAssistantInput - The input type for the askAiAssistant function.
@@ -46,7 +46,7 @@ const aiAssistantFlow = ai.defineFlow(
       Current Medications: ${JSON.stringify(medicineSchedule, null, 2)}
     `;
 
-    const prompt = `You are a helpful AI health assistant for the medibridge app. Your role is to answer user questions based on the health data provided. Keep your answers concise, clear, and easy to understand. Do not provide medical advice, but rather summarize the data and help the user find information within their records.
+    const prompt = `You are a helpful AI health assistant for the arogyadhatha app. Your role is to answer user questions based on the health data provided. Keep your answers concise, clear, and easy to understand. Do not provide medical advice, but rather summarize the data and help the user find information within their records.
     
     Here is the user's question:
     "${input.question}"

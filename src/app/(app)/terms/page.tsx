@@ -15,11 +15,11 @@ export default function TermsPage() {
             sections: [
                 {
                     title: "1. Introduction",
-                    content: "Welcome to MedBridgee (\"App\", \"Service\"). These Terms & Conditions (\"Terms\") govern your use of our application and services. By accessing or using the Service, you agree to be bound by these Terms."
+                    content: "Welcome to Arogyadhatha (\"App\", \"Service\"). These Terms & Conditions (\"Terms\") govern your use of our application and services. By accessing or using the Service, you agree to be bound by these Terms."
                 },
                 {
                     title: "2. Medical Disclaimer",
-                    content: "The information provided by MedBridgee, including but not limited to the AI Symptom Checker, is for informational purposes only and does not constitute medical advice. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition."
+                    content: "The information provided by Arogyadhatha, including but not limited to the AI Symptom Checker, is for informational purposes only and does not constitute medical advice. It is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition."
                 },
                 {
                     title: "3. User Accounts",
@@ -31,7 +31,7 @@ export default function TermsPage() {
                 },
                 {
                     title: "5. Limitation of Liability",
-                    content: "In no event shall MedBridgee, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service."
+                    content: "In no event shall Arogyadhatha, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service."
                 },
                 {
                     title: "6. Changes to Terms",
@@ -45,11 +45,11 @@ export default function TermsPage() {
             sections: [
                 {
                     title: "1. పరిచయం",
-                    content: "మెడిబ్రిడ్జ్ (\"యాప్\", \"సేవ\") కు స్వాగతం. ఈ నిబంధనలు & షరతులు (\"నిబంధనలు\") మా అప్లికేషన్ మరియు సేవల యొక్క మీ వినియోగాన్ని నియంత్రిస్తాయి. సేవను యాక్సెస్ చేయడం లేదా ఉపయోగించడం ద్వారా, మీరు ఈ నిబంధనలకు కట్టుబడి ఉండటానికి అంగీకరిస్తున్నారు."
+                    content: "ఆరోగ్యధాత (\"యాప్\", \"సేవ\") కు స్వాగతం. ఈ నిబంధనలు & షరతులు (\"నిబంధనలు\") మా అప్లికేషన్ మరియు సేవల యొక్క మీ వినియోగాన్ని నియంత్రిస్తాయి. సేవను యాక్సెస్ చేయడం లేదా ఉపయోగించడం ద్వారా, మీరు ఈ నిబంధనలకు కట్టుబడి ఉండటానికి అంగీకరిస్తున్నారు."
                 },
                 {
                     title: "2. వైద్య నిరాకరణ",
-                    content: "AI లక్షణాల తనిఖీతో సహా మెడిబ్రిడ్జ్ అందించిన సమాచారం సమాచార ప్రయోజనాల కోసం మాత్రమే మరియు వైద్య సలహా కాదు. ఇది వృత్తిపరమైన వైద్య సలహా, రోగ నిర్ధారణ లేదా చికిత్సకు ప్రత్యామ్నాయం కాదు. వైద్య పరిస్థితికి సంబంధించి మీకు ఏవైనా ప్రశ్నలు ఉంటే ఎల్లప్పుడూ మీ వైద్యుడిని లేదా ఇతర అర్హతగల ఆరోగ్య ప్రదాతని సంప్రదించండి."
+                    content: "AI లక్షణాల తనిఖీతో సహా ఆరోగ్యధాత అందించిన సమాచారం సమాచార ప్రయోజనాల కోసం మాత్రమే మరియు వైద్య సలహా కాదు. ఇది వృత్తిపరమైన వైద్య సలహా, రోగ నిర్ధారణ లేదా చికిత్సకు ప్రత్యామ్నాయం కాదు. వైద్య పరిస్థితికి సంబంధించి మీకు ఏవైనా ప్రశ్నలు ఉంటే ఎల్లప్పుడూ మీ వైద్యుడిని లేదా ఇతర అర్హతగల ఆరోగ్య ప్రదాతని సంప్రదించండి."
                 },
                 {
                     title: "3. వినియోగదారు ఖాతాలు",
@@ -61,7 +61,7 @@ export default function TermsPage() {
                 },
                 {
                     title: "5. బాధ్యత యొక్క పరిమితి",
-                    content: "ఏ సందర్భంలోనూ మెడిబ్రిడ్జ్, లేదా దాని డైరెక్టర్లు, ఉద్యోగులు, భాగస్వాములు, ఏజెంట్లు, సరఫరాదారులు లేదా అనుబంధ సంస్థలు, లాభాల నష్టం, డేటా, ఉపయోగం, గుడ్‌విల్ లేదా ఇతర కనిపించని నష్టాలతో సహా ఏవైనా పరోక్ష, యాదృచ్ఛిక, ప్రత్యేక, పర్యవసానమైన లేదా శిక్షాత్మక నష్టాలకు బాధ్యత వహించరు, ఇది సేవను యాక్సెస్ చేయడం లేదా ఉపయోగించడం లేదా యాక్సెస్ చేయలేకపోవడం లేదా ఉపయోగించలేకపోవడం వల్ల కలుగుతుంది."
+                    content: "ఏ సందర్భంలోనూ ఆరోగ్యధాత, లేదా దాని డైరెక్టర్లు, ఉద్యోగులు, భాగస్వాములు, ఏజెంట్లు, సరఫరాదారులు లేదా అనుబంధ సంస్థలు, లాభాల నష్టం, డేటా, ఉపయోగం, గుడ్‌విల్ లేదా ఇతర కనిపించని నష్టాలతో సహా ఏవైనా పరోక్ష, యాదృచ్ఛిక, ప్రత్యేక, పర్యవసానమైన లేదా శిక్షాత్మక నష్టాలకు బాధ్యత వహించరు, ఇది సేవను యాక్సెస్ చేయడం లేదా ఉపయోగించడం లేదా యాక్సెస్ చేయలేకపోవడం లేదా ఉపయోగించలేకపోవడం వల్ల కలుగుతుంది."
                 },
                 {
                     title: "6. నిబంధనలలో మార్పులు",

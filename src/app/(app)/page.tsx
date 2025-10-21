@@ -61,7 +61,7 @@ const medicineAssistanceItems = [
 const carouselSlides = [
     {
         title: "50% OFF on All Doctor Consultations!",
-        description: "Use code MEDIBRIDGE to get half price on any consultation booking.",
+        description: "Use code AROGYADHATHA to get half price on any consultation booking.",
         buttonText: "Book an Appointment",
         buttonIcon: CheckCircle,
         href: "/appointments",

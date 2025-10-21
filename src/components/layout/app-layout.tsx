@@ -230,7 +230,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <div className="p-1.5 bg-primary-foreground rounded-lg">
                       <Activity className="w-6 h-6 text-primary" />
                   </div>
-                  <h1 className="text-xl font-bold">medibridge</h1>
+                  <h1 className="text-xl font-bold">Arogyadhatha</h1>
               </Link>
           </header>
           <main className="flex-1 pb-40">
@@ -262,7 +262,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     </div>
                 </Link>
             )}
-             <h1 className="text-xl font-bold text-primary-foreground">medibridge</h1>
+             <h1 className="text-xl font-bold text-primary-foreground">Arogyadhatha</h1>
         </div>
 
         <div className="hidden md:flex flex-1 justify-center">
@@ -347,7 +347,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                              <Link href="/about" passHref>
                                 <DropdownMenuItem className="p-3">
                                     <Info className="mr-3 text-primary" />
-                                    <span className="font-semibold">About medibridge</span>
+                                    <span className="font-semibold">About Arogyadhatha</span>
                                 </DropdownMenuItem>
                             </Link>
                         </div>

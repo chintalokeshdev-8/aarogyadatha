@@ -10,10 +10,10 @@ export default function AboutPage() {
 
     const t = {
         en: {
-            title: "About medibridge",
+            title: "About Arogyadhatha",
             subtitle: "Your Comprehensive Health Companion",
             introductionTitle: "Introduction",
-            introductionP1: "medibridge is an all-in-one digital health platform designed to empower users by providing easy access to a wide range of healthcare services and information. In a world where managing health can be complex and fragmented, medibridge serves as a single, user-friendly bridge between patients and the healthcare ecosystem. Our mission is to make healthcare simple, accessible, and personalized for everyone.",
+            introductionP1: "Arogyadhatha is an all-in-one digital health platform designed to empower users by providing easy access to a wide range of healthcare services and information. In a world where managing health can be complex and fragmented, Arogyadhatha serves as a single, user-friendly bridge between patients and the healthcare ecosystem. Our mission is to make healthcare simple, accessible, and personalized for everyone.",
             introductionP2: "The app is built with a mobile-first approach, featuring a clean interface and intuitive navigation. It also includes bilingual support (English and Telugu) to cater to a diverse user base.",
             coreFeaturesTitle: "Core Features",
             symptomChecker: "1. AI Symptom Checker",
@@ -30,10 +30,10 @@ export default function AboutPage() {
             medicinesDesc: "A personal medication management tool that tracks schedules and dosages, with an AI assistant for drug information."
         },
         te: {
-            title: "మెడిబ్రిడ్జ్ గురించి",
+            title: "ఆరోగ్యధాత గురించి",
             subtitle: "మీ సమగ్ర ఆరోగ్య సహచరుడు",
             introductionTitle: "పరిచయం",
-            introductionP1: "మెడిబ్రిడ్జ్ అనేది వినియోగదారులకు విస్తృత శ్రేణి ఆరోగ్య సంరక్షణ సేవలు మరియు సమాచారాన్ని సులభంగా యాక్సెస్ చేయడం ద్వారా వారికి అధికారం కల్పించడానికి రూపొందించబడిన ఒక ఆల్-ఇన్-వన్ డిజిటల్ హెల్త్ ప్లాట్‌ఫారమ్. ఆరోగ్యాన్ని నిర్వహించడం సంక్లిష్టంగా మరియు ఖండితంగా ఉన్న ప్రపంచంలో, మెడిబ్రిడ్జ్ రోగులు మరియు ఆరోగ్య సంరక్షణ పర్యావరణ వ్యవస్థ మధ్య ఒకే, వినియోగదారు-స్నేహపూర్వక వంతెనగా పనిచేస్తుంది. ఆరోగ్య సంరక్షణను అందరికీ సులభతరం చేయడం, ప్రాప్యత చేయడం మరియు వ్యక్తిగతీకరించడం మా లక్ష్యం.",
+            introductionP1: "ఆరోగ్యధాత అనేది వినియోగదారులకు విస్తృత శ్రేణి ఆరోగ్య సంరక్షణ సేవలు మరియు సమాచారాన్ని సులభంగా యాక్సెస్ చేయడం ద్వారా వారికి అధికారం కల్పించడానికి రూపొందించబడిన ఒక ఆల్-ఇన్-వన్ డిజిటల్ హెల్త్ ప్లాట్‌ఫారమ్. ఆరోగ్యాన్ని నిర్వహించడం సంక్లిష్టంగా మరియు ఖండితంగా ఉన్న ప్రపంచంలో, ఆరోగ్యధాత రోగులు మరియు ఆరోగ్య సంరక్షణ పర్యావరణ వ్యవస్థ మధ్య ఒకే, వినియోగదారు-స్నేహపూర్వక వంతెనగా పనిచేస్తుంది. ఆరోగ్య సంరక్షణను అందరికీ సులభతరం చేయడం, ప్రాప్యత చేయడం మరియు వ్యక్తిగతీకరించడం మా లక్ష్యం.",
             introductionP2: "ఈ యాప్ మొబైల్-ఫస్ట్ విధానంతో రూపొందించబడింది, ఇది శుభ్రమైన ఇంటర్‌ఫేస్ మరియు సహజమైన నావిగేషన్‌ను కలిగి ఉంటుంది. ఇది విభిన్న వినియోగదారుల కోసం ద్విభాషా మద్దతును (ఇంగ్లీష్ మరియు తెలుగు) కూడా కలిగి ఉంటుంది.",
             coreFeaturesTitle: "ప్రధాన ఫీచర్లు",
             symptomChecker: "1. AI లక్షణాల తనిఖీ",

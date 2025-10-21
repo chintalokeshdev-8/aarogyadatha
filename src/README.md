@@ -1,8 +1,8 @@
-# MedBridge: Your Comprehensive Health Companion
+# Arogyadhatha: Your Comprehensive Health Companion
 
 ## Introduction
 
-MedBridge is an all-in-one digital health platform designed to empower users by providing easy access to a wide range of healthcare services and information. In a world where managing health can be complex and fragmented, MedBridge serves as a single, user-friendly bridge between patients and the healthcare ecosystem. Our mission is to make healthcare simple, accessible, and personalized for everyone.
+Arogyadhatha is an all-in-one digital health platform designed to empower users by providing easy access to a wide range of healthcare services and information. In a world where managing health can be complex and fragmented, Arogyadhatha serves as a single, user-friendly bridge between patients and the healthcare ecosystem. Our mission is to make healthcare simple, accessible, and personalized for everyone.
 
 The app is built with a mobile-first approach, featuring a clean interface and intuitive navigation. It also includes bilingual support (English and Telugu) to cater to a diverse user base.
 
@@ -10,7 +10,7 @@ The app is built with a mobile-first approach, featuring a clean interface and i
 
 ## Core Features
 
-MedBridge integrates multiple essential health services into one seamless application. Below is a breakdown of each key feature, explaining what it is, why it's important, and how people use it.
+Arogyadhatha integrates multiple essential health services into one seamless application. Below is a breakdown of each key feature, explaining what it is, why it's important, and how people use it.
 
 ### 1. AI Symptom Checker
 - **What it is:** An intelligent tool that allows users to input their health symptoms (via text or voice) and receive an AI-generated analysis.

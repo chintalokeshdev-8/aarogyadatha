@@ -1,6 +1,6 @@
-# MedBridge Application: Comprehensive Keyword Glossary
+# Arogyadhatha Application: Comprehensive Keyword Glossary
 
-This document provides a detailed and categorized list of all significant keywords and terms used within the MedBridge application. This glossary is useful for SEO, content strategy, development, and understanding the full scope of the app.
+This document provides a detailed and categorized list of all significant keywords and terms used within the Arogyadhatha application. This glossary is useful for SEO, content strategy, development, and understanding the full scope of the app.
 
 ---
 
@@ -505,3 +505,4 @@ This is a comprehensive list compiled from the symptom checker and other parts o
 - JSON (JavaScript Object Notation)
 - `package.json`
 - `npm` (Node Package Manager)
+

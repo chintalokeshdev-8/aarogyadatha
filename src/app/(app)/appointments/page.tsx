@@ -782,7 +782,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
     const [step, setStep] = useState(1);
     const [selectedDate, setSelectedDate] = useState(addDays(new Date(), 1));
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
-    const [paymentMethod, setPaymentMethod] = useState('medibridge Wallet');
+    const [paymentMethod, setPaymentMethod] = useState('Arogyadhatha Wallet');
 
     const handleContinue = () => {
         if (!doctor || !selectedTime) return;
@@ -812,7 +812,7 @@ function BookingDialog({ open, onOpenChange, doctor, onBookingComplete }: { open
             setStep(1);
             setSelectedTime(null);
             setSelectedDate(addDays(new Date(), 1));
-            setPaymentMethod('medibridge Wallet');
+            setPaymentMethod('Arogyadhatha Wallet');
         }
     }, [open]);
 
@@ -1748,4 +1748,3 @@ export default function AppointmentsPage() {
     
 
     
-
