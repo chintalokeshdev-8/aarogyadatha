@@ -145,7 +145,7 @@ export default function CommunityFundPage() {
       <div className="relative">
         <Card className="border-0 shadow-none bg-transparent">
             <CardHeader className="p-0">
-                 <div className="flex flex-col sm:flex-row items-center justify-center text-center sm:text-left gap-3">
+                 <div className="flex items-center justify-center text-center sm:text-left gap-3">
                     <div className="p-3 bg-primary/10 rounded-full w-fit flex-shrink-0">
                         <HandHeart className="h-8 w-8 text-primary" />
                     </div>
