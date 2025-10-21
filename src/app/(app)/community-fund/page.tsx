@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from 'next/image';
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -175,28 +175,31 @@ function CampaignDetailsDialog({ campaign, children }: { campaign: typeof campai
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-3xl p-0">
+            <DialogContent className="sm:max-w-xl p-0 border">
                  <DialogHeader className="p-6 pb-0">
-                    <DialogTitle>Campaign for {campaign.name}, {campaign.age}</DialogTitle>
+                    <DialogTitle className="text-2xl">Campaign for {campaign.name}</DialogTitle>
+                    <DialogDescription>A verified case by Arogyadhatha</DialogDescription>
                 </DialogHeader>
-                <Carousel className="w-full">
-                    <CarouselContent>
-                        {campaign.media.map((item, index) => (
-                            <CarouselItem key={index}>
-                                {item.type === 'image' ? (
-                                    <Image src={item.url} alt={`Campaign image ${index + 1}`} width={800} height={450} data-ai-hint={item.hint} className="w-full h-64 object-cover" />
-                                ) : (
-                                    <iframe src={item.url} title="Campaign video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="w-full h-64"></iframe>
-                                )}
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-4" />
-                    <CarouselNext className="right-4" />
-                </Carousel>
-                <div className="p-6 pt-2 space-y-4">
-                    <h2 className="text-2xl font-bold">{campaign.name}, {campaign.age}</h2>
-                    <p className="text-muted-foreground">{campaign.story}</p>
+                <div className='max-h-[70vh] overflow-y-auto px-6 space-y-4'>
+                    <Carousel className="w-full rounded-lg overflow-hidden">
+                        <CarouselContent>
+                            {campaign.media.map((item, index) => (
+                                <CarouselItem key={index}>
+                                    {item.type === 'image' ? (
+                                        <Image src={item.url} alt={`Campaign image ${index + 1}`} width={800} height={450} data-ai-hint={item.hint} className="w-full h-auto object-cover" />
+                                    ) : (
+                                        <iframe src={item.url} title="Campaign video" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="w-full aspect-video"></iframe>
+                                    )}
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-4" />
+                        <CarouselNext className="right-4" />
+                    </Carousel>
+                    <div>
+                        <h2 className="text-2xl font-bold">{campaign.name}, {campaign.age}</h2>
+                        <p className="text-muted-foreground mt-2">{campaign.story}</p>
+                    </div>
                     <Separator />
                     <div className="space-y-3">
                         <h3 className="font-semibold">Details</h3>
@@ -204,11 +207,13 @@ function CampaignDetailsDialog({ campaign, children }: { campaign: typeof campai
                         <div className="flex items-center gap-2 text-sm"><Hospital className="h-4 w-4 text-primary" /> Hospital: <span className="font-medium">{campaign.hospital}</span></div>
                         <Button variant="outline" className="w-full"><FileText className="mr-2 h-4 w-4" /> View Verified Reports</Button>
                     </div>
-                     <Separator />
+                </div>
+                 <DialogFooter className="p-6 bg-muted/50">
                     <Button className="w-full h-12 text-lg bg-primary">
                         Donate Now
                     </Button>
-                </div>
+                </DialogFooter>
+                 <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground" />
             </DialogContent>
         </Dialog>
     )
@@ -233,7 +238,7 @@ export default function CommunityFundPage() {
                     <h1 className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</h1>
                 </div>
                 <CardDescription className="text-sm text-muted-foreground max-w-3xl mt-2 mx-auto sm:mx-0">
-                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes towards a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is also tax-deductible under Section 80G.
+                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes towards a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
         </Card>
