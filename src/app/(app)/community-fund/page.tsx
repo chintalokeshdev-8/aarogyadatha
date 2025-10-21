@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import Image from 'next/image';
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import { RupeeIcon } from "@/components/icons/rupee-icon";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
@@ -142,30 +141,29 @@ export default function CommunityFundPage() {
     
   return (
     <div className="space-y-6">
-      <div className="relative">
-        <Card className="border-0 shadow-none bg-transparent">
-            <CardHeader className="p-0">
-                 <div className="flex items-center justify-center text-center sm:text-left gap-3">
-                    <div className="p-3 bg-primary/10 rounded-full w-fit flex-shrink-0">
-                        <HandHeart className="h-8 w-8 text-primary" />
-                    </div>
-                    <div>
-                        <CardTitle className="text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
-                    </div>
-                </div>
-                <CardDescription className="text-base text-muted-foreground max-w-3xl mx-auto text-center mt-4">
-                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a genuine need. Your donation is tax-deductible under Section 80G.
-                </CardDescription>
-            </CardHeader>
-        </Card>
-        <div className="absolute top-0 right-0">
+        <div className="flex justify-end">
             <Button asChild variant="outline" className="h-auto p-2 border">
                 <a href="tel:8008334948">
                     <Phone className="mr-1.5 h-4 w-4" /> Contact Us
                 </a>
             </Button>
         </div>
-      </div>
+      
+        <Card className="border-0 shadow-none bg-transparent -mt-4">
+            <CardHeader className="p-0">
+                <div className="flex items-center text-left gap-3">
+                    <div className="p-3 bg-primary/10 rounded-full w-fit flex-shrink-0">
+                        <HandHeart className="h-8 w-8 text-primary" />
+                    </div>
+                    <div>
+                        <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
+                    </div>
+                </div>
+                <CardDescription className="text-base text-muted-foreground max-w-3xl text-left mt-4">
+                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a genuine need. Your donation is tax-deductible under Section 80G.
+                </CardDescription>
+            </CardHeader>
+        </Card>
         
         <Card>
             <CardContent className="p-2 grid sm:grid-cols-2 gap-2">
