@@ -115,6 +115,13 @@ const FilterButton = ({ children }: { children: React.ReactNode }) => (
   <Button variant="outline" className="h-auto py-1.5 px-3 text-sm">{children}</Button>
 );
 
+const QrCodeIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg viewBox="0 0 100 100" {...props}>
+        <path fill="currentColor" d="M0 0h30v30H0zM10 10h10v10H10zM70 0h30v30H70zM80 10h10v10H80zM0 70h30v30H0zM10 80h10v10H10zM40 0h10v10H40zM50 10h10v10H50zM40 20h10v10H40zM0 40h10v10H0zM10 50h10v10H10zM20 40h10v10H20zM40 40h30v30H40zM50 50h10v10H50zM70 40h10v10H70zM80 50h10v10H80zM90 40h10v10H90zM40 70h10v30H40zM50 80h10v20H50zM70 70h10v10H70zM80 80h10v10H80zM70 90h30v10H70zM90 70h10v10H90zM30 60h10v10H30zM20 70h10v10H20zM10 60h10v10H10zM0 60h10v10H0z"/>
+    </svg>
+);
+
+
 function DonationDialog() {
     const { toast } = useToast();
     const bankDetails = {
@@ -152,7 +159,7 @@ function DonationDialog() {
                 </DialogHeader>
                 <div className="space-y-4 py-4 text-center">
                     <div>
-                         <Image src="https://picsum.photos/seed/qr_code/200/200" alt="QR Code" width={200} height={200} data-ai-hint="QR code" className="mx-auto rounded-lg border p-1"/>
+                         <QrCodeIcon className="mx-auto rounded-lg border p-1 w-48 h-48" />
                          <p className="text-sm text-muted-foreground mt-2">Scan with any UPI app</p>
                     </div>
                     <div className="flex items-center">
@@ -263,10 +270,10 @@ export default function CommunityFundPage() {
             </Button>
         </div>
       
-        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
+        <div className="flex items-center gap-4">
              <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
         </div>
-         <p className="text-sm text-muted-foreground max-w-3xl mt-2 mx-auto sm:mx-0">
+         <p className="text-sm text-muted-foreground max-w-3xl mt-2">
             All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is tax-deductible under Section 80G.
         </p>
         
@@ -294,7 +301,7 @@ export default function CommunityFundPage() {
                 const progress = (campaign.raised / campaign.goal) * 100;
                 return (
                     <CampaignDetailsDialog key={index} campaign={campaign}>
-                        <Card className="overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-lg border">
+                         <Card className="overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-lg border">
                             <CardHeader className="p-0 relative">
                                 <Carousel className="w-full">
                                     <CarouselContent>
