@@ -5,7 +5,7 @@ import React, { useState, useTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText, X, Search } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText, X, Search, Upload, Hospital, Phone, MapPin, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -18,7 +18,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { medicineSchedule as initialMedicineSchedule, medicineHistoryData } from '@/lib/medicines-data';
 import Image from 'next/image';
 import { useLanguage } from '@/context/language-context';
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 
 const getStatusIcon = (status: string) => {
@@ -40,6 +40,14 @@ const medicineAssistanceItems = [
     { href: '#', icon: Stethoscope, label: 'Nearby Pharmacies' },
     { href: '#', icon: Microscope, label: 'Drug Interaction Check' },
     { href: '#', icon: LifeBuoy, label: 'Pharmacist Consultation' },
+];
+
+const pharmacies = [
+    { name: "Apollo Pharmacy", logo: "https://picsum.photos/seed/apollo_pharmacy/100/100", dataAiHint: "apollo pharmacy logo", discount: "Up to 15% OFF", location: "Brodipet, Guntur" },
+    { name: "MedPlus Pharmacy", logo: "https://picsum.photos/seed/medplus/100/100", dataAiHint: "medplus logo", discount: "Flat 20% OFF", location: "Arundelpet, Guntur" },
+    { name: "7 Hills Pharmacy", logo: "https://picsum.photos/seed/7hills/100/100", dataAiHint: "pharmacy logo", discount: "Up to 18% OFF", location: "Kothapet, Guntur" },
+    { name: "Sanjivani Pharmacy", logo: "https://picsum.photos/seed/sanjivani/100/100", dataAiHint: "medical cross logo", discount: "Up to 15% OFF", location: "Lakshmipuram, Guntur" },
+    { name: "Wellness Forever", logo: "https://picsum.photos/seed/wellness/100/100", dataAiHint: "wellness logo", discount: "Flat 15% OFF", location: "Pattabhipuram, Guntur" },
 ];
 
 const userHealthProfile = {
@@ -275,6 +283,8 @@ export default function MyMedicinesPage() {
             addTitle: "Add New Medicine",
             editDescription: "Update the details for your medication.",
             addDescription: "Manually add a new medicine to your schedule.",
+            mySchedule: "My Schedule",
+            orderFromPharmacy: "Order from Pharmacy",
         },
         te: {
             title: "నా మందులు",
@@ -298,6 +308,8 @@ export default function MyMedicinesPage() {
             addTitle: "కొత్త మందును జోడించండి",
             editDescription: "మీ మందుల వివరాలను నవీకరించండి.",
             addDescription: "మీ షెడ్యూల్‌కు కొత్త మందును మాన్యువల్‌గా జోడించండి.",
+            mySchedule: "నా షెడ్యూల్",
+            orderFromPharmacy: "ఫార్మసీ నుండి ఆర్డర్ చేయండి",
         }
     }[language];
 
@@ -350,158 +362,214 @@ export default function MyMedicinesPage() {
                     <p className="text-muted-foreground">{t.description}</p>
                 </div>
                 
-                <div className="grid lg:grid-cols-3 gap-8 items-start">
-                    <div className="lg:col-span-2 space-y-8">
-                        <Card>
-                            <CardHeader>
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <CardTitle className="text-xl">{t.currentPrescription}</CardTitle>
-                                        <div className="flex items-center gap-2 mt-1">
-                                            <Badge className="bg-green-100 text-green-800">{t.active}</Badge> 
-                                            <CardDescription>{t.startedOn}</CardDescription>
-                                        </div>
-                                    </div>
-                                    <Button variant="outline" onClick={openAddDialog}>
-                                        <PlusCircle className="mr-2 h-4 w-4" /> {t.addMedicine}
-                                    </Button>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    {medicineSchedule.map((med, index) => (
-                                        <div key={index} className='p-4 rounded-lg bg-muted/30 border'>
-                                            <div className="flex items-start justify-between gap-4">
-                                                <div className='flex-1'>
-                                                    <div className="flex items-baseline gap-2">
-                                                        <p className="font-extrabold text-xl">{language === 'en' ? med.name : med.teluguName}</p>
-                                                        <p className="font-bold text-lg text-muted-foreground">{language === 'en' ? med.teluguName : med.name}</p>
-                                                    </div>
-                                                    <div className="font-semibold text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
-                                                        <Info className="h-4 w-4" />
-                                                        <div>
-                                                            <p>{language === 'en' ? med.use : med.teluguUse}</p>
-                                                            <p className="text-sm">{language === 'en' ? med.teluguUse : med.use}</p>
-                                                        </div>
-                                                    </div>
-                                                    <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.frequency}</p>
-                                                </div>
-                                                <div className="flex flex-col items-end gap-2">
-                                                     <div 
-                                                        className="relative group cursor-pointer"
-                                                        onClick={() => setZoomedImage({url: med.image, name: med.name})}
-                                                     >
-                                                        <Image src={med.image} alt={med.name} width={64} height={64} data-ai-hint={med.dataAiHint} className="rounded-md border-2 border-background group-hover:opacity-80 transition-opacity" />
-                                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-                                                            <Search className="text-white h-6 w-6" />
-                                                        </div>
-                                                     </div>
-                                                     <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2" onClick={() => openEditDialog(med)}>
-                                                        <Pencil className="h-4 w-4 text-muted-foreground"/>
-                                                    </Button>
+                <Tabs defaultValue="my-schedule" className="w-full">
+                    <div className="border rounded-lg p-1 bg-muted">
+                        <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger value="my-schedule" className="font-bold">{t.mySchedule}</TabsTrigger>
+                            <TabsTrigger value="order-pharmacy" className="font-bold">{t.orderFromPharmacy}</TabsTrigger>
+                        </TabsList>
+                    </div>
+                    <TabsContent value="my-schedule" className="mt-6">
+                        <div className="grid lg:grid-cols-3 gap-8 items-start">
+                            <div className="lg:col-span-2 space-y-8">
+                                <Card>
+                                    <CardHeader>
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <CardTitle className="text-xl">{t.currentPrescription}</CardTitle>
+                                                <div className="flex items-center gap-2 mt-1">
+                                                    <Badge className="bg-green-100 text-green-800">{t.active}</Badge> 
+                                                    <CardDescription>{t.startedOn}</CardDescription>
                                                 </div>
                                             </div>
-                                            <div className="flex flex-wrap gap-2 mt-4">
-                                                {med.alerts.map(alert => (
-                                                    <Badge 
-                                                        key={alert.time}
-                                                        onClick={() => toggleAlertStatus(med.name, alert.time)}
-                                                        className={cn("text-base px-3 py-1 cursor-pointer transition-colors", {
-                                                            "bg-green-100 text-green-800 hover:bg-green-200 border-green-200": alert.status === 'taken',
-                                                            "bg-red-100 text-red-800 hover:bg-red-200 border-red-200": alert.status === 'missed',
-                                                            "bg-muted text-muted-foreground hover:bg-muted/80 border": alert.status === 'pending'
-                                                        })}
-                                                    >
-                                                        {alert.time}
-                                                    </Badge>
-                                                ))}
-                                            </div>
+                                            <Button variant="outline" onClick={openAddDialog}>
+                                                <PlusCircle className="mr-2 h-4 w-4" /> {t.addMedicine}
+                                            </Button>
                                         </div>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-2xl"><History /> {t.historyTitle}</CardTitle>
-                                <CardDescription>{t.historyDescription}</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-3">
-                                {medicineHistoryData.map((day, index) => (
-                                    <Collapsible key={index} className="border rounded-lg">
-                                        <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between">
-                                            <div className="text-left">
-                                                <p className="text-lg font-bold">{day.date}</p>
-                                                <p className="text-sm font-semibold text-muted-foreground">{day.summary}</p>
-                                            </div>
-                                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                                        </CollapsibleTrigger>
-                                        <CollapsibleContent className="p-4 border-t space-y-4">
-                                            {day.medicines.map((med, medIndex) => (
-                                                <div key={medIndex}>
-                                                    <p className="font-bold text-base">{med.name}</p>
-                                                    {med.alerts.length > 0 ? (
-                                                        <div className="flex flex-wrap items-center gap-4 mt-2">
-                                                            {med.alerts.map((alert, alertIndex) => (
-                                                                <div key={alertIndex} className="flex items-center gap-2">
-                                                                    {getStatusIcon(alert.status)}
-                                                                    <span className="font-semibold text-sm">{alert.time}</span>
-                                                                    <span className="text-sm text-muted-foreground capitalize">({alert.status})</span>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="space-y-4">
+                                            {medicineSchedule.map((med, index) => (
+                                                <div key={index} className='p-4 rounded-lg bg-muted/30 border'>
+                                                    <div className="flex items-start justify-between gap-4">
+                                                        <div className='flex-1'>
+                                                            <div className="flex items-baseline gap-2">
+                                                                <p className="font-extrabold text-xl">{language === 'en' ? med.name : med.teluguName}</p>
+                                                                <p className="font-bold text-lg text-muted-foreground">{language === 'en' ? med.teluguName : med.name}</p>
+                                                            </div>
+                                                            <div className="font-semibold text-sm text-muted-foreground flex items-center gap-1.5 mt-1">
+                                                                <Info className="h-4 w-4" />
+                                                                <div>
+                                                                    <p>{language === 'en' ? med.use : med.teluguUse}</p>
+                                                                    <p className="text-sm">{language === 'en' ? med.teluguUse : med.use}</p>
                                                                 </div>
-                                                            ))}
+                                                            </div>
+                                                            <p className="text-sm text-muted-foreground mt-2 font-semibold">{med.dosage} • {med.frequency}</p>
                                                         </div>
-                                                    ) : (
-                                                        <p className="text-sm text-muted-foreground mt-1">No doses scheduled on this day.</p>
-                                                    )}
+                                                        <div className="flex flex-col items-end gap-2">
+                                                            <div 
+                                                                className="relative group cursor-pointer"
+                                                                onClick={() => setZoomedImage({url: med.image, name: med.name})}
+                                                            >
+                                                                <Image src={med.image} alt={med.name} width={64} height={64} data-ai-hint={med.dataAiHint} className="rounded-md border-2 border-background group-hover:opacity-80 transition-opacity" />
+                                                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                                                                    <Search className="text-white h-6 w-6" />
+                                                                </div>
+                                                            </div>
+                                                            <Button variant="ghost" size="icon" className="h-8 w-8 -mr-2" onClick={() => openEditDialog(med)}>
+                                                                <Pencil className="h-4 w-4 text-muted-foreground"/>
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex flex-wrap gap-2 mt-4">
+                                                        {med.alerts.map(alert => (
+                                                            <Badge 
+                                                                key={alert.time}
+                                                                onClick={() => toggleAlertStatus(med.name, alert.time)}
+                                                                className={cn("text-base px-3 py-1 cursor-pointer transition-colors", {
+                                                                    "bg-green-100 text-green-800 hover:bg-green-200 border-green-200": alert.status === 'taken',
+                                                                    "bg-red-100 text-red-800 hover:bg-red-200 border-red-200": alert.status === 'missed',
+                                                                    "bg-muted text-muted-foreground hover:bg-muted/80 border": alert.status === 'pending'
+                                                                })}
+                                                            >
+                                                                {alert.time}
+                                                            </Badge>
+                                                        ))}
+                                                    </div>
                                                 </div>
                                             ))}
-                                        </CollapsibleContent>
-                                    </Collapsible>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="flex items-center gap-2 text-2xl"><History /> {t.historyTitle}</CardTitle>
+                                        <CardDescription>{t.historyDescription}</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="space-y-3">
+                                        {medicineHistoryData.map((day, index) => (
+                                            <Collapsible key={index} className="border rounded-lg">
+                                                <CollapsibleTrigger className="w-full p-4 hover:bg-muted/50 transition-colors flex items-center justify-between">
+                                                    <div className="text-left">
+                                                        <p className="text-lg font-bold">{day.date}</p>
+                                                        <p className="text-sm font-semibold text-muted-foreground">{day.summary}</p>
+                                                    </div>
+                                                    <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                                </CollapsibleTrigger>
+                                                <CollapsibleContent className="p-4 border-t space-y-4">
+                                                    {day.medicines.map((med, medIndex) => (
+                                                        <div key={medIndex}>
+                                                            <p className="font-bold text-base">{med.name}</p>
+                                                            {med.alerts.length > 0 ? (
+                                                                <div className="flex flex-wrap items-center gap-4 mt-2">
+                                                                    {med.alerts.map((alert, alertIndex) => (
+                                                                        <div key={alertIndex} className="flex items-center gap-2">
+                                                                            {getStatusIcon(alert.status)}
+                                                                            <span className="font-semibold text-sm">{alert.time}</span>
+                                                                            <span className="text-sm text-muted-foreground capitalize">({alert.status})</span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            ) : (
+                                                                <p className="text-sm text-muted-foreground mt-1">No doses scheduled on this day.</p>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </CollapsibleContent>
+                                            </Collapsible>
+                                        ))}
+                                    </CardContent>
+                                </Card>
+                            </div>
+
+                            <div className="space-y-8">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>{t.dietTitle} ({t.dietTelugu})</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-6">
+                                        <div>
+                                            <Label>{t.recoveryProb} ({t.probTelugu})</Label>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <Progress value={85} className="w-full" />
+                                                <span className="font-bold" style={{color: 'hsl(var(--nav-medicines))'}}>85%</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold flex items-center gap-2 mb-2"><Utensils style={{color: 'hsl(var(--nav-medicines))'}}/> {t.dietRec} ({t.dietRecTelugu})</h3>
+                                            <div className="text-sm text-muted-foreground p-3 bg-muted/40 rounded-lg space-y-1">
+                                                <p>• {t.dietInfo}</p>
+                                                <p>• {t.dietAI}</p>
+                                            </div>
+                                            <DietPlanDialog />
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                                
+                                <Card>
+                                    <CardHeader><CardTitle>{t.assistanceTitle}</CardTitle></CardHeader>
+                                    <CardContent className="space-y-3">
+                                    {medicineAssistanceItems.map((item) => (
+                                        <Link key={item.label} href={item.href} passHref>
+                                            <Button variant="outline" className="w-full justify-start gap-3">
+                                                <item.icon className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
+                                                <span>{item.label}</span>
+                                            </Button>
+                                        </Link>
+                                    ))}
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </div>
+                    </TabsContent>
+                    <TabsContent value="order-pharmacy" className="mt-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Order From Local Pharmacies</CardTitle>
+                                <CardDescription>Get your medicines delivered from trusted pharmacies in Guntur.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                {pharmacies.map((pharmacy) => (
+                                    <Card key={pharmacy.name} className="p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                        <Image src={pharmacy.logo} alt={pharmacy.name} width={80} height={80} data-ai-hint={pharmacy.dataAiHint} className="rounded-lg border-2 border-background flex-shrink-0" />
+                                        <div className="flex-1">
+                                            <h3 className="text-lg font-bold">{pharmacy.name}</h3>
+                                            <p className="text-sm text-muted-foreground flex items-center gap-1.5"><MapPin className="h-4 w-4" />{pharmacy.location}</p>
+                                            <Badge className="mt-2 bg-green-100 text-green-800 border-green-200">
+                                                <Tag className="h-4 w-4 mr-1.5"/>{pharmacy.discount}
+                                            </Badge>
+                                        </div>
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button className="w-full sm:w-auto" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}><Upload className="mr-2 h-4 w-4"/>Upload Prescription</Button>
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogHeader>
+                                                    <DialogTitle>Upload for {pharmacy.name}</DialogTitle>
+                                                    <DialogDescription>Upload your prescription to place an order. The pharmacy will contact you to confirm.</DialogDescription>
+                                                </DialogHeader>
+                                                <div className="py-4 space-y-4">
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="prescription-file">Prescription File</Label>
+                                                        <Input id="prescription-file" type="file" />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="contact-number">Your Contact Number</Label>
+                                                        <Input id="contact-number" type="tel" placeholder="Enter your phone number"/>
+                                                    </div>
+                                                </div>
+                                                <DialogFooter>
+                                                    <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}>Submit Order</Button>
+                                                </DialogFooter>
+                                            </DialogContent>
+                                        </Dialog>
+                                    </Card>
                                 ))}
                             </CardContent>
                         </Card>
-                    </div>
-
-                    <div className="space-y-8">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>{t.dietTitle} ({t.dietTelugu})</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-6">
-                                <div>
-                                    <Label>{t.recoveryProb} ({t.probTelugu})</Label>
-                                    <div className="flex items-center gap-2 mt-1">
-                                        <Progress value={85} className="w-full" />
-                                        <span className="font-bold" style={{color: 'hsl(var(--nav-medicines))'}}>85%</span>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold flex items-center gap-2 mb-2"><Utensils style={{color: 'hsl(var(--nav-medicines))'}}/> {t.dietRec} ({t.dietRecTelugu})</h3>
-                                    <div className="text-sm text-muted-foreground p-3 bg-muted/40 rounded-lg space-y-1">
-                                        <p>• {t.dietInfo}</p>
-                                        <p>• {t.dietAI}</p>
-                                    </div>
-                                    <DietPlanDialog />
-                                </div>
-                            </CardContent>
-                        </Card>
-                        
-                        <Card>
-                            <CardHeader><CardTitle>{t.assistanceTitle}</CardTitle></CardHeader>
-                            <CardContent className="space-y-3">
-                            {medicineAssistanceItems.map((item) => (
-                                <Link key={item.label} href={item.href} passHref>
-                                    <Button variant="outline" className="w-full justify-start gap-3">
-                                        <item.icon className="h-5 w-5" style={{color: 'hsl(var(--nav-medicines))'}} />
-                                        <span>{item.label}</span>
-                                    </Button>
-                                </Link>
-                            ))}
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+                    </TabsContent>
+                </Tabs>
             </div>
 
             <DialogContent>
@@ -540,5 +608,3 @@ export default function MyMedicinesPage() {
         </Dialog>
     );
 }
-
-    
