@@ -249,28 +249,29 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-primary text-primary-foreground gap-4 h-16">
-        <div className="flex items-center gap-2">
+      <header className="sticky top-0 z-20 flex items-center justify-between p-3 bg-primary text-primary-foreground gap-2 h-16">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
             {pathname !== '/' ? (
-                <Button variant="ghost" size="icon" onClick={() => router.back()} className="h-10 w-10 text-primary-foreground">
+                <Button variant="ghost" size="icon" onClick={() => router.back()} className="h-10 w-10 text-primary-foreground flex-shrink-0">
                     <ArrowLeft className="h-6 w-6" />
                 </Button>
             ) : (
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/" className="flex items-center gap-2 flex-shrink-0">
                     <div className="p-1.5 bg-primary-foreground rounded-lg">
                         <AnimatedActivityIcon className="w-6 h-6 text-primary" />
                     </div>
                 </Link>
             )}
-             <h1 className="text-xl font-bold text-primary-foreground">Arogyadhatha</h1>
+             <h1 className="text-xl font-bold text-primary-foreground truncate">Arogyadhatha</h1>
         </div>
 
-        <div className="hidden md:flex flex-1 justify-center">
-            <GlobalSearch />
-        </div>
+        {!isMobile && (
+          <div className="flex flex-1 justify-center px-4">
+              <GlobalSearch />
+          </div>
+        )}
 
-
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             {isMobile && <GlobalSearch />}
             <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')}>
                 <Languages className="h-5 w-5" />
