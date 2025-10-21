@@ -35,6 +35,7 @@ const campaigns = [
     hospital: "Rainbow Children's Hospital, Hyderabad",
     doctor: "Dr. Ramesh Kumar",
     media: [
+        { type: 'image', url: 'https://picsum.photos/seed/lakshmi/600/400', hint: 'young girl smiling' },
         { type: 'image', url: 'https://picsum.photos/seed/lakshmi_1/600/400', hint: 'young girl hospital bed' },
         { type: 'image', url: 'https://picsum.photos/seed/lakshmi_2/600/400', hint: 'medical report document' },
         { type: 'image', url: 'https://picsum.photos/seed/lakshmi_3/600/400', hint: 'doctor consulting child' },
@@ -58,6 +59,7 @@ const campaigns = [
     hospital: "Guntur Kidney & Multispeciality Hospital",
     doctor: "Dr. V. Venkata Naidu",
     media: [
+        { type: 'image', url: 'https://picsum.photos/seed/raju/600/400', hint: 'middle-aged man portrait' },
         { type: 'image', url: 'https://picsum.photos/seed/raju_1/600/400', hint: 'man looking worried' },
         { type: 'image', url: 'https://picsum.photos/seed/raju_2/600/400', hint: 'hospital corridor' },
         { type: 'video', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
@@ -80,6 +82,7 @@ const campaigns = [
     hospital: "KIMS Hospital, Secunderabad",
     doctor: "Dr. Sunitha",
     media: [
+        { type: 'image', url: 'https://picsum.photos/seed/priya/600/400', hint: 'teenage girl portrait' },
         { type: 'image', url: 'https://picsum.photos/seed/priya_1/600/400', hint: 'girl reading book' },
     ],
     story: "Priya is a bright student who was recently diagnosed with Multiple Sclerosis. The condition requires expensive medication to manage her symptoms and prevent progression. Her family is struggling to afford the treatment. Your support can ensure she continues her education and lives a full life."
@@ -100,6 +103,7 @@ const campaigns = [
     hospital: "Amar Orthopaedic Hospital",
     doctor: "Dr. G. Ravi Shankara Reddy",
     media: [
+        { type: 'image', url: 'https://picsum.photos/seed/veeresh/600/400', hint: 'elderly man portrait' },
         { type: 'image', url: 'https://picsum.photos/seed/veeresh_1/600/400', hint: 'elderly man sitting' },
     ],
     story: "Veeresh, an elderly man with a BPL card, had a fall and requires immediate hip replacement surgery. Without the surgery, he faces a life of immobility and pain. With just a little more support, we can help him get back on his feet."
@@ -238,7 +242,7 @@ export default function CommunityFundPage() {
             <CardHeader className="p-0 flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
                  <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
                 <CardDescription className="text-sm text-muted-foreground max-w-3xl mt-2 mx-auto sm:mx-0">
-                    All campaigns are Arogyadhatha Verified. We confirm each case to ensure every contribution goes towards a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is tax-deductible under Section 80G.
+                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
         </Card>
@@ -271,7 +275,7 @@ export default function CommunityFundPage() {
                             <CardHeader className="p-0 relative">
                                 <Carousel className="w-full">
                                     <CarouselContent>
-                                        {campaign.media.filter(m => m.type === 'image').map((item, idx) => (
+                                        {campaign.media.filter(m => m.type === 'image').slice(0, 3).map((item, idx) => (
                                              <CarouselItem key={idx}>
                                                 <Image src={item.url} data-ai-hint={item.hint} alt={campaign.name} width={600} height={400} className="w-full h-48 object-cover"/>
                                              </CarouselItem>
@@ -287,7 +291,7 @@ export default function CommunityFundPage() {
                                 </Badge>
                             </CardHeader>
                             <CardContent className="p-4 flex flex-col flex-grow">
-                                <div className="flex flex-wrap gap-1 mt-1">
+                                <div className="flex flex-wrap gap-1">
                                     {campaign.tags.map(tag => (
                                         <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
                                     ))}
