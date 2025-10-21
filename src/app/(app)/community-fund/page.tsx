@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { HandHeart, ShieldCheck, Star, Heart, CheckCircle, Calendar, PlusCircle, Phone, Copy, FileText, Hospital, User } from "lucide-react";
+import { HandHeart, ShieldCheck, Star, Heart, CheckCircle, Calendar, PlusCircle, Phone, Copy, FileText, Hospital, User, Share2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from "@/components/ui/dialog";
@@ -133,6 +133,11 @@ function DonationDialog() {
         });
     }
 
+    const copyAllDetails = () => {
+        const allDetails = `Bank Name: ${bankDetails.bank}\nAccount Name: ${bankDetails.name}\nA/C No: ${bankDetails.acc}\nIFSC Code: ${bankDetails.ifsc}`;
+        copyToClipboard(allDetails, "Bank Details");
+    };
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -156,18 +161,15 @@ function DonationDialog() {
                      <Separator />
                     <div className="space-y-2">
                         <Label>Bank Account Details</Label>
-                        <div className="text-sm p-3 border rounded-lg bg-muted/50 space-y-2">
-                           <div className="flex justify-between items-center">
-                                <span>A/C No: <strong className="font-mono">{bankDetails.acc}</strong></span>
-                                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => copyToClipboard(bankDetails.acc, 'Account Number')}><Copy className="h-4 w-4"/></Button>
-                           </div>
-                           <div className="flex justify-between items-center">
-                                <span>IFSC: <strong className="font-mono">{bankDetails.ifsc}</strong></span>
-                                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => copyToClipboard(bankDetails.ifsc, 'IFSC Code')}><Copy className="h-4 w-4"/></Button>
-                           </div>
-                           <p>Bank: {bankDetails.bank}</p>
-                           <p>Name: {bankDetails.name}</p>
+                        <div className="text-sm p-3 border rounded-lg bg-muted/50 space-y-2 font-sans">
+                           <p><strong>Bank:</strong> {bankDetails.bank}</p>
+                           <p><strong>Name:</strong> {bankDetails.name}</p>
+                           <p><strong>A/C No:</strong> {bankDetails.acc}</p>
+                           <p><strong>IFSC:</strong> {bankDetails.ifsc}</p>
                         </div>
+                        <Button variant="outline" className="w-full" onClick={copyAllDetails}>
+                            <Copy className="mr-2 h-4 w-4" /> Copy All Bank Details
+                        </Button>
                     </div>
                 </div>
             </DialogContent>
@@ -176,6 +178,17 @@ function DonationDialog() {
 }
 
 function CampaignDetailsDialog({ campaign, children }: { campaign: typeof campaigns[0], children: React.ReactNode }) {
+    const { toast } = useToast();
+
+    const handleShare = () => {
+        const shareText = `Please support ${campaign.name}'s medical campaign on Arogyadhatha. A small contribution can make a big difference in their fight against ${campaign.suffering}. Donate here: [link_to_campaign] #Arogyadhatha #MedicalCrowdfunding`;
+        navigator.clipboard.writeText(shareText);
+        toast({
+            title: "Link Copied!",
+            description: "Campaign details are ready to be shared.",
+        });
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -211,7 +224,10 @@ function CampaignDetailsDialog({ campaign, children }: { campaign: typeof campai
                         <h3 className="font-semibold">Details</h3>
                         <div className="flex items-center gap-2 text-sm"><User className="h-4 w-4 text-primary" /> Doctor: <span className="font-medium">{campaign.doctor}</span></div>
                         <div className="flex items-center gap-2 text-sm"><Hospital className="h-4 w-4 text-primary" /> Hospital: <span className="font-medium">{campaign.hospital}</span></div>
-                        <Button variant="outline" className="w-full"><FileText className="mr-2 h-4 w-4" /> View Verified Reports</Button>
+                        <div className="flex gap-2">
+                             <Button variant="outline" className="flex-1"><FileText className="mr-2 h-4 w-4" /> View Reports</Button>
+                             <Button variant="outline" className="flex-1" onClick={handleShare}><Share2 className="mr-2 h-4 w-4" /> Share Campaign</Button>
+                        </div>
                     </div>
                 </div>
                  <DialogFooter className="p-6 bg-muted/50">
@@ -238,14 +254,12 @@ export default function CommunityFundPage() {
             </Button>
         </div>
       
-        <Card className="border-0 shadow-none bg-transparent -mt-4">
-            <CardHeader className="p-0 flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
-                 <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
-                <CardDescription className="text-sm text-muted-foreground max-w-3xl mt-2 mx-auto sm:mx-0">
-                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is tax-deductible under Section 80G.
-                </CardDescription>
-            </CardHeader>
-        </Card>
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
+             <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
+        </div>
+         <p className="text-sm text-muted-foreground max-w-3xl mt-2 mx-auto sm:mx-0">
+            All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is tax-deductible under Section 80G.
+        </p>
         
         <Card>
             <CardContent className="p-2 grid sm:grid-cols-2 gap-2">
