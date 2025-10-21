@@ -176,6 +176,9 @@ function CampaignDetailsDialog({ campaign, children }: { campaign: typeof campai
                 {children}
             </DialogTrigger>
             <DialogContent className="sm:max-w-3xl p-0">
+                 <DialogHeader className="p-6 pb-0">
+                    <DialogTitle>Campaign for {campaign.name}, {campaign.age}</DialogTitle>
+                </DialogHeader>
                 <Carousel className="w-full">
                     <CarouselContent>
                         {campaign.media.map((item, index) => (
@@ -191,7 +194,7 @@ function CampaignDetailsDialog({ campaign, children }: { campaign: typeof campai
                     <CarouselPrevious className="left-4" />
                     <CarouselNext className="right-4" />
                 </Carousel>
-                <div className="p-6 space-y-4">
+                <div className="p-6 pt-2 space-y-4">
                     <h2 className="text-2xl font-bold">{campaign.name}, {campaign.age}</h2>
                     <p className="text-muted-foreground">{campaign.story}</p>
                     <Separator />
@@ -230,7 +233,7 @@ export default function CommunityFundPage() {
                     <h1 className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</h1>
                 </div>
                 <CardDescription className="text-sm text-muted-foreground max-w-3xl mt-2 mx-auto sm:mx-0">
-                    All campaigns are Arogyadhatha Verified with doctor reports and BPL status to ensure every contribution supports a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is also tax-deductible under Section 80G.
+                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes towards a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is also tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
         </Card>
