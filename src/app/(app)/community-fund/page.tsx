@@ -145,22 +145,31 @@ function DonationDialog() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Donate to the General Fund</DialogTitle>
+                    <DialogTitle>Donate to the Community Fund</DialogTitle>
                     <DialogDescription>
                         Your contribution supports all verified campaigns and helps us respond to urgent needs faster.
                     </DialogDescription>
                 </DialogHeader>
-                <div className="space-y-4 py-4">
+                <div className="space-y-4 py-4 text-center">
+                    <div>
+                         <Image src="https://picsum.photos/seed/qr_code/200/200" alt="QR Code" width={200} height={200} data-ai-hint="QR code" className="mx-auto rounded-lg border p-1"/>
+                         <p className="text-sm text-muted-foreground mt-2">Scan with any UPI app</p>
+                    </div>
+                    <div className="flex items-center">
+                        <Separator className="flex-1" />
+                        <span className="px-4 text-sm text-muted-foreground">OR</span>
+                        <Separator className="flex-1" />
+                    </div>
                     <div className="space-y-1">
-                        <Label>UPI ID</Label>
+                        <Label className="text-base">Pay to UPI ID</Label>
                         <div className="flex items-center gap-2">
-                            <p className="font-mono text-sm p-2 bg-muted rounded-md flex-1">{bankDetails.upi}</p>
+                            <p className="font-mono text-base p-2 bg-muted rounded-md flex-1">{bankDetails.upi}</p>
                             <Button variant="outline" size="icon" onClick={() => copyToClipboard(bankDetails.upi, 'UPI ID')}><Copy className="h-4 w-4"/></Button>
                         </div>
                     </div>
-                     <Separator />
-                    <div className="space-y-2">
-                        <Label>Bank Account Details</Label>
+                    <Separator />
+                    <div className="space-y-2 text-left">
+                        <Label className="text-base">Direct Bank Transfer</Label>
                         <div className="text-sm p-3 border rounded-lg bg-muted/50 space-y-2 font-sans">
                            <p><strong>Bank:</strong> {bankDetails.bank}</p>
                            <p><strong>Name:</strong> {bankDetails.name}</p>
