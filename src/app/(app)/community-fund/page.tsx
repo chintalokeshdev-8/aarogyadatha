@@ -150,8 +150,8 @@ export default function CommunityFundPage() {
         </div>
       
         <Card className="border-0 shadow-none bg-transparent -mt-4">
-            <CardHeader className="p-0">
-                <div className="flex items-center text-left gap-3">
+            <CardHeader className="p-0 text-center sm:text-left">
+                <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start text-left gap-3">
                     <div className="p-3 bg-primary/10 rounded-full w-fit flex-shrink-0">
                         <HandHeart className="h-8 w-8 text-primary" />
                     </div>
@@ -159,8 +159,8 @@ export default function CommunityFundPage() {
                         <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
                     </div>
                 </div>
-                <CardDescription className="text-base text-muted-foreground max-w-3xl text-left mt-4">
-                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a genuine need. Your donation is tax-deductible under Section 80G.
+                <CardDescription className="text-base text-muted-foreground max-w-3xl mt-4">
+                    Every campaign is Arogyadhatha Verified. We check doctor reports to ensure your contribution supports a <span className="font-bold text-green-600">100% genuine need</span>. All donations are tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
         </Card>
