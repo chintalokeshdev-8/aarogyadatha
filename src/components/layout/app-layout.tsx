@@ -262,7 +262,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     </div>
                 </Link>
             )}
-             <h1 className="text-xl font-bold text-primary-foreground truncate">Arogyadhatha</h1>
+             <h1 className="text-lg font-bold text-primary-foreground truncate">Arogyadhatha</h1>
         </div>
 
         {!isMobile && (
@@ -450,5 +450,3 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-    
