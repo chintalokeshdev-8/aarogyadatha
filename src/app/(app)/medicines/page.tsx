@@ -5,7 +5,7 @@ import React, { useState, useTransition } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText, X, Search, Upload, Hospital, Phone, MapPin, Tag, Package, PackageCheck, Send, ShoppingCart } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText, X, Search, Upload, Hospital, Phone, MapPin, Tag, Package, PackageCheck, Send, ShoppingCart, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -19,6 +19,8 @@ import { medicineSchedule as initialMedicineSchedule, medicineHistoryData } from
 import Image from 'next/image';
 import { useLanguage } from '@/context/language-context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Textarea } from '../ui/textarea';
 
 
 const getStatusIcon = (status: string) => {
@@ -43,11 +45,11 @@ const medicineAssistanceItems = [
 ];
 
 const pharmacies = [
-    { name: "Apollo Pharmacy", logo: "https://picsum.photos/seed/apollo_pharmacy/100/100", dataAiHint: "apollo pharmacy logo", discount: "Up to 15% OFF", location: "Brodipet, Guntur" },
-    { name: "MedPlus Pharmacy", logo: "https://picsum.photos/seed/medplus/100/100", dataAiHint: "medplus logo", discount: "Flat 20% OFF", location: "Arundelpet, Guntur" },
-    { name: "7 Hills Pharmacy", logo: "https://picsum.photos/seed/7hills/100/100", dataAiHint: "pharmacy logo", discount: "Up to 18% OFF", location: "Kothapet, Guntur" },
-    { name: "Sanjivani Pharmacy", logo: "https://picsum.photos/seed/sanjivani/100/100", dataAiHint: "medical cross logo", discount: "Up to 15% OFF", location: "Lakshmipuram, Guntur" },
-    { name: "Wellness Forever", logo: "https://picsum.photos/seed/wellness/100/100", dataAiHint: "wellness logo", discount: "Flat 15% OFF", location: "Pattabhipuram, Guntur" },
+    { name: "Apollo Pharmacy", logo: "https://picsum.photos/seed/apollo_pharmacy/100/100", dataAiHint: "apollo pharmacy logo", discount: "Up to 15% OFF", location: "Brodipet, Guntur", qrCode: "https://picsum.photos/seed/apollo_qr/200/200" },
+    { name: "MedPlus Pharmacy", logo: "https://picsum.photos/seed/medplus/100/100", dataAiHint: "medplus logo", discount: "Flat 20% OFF", location: "Arundelpet, Guntur", qrCode: "https://picsum.photos/seed/medplus_qr/200/200" },
+    { name: "7 Hills Pharmacy", logo: "https://picsum.photos/seed/7hills/100/100", dataAiHint: "pharmacy logo", discount: "Up to 18% OFF", location: "Kothapet, Guntur", qrCode: "https://picsum.photos/seed/7hills_qr/200/200" },
+    { name: "Sanjivani Pharmacy", logo: "https://picsum.photos/seed/sanjivani/100/100", dataAiHint: "medical cross logo", discount: "Up to 15% OFF", location: "Lakshmipuram, Guntur", qrCode: "https://picsum.photos/seed/sanjivani_qr/200/200" },
+    { name: "Wellness Forever", logo: "https://picsum.photos/seed/wellness/100/100", dataAiHint: "wellness logo", discount: "Flat 15% OFF", location: "Pattabhipuram, Guntur", qrCode: "https://picsum.photos/seed/wellness_qr/200/200" },
 ];
 
 const userHealthProfile = {
@@ -268,6 +270,114 @@ function MedicineForm({ medicine, onSave }: { medicine?: any; onSave: (med: any)
                 </DialogClose>
             </DialogFooter>
         </form>
+    );
+}
+
+function OrderDialog({ pharmacy, trigger }: { pharmacy: any; trigger: React.ReactNode }) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [step, setStep] = useState(1);
+    const [prescriptionFile, setPrescriptionFile] = useState<File | null>(null);
+    const [message, setMessage] = useState('');
+    const [chat, setChat] = useState<{role: 'user' | 'pharmacist', text: string}[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setPrescriptionFile(e.target.files[0]);
+            setChat([{ role: 'user', text: `Uploaded prescription: ${e.target.files[0].name}` }]);
+            setStep(2);
+        }
+    };
+
+    const handleSendMessage = () => {
+        if (!message) return;
+        setChat(prev => [...prev, { role: 'user', text: message }]);
+        setMessage('');
+
+        // Simulate pharmacist response
+        setTimeout(() => {
+            if (message.toLowerCase().includes('substitute')) {
+                setChat(prev => [...prev, { role: 'pharmacist', text: "Yes, we can substitute with a generic version which costs ₹85 after discount. Is that okay?" }]);
+            } else {
+                 setChat(prev => [...prev, { role: 'pharmacist', text: "Thank you for your query. Your estimated total is ₹120 after a 15% discount. Shall I proceed?" }]);
+            }
+        }, 1500);
+    };
+    
+    const handleProceedToPay = () => {
+        setIsSubmitting(true);
+        setTimeout(() => {
+            setStep(3);
+            setIsSubmitting(false);
+        }, 1000);
+    };
+
+    const resetState = () => {
+        setStep(1);
+        setPrescriptionFile(null);
+        setMessage('');
+        setChat([]);
+        setIsSubmitting(false);
+    };
+
+    return (
+        <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); if (!open) resetState(); }}>
+            <DialogTrigger asChild>{trigger}</DialogTrigger>
+            <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                    <DialogTitle>Order from {pharmacy.name}</DialogTitle>
+                    {step === 1 && <DialogDescription>Upload your prescription to start.</DialogDescription>}
+                    {step === 2 && <DialogDescription>Chat with the pharmacist for estimates and queries.</DialogDescription>}
+                    {step === 3 && <DialogDescription>Scan the QR code to complete your payment.</DialogDescription>}
+                </DialogHeader>
+
+                {step === 1 && (
+                    <div className="py-8 text-center">
+                        <Button asChild variant="outline" className="h-24 w-full border-dashed border-2">
+                            <label htmlFor="prescription-upload-main" className="cursor-pointer flex flex-col items-center justify-center gap-2">
+                                <Upload className="h-8 w-8 text-muted-foreground" />
+                                <span className="font-semibold text-muted-foreground">Click to upload prescription</span>
+                            </label>
+                        </Button>
+                        <input id="prescription-upload-main" type="file" className="hidden" onChange={handleFileChange} />
+                    </div>
+                )}
+                
+                {step === 2 && (
+                    <div className="space-y-4">
+                        <div className="h-64 space-y-3 overflow-y-auto rounded-lg border bg-muted/30 p-4">
+                            {chat.map((c, i) => (
+                                <div key={i} className={cn("flex items-end gap-2", c.role === 'user' ? "justify-end" : "justify-start")}>
+                                     {c.role === 'pharmacist' && <Avatar className="h-6 w-6"><AvatarImage src={pharmacy.logo} /><AvatarFallback>{pharmacy.name.charAt(0)}</AvatarFallback></Avatar>}
+                                    <p className={cn("max-w-[80%] rounded-lg px-3 py-2 text-sm", c.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-background')}>
+                                        {c.text}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Textarea placeholder="Type your message..." value={message} onChange={(e) => setMessage(e.target.value)} className="resize-none" rows={1}/>
+                            <Button size="icon" onClick={handleSendMessage}><Send className="h-4 w-4"/></Button>
+                        </div>
+                         <Button className="w-full" onClick={handleProceedToPay} disabled={isSubmitting} style={{ backgroundColor: 'hsl(var(--nav-medicines))' }}>
+                            {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
+                            Proceed to Pay
+                        </Button>
+                    </div>
+                )}
+
+                {step === 3 && (
+                     <div className="py-4 text-center space-y-4">
+                        <p className="font-semibold">Scan to pay with any UPI app</p>
+                        <Image src={pharmacy.qrCode} alt={`${pharmacy.name} QR Code`} width={200} height={200} data-ai-hint="QR code" className="mx-auto rounded-lg border p-1"/>
+                         <DialogClose asChild>
+                            <Button className="w-full">Done</Button>
+                        </DialogClose>
+                    </div>
+                )}
+
+            </DialogContent>
+        </Dialog>
     );
 }
 
@@ -575,13 +685,13 @@ export default function MyMedicinesPage() {
                                                             {activeOrder.steps.map((step, index) => (
                                                                 <li key={index} className="flex items-start gap-4">
                                                                     <div className="flex flex-col items-center">
-                                                                        <div className={cn("h-8 w-8 rounded-full flex items-center justify-center", step.completed ? "bg-primary" : "bg-muted border-2")}>
+                                                                        <div className={cn("h-8 w-8 rounded-full flex items-center justify-center", step.completed ? "bg-primary" : "bg-muted border-2")} style={{backgroundColor: step.completed ? 'hsl(var(--nav-medicines))' : ''}}>
                                                                             {step.completed ? <CheckCircle className="h-5 w-5 text-primary-foreground" /> : <Package className="h-5 w-5 text-muted-foreground"/>}
                                                                         </div>
                                                                         {index < activeOrder.steps.length - 1 && <div className="w-0.5 h-12 mt-1 bg-border"/>}
                                                                     </div>
                                                                     <div>
-                                                                        <p className={cn("font-bold", step.completed && "text-primary")}>{step.name}</p>
+                                                                        <p className={cn("font-bold", step.completed && "text-primary")} style={{color: step.completed ? 'hsl(var(--nav-medicines))' : ''}}>{step.name}</p>
                                                                         <p className="text-sm text-muted-foreground">{step.date}</p>
                                                                     </div>
                                                                 </li>
@@ -605,36 +715,18 @@ export default function MyMedicinesPage() {
                                                                     <p className="font-bold">{order.orderId}</p>
                                                                     <p className="text-sm text-muted-foreground">{order.date} • {order.items} items • ₹{order.total}</p>
                                                                 </div>
-                                                                <Button size="sm">Reorder</Button>
+                                                                <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}>Reorder</Button>
                                                             </div>
                                                         ))}
                                                     </div>
                                                 </DialogContent>
                                             </Dialog>
-                                             <Dialog>
-                                                <DialogTrigger asChild>
-                                                    <Button className="w-full sm:w-auto flex-1" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}><Upload className="mr-2 h-4 w-4"/>Upload Prescription</Button>
-                                                </DialogTrigger>
-                                                <DialogContent>
-                                                    <DialogHeader>
-                                                        <DialogTitle>Upload for {pharmacy.name}</DialogTitle>
-                                                        <DialogDescription>Upload your prescription to place an order. The pharmacy will contact you to confirm.</DialogDescription>
-                                                    </DialogHeader>
-                                                    <div className="py-4 space-y-4">
-                                                        <div className="space-y-2">
-                                                            <Label htmlFor="prescription-file">Prescription File</Label>
-                                                            <Input id="prescription-file" type="file" />
-                                                        </div>
-                                                        <div className="space-y-2">
-                                                            <Label htmlFor="contact-number">Your Contact Number</Label>
-                                                            <Input id="contact-number" type="tel" placeholder="Enter your phone number"/>
-                                                        </div>
-                                                    </div>
-                                                    <DialogFooter>
-                                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}>Submit Order</Button>
-                                                    </DialogFooter>
-                                                </DialogContent>
-                                            </Dialog>
+                                            <OrderDialog 
+                                                pharmacy={pharmacy} 
+                                                trigger={
+                                                    <Button className="w-full sm:w-auto flex-1" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}><MessageSquare className="mr-2 h-4 w-4"/>Order Now</Button>
+                                                }
+                                            />
                                         </CardFooter>
                                     </Card>
                                 ))}
@@ -680,5 +772,3 @@ export default function MyMedicinesPage() {
         </Dialog>
     );
 }
-
-    
