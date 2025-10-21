@@ -99,7 +99,7 @@ function DonationDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className="w-full text-lg h-12 bg-primary">Donate to Community</Button>
+                <Button size="sm" className="w-full text-base h-10 bg-primary"><Heart className="mr-2 h-4 w-4" />Donate to Community</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
@@ -149,17 +149,23 @@ export default function CommunityFundPage() {
                 </div>
                 <CardTitle className="text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
                 <CardDescription className="text-base text-muted-foreground max-w-2xl mx-auto">
-                    Support a <strong className="text-primary">100% genuine need</strong>. All campaigns are verified with doctor reports and BPL status, and your donation is tax-deductible under Section 80G.
+                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes to a genuine need. Your donation is tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
         </Card>
         
         <Card>
-            <CardContent className="p-4 grid sm:grid-cols-2 gap-4">
+            <CardContent className="p-2 grid sm:grid-cols-3 gap-2">
                 <DonationDialog />
-                <Button asChild className="w-full text-lg h-12" variant="outline">
+                 <Button asChild className="w-full text-base h-10" variant="outline">
+                    <Link href="/community-fund/start-campaign">
+                        <PlusCircle className="mr-2 h-4 w-4"/>
+                        Start a Campaign
+                    </Link>
+                </Button>
+                <Button asChild className="w-full text-base h-10" variant="outline">
                     <a href="tel:8008334948">
-                        <Phone className="mr-2 h-5 w-5" /> Contact Us
+                        <Phone className="mr-2 h-4 w-4" /> Contact Us
                     </a>
                 </Button>
             </CardContent>
@@ -171,13 +177,6 @@ export default function CommunityFundPage() {
             <FilterButton>Rare Diseases</FilterButton>
             <FilterButton>BPL Priority (High Need)</FilterButton>
         </div>
-
-        <Link href="/community-fund/start-campaign">
-            <Button className="w-full text-lg h-12">
-                <PlusCircle className="mr-2 h-5 w-5"/>
-                Start a Funding Campaign
-            </Button>
-        </Link>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {campaigns.map((campaign, index) => {
