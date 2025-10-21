@@ -19,8 +19,8 @@ import { medicineSchedule as initialMedicineSchedule, medicineHistoryData } from
 import Image from 'next/image';
 import { useLanguage } from '@/context/language-context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Textarea } from '../ui/textarea';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Textarea } from '@/components/ui/textarea';
 
 
 const getStatusIcon = (status: string) => {
