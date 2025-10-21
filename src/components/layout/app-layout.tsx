@@ -282,7 +282,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
                             <Avatar className="h-10 w-10 border border-primary-foreground/50">
                                 <AvatarImage src="/images/profile.jpg" />
-                                <AvatarFallback className="bg-primary-foreground text-primary">CL</AvatarFallback>
+                                <AvatarFallback className="bg-primary-foreground text-primary font-bold">CL</AvatarFallback>
                             </Avatar>
                         </Button>
                     </DropdownMenuTrigger>
@@ -449,3 +449,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+    
