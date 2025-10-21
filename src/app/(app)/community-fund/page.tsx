@@ -85,27 +85,10 @@ export default function CommunityFundPage() {
                     <HandHeart className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle className="text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
-                <CardDescription className="text-base text-muted-foreground">Dedicated support for BPL, Rare Diseases, and Organ Transplants.</CardDescription>
-            </CardHeader>
-        </Card>
-
-        <Card className="border">
-            <CardHeader>
-                <CardTitle className="text-xl">Your Support Matters</CardTitle>
-                <CardDescription>
-                    All campaigns below are <strong className="text-primary">Arogyadhatha Verified</strong>. We confirm each case with doctor reports and BPL status to ensure that every contribution goes towards a <strong className="text-primary">100% genuine need</strong>.
+                <CardDescription className="text-base text-muted-foreground max-w-2xl mx-auto">
+                    Support a <strong className="text-primary">100% genuine need</strong>. All campaigns are verified with doctor reports and BPL status, and your donation is tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
-        </Card>
-
-        <Card className="border-green-500 bg-green-50/50">
-            <CardContent className="p-4 flex items-center gap-4">
-                <RupeeIcon className="h-10 w-10 text-green-600 flex-shrink-0" />
-                <div>
-                    <h3 className="font-bold text-green-800">Your Donation is Tax-Deductible</h3>
-                    <p className="text-sm text-green-700">Your contribution can save a life and also offers you tax benefits under Section 80G of the Income Tax Act.</p>
-                </div>
-            </CardContent>
         </Card>
         
         <div className="flex flex-wrap items-center gap-2">
@@ -195,5 +178,3 @@ export default function CommunityFundPage() {
     </div>
   );
 }
-
-    
