@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { GovIdIcon } from "@/components/icons/gov-id-icon";
-import { FileText, Lock, PlusCircle, Sparkles, Upload, User, Video, Info, Calendar, ArrowRight } from "lucide-react";
+import { FileText, Lock, PlusCircle, Sparkles, Upload, ArrowRight, Info, Phone } from "lucide-react";
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
@@ -36,7 +36,7 @@ export default function StartCampaignPage() {
     const { toast } = useToast();
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-8">
             <div className="text-center">
                 <h1 className="text-3xl font-bold text-primary">Start Your Funding Campaign</h1>
                 <p className="text-muted-foreground mt-2">Secure support from our community. Every application is instantly verified through your Arogyadhatha health records.</p>
@@ -156,12 +156,26 @@ export default function StartCampaignPage() {
                          </div>
                     </div>
                 </StepCard>
+                
+                <Card className="border">
+                    <CardHeader>
+                        <CardTitle>Customer Support</CardTitle>
+                        <CardDescription>For any assistance with your campaign, please contact us.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Button asChild variant="outline" className="w-full">
+                            <a href="tel:8008334948">
+                                <Phone className="mr-2 h-4 w-4"/> Call 8008334948
+                            </a>
+                        </Button>
+                    </CardContent>
+                </Card>
 
                  {/* Step 4 */}
                 <Card className="border">
                     <CardHeader>
                         <CardTitle className="text-xl">Step 4: Launch and Commitment</CardTitle>
-                         <CardDescription>Review and launch your campaign. Your commitment to transparency is a trust signal to donors.</CardDescription>
+                         <CardDescription>Review and submit your campaign for verification. Once approved by our team, it will appear on the Community Fund page.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="flex items-start space-x-2">
@@ -172,8 +186,8 @@ export default function StartCampaignPage() {
                         </div>
                     </CardContent>
                     <CardFooter>
-                         <Button className="w-full h-12 text-lg" onClick={() => toast({ title: "Campaign Submitted!", description: "Your campaign is under review and will go live shortly."})}>
-                            Launch My Verified Campaign <ArrowRight className="ml-2 h-5 w-5" />
+                         <Button className="w-full h-12 text-lg" onClick={() => toast({ title: "Campaign Submitted for Verification!", description: "Our team will review your application. You will be notified once it is approved and live."})}>
+                            Submit for Verification <ArrowRight className="ml-2 h-5 w-5" />
                         </Button>
                     </CardFooter>
                 </Card>
@@ -181,5 +195,3 @@ export default function StartCampaignPage() {
         </div>
     )
 }
-
-    
