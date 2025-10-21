@@ -90,9 +90,9 @@ export default function CommunityFundPage() {
 
         <Card className="border">
             <CardHeader>
-                <CardTitle className="text-xl">For NGO Partners</CardTitle>
+                <CardTitle className="text-xl">Your Support Matters</CardTitle>
                 <CardDescription>
-                    All campaigns below are <strong className="text-primary">Arogyadhatha Verified</strong> with doctor reports and BPL status, ensuring <strong className="text-primary">100% genuine need</strong> and maximum impact per rupee.
+                    All campaigns below are <strong className="text-primary">Arogyadhatha Verified</strong>. We confirm each case with doctor reports and BPL status to ensure that every contribution goes towards a <strong className="text-primary">100% genuine need</strong>.
                 </CardDescription>
             </CardHeader>
         </Card>
@@ -184,5 +184,3 @@ export default function CommunityFundPage() {
     </div>
   );
 }
-
-    
