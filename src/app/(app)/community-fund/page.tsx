@@ -13,6 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { RupeeIcon } from "@/components/icons/rupee-icon";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Label } from "@/components/ui/label";
 
 const campaigns = [
   {
@@ -251,5 +252,3 @@ export default function CommunityFundPage() {
     </div>
   );
 }
-
-    
