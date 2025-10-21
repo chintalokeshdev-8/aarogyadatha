@@ -1,6 +1,8 @@
 
 'use client';
 
+import { useState } from 'react';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -8,13 +10,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { HandHeart, ShieldCheck, Star, Heart, CheckCircle, Calendar, PlusCircle, Phone, Copy, FileText, Hospital, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Image from 'next/image';
-import Link from "next/link";
-import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Label } from "@/components/ui/label";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import { Separator } from '@/components/ui/separator';
 
 
 const campaigns = [
@@ -23,7 +24,7 @@ const campaigns = [
     age: 8,
     status: "Urgent",
     statusColor: "bg-red-500",
-    imageUrl: "https://picsum.photos/seed/lakshmi/200/200",
+    imageUrl: "https://picsum.photos/seed/lakshmi/600/400",
     dataAiHint: "young girl smiling",
     tags: ["Organ Transplant", "Rare Disease", "BPL Priority"],
     suffering: "Suffering from Biliary Atresia, urgently needs Liver Transplant to survive.",
@@ -46,7 +47,7 @@ const campaigns = [
     age: 45,
     status: "Critical",
     statusColor: "bg-orange-500",
-    imageUrl: "https://picsum.photos/seed/raju/200/200",
+    imageUrl: "https://picsum.photos/seed/raju/600/400",
     dataAiHint: "middle-aged man portrait",
     tags: ["Organ Transplant", "BPL Priority"],
     suffering: "Daily wage worker diagnosed with Chronic Kidney Disease. Needs urgent dialysis and Kidney Transplant.",
@@ -58,6 +59,7 @@ const campaigns = [
     doctor: "Dr. V. Venkata Naidu",
     media: [
         { type: 'image', url: 'https://picsum.photos/seed/raju_1/600/400', hint: 'man looking worried' },
+        { type: 'image', url: 'https://picsum.photos/seed/raju_2/600/400', hint: 'hospital corridor' },
         { type: 'video', url: 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
     ],
     story: "Raju, the sole earner for his family of four, has been diagnosed with end-stage renal disease. He needs regular dialysis and an urgent kidney transplant. The mounting medical bills have exhausted his savings. Your donation can help him get the life-saving treatment he needs to support his family again."
@@ -67,7 +69,7 @@ const campaigns = [
     age: 19,
     status: "New",
     statusColor: "bg-blue-500",
-    imageUrl: "https://picsum.photos/seed/priya/200/200",
+    imageUrl: "https://picsum.photos/seed/priya/600/400",
     dataAiHint: "teenage girl portrait",
     tags: ["Rare Disease"],
     suffering: "Battling Multiple Sclerosis. High-cost specialized medication required for next 6 months.",
@@ -87,7 +89,7 @@ const campaigns = [
     age: 62,
     status: "Closing Soon",
     statusColor: "bg-yellow-500",
-    imageUrl: "https://picsum.photos/seed/veeresh/200/200",
+    imageUrl: "https://picsum.photos/seed/veeresh/600/400",
     dataAiHint: "elderly man portrait",
     tags: ["BPL Priority"],
     suffering: "Elderly BPL card holder. Needs immediate hip replacement surgery due to an accident.",
@@ -233,12 +235,10 @@ export default function CommunityFundPage() {
         </div>
       
         <Card className="border-0 shadow-none bg-transparent -mt-4">
-            <CardHeader className="p-0 text-center sm:text-left">
-                <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</h1>
-                </div>
+            <CardHeader className="p-0 flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
+                 <CardTitle className="text-2xl sm:text-3xl font-bold text-primary">Arogyadhatha Community Fund</CardTitle>
                 <CardDescription className="text-sm text-muted-foreground max-w-3xl mt-2 mx-auto sm:mx-0">
-                    All campaigns are Arogyadhatha Verified. We confirm each case with doctor reports and BPL status to ensure every contribution goes towards a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is tax-deductible under Section 80G.
+                    All campaigns are Arogyadhatha Verified. We confirm each case to ensure every contribution goes towards a <span className="font-bold text-green-600">100% genuine need</span>. Your donation is tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
         </Card>
@@ -267,27 +267,30 @@ export default function CommunityFundPage() {
                 const progress = (campaign.raised / campaign.goal) * 100;
                 return (
                     <CampaignDetailsDialog key={index} campaign={campaign}>
-                        <Card className="overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-lg">
+                        <Card className="overflow-hidden flex flex-col cursor-pointer transition-shadow hover:shadow-lg border">
                             <CardHeader className="p-0 relative">
-                                <Image src={campaign.imageUrl} data-ai-hint={campaign.dataAiHint} alt={campaign.name} width={400} height={250} className="w-full h-48 object-cover"/>
+                                <Carousel className="w-full">
+                                    <CarouselContent>
+                                        {campaign.media.filter(m => m.type === 'image').map((item, idx) => (
+                                             <CarouselItem key={idx}>
+                                                <Image src={item.url} data-ai-hint={item.hint} alt={campaign.name} width={600} height={400} className="w-full h-48 object-cover"/>
+                                             </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                </Carousel>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                                <div className="absolute bottom-0 left-0 p-4">
+                                     <h3 className="text-xl font-bold text-white shadow-md">{campaign.name}, {campaign.age}</h3>
+                                </div>
                                 <Badge className={cn("absolute top-2 left-2 text-white text-xs py-1 px-2", campaign.statusColor)}>
                                     {campaign.status}
                                 </Badge>
                             </CardHeader>
                             <CardContent className="p-4 flex flex-col flex-grow">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <Avatar className="h-12 w-12 border-2 border-background">
-                                        <AvatarImage src={campaign.imageUrl} />
-                                        <AvatarFallback>{campaign.name.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <h3 className="text-xl font-bold">{campaign.name}, {campaign.age}</h3>
-                                        <div className="flex flex-wrap gap-1 mt-1">
-                                            {campaign.tags.map(tag => (
-                                                <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
-                                            ))}
-                                        </div>
-                                    </div>
+                                <div className="flex flex-wrap gap-1 mt-1">
+                                    {campaign.tags.map(tag => (
+                                        <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
+                                    ))}
                                 </div>
                                 
                                 <Badge variant="outline" className="w-fit my-3 bg-green-100 text-green-800 border-green-300">
