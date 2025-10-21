@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,15 @@ const StepCard = ({ step, title, children }: { step: number; title: string; chil
 
 export default function StartCampaignPage() {
     const { toast } = useToast();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) {
+        return null; // or a loading skeleton
+    }
 
     return (
         <div className="max-w-4xl mx-auto space-y-8">
@@ -195,3 +204,5 @@ export default function StartCampaignPage() {
         </div>
     )
 }
+
+    
