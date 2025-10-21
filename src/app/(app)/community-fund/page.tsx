@@ -5,12 +5,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { HandHeart, ShieldCheck, Star, Heart, CheckCircle, Calendar, PlusCircle } from "lucide-react";
+import { HandHeart, ShieldCheck, Star, Heart, CheckCircle, Calendar, PlusCircle, Phone, Copy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Image from 'next/image';
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { RupeeIcon } from "@/components/icons/rupee-icon";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
 
 const campaigns = [
   {
@@ -75,12 +77,72 @@ const FilterButton = ({ children }: { children: React.ReactNode }) => (
   <Button variant="outline" className="h-auto py-1.5 px-3 text-sm">{children}</Button>
 );
 
+function DonationDialog() {
+    const { toast } = useToast();
+    const bankDetails = {
+        name: "Arogyadhatha Community Fund",
+        acc: "123456789",
+        ifsc: "SBIN0000LOKI",
+        bank: "State Bank of India",
+        upi: "arogyadhatha@sbi"
+    };
+
+    const copyToClipboard = (text: string, field: string) => {
+        navigator.clipboard.writeText(text);
+        toast({
+            title: `${field} Copied!`,
+            description: `${text} has been copied to your clipboard.`,
+        });
+    }
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button className="w-full text-lg h-12 bg-primary">Donate to Community</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle>Donate to the General Fund</DialogTitle>
+                    <DialogDescription>
+                        Your contribution supports all verified campaigns and helps us respond to urgent needs faster.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                    <div className="space-y-1">
+                        <Label>UPI ID</Label>
+                        <div className="flex items-center gap-2">
+                            <p className="font-mono text-sm p-2 bg-muted rounded-md flex-1">{bankDetails.upi}</p>
+                            <Button variant="outline" size="icon" onClick={() => copyToClipboard(bankDetails.upi, 'UPI ID')}><Copy className="h-4 w-4"/></Button>
+                        </div>
+                    </div>
+                     <Separator />
+                    <div className="space-y-2">
+                        <Label>Bank Account Details</Label>
+                        <div className="text-sm p-3 border rounded-lg bg-muted/50 space-y-2">
+                           <div className="flex justify-between items-center">
+                                <span>A/C No: <strong className="font-mono">{bankDetails.acc}</strong></span>
+                                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => copyToClipboard(bankDetails.acc, 'Account Number')}><Copy className="h-4 w-4"/></Button>
+                           </div>
+                           <div className="flex justify-between items-center">
+                                <span>IFSC: <strong className="font-mono">{bankDetails.ifsc}</strong></span>
+                                <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => copyToClipboard(bankDetails.ifsc, 'IFSC Code')}><Copy className="h-4 w-4"/></Button>
+                           </div>
+                           <p>Bank: {bankDetails.bank}</p>
+                           <p>Name: {bankDetails.name}</p>
+                        </div>
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
 export default function CommunityFundPage() {
     
   return (
     <div className="space-y-6">
         <Card className="border-0 shadow-none bg-transparent">
-            <CardHeader className="text-center px-0">
+            <CardHeader className="text-center p-0">
                 <div className="inline-block p-3 bg-primary/10 rounded-full mx-auto w-fit">
                     <HandHeart className="h-8 w-8 text-primary" />
                 </div>
@@ -89,6 +151,17 @@ export default function CommunityFundPage() {
                     Support a <strong className="text-primary">100% genuine need</strong>. All campaigns are verified with doctor reports and BPL status, and your donation is tax-deductible under Section 80G.
                 </CardDescription>
             </CardHeader>
+        </Card>
+        
+        <Card>
+            <CardContent className="p-4 grid sm:grid-cols-2 gap-4">
+                <DonationDialog />
+                <Button asChild className="w-full text-lg h-12" variant="outline">
+                    <a href="tel:8008334948">
+                        <Phone className="mr-2 h-5 w-5" /> Contact Us
+                    </a>
+                </Button>
+            </CardContent>
         </Card>
         
         <div className="flex flex-wrap items-center gap-2">
@@ -178,3 +251,5 @@ export default function CommunityFundPage() {
     </div>
   );
 }
+
+    
