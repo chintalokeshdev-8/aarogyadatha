@@ -2,10 +2,10 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
-import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText, X, Search, Upload, Hospital, Phone, MapPin, Tag } from "lucide-react";
+import { FlaskConical, Stethoscope, Microscope, LifeBuoy, Bell, Utensils, Award, AlarmClock, Info, Loader2, Sparkles, AlertTriangle, Pencil, PlusCircle, History, CheckCircle, XCircle, Clock, ChevronDown, ChevronUp, FileText, X, Search, Upload, Hospital, Phone, MapPin, Tag, Package, PackageCheck, Send, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
 import { cn } from "@/lib/utils";
@@ -54,6 +54,24 @@ const userHealthProfile = {
     conditions: ["Fever & Cold", "Allergic Rhinitis"],
     medications: ["Paracetamol", "Cetirizine", "Metformin", "Vitamin D3"]
 };
+
+// Mock Data for Tracking and History
+const activeOrder = {
+    orderId: "MED45321",
+    status: "Out for Delivery",
+    steps: [
+        { name: "Order Confirmed", date: "Jul 18, 10:00 AM", completed: true },
+        { name: "Processing Medicines", date: "Jul 18, 10:15 AM", completed: true },
+        { name: "Out for Delivery", date: "Jul 18, 11:30 AM", completed: true },
+        { name: "Delivered", date: "Expected by 1:00 PM", completed: false },
+    ],
+};
+
+const orderHistory = [
+    { orderId: "MED39876", date: "2024-06-25", items: 4, total: 540 },
+    { orderId: "MED35123", date: "2024-05-18", items: 2, total: 280 },
+    { orderId: "MED34098", date: "2024-04-30", items: 5, total: 710 },
+];
 
 function DietPlanDialog() {
     const [isPending, startTransition] = useTransition();
@@ -531,39 +549,93 @@ export default function MyMedicinesPage() {
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 {pharmacies.map((pharmacy) => (
-                                    <Card key={pharmacy.name} className="p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                                        <Image src={pharmacy.logo} alt={pharmacy.name} width={80} height={80} data-ai-hint={pharmacy.dataAiHint} className="rounded-lg border-2 border-background flex-shrink-0" />
-                                        <div className="flex-1">
-                                            <h3 className="text-lg font-bold">{pharmacy.name}</h3>
-                                            <p className="text-sm text-muted-foreground flex items-center gap-1.5"><MapPin className="h-4 w-4" />{pharmacy.location}</p>
-                                            <Badge className="mt-2 bg-green-100 text-green-800 border-green-200">
-                                                <Tag className="h-4 w-4 mr-1.5"/>{pharmacy.discount}
-                                            </Badge>
+                                    <Card key={pharmacy.name} className="p-4">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                            <Image src={pharmacy.logo} alt={pharmacy.name} width={80} height={80} data-ai-hint={pharmacy.dataAiHint} className="rounded-lg border-2 border-background flex-shrink-0" />
+                                            <div className="flex-1">
+                                                <h3 className="text-lg font-bold">{pharmacy.name}</h3>
+                                                <p className="text-sm text-muted-foreground flex items-center gap-1.5"><MapPin className="h-4 w-4" />{pharmacy.location}</p>
+                                                <Badge className="mt-2 bg-green-100 text-green-800 border-green-200">
+                                                    <Tag className="h-4 w-4 mr-1.5"/>{pharmacy.discount}
+                                                </Badge>
+                                            </div>
                                         </div>
-                                        <Dialog>
-                                            <DialogTrigger asChild>
-                                                <Button className="w-full sm:w-auto" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}><Upload className="mr-2 h-4 w-4"/>Upload Prescription</Button>
-                                            </DialogTrigger>
-                                            <DialogContent>
-                                                <DialogHeader>
-                                                    <DialogTitle>Upload for {pharmacy.name}</DialogTitle>
-                                                    <DialogDescription>Upload your prescription to place an order. The pharmacy will contact you to confirm.</DialogDescription>
-                                                </DialogHeader>
-                                                <div className="py-4 space-y-4">
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="prescription-file">Prescription File</Label>
-                                                        <Input id="prescription-file" type="file" />
+                                        <CardFooter className="p-0 pt-4 mt-4 border-t flex-col sm:flex-row gap-2">
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button variant="outline" className="w-full sm:w-auto"><Package className="mr-2 h-4 w-4"/>Track Order</Button>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                        <DialogTitle>Track Delivery</DialogTitle>
+                                                        <DialogDescription>Status for Order ID: {activeOrder.orderId}</DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className="py-4">
+                                                        <ul className="space-y-6">
+                                                            {activeOrder.steps.map((step, index) => (
+                                                                <li key={index} className="flex items-start gap-4">
+                                                                    <div className="flex flex-col items-center">
+                                                                        <div className={cn("h-8 w-8 rounded-full flex items-center justify-center", step.completed ? "bg-primary" : "bg-muted border-2")}>
+                                                                            {step.completed ? <CheckCircle className="h-5 w-5 text-primary-foreground" /> : <Package className="h-5 w-5 text-muted-foreground"/>}
+                                                                        </div>
+                                                                        {index < activeOrder.steps.length - 1 && <div className="w-0.5 h-12 mt-1 bg-border"/>}
+                                                                    </div>
+                                                                    <div>
+                                                                        <p className={cn("font-bold", step.completed && "text-primary")}>{step.name}</p>
+                                                                        <p className="text-sm text-muted-foreground">{step.date}</p>
+                                                                    </div>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
                                                     </div>
-                                                    <div className="space-y-2">
-                                                        <Label htmlFor="contact-number">Your Contact Number</Label>
-                                                        <Input id="contact-number" type="tel" placeholder="Enter your phone number"/>
+                                                </DialogContent>
+                                            </Dialog>
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button variant="outline" className="w-full sm:w-auto"><History className="mr-2 h-4 w-4"/>Order History</Button>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                        <DialogTitle>Order History with {pharmacy.name}</DialogTitle>
+                                                    </DialogHeader>
+                                                    <div className="py-4 space-y-3 max-h-96 overflow-y-auto">
+                                                        {orderHistory.map(order => (
+                                                            <div key={order.orderId} className="p-3 border rounded-lg flex justify-between items-center">
+                                                                <div>
+                                                                    <p className="font-bold">{order.orderId}</p>
+                                                                    <p className="text-sm text-muted-foreground">{order.date} • {order.items} items • ₹{order.total}</p>
+                                                                </div>
+                                                                <Button size="sm">Reorder</Button>
+                                                            </div>
+                                                        ))}
                                                     </div>
-                                                </div>
-                                                <DialogFooter>
-                                                    <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}>Submit Order</Button>
-                                                </DialogFooter>
-                                            </DialogContent>
-                                        </Dialog>
+                                                </DialogContent>
+                                            </Dialog>
+                                             <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button className="w-full sm:w-auto flex-1" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}><Upload className="mr-2 h-4 w-4"/>Upload Prescription</Button>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogHeader>
+                                                        <DialogTitle>Upload for {pharmacy.name}</DialogTitle>
+                                                        <DialogDescription>Upload your prescription to place an order. The pharmacy will contact you to confirm.</DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className="py-4 space-y-4">
+                                                        <div className="space-y-2">
+                                                            <Label htmlFor="prescription-file">Prescription File</Label>
+                                                            <Input id="prescription-file" type="file" />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <Label htmlFor="contact-number">Your Contact Number</Label>
+                                                            <Input id="contact-number" type="tel" placeholder="Enter your phone number"/>
+                                                        </div>
+                                                    </div>
+                                                    <DialogFooter>
+                                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-medicines))'}}>Submit Order</Button>
+                                                    </DialogFooter>
+                                                </DialogContent>
+                                            </Dialog>
+                                        </CardFooter>
                                     </Card>
                                 ))}
                             </CardContent>
@@ -608,3 +680,5 @@ export default function MyMedicinesPage() {
         </Dialog>
     );
 }
+
+    
