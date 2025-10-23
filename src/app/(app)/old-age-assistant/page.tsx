@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Users2, HandHeart, Briefcase, Car, Nurse, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock } from 'lucide-react';
+import { Users2, HandHeart, Briefcase, Car, Stethoscope, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -155,6 +155,13 @@ export default function OldAgeAssistantPage() {
                                             <Label htmlFor="client-contact">Your Contact Number (for confirmation) *</Label>
                                             <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
                                         </div>
+                                         <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                                            <Info className="h-4 w-4" />
+                                            <AlertTitle className="font-bold">Peace of Mind, Guaranteed</AlertTitle>
+                                            <AlertDescription>
+                                                Once a provider is assigned, you'll get access to their contact details and verified documents. You will receive daily attendance and hourly status updates (with photos and location) in the app.
+                                            </AlertDescription>
+                                        </Alert>
                                         <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
                                             {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle className="mr-2 h-4 w-4" />}
                                             {isSubmitting ? 'Submitting...' : 'Submit Request'}
@@ -185,7 +192,7 @@ export default function OldAgeAssistantPage() {
                                             <div className="flex-1">
                                                 <p className="font-bold text-lg">Bala Krishna</p>
                                                 <div className="flex flex-wrap gap-1 mt-1">
-                                                    <Badge variant="outline"><Nurse className="h-3 w-3 mr-1" />Nurse</Badge>
+                                                    <Badge variant="outline"><Stethoscope className="h-3 w-3 mr-1" />Nurse</Badge>
                                                     <Badge variant="outline"><User className="h-3 w-3 mr-1" />Caretaker</Badge>
                                                     <Badge variant="outline"><Car className="h-3 w-3 mr-1" />Driver</Badge>
                                                 </div>
