@@ -2,17 +2,21 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Users2, HandHeart, Briefcase, Car, Nurse, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload } from 'lucide-react';
+import { Users2, HandHeart, Briefcase, Car, Nurse, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 
 const services = [
@@ -24,6 +28,12 @@ const services = [
     { id: "vehicle", name: "Vehicle Service", description: "Arrange a vehicle for appointments." },
 ];
 
+const hourlyUpdates = [
+    { time: '10:00 AM', text: 'Reached patient\'s home. All is well.', image: 'https://picsum.photos/seed/update1/400/300', dataAiHint: "selfie indoor", location: 'Rentala Village' },
+    { time: '11:15 AM', text: 'Helping with breakfast and morning medications.', image: 'https://picsum.photos/seed/update2/400/300', dataAiHint: "elderly person eating", location: 'Rentala Village' },
+    { time: '12:30 PM', text: 'Reading the newspaper together.', image: 'https://picsum.photos/seed/update3/400/300', dataAiHint: "person reading newspaper", location: 'Rentala Village' },
+];
+
 export default function OldAgeAssistantPage() {
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +42,6 @@ export default function OldAgeAssistantPage() {
     const [serviceRequestStep, setServiceRequestStep] = useState(1);
 
     const handlePatientSearch = () => {
-        // This is a mock search. In a real app, this would be an API call.
         if (patientSearch.toLowerCase().includes('lokesh')) {
             setPatientDetails({
                 name: 'Chinta Lokesh Babu',
@@ -154,21 +163,75 @@ export default function OldAgeAssistantPage() {
                                 </CardContent>
                              </>
                         ) : (
-                             <CardContent className="p-6">
-                                <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                            <div className="space-y-6 p-4">
+                                 <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
                                     <Info className="h-4 w-4" />
                                     <AlertTitle className="font-bold">Peace of Mind, Guaranteed</AlertTitle>
                                     <AlertDescription>
-                                        <ul className="list-disc list-inside mt-2 space-y-1">
-                                            <li>Once a provider is assigned, you'll get access to their contact details and verified documents.</li>
-                                            <li>Our provider will mark their attendance daily via the app.</li>
-                                            <li>For your peace of mind, you will receive hourly status updates, including a photo with your parent and the provider's location.</li>
-                                            <li>You can view all these updates in real-time right here in the app.</li>
-                                        </ul>
+                                        Your service request for <span className="font-bold">{patientDetails.name}</span> is active. You can monitor all activities below.
                                     </AlertDescription>
                                 </Alert>
-                                <Button onClick={() => setServiceRequestStep(1)} className="w-full mt-4" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Book Another Service</Button>
-                            </CardContent>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Assigned Provider</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="flex items-center gap-4">
+                                            <Avatar className="h-16 w-16">
+                                                <AvatarImage src="https://picsum.photos/seed/bala/100/100" data-ai-hint="male portrait" />
+                                                <AvatarFallback>BK</AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex-1">
+                                                <p className="font-bold text-lg">Bala Krishna</p>
+                                                <div className="flex flex-wrap gap-1 mt-1">
+                                                    <Badge variant="outline"><Nurse className="h-3 w-3 mr-1" />Nurse</Badge>
+                                                    <Badge variant="outline"><User className="h-3 w-3 mr-1" />Caretaker</Badge>
+                                                    <Badge variant="outline"><Car className="h-3 w-3 mr-1" />Driver</Badge>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-2 mt-4">
+                                            <Button variant="outline"><Phone className="h-4 w-4 mr-2" /> Call Provider</Button>
+                                            <Button variant="outline"><MessageSquare className="h-4 w-4 mr-2" /> Chat</Button>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Daily Tracking</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                         <div className="flex justify-between items-center p-3 bg-green-50 text-green-800 border border-green-200 rounded-lg">
+                                            <p className="font-bold">Attendance: Present</p>
+                                            <p className="text-sm">Checked in at 9:55 AM</p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                                
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Hourly Updates</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        {hourlyUpdates.map((update, index) => (
+                                            <div key={index} className="flex gap-4">
+                                                <div className="flex flex-col items-center">
+                                                    <p className="font-bold text-sm">{update.time}</p>
+                                                    <div className="w-px flex-1 bg-border my-1"></div>
+                                                </div>
+                                                <div className="flex-1 pb-4">
+                                                     <Image src={update.image} data-ai-hint={update.dataAiHint} alt={`Update at ${update.time}`} width={400} height={300} className="rounded-lg border aspect-[4/3] object-cover" />
+                                                     <p className="text-sm text-muted-foreground mt-2">{update.text}</p>
+                                                     <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1"><MapPin className="h-3 w-3" />{update.location}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </CardContent>
+                                </Card>
+                                 <Button onClick={() => setServiceRequestStep(1)} className="w-full mt-4" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Book Another Service</Button>
+                            </div>
                         )}
                     </Card>
                 </TabsContent>
@@ -179,7 +242,7 @@ export default function OldAgeAssistantPage() {
                             <CardTitle>Join as a Service Provider</CardTitle>
                             <CardDescription>Apply to become a verified attendant, nurse, or driver.</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-6">
+                        <CardContent>
                              <form onSubmit={(e) => handleSubmit(e, "provider application")} className="space-y-6">
                                 <div className="space-y-4">
                                     <div className="space-y-2">
