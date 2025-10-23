@@ -85,17 +85,14 @@ export default function OldAgeAssistantPage() {
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
     
-    // UI State Management
     const [serviceBookingStep, setServiceBookingStep] = useState('form_and_directory'); // 'form_and_directory', 'tracking'
     const [providerApplicationStatus, setProviderApplicationStatus] = useState('form'); // 'form', 'submitted', 'approved'
     const [isSubmitting, setIsSubmitting] = useState(false);
     
-    // Filters for provider directory
     const [searchQuery, setSearchQuery] = useState('');
     const [filterSkill, setFilterSkill] = useState('All');
     const [filterLocation, setFilterLocation] = useState('All');
     
-    // Assigned provider state for tracking view
     const [assignedProvider, setAssignedProvider] = useState<any>(null);
 
     useEffect(() => {
@@ -253,50 +250,54 @@ export default function OldAgeAssistantPage() {
                                         </div>
                                         <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
                                             {filteredProviders.map(provider => (
-                                                <Card key={provider.id} className="p-4 border shadow-sm flex flex-col sm:flex-row gap-4">
-                                                    <div className="flex flex-col items-center text-center w-full sm:w-1/4">
-                                                        <Avatar className="h-16 w-16 mb-2">
+                                                <Card key={provider.id} className="p-4 border shadow-sm">
+                                                    <div className="flex items-start gap-4">
+                                                        <Avatar className="h-16 w-16">
                                                             <AvatarImage src={provider.avatar} data-ai-hint={provider.dataAiHint} />
                                                             <AvatarFallback>{provider.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                                         </Avatar>
-                                                        <h3 className="font-bold text-base">{provider.name}</h3>
-                                                        <p className="text-xs text-muted-foreground">{provider.id}</p>
-                                                        <div className="flex items-center gap-1 mt-1">
-                                                            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                                                            <span className="font-bold text-sm">{provider.rating}</span>
+                                                        <div className="flex-1">
+                                                            <h3 className="font-bold text-base">{provider.name}</h3>
+                                                            <p className="text-xs text-muted-foreground">{provider.id}</p>
+                                                            <div className="flex items-center gap-2 mt-1">
+                                                                <div className="flex items-center gap-1">
+                                                                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                                                                    <span className="font-bold text-sm">{provider.rating}</span>
+                                                                </div>
+                                                                <Separator orientation="vertical" className="h-4" />
+                                                                <div className="flex flex-wrap gap-1">
+                                                                    {provider.skills.map(skill => (
+                                                                        <Badge key={skill} variant="secondary" className="text-xs">{skill}</Badge>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div className="w-full sm:w-3/4">
-                                                        <div className="flex flex-wrap gap-2">
-                                                            {provider.skills.map(skill => (
-                                                                <Badge key={skill} variant="secondary">{skill}</Badge>
-                                                            ))}
+                                                    <Separator className="my-3" />
+                                                    <div className="space-y-2 text-sm">
+                                                        <div className="flex justify-between">
+                                                            <span className="text-muted-foreground">Price (per day):</span>
+                                                            <span className="font-bold">₹{provider.pricing.day}</span>
                                                         </div>
-                                                        <Separator className="my-2" />
-                                                        <div className="space-y-1 text-sm">
-                                                            <div className="flex justify-between">
-                                                                <span className="text-muted-foreground">Price (per day):</span>
-                                                                <span className="font-bold">₹{provider.pricing.day}</span>
-                                                            </div>
-                                                            <div className="flex justify-between">
-                                                                <span className="text-muted-foreground">Price (monthly):</span>
-                                                                <span className="font-bold">₹{provider.pricing.month}</span>
-                                                            </div>
-                                                            <div className="flex justify-between items-center">
-                                                                <span className="text-muted-foreground">Contact:</span>
-                                                                <Button variant="link" asChild className="p-0 h-auto font-bold"><a href={`tel:${provider.contact}`}>{provider.contact}</a></Button>
-                                                            </div>
+                                                        <div className="flex justify-between">
+                                                            <span className="text-muted-foreground">Price (monthly):</span>
+                                                            <span className="font-bold">₹{provider.pricing.month}</span>
                                                         </div>
-                                                        <Separator className="my-2" />
-                                                        <div className="flex items-center justify-between gap-2 mt-3">
-                                                            {provider.verified ? (
-                                                                <Badge className="bg-green-100 text-green-800 border-green-300">
-                                                                    <CheckCircle className="h-4 w-4 mr-1" /> Verified
-                                                                </Badge>
-                                                            ) : (
-                                                                 <Badge variant="outline">Not Verified</Badge>
-                                                            )}
-                                                             <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} onClick={() => handleBookProvider(provider)}>Book Now</Button>
+                                                    </div>
+                                                    <Separator className="my-3" />
+                                                    <div className="flex items-center justify-between gap-2">
+                                                        {provider.verified ? (
+                                                            <Badge className="bg-green-100 text-green-800 border-green-300">
+                                                                <CheckCircle className="h-4 w-4 mr-1" /> Verified
+                                                            </Badge>
+                                                        ) : (
+                                                             <Badge variant="outline">Not Verified</Badge>
+                                                        )}
+                                                        <div className="flex items-center gap-2">
+                                                            <Button variant="outline" size="icon" asChild className="h-8 w-8">
+                                                                <a href={`tel:${provider.contact}`}><Phone className="h-4 w-4"/></a>
+                                                            </Button>
+                                                            <Button size="sm" className="h-8" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} onClick={() => handleBookProvider(provider)}>Book Now</Button>
                                                         </div>
                                                     </div>
                                                 </Card>
@@ -555,5 +556,3 @@ export default function OldAgeAssistantPage() {
         </div>
     );
 }
-
-    
