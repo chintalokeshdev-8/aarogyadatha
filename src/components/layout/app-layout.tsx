@@ -232,7 +232,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                   <h1 className="text-xl font-bold">Arogyadhatha</h1>
               </Link>
           </header>
-          <main className="flex-1 pb-40">
+          <main className="flex-1">
               {children}
           </main>
       </div>
@@ -393,7 +393,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       </header>
       <main className="flex-1 bg-muted/20">
-        <div className="p-4 sm:p-6 lg:p-8 pb-40">
+        <div className="p-4 sm:p-6 lg:p-8 pb-32 sm:pb-36">
           {children}
         </div>
       </main>
@@ -447,5 +447,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
     </div>
-    );
+  );
 }
