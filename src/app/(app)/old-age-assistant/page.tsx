@@ -138,6 +138,11 @@ export default function OldAgeAssistantPage() {
             }, 2000);
         }, 1500);
     };
+    
+    const assignedPatient = {
+        name: "Chinta Lokesh Babu",
+        service: "Daily Caretaker Package"
+    };
 
     if (!isClient) {
         return (
@@ -147,11 +152,6 @@ export default function OldAgeAssistantPage() {
             </div>
         );
     }
-    
-    const assignedPatient = {
-        name: "Chinta Lokesh Babu",
-        service: "Daily Caretaker Package"
-    };
 
     return (
         <div className="max-w-7xl mx-auto space-y-6">
