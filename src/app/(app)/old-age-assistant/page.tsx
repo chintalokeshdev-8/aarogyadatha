@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Users2, HandHeart, Briefcase, Car, Stethoscope, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock, Camera, Image as ImageIcon, ChevronDown, ArrowLeft } from 'lucide-react';
+import { Users2, HandHeart, Briefcase, Car, Stethoscope, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock, Camera, Image as ImageIcon, ChevronDown, ArrowLeft, Star, FileBadge } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -21,6 +21,37 @@ import { Separator } from '@/components/ui/separator';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
+const providerData = Array.from({ length: 50 }, (_, i) => {
+    const names = ["Rajesh", "Sunita", "Amit", "Priya", "Mohan", "Geeta", "Vikram", "Anjali", "Suresh", "Meena"];
+    const skills = [
+        ["Caretaker"],
+        ["Nurse", "Caretaker"],
+        ["Driver"],
+        ["Caretaker", "Companion"],
+        ["Nurse"],
+        ["Driver", "Caretaker"],
+        ["Caretaker", "Physiotherapy Assistant"],
+        ["Nurse"],
+        ["Companion"],
+        ["Driver"],
+    ];
+    const name = `${names[i % names.length]} Kumar ${i + 1}`;
+    return {
+        id: `PROV${101 + i}`,
+        name: name,
+        avatar: `https://picsum.photos/seed/prov${i}/100/100`,
+        dataAiHint: i % 4 === 0 ? "female nurse portrait" : "male caretaker portrait",
+        rating: (3.5 + (i % 15) / 10).toFixed(1),
+        skills: skills[i % skills.length],
+        pricing: {
+            day: 500 + (i % 10) * 50,
+            month: 12000 + (i % 10) * 1000
+        },
+        location: i % 3 === 0 ? "Guntur" : "Hyderabad",
+        verified: i % 1.2 > 0.2,
+        contact: `+91 98765 432${(i < 10 ? '0' : '') + i}`,
+    };
+});
 
 const services = [
     { id: "attendant", name: "A-to-Z Assistance Package", description: "Complete hospital visit management: pickup, consultation, and drop-off." },
@@ -31,67 +62,42 @@ const services = [
     { id: "vehicle", name: "Vehicle Service", description: "Arrange a vehicle for appointments." },
 ];
 
-const dailyUpdates = [
-    {
-        date: "July 26, 2024",
-        updates: [
-            { time: '10:00 AM', text: 'Reached patient\'s home. All is well.', image: 'https://picsum.photos/seed/update1/400/300', dataAiHint: "selfie indoor", location: 'Rentala Village' },
-            { time: '11:15 AM', text: 'Helping with breakfast and morning medications.', image: 'https://picsum.photos/seed/update2/400/300', dataAiHint: "elderly person eating", location: 'Rentala Village' },
-            { time: '12:30 PM', text: 'Reading the newspaper together.', image: 'https://picsum.photos/seed/update3/400/300', dataAiHint: "person reading newspaper", location: 'Rentala Village' },
-            { time: '02:00 PM', text: 'Patient is resting now. No issues to report.', image: null, dataAiHint: null, location: 'Rentala Village' },
-        ]
-    },
-    {
-        date: "July 25, 2024",
-        updates: [
-            { time: '10:00 AM', text: 'Arrived on time. Patient is in good spirits.', image: 'https://picsum.photos/seed/update4/400/300', dataAiHint: "selfie smiling", location: 'Rentala Village' },
-            { time: '12:00 PM', text: 'Assisted with lunch and had a nice chat.', image: null, dataAiHint: null, location: 'Rentala Village' },
-            { time: '03:00 PM', text: 'Went for a short walk in the garden.', image: 'https://picsum.photos/seed/update5/400/300', dataAiHint: "walking in garden", location: 'Rentala Village' },
-        ]
-    }
-];
-
 export default function OldAgeAssistantPage() {
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [patientSearch, setPatientSearch] = useState('');
-    const [patientDetails, setPatientDetails] = useState({ name: '', address: '', id: '' });
-    const [serviceRequestStep, setServiceRequestStep] = useState(1);
     const [providerApplicationStatus, setProviderApplicationStatus] = useState('form');
     const [isClient, setIsClient] = useState(false);
+
+    // Filters for provider directory
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterSkill, setFilterSkill] = useState('All');
+    const [filterLocation, setFilterLocation] = useState('All');
 
     useEffect(() => {
         setIsClient(true);
     }, []);
 
-    const handlePatientSearch = () => {
-        if (patientSearch.toLowerCase().includes('lokesh')) {
-            setPatientDetails({
-                name: 'Chinta Lokesh Babu',
-                address: 'Rentala village, Rentachintala mandal, Palnadu district, Andhra Pradesh, India',
-                id: 'PAT001'
-            });
-        }
-    };
-    
+    const filteredProviders = useMemo(() => {
+        return providerData.filter(provider => {
+            const searchMatch = searchQuery === '' || provider.name.toLowerCase().includes(searchQuery.toLowerCase());
+            const skillMatch = filterSkill === 'All' || provider.skills.includes(filterSkill);
+            const locationMatch = filterLocation === 'All' || provider.location === filterLocation;
+            return searchMatch && skillMatch && locationMatch;
+        });
+    }, [searchQuery, filterSkill, filterLocation]);
+
     const handleSubmit = (e: React.FormEvent, formType: string) => {
         e.preventDefault();
         setIsSubmitting(true);
         setTimeout(() => {
             setIsSubmitting(false);
-            if(formType === 'service') {
-                toast({
-                    title: "Request Submitted Successfully!",
-                    description: `Your service request has been received. Our team will contact you shortly.`,
-                });
-                setServiceRequestStep(2);
-            } else { // provider application
+            if (formType === 'provider') {
                 toast({
                     title: "Application Submitted Successfully!",
                     description: `Our team will review your application and contact you shortly.`,
                 });
                 setProviderApplicationStatus('submitted');
-                 setTimeout(() => {
+                setTimeout(() => {
                     setProviderApplicationStatus('approved');
                 }, 2000);
             }
@@ -120,200 +126,102 @@ export default function OldAgeAssistantPage() {
             <Tabs defaultValue="book-service" className="w-full">
                 <div className="p-1 border bg-muted rounded-lg">
                     <TabsList className="grid grid-cols-2">
-                        <TabsTrigger value="book-service" className="font-bold">Book a Service</TabsTrigger>
+                        <TabsTrigger value="book-service" className="font-bold">Find a Provider</TabsTrigger>
                         <TabsTrigger value="become-provider" className="font-bold">Become a Provider</TabsTrigger>
                     </TabsList>
                 </div>
                 
                 <TabsContent value="book-service" className="mt-6">
                     <Card className="border">
-                        {serviceRequestStep === 1 ? (
-                             <>
-                                <CardHeader>
-                                    <CardTitle>Book a Service for Your Parents</CardTitle>
-                                    <CardDescription>Fill out the form below to request assistance.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                     <form onSubmit={(e) => handleSubmit(e, "service")} className="space-y-6">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="patient-search">Search for Patient</Label>
-                                            <div className="flex gap-2">
-                                                <Input
-                                                    id="patient-search"
-                                                    placeholder="Enter patient name or ID"
-                                                    className="border"
-                                                    value={patientSearch}
-                                                    onChange={(e) => setPatientSearch(e.target.value)}
-                                                />
-                                                <Button type="button" variant="outline" onClick={handlePatientSearch}>
-                                                    <Search className="h-4 w-4" />
-                                                </Button>
+                        <CardHeader>
+                            <CardTitle>Find a Service Provider</CardTitle>
+                            <CardDescription>Browse our network of verified professionals to find the right care for your parents.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
+                                <Input 
+                                    placeholder="Search by name..." 
+                                    className="border"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <Select value={filterSkill} onValueChange={setFilterSkill}>
+                                    <SelectTrigger className="border">
+                                        <SelectValue placeholder="Service Type" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="All">All Services</SelectItem>
+                                        <SelectItem value="Caretaker">Caretaker</SelectItem>
+                                        <SelectItem value="Nurse">Nurse</SelectItem>
+                                        <SelectItem value="Driver">Driver</SelectItem>
+                                        <SelectItem value="Companion">Companion</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Select value={filterLocation} onValueChange={setFilterLocation}>
+                                    <SelectTrigger className="border">
+                                        <SelectValue placeholder="Location" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="All">All Locations</SelectItem>
+                                        <SelectItem value="Guntur">Guntur</SelectItem>
+                                        <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                             </div>
+                             <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
+                                {filteredProviders.map(provider => (
+                                    <Card key={provider.id} className="p-4 border shadow-sm">
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                            <div className="flex flex-col items-center text-center sm:border-r sm:pr-4">
+                                                <Avatar className="h-20 w-20 mb-2">
+                                                    <AvatarImage src={provider.avatar} data-ai-hint={provider.dataAiHint} />
+                                                    <AvatarFallback>{provider.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                                </Avatar>
+                                                <h3 className="font-bold text-lg">{provider.name}</h3>
+                                                <p className="text-xs text-muted-foreground">{provider.id}</p>
+                                                <div className="flex items-center gap-1 mt-1">
+                                                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                                                    <span className="font-bold">{provider.rating}</span>
+                                                </div>
+                                            </div>
+                                            <div className="sm:col-span-2">
+                                                <div className="flex flex-wrap gap-2">
+                                                    {provider.skills.map(skill => (
+                                                        <Badge key={skill} variant="secondary">{skill}</Badge>
+                                                    ))}
+                                                </div>
+                                                <Separator className="my-3" />
+                                                <div className="space-y-2 text-sm">
+                                                    <div className="flex justify-between">
+                                                        <span className="text-muted-foreground">Price (per day):</span>
+                                                        <span className="font-bold">₹{provider.pricing.day}</span>
+                                                    </div>
+                                                    <div className="flex justify-between">
+                                                        <span className="text-muted-foreground">Price (monthly):</span>
+                                                        <span className="font-bold">₹{provider.pricing.month}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-muted-foreground">Contact:</span>
+                                                        <Button variant="link" asChild className="p-0 h-auto font-bold"><a href={`tel:${provider.contact}`}>{provider.contact}</a></Button>
+                                                    </div>
+                                                </div>
+                                                <Separator className="my-3" />
+                                                <div className="flex items-center justify-between gap-2">
+                                                    {provider.verified ? (
+                                                        <Badge className="bg-green-100 text-green-800 border-green-300">
+                                                            <CheckCircle className="h-4 w-4 mr-1" /> Verified
+                                                        </Badge>
+                                                    ) : (
+                                                         <Badge variant="outline">Not Verified</Badge>
+                                                    )}
+                                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Book Now</Button>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="parent-name">Patient Name *</Label>
-                                            <Input id="parent-name" placeholder="Enter their full name" className="border" value={patientDetails.name} onChange={(e) => setPatientDetails({...patientDetails, name: e.target.value})} />
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="service-type">Type of Service Required *</Label>
-                                            <Select>
-                                                <SelectTrigger id="service-type" className="border">
-                                                    <SelectValue placeholder="Select a service" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {services.map(service => (
-                                                        <SelectItem key={service.id} value={service.id}>{service.name}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="client-contact">Your Contact Number (Requester) *</Label>
-                                            <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
-                                        </div>
-                                         <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
-                                            <Info className="h-4 w-4" />
-                                            <AlertTitle className="font-bold">How Tracking Works</AlertTitle>
-                                            <AlertDescription>
-                                                Once a provider is assigned, you can track their daily attendance and view hourly photo updates right here in the app.
-                                            </AlertDescription>
-                                        </Alert>
-                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
-                                            {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <HandHeart className="mr-2 h-4 w-4" />}
-                                            {isSubmitting ? 'Submitting...' : 'Submit Request'}
-                                        </Button>
-                                    </form>
-                                </CardContent>
-                             </>
-                        ) : (
-                            <>
-                                <CardHeader>
-                                    <div className="flex items-center justify-between">
-                                        <div>
-                                            <CardTitle>Family's View: Service Tracking</CardTitle>
-                                            <CardDescription>Monitor the care being provided to your parents in real-time.</CardDescription>
-                                        </div>
-                                         <Button variant="outline" onClick={() => setServiceRequestStep(1)} className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200 hover:text-green-900">
-                                            <ArrowLeft className="mr-2 h-4 w-4" />
-                                            Back
-                                        </Button>
-                                    </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="space-y-6">
-                                        <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
-                                            <Info className="h-4 w-4" />
-                                            <AlertTitle className="font-bold">Service Activated for Chinta Lokesh Babu</AlertTitle>
-                                            <AlertDescription>
-                                                You are viewing the live tracking dashboard for the service requested for your parent. All updates from the provider appear here instantly.
-                                            </AlertDescription>
-                                        </Alert>
-
-                                        <div className="grid md:grid-cols-2 gap-6">
-                                            <Card>
-                                                <CardHeader>
-                                                    <CardTitle>Assigned Provider</CardTitle>
-                                                </CardHeader>
-                                                <CardContent>
-                                                    <div className="flex items-center gap-4">
-                                                        <Avatar className="h-16 w-16">
-                                                            <AvatarImage src="https://picsum.photos/seed/bala/100/100" data-ai-hint="male portrait" />
-                                                            <AvatarFallback>BK</AvatarFallback>
-                                                        </Avatar>
-                                                        <div className="flex-1">
-                                                            <p className="font-bold text-lg">Bala Krishna</p>
-                                                            <div className="flex flex-wrap gap-1 mt-1">
-                                                                <Badge variant="outline"><Stethoscope className="h-3 w-3 mr-1" />Nurse</Badge>
-                                                                <Badge variant="outline"><User className="h-3 w-3 mr-1" />Caretaker</Badge>
-                                                                <Badge variant="outline"><Car className="h-3 w-3 mr-1" />Driver</Badge>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="grid grid-cols-2 gap-2 mt-4">
-                                                        <Button variant="outline"><Phone className="h-4 w-4 mr-2" /> Call</Button>
-                                                        <Button variant="outline"><MessageSquare className="h-4 w-4 mr-2" /> Chat</Button>
-                                                    </div>
-                                                </CardContent>
-                                            </Card>
-
-                                            <Card>
-                                                <CardHeader>
-                                                    <CardTitle>Trust & Safety</CardTitle>
-                                                </CardHeader>
-                                                <CardContent className="space-y-3">
-                                                    <div className="flex items-start gap-3">
-                                                        <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
-                                                        <div>
-                                                            <p className="font-semibold">Provider Verified</p>
-                                                            <p className="text-xs text-muted-foreground">Aadhar, professional certificates, and background checks are complete.</p>
-                                                        </div>
-                                                    </div>
-                                                    <Button variant="link" className="p-0 h-auto">View Verified Documents</Button>
-                                                </CardContent>
-                                            </Card>
-
-                                        </div>
-
-                                        <Card>
-                                            <CardHeader>
-                                                <CardTitle>Tracking & History</CardTitle>
-                                            </CardHeader>
-                                            <CardContent>
-                                                <div className="flex justify-between items-center p-3 bg-green-50 text-green-800 border border-green-200 rounded-lg mb-4">
-                                                    <p className="font-bold">Attendance: Present</p>
-                                                    <p className="text-sm">Checked in at 9:55 AM</p>
-                                                </div>
-                                                
-                                                <div className="space-y-4">
-                                                    {dailyUpdates.map(day => (
-                                                        <Collapsible key={day.date} className="border rounded-lg" defaultOpen={day.date.includes("July 26")}>
-                                                            <CollapsibleTrigger className="w-full flex justify-between items-center p-3 hover:bg-muted/50">
-                                                                <p className="font-bold">{day.date}</p>
-                                                                <div className="flex items-center gap-4">
-                                                                    <Badge variant="secondary">{day.updates.length} updates</Badge>
-                                                                    <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                                                                </div>
-                                                            </CollapsibleTrigger>
-                                                            <CollapsibleContent className="border-t p-4 space-y-4">
-                                                                {day.updates.map((update, index) => (
-                                                                    <div key={index} className="flex gap-4">
-                                                                        <div className="text-sm font-semibold text-muted-foreground w-20">{update.time}</div>
-                                                                        <div className="flex-1 space-y-1">
-                                                                            <p>{update.text}</p>
-                                                                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                                                                                <p className="flex items-center gap-1"><MapPin className="h-3 w-3" />{update.location}</p>
-                                                                                {update.image && (
-                                                                                    <Dialog>
-                                                                                        <DialogTrigger asChild>
-                                                                                            <Button variant="link" size="sm" className="p-0 h-auto text-primary" style={{color: 'hsl(var(--nav-old-age))'}}>
-                                                                                                <ImageIcon className="h-3 w-3 mr-1" /> View Photo
-                                                                                            </Button>
-                                                                                        </DialogTrigger>
-                                                                                        <DialogContent>
-                                                                                            <DialogHeader>
-                                                                                                <DialogTitle>Photo at {update.time}</DialogTitle>
-                                                                                            </DialogHeader>
-                                                                                            <Image src={update.image} data-ai-hint={update.dataAiHint || 'update photo'} alt={`Update at ${update.time}`} width={800} height={600} className="rounded-lg border aspect-video object-cover" />
-                                                                                        </DialogContent>
-                                                                                    </Dialog>
-                                                                                )}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
-                                                            </CollapsibleContent>
-                                                        </Collapsible>
-                                                    ))}
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    </div>
-                                </CardContent>
-                            </>
-                        )}
+                                    </Card>
+                                ))}
+                             </div>
+                        </CardContent>
                     </Card>
                 </TabsContent>
 
