@@ -21,7 +21,7 @@ import { Separator } from '@/components/ui/separator';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
-const providerData = Array.from({ length: 50 }, (_, i) => {
+const initialProviderData = Array.from({ length: 50 }, (_, i) => {
     const names = ["Rajesh", "Sunita", "Amit", "Priya", "Mohan", "Geeta", "Vikram", "Anjali", "Suresh", "Meena"];
     const skills = [
         ["Caretaker"],
@@ -62,23 +62,48 @@ const services = [
     { id: "vehicle", name: "Vehicle Service", description: "Arrange a vehicle for appointments." },
 ];
 
+const hourlyUpdates = [
+    { 
+        date: "2024-07-28", 
+        updates: [
+            { time: "10:00 AM", text: "Reached patient's home. All is well.", location: "Rentala Village", photo: "https://picsum.photos/seed/update1/600/400", dataAiHint: "elderly person smiling" },
+            { time: "11:15 AM", text: "Helping with breakfast and morning medications.", location: "Rentala Village" },
+            { time: "12:30 PM", text: "Reading the newspaper together.", location: "Rentala Village", photo: "https://picsum.photos/seed/update2/600/400", dataAiHint: "reading newspaper" },
+        ]
+    },
+    {
+        date: "2024-07-27",
+        updates: [
+            { time: "09:30 AM", text: "Arrived at location. Patient is ready for the day.", location: "Rentala Village" },
+            { time: "01:00 PM", text: "Lunch has been served. Patient is resting.", location: "Rentala Village" },
+            { time: "04:00 PM", text: "Evening walk in the garden.", location: "Rentala Village", photo: "https://picsum.photos/seed/update3/600/400", dataAiHint: "walking garden" },
+        ]
+    }
+];
+
 export default function OldAgeAssistantPage() {
     const { toast } = useToast();
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [providerApplicationStatus, setProviderApplicationStatus] = useState('form');
     const [isClient, setIsClient] = useState(false);
-
+    
+    // UI State Management
+    const [serviceBookingStep, setServiceBookingStep] = useState('form'); // 'form', 'directory', 'tracking'
+    const [providerApplicationStatus, setProviderApplicationStatus] = useState('form'); // 'form', 'submitted', 'approved'
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    
     // Filters for provider directory
     const [searchQuery, setSearchQuery] = useState('');
     const [filterSkill, setFilterSkill] = useState('All');
     const [filterLocation, setFilterLocation] = useState('All');
+    
+    // Assigned provider state for tracking view
+    const [assignedProvider, setAssignedProvider] = useState<any>(null);
 
     useEffect(() => {
         setIsClient(true);
     }, []);
 
     const filteredProviders = useMemo(() => {
-        return providerData.filter(provider => {
+        return initialProviderData.filter(provider => {
             const searchMatch = searchQuery === '' || provider.name.toLowerCase().includes(searchQuery.toLowerCase());
             const skillMatch = filterSkill === 'All' || provider.skills.includes(filterSkill);
             const locationMatch = filterLocation === 'All' || provider.location === filterLocation;
@@ -86,21 +111,35 @@ export default function OldAgeAssistantPage() {
         });
     }, [searchQuery, filterSkill, filterLocation]);
 
-    const handleSubmit = (e: React.FormEvent, formType: string) => {
+    const handleServiceRequestSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         setTimeout(() => {
             setIsSubmitting(false);
-            if (formType === 'provider') {
-                toast({
-                    title: "Application Submitted Successfully!",
-                    description: `Our team will review your application and contact you shortly.`,
-                });
-                setProviderApplicationStatus('submitted');
-                setTimeout(() => {
-                    setProviderApplicationStatus('approved');
-                }, 2000);
-            }
+            toast({ title: "Request Details Saved", description: "Please now select a provider from the list." });
+            setServiceBookingStep('directory');
+        }, 1000);
+    };
+
+    const handleBookProvider = (provider: any) => {
+        setAssignedProvider(provider);
+        setServiceBookingStep('tracking');
+        toast({ title: "Provider Booked!", description: `${provider.name} has been assigned.`});
+    };
+
+    const handleProviderApplicationSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setTimeout(() => {
+            setIsSubmitting(false);
+            toast({
+                title: "Application Submitted Successfully!",
+                description: `Our team will review your application and contact you shortly.`,
+            });
+            setProviderApplicationStatus('submitted');
+            setTimeout(() => {
+                setProviderApplicationStatus('approved');
+            }, 2000);
         }, 1500);
     };
 
@@ -112,6 +151,11 @@ export default function OldAgeAssistantPage() {
             </div>
         );
     }
+    
+    const assignedPatient = {
+        name: "Chinta Lokesh Babu",
+        service: "Daily Caretaker Package"
+    };
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
@@ -126,72 +170,118 @@ export default function OldAgeAssistantPage() {
             <Tabs defaultValue="book-service" className="w-full">
                 <div className="p-1 border bg-muted rounded-lg">
                     <TabsList className="grid grid-cols-2">
-                        <TabsTrigger value="book-service" className="font-bold">Find a Provider</TabsTrigger>
+                        <TabsTrigger value="book-service" className="font-bold">Book a Service</TabsTrigger>
                         <TabsTrigger value="become-provider" className="font-bold">Become a Provider</TabsTrigger>
                     </TabsList>
                 </div>
                 
                 <TabsContent value="book-service" className="mt-6">
-                    <Card className="border">
-                        <CardHeader>
-                            <CardTitle>Find a Service Provider</CardTitle>
-                            <CardDescription>Browse our network of verified professionals to find the right care for your parents.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
-                                <Input 
-                                    placeholder="Search by name..." 
-                                    className="border"
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                />
-                                <Select value={filterSkill} onValueChange={setFilterSkill}>
-                                    <SelectTrigger className="border">
-                                        <SelectValue placeholder="Service Type" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="All">All Services</SelectItem>
-                                        <SelectItem value="Caretaker">Caretaker</SelectItem>
-                                        <SelectItem value="Nurse">Nurse</SelectItem>
-                                        <SelectItem value="Driver">Driver</SelectItem>
-                                        <SelectItem value="Companion">Companion</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <Select value={filterLocation} onValueChange={setFilterLocation}>
-                                    <SelectTrigger className="border">
-                                        <SelectValue placeholder="Location" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="All">All Locations</SelectItem>
-                                        <SelectItem value="Guntur">Guntur</SelectItem>
-                                        <SelectItem value="Hyderabad">Hyderabad</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                             </div>
-                             <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
-                                {filteredProviders.map(provider => (
-                                    <Card key={provider.id} className="p-4 border shadow-sm">
-                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                            <div className="flex flex-col items-center text-center sm:border-r sm:pr-4">
-                                                <Avatar className="h-20 w-20 mb-2">
+                    {serviceBookingStep === 'form' && (
+                         <Card className="border">
+                            <CardHeader>
+                                <CardTitle>Book a Service for Your Parents</CardTitle>
+                                <CardDescription>Tell us who needs the service and what you're looking for.</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <form onSubmit={handleServiceRequestSubmit} className="space-y-6">
+                                     <div className="space-y-2">
+                                        <Label htmlFor="parent-name">Patient's Full Name *</Label>
+                                        <Input id="parent-name" placeholder="Enter their full name" className="border"/>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="service-type">Type of Service Required *</Label>
+                                        <Select>
+                                            <SelectTrigger id="service-type" className="border">
+                                                <SelectValue placeholder="Select a service" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {services.map(service => (
+                                                    <SelectItem key={service.id} value={service.id}>{service.name}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                     <div className="space-y-2">
+                                        <Label htmlFor="client-contact">Your Contact Number *</Label>
+                                        <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
+                                    </div>
+                                    <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
+                                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                        {isSubmitting ? 'Saving...' : 'Save & Find Provider'}
+                                    </Button>
+                                </form>
+                            </CardContent>
+                        </Card>
+                    )}
+
+                    {serviceBookingStep === 'directory' && (
+                         <Card className="border">
+                            <CardHeader>
+                                 <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle>Find a Service Provider</CardTitle>
+                                        <CardDescription>Browse our network to find the right care.</CardDescription>
+                                    </div>
+                                    <Button variant="outline" onClick={() => setServiceBookingStep('form')} className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200 hover:text-green-900">
+                                        <ArrowLeft className="mr-2 h-4 w-4" />
+                                        Back
+                                    </Button>
+                                </div>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
+                                    <Input 
+                                        placeholder="Search by name..." 
+                                        className="border"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                    <Select value={filterSkill} onValueChange={setFilterSkill}>
+                                        <SelectTrigger className="border">
+                                            <SelectValue placeholder="Service Type" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="All">All Services</SelectItem>
+                                            <SelectItem value="Caretaker">Caretaker</SelectItem>
+                                            <SelectItem value="Nurse">Nurse</SelectItem>
+                                            <SelectItem value="Driver">Driver</SelectItem>
+                                            <SelectItem value="Companion">Companion</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <Select value={filterLocation} onValueChange={setFilterLocation}>
+                                        <SelectTrigger className="border">
+                                            <SelectValue placeholder="Location" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="All">All Locations</SelectItem>
+                                            <SelectItem value="Guntur">Guntur</SelectItem>
+                                            <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
+                                    {filteredProviders.map(provider => (
+                                        <Card key={provider.id} className="p-4 border shadow-sm flex flex-col sm:flex-row gap-4">
+                                            <div className="flex flex-col items-center text-center w-full sm:w-1/4">
+                                                <Avatar className="h-16 w-16 mb-2">
                                                     <AvatarImage src={provider.avatar} data-ai-hint={provider.dataAiHint} />
                                                     <AvatarFallback>{provider.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                                 </Avatar>
-                                                <h3 className="font-bold text-lg">{provider.name}</h3>
+                                                <h3 className="font-bold text-base">{provider.name}</h3>
                                                 <p className="text-xs text-muted-foreground">{provider.id}</p>
                                                 <div className="flex items-center gap-1 mt-1">
                                                     <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                                                    <span className="font-bold">{provider.rating}</span>
+                                                    <span className="font-bold text-sm">{provider.rating}</span>
                                                 </div>
                                             </div>
-                                            <div className="sm:col-span-2">
+                                            <div className="w-full sm:w-3/4">
                                                 <div className="flex flex-wrap gap-2">
                                                     {provider.skills.map(skill => (
                                                         <Badge key={skill} variant="secondary">{skill}</Badge>
                                                     ))}
                                                 </div>
-                                                <Separator className="my-3" />
-                                                <div className="space-y-2 text-sm">
+                                                <Separator className="my-2" />
+                                                <div className="space-y-1 text-sm">
                                                     <div className="flex justify-between">
                                                         <span className="text-muted-foreground">Price (per day):</span>
                                                         <span className="font-bold">₹{provider.pricing.day}</span>
@@ -205,8 +295,8 @@ export default function OldAgeAssistantPage() {
                                                         <Button variant="link" asChild className="p-0 h-auto font-bold"><a href={`tel:${provider.contact}`}>{provider.contact}</a></Button>
                                                     </div>
                                                 </div>
-                                                <Separator className="my-3" />
-                                                <div className="flex items-center justify-between gap-2">
+                                                <Separator className="my-2" />
+                                                <div className="flex items-center justify-between gap-2 mt-3">
                                                     {provider.verified ? (
                                                         <Badge className="bg-green-100 text-green-800 border-green-300">
                                                             <CheckCircle className="h-4 w-4 mr-1" /> Verified
@@ -214,15 +304,121 @@ export default function OldAgeAssistantPage() {
                                                     ) : (
                                                          <Badge variant="outline">Not Verified</Badge>
                                                     )}
-                                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Book Now</Button>
+                                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} onClick={() => handleBookProvider(provider)}>Book Now</Button>
                                                 </div>
                                             </div>
+                                        </Card>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
+
+                    {serviceBookingStep === 'tracking' && assignedProvider && (
+                        <Card className="border">
+                            <CardHeader>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <CardTitle>Family's View: Service Tracking</CardTitle>
+                                        <CardDescription>Real-time updates for Chinta Lokesh Babu.</CardDescription>
+                                    </div>
+                                    <Button variant="outline" onClick={() => setServiceBookingStep('directory')} className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200 hover:text-green-900">
+                                        <ArrowLeft className="mr-2 h-4 w-4" />
+                                        Back
+                                    </Button>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                <Card className="p-4 border">
+                                    <CardTitle className="mb-4">Assigned Provider</CardTitle>
+                                    <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4">
+                                        <Avatar className="h-20 w-20">
+                                            <AvatarImage src={assignedProvider.avatar} data-ai-hint={assignedProvider.dataAiHint} />
+                                            <AvatarFallback>{assignedProvider.name.split(' ').map((n:string) => n[0]).join('')}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="flex-1">
+                                            <h3 className="font-bold text-xl">{assignedProvider.name}</h3>
+                                            <div className="flex items-center justify-center sm:justify-start gap-2">
+                                                {assignedProvider.skills.map((skill:string) => (
+                                                    <Badge key={skill} variant="secondary">{skill}</Badge>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </Card>
-                                ))}
-                             </div>
-                        </CardContent>
-                    </Card>
+                                        <div className="flex gap-2">
+                                            <Button variant="outline" asChild><a href={`tel:${assignedProvider.contact}`}><Phone/></a></Button>
+                                            <Button variant="outline"><MessageSquare/></Button>
+                                        </div>
+                                    </div>
+                                </Card>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Peace of Mind, Guaranteed</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="text-sm text-muted-foreground space-y-2">
+                                        <p>Once a provider is assigned, you'll get access to their contact details and verified documents.</p>
+                                        <p>Our provider will mark their attendance daily via the app.</p>
+                                        <p>For your peace of mind, you will receive hourly status updates, including a photo with your parent and the provider's location.</p>
+                                        <p>You can view all these updates in real-time right here in the app.</p>
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Attendance</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="flex items-center gap-2 font-semibold">
+                                            <CheckCircle className="h-5 w-5 text-green-500" />
+                                            <p>Provider has marked attendance for today.</p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Hourly Updates</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        {hourlyUpdates.map((day) => (
+                                            <Collapsible key={day.date} className="border rounded-lg">
+                                                <CollapsibleTrigger className="w-full p-3 flex justify-between items-center hover:bg-muted/50">
+                                                    <span className="font-bold">{day.date} ({day.updates.length} updates)</span>
+                                                    <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                                </CollapsibleTrigger>
+                                                <CollapsibleContent className="p-4 border-t space-y-4">
+                                                    {day.updates.map((update, index) => (
+                                                        <div key={index} className="flex gap-4">
+                                                            <div className="font-bold text-sm w-20 text-right">{update.time}</div>
+                                                            <div className="pl-4 border-l-2 flex-1 space-y-2">
+                                                                <p className="font-semibold">{update.text}</p>
+                                                                <p className="text-xs text-muted-foreground flex items-center gap-1"><MapPin className="h-3 w-3"/>{update.location}</p>
+                                                                {update.photo && (
+                                                                     <Dialog>
+                                                                        <DialogTrigger asChild>
+                                                                            <Button variant="outline" size="sm" className="h-auto px-2 py-1 text-xs">
+                                                                                <ImageIcon className="h-3 w-3 mr-1"/> View Photo
+                                                                            </Button>
+                                                                        </DialogTrigger>
+                                                                        <DialogContent>
+                                                                            <DialogHeader>
+                                                                                <DialogTitle>Photo from {update.time}</DialogTitle>
+                                                                            </DialogHeader>
+                                                                            <Image src={update.photo} alt={`Update at ${update.time}`} width={600} height={400} data-ai-hint={update.dataAiHint} className="rounded-lg object-contain" />
+                                                                        </DialogContent>
+                                                                    </Dialog>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </CollapsibleContent>
+                                            </Collapsible>
+                                        ))}
+                                    </CardContent>
+                                </Card>
+                            </CardContent>
+                        </Card>
+                    )}
                 </TabsContent>
 
                 <TabsContent value="become-provider" className="mt-6">
@@ -234,7 +430,7 @@ export default function OldAgeAssistantPage() {
                                     <CardDescription>Apply to become a verified attendant, nurse, or driver.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <form onSubmit={(e) => handleSubmit(e, "provider")} className="space-y-6">
+                                    <form onSubmit={handleProviderApplicationSubmit} className="space-y-6">
                                         <div className="space-y-4">
                                             <div className="space-y-2">
                                                 <Label htmlFor="provider-name">Full Name *</Label>
@@ -318,7 +514,7 @@ export default function OldAgeAssistantPage() {
                                 <CardContent className="space-y-6">
                                      <Alert className="bg-green-50 border-green-200 text-green-800 [&>svg]:text-green-600">
                                         <CheckCircle className="h-4 w-4" />
-                                        <AlertTitle className="font-bold">Welcome, Bala Krishna! (ID: PROV007)</AlertTitle>
+                                        <AlertTitle className="font-bold">Welcome, Bala Krishna! (ID: PROV151)</AlertTitle>
                                         <AlertDescription>
                                             Your application is approved. You are now a verified Arogyadhatha provider.
                                         </AlertDescription>
@@ -329,8 +525,8 @@ export default function OldAgeAssistantPage() {
                                             <CardTitle>Current Assignment</CardTitle>
                                         </CardHeader>
                                         <CardContent>
-                                            <p><span className='font-bold'>Patient:</span> Chinta Lokesh Babu</p>
-                                            <p><span className='font-bold'>Service:</span> Daily Caretaker Package</p>
+                                            <p><span className='font-bold'>Patient:</span> {assignedPatient.name}</p>
+                                            <p><span className='font-bold'>Service:</span> {assignedPatient.service}</p>
                                         </CardContent>
                                     </Card>
 
@@ -357,7 +553,6 @@ export default function OldAgeAssistantPage() {
                                 </CardContent>
                             </>
                         )}
-
                     </Card>
                 </TabsContent>
             </Tabs>
