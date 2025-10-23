@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Users2, HandHeart, Briefcase, Car, Stethoscope, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock, Camera, Image as ImageIcon, ChevronDown } from 'lucide-react';
+import { Users2, HandHeart, Briefcase, Car, Stethoscope, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock, Camera, Image as ImageIcon, ChevronDown, ArrowLeft } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -191,8 +191,16 @@ export default function OldAgeAssistantPage() {
                         ) : (
                             <>
                                 <CardHeader>
-                                    <CardTitle>Family's View: Service Tracking</CardTitle>
-                                    <CardDescription>Monitor the care being provided to your parents in real-time.</CardDescription>
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <CardTitle>Family's View: Service Tracking</CardTitle>
+                                            <CardDescription>Monitor the care being provided to your parents in real-time.</CardDescription>
+                                        </div>
+                                         <Button variant="outline" onClick={() => setServiceRequestStep(1)} className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200 hover:text-green-900">
+                                            <ArrowLeft className="mr-2 h-4 w-4" />
+                                            Back
+                                        </Button>
+                                    </div>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-6">
@@ -388,8 +396,16 @@ export default function OldAgeAssistantPage() {
                         {providerApplicationStatus === 'approved' && (
                             <>
                                <CardHeader>
-                                    <CardTitle>Provider Dashboard</CardTitle>
-                                    <CardDescription>Update your status for assigned patients here.</CardDescription>
+                                    <div className="flex items-center justify-between">
+                                       <div>
+                                            <CardTitle>Provider Dashboard</CardTitle>
+                                            <CardDescription>Update your status for assigned patients here.</CardDescription>
+                                       </div>
+                                        <Button variant="outline" onClick={() => setProviderApplicationStatus('form')} className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200 hover:text-green-900">
+                                           <ArrowLeft className="mr-2 h-4 w-4" />
+                                           Back
+                                       </Button>
+                                   </div>
                                 </CardHeader>
                                 <CardContent className="space-y-6">
                                      <Alert className="bg-green-50 border-green-200 text-green-800 [&>svg]:text-green-600">
