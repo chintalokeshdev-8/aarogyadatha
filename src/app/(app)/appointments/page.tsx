@@ -369,21 +369,21 @@ const doctors = [
 ];
 
 const departments = [
-    { value: "all", label: "All Departments", icon: StethoscopeIcon },
-    { value: "Cardiologist", label: "Cardiology", icon: HeartPulse },
-    { value: "Orthopedic Surgeon", label: "Orthopedics", icon: Bone },
-    { value: "Orthopaedics", label: "Orthopedics", icon: Bone },
-    { value: "Neurologist", label: "Neurology", icon: Brain },
-    { value: "Gynaecologist", label: "Gynaecology", icon: Baby },
-    { value: "Pediatrician", label: "Pediatrics", icon: Baby },
-    { value: "Dermatologist", label: "Dermatology", icon: Leaf },
-    { value: "Implantologist & Laser Specialist", label: "Dental", icon: ToothIcon },
-    { value: "General Physician", label: "General Physician", icon: StethoscopeIcon },
-    { value: "Gastroenterologist", label: "Gastroenterology", icon: StethoscopeIcon },
-    { value: "Nephrologist", label: "Nephrology", icon: StethoscopeIcon },
-    { value: "Urologist", label: "Urology", icon: StethoscopeIcon },
-    { value: "Intensivist", label: "Intensivist", icon: StethoscopeIcon },
-    { value: "General Surgeon", label: "General Surgery", icon: StethoscopeIcon },
+    { value: "all", label: "All Departments", imageUrl: "https://picsum.photos/seed/alldep/100/100", dataAiHint: "hospital icon" },
+    { value: "Cardiologist", label: "Cardiology", imageUrl: "https://picsum.photos/seed/cardiology/100/100", dataAiHint: "heart organ" },
+    { value: "Orthopedic Surgeon", label: "Orthopedics", imageUrl: "https://picsum.photos/seed/orthopedics/100/100", dataAiHint: "human skeleton bone" },
+    { value: "Orthopaedics", label: "Orthopedics", imageUrl: "https://picsum.photos/seed/orthopedics/100/100", dataAiHint: "human skeleton bone" },
+    { value: "Neurologist", label: "Neurology", imageUrl: "https://picsum.photos/seed/neurology/100/100", dataAiHint: "brain nerves" },
+    { value: "Gynaecologist", label: "Gynaecology", imageUrl: "https://picsum.photos/seed/gynaecology/100/100", dataAiHint: "uterus icon" },
+    { value: "Pediatrician", label: "Pediatrics", imageUrl: "https://picsum.photos/seed/pediatrics/100/100", dataAiHint: "mother child" },
+    { value: "Dermatologist", label: "Dermatology", imageUrl: "https://picsum.photos/seed/dermatology/100/100", dataAiHint: "skin layers" },
+    { value: "Implantologist & Laser Specialist", label: "Dental", imageUrl: "https://picsum.photos/seed/dental/100/100", dataAiHint: "human tooth" },
+    { value: "General Physician", label: "General Physician", imageUrl: "https://picsum.photos/seed/gp/100/100", dataAiHint: "doctor stethoscope" },
+    { value: "Gastroenterologist", label: "Gastroenterology", imageUrl: "https://picsum.photos/seed/gastro/100/100", dataAiHint: "stomach intestine" },
+    { value: "Nephrologist", label: "Nephrology", imageUrl: "https://picsum.photos/seed/nephrology/100/100", dataAiHint: "kidneys organ" },
+    { value: "Urologist", label: "Urology", imageUrl: "https://picsum.photos/seed/urology/100/100", dataAiHint: "urinary system" },
+    { value: "Intensivist", label: "Intensivist", imageUrl: "https://picsum.photos/seed/intensivist/100/100", dataAiHint: "heartbeat monitor" },
+    { value: "General Surgeon", label: "General Surgery", imageUrl: "https://picsum.photos/seed/surgery/100/100", dataAiHint: "surgical tools" },
 ];
 
 const uniqueDepartments = Array.from(new Map(departments.map(item => [item.label, item])).values());
@@ -1098,14 +1098,10 @@ export default function AppointmentsPage() {
         setShowDoctorList(true);
     };
     
-    const handleDepartmentSelect = (department: string) => {
-        setSelectedDepartment(department);
-        // We need to trigger the filter logic immediately after setting the department
-        // To do this, we'll use a `useEffect` hook to watch for changes in `selectedDepartment`
-        // But for an immediate effect, we can also call handleFilter directly.
-        // Let's create a temp filtered list here and then update the main one.
+    const handleDepartmentSelect = (departmentValue: string) => {
+        setSelectedDepartment(departmentValue);
         const filtered = doctors.filter(doctor => {
-            return department === 'all' || doctor.specialty === department || (uniqueDepartments.find(d => d.value === department)?.label === doctor.specialty) || (uniqueDepartments.find(d => d.value === department)?.label === "Dental" && doctor.specialty.includes("Implantologist"));
+            return departmentValue === 'all' || doctor.specialty === departmentValue || (uniqueDepartments.find(d => d.value === departmentValue)?.label === doctor.specialty) || (uniqueDepartments.find(d => d.value === departmentValue)?.label === "Dental" && doctor.specialty.includes("Implantologist"));
         });
         setFilteredDoctors(filtered);
         setShowDoctorList(true);
@@ -1279,7 +1275,7 @@ export default function AppointmentsPage() {
                                             {uniqueDepartments.map(dep => (
                                                 <SelectItem key={dep.value} value={dep.value}>
                                                     <div className="flex items-center gap-2">
-                                                        <dep.icon className="h-4 w-4" />
+                                                        <Image src={dep.imageUrl} alt={dep.label} width={16} height={16} data-ai-hint={dep.dataAiHint} />
                                                         {dep.label}
                                                     </div>
                                                 </SelectItem>
@@ -1337,7 +1333,7 @@ export default function AppointmentsPage() {
                                             onClick={() => handleDepartmentSelect(dep.value)}
                                         >
                                             <div className="p-3 rounded-full bg-primary/10 mb-2">
-                                                <dep.icon className="h-7 w-7" style={{color: 'hsl(var(--nav-appointments))'}}/>
+                                                <Image src={dep.imageUrl} alt={dep.label} width={40} height={40} data-ai-hint={dep.dataAiHint} />
                                             </div>
                                             <p className="font-bold text-sm">{dep.label}</p>
                                         </Card>
