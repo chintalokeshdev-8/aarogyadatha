@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import Link from "next/link";
@@ -411,7 +409,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <nav className="flex w-max py-1 px-12 justify-center">
                     {visibleMenuItems.map((item, index) => {
                         const isActive = isClient && pathname === item.href;
-                        const isSpecial = item.label === 'Emergency' || item.label === 'Blood Bank' || item.label === 'Community Fund';
+                        const isSpecial = item.label === 'Emergency' || item.label === 'Blood Bank' || item.label === 'Crowd Funding';
                         const specialColor = item.id === 'emergency' ? 'hsl(var(--destructive))' : item.color;
 
                         return (
@@ -449,5 +447,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       </footer>
     </div>
-  );
+    );
 }
