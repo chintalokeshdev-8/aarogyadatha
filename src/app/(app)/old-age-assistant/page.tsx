@@ -1,7 +1,8 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,11 @@ export default function OldAgeAssistantPage() {
     const [patientSearch, setPatientSearch] = useState('');
     const [patientDetails, setPatientDetails] = useState({ name: '', address: '', id: '' });
     const [serviceRequestStep, setServiceRequestStep] = useState(1);
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     const handlePatientSearch = () => {
         if (patientSearch.toLowerCase().includes('lokesh')) {
@@ -70,6 +76,15 @@ export default function OldAgeAssistantPage() {
             }
         }, 1500);
     };
+
+    if (!isClient) {
+        return (
+            <div className="space-y-6">
+                <div className="w-full h-24 rounded-lg bg-muted animate-pulse"></div>
+                <div className="w-full h-96 rounded-lg bg-muted animate-pulse"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
