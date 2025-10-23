@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Users2, HandHeart, Briefcase, Car, Nurse, FileText, UserPlus, Info, CheckCircle, Loader2, Search } from 'lucide-react';
+import { Users2, HandHeart, Briefcase, Car, Nurse, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -146,12 +146,13 @@ export default function OldAgeAssistantPage() {
                             </form>
                              <Alert className="mt-6 bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
                                 <Info className="h-4 w-4" />
-                                <AlertTitle className="font-bold">How Provider Tracking Works</AlertTitle>
+                                <AlertTitle className="font-bold">Peace of Mind, Guaranteed</AlertTitle>
                                 <AlertDescription>
                                     <ul className="list-disc list-inside mt-2 space-y-1">
-                                        <li>Our assigned provider will mark their attendance daily via the app.</li>
-                                        <li>For your peace of mind, the provider will upload an hourly status update, including a photo with your parent.</li>
-                                        <li>You can view all these updates in real-time from your app.</li>
+                                        <li>Once a provider is assigned, you'll get access to their contact details and verified documents.</li>
+                                        <li>Our provider will mark their attendance daily via the app.</li>
+                                        <li>For your peace of mind, you will receive hourly status updates, including a photo with your parent and the provider's location.</li>
+                                        <li>You can view all these updates in real-time right here in the app.</li>
                                     </ul>
                                 </AlertDescription>
                             </Alert>
@@ -166,45 +167,66 @@ export default function OldAgeAssistantPage() {
                             <CardDescription>Apply to become a verified attendant, nurse, or driver.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
-                             <form onSubmit={(e) => handleSubmit(e, "provider application")} className="space-y-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="provider-name">Full Name *</Label>
-                                    <Input id="provider-name" placeholder="Enter your full name" className="border"/>
+                             <form onSubmit={(e) => handleSubmit(e, "provider application")} className="space-y-6">
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="provider-name">Full Name *</Label>
+                                        <Input id="provider-name" placeholder="Enter your full name" className="border"/>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="provider-skill">Primary Skill / Service *</Label>
+                                        <Select>
+                                            <SelectTrigger id="provider-skill" className="border">
+                                                <SelectValue placeholder="Select your service type" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="nurse">Nurse</SelectItem>
+                                                <SelectItem value="caretaker">Caretaker / Attendant</SelectItem>
+                                                <SelectItem value="driver">Driver</SelectItem>
+                                                <SelectItem value="maid">Maid</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="provider-experience">Years of Experience *</Label>
+                                        <Input id="provider-experience" type="number" placeholder="e.g., 5" className="border"/>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="provider-contact">Your Contact Number *</Label>
+                                        <Input id="provider-contact" type="tel" placeholder="Enter your phone number" className="border" />
+                                    </div>
                                 </div>
-                                 <div className="space-y-2">
-                                    <Label htmlFor="provider-skill">Primary Skill / Service *</Label>
-                                    <Select>
-                                        <SelectTrigger id="provider-skill" className="border">
-                                            <SelectValue placeholder="Select your service type" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="nurse">Nurse</SelectItem>
-                                            <SelectItem value="caretaker">Caretaker / Attendant</SelectItem>
-                                            <SelectItem value="driver">Driver</SelectItem>
-                                            <SelectItem value="maid">Maid</SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                <div className="space-y-4">
+                                     <Label>Verification Documents *</Label>
+                                     <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                                        <Info className="h-4 w-4" />
+                                        <AlertTitle className="font-bold">Our Process</AlertTitle>
+                                        <AlertDescription>
+                                            After you apply, our team will call you to verify these documents. Once verified, you will be added to our network of trusted providers.
+                                        </AlertDescription>
+                                    </Alert>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="doc-aadhar">Aadhar Card</Label>
+                                        <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
+                                            <label htmlFor="doc-aadhar" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Aadhar Card</label>
+                                        </Button>
+                                        <input id="doc-aadhar" type="file" className="hidden" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="doc-license">Driving License (for Drivers)</Label>
+                                        <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
+                                            <label htmlFor="doc-license" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Driving License</label>
+                                        </Button>
+                                        <input id="doc-license" type="file" className="hidden" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="doc-professional">Professional Certificate (for Nurses)</Label>
+                                        <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
+                                            <label htmlFor="doc-professional" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Nursing/Other Certificate</label>
+                                        </Button>
+                                        <input id="doc-professional" type="file" className="hidden" />
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="provider-experience">Years of Experience *</Label>
-                                    <Input id="provider-experience" type="number" placeholder="e.g., 5" className="border"/>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="provider-contact">Your Contact Number *</Label>
-                                    <Input id="provider-contact" type="tel" placeholder="Enter your phone number" className="border" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label>Verification Documents</Label>
-                                    <p className="text-xs text-muted-foreground">Please be ready to provide documents like Aadhar, driving license, or nursing certificates upon call.</p>
-                                </div>
-
-                                <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
-                                    <Info className="h-4 w-4" />
-                                    <AlertTitle className="font-bold">Our Process</AlertTitle>
-                                    <AlertDescription>
-                                        After you apply, we will call you to verify your details and documents. Once verified, you will be added to our network of trusted providers.
-                                    </AlertDescription>
-                                </Alert>
 
                                 <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
                                     {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UserPlus className="mr-2 h-4 w-4" />}
