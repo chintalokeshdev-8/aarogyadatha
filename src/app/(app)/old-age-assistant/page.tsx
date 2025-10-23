@@ -57,6 +57,7 @@ export default function OldAgeAssistantPage() {
     const [patientSearch, setPatientSearch] = useState('');
     const [patientDetails, setPatientDetails] = useState({ name: '', address: '', id: '' });
     const [serviceRequestStep, setServiceRequestStep] = useState(1);
+    const [providerApplicationStatus, setProviderApplicationStatus] = useState('form');
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
@@ -84,11 +85,15 @@ export default function OldAgeAssistantPage() {
                     description: `Your service request has been received. Our team will contact you shortly.`,
                 });
                 setServiceRequestStep(2);
-            } else {
+            } else { // provider application
                 toast({
                     title: "Application Submitted Successfully!",
-                    description: `Your provider application has been received. Our team will contact you shortly.`,
+                    description: `Our team will review your application and contact you shortly.`,
                 });
+                setProviderApplicationStatus('submitted');
+                 setTimeout(() => {
+                    setProviderApplicationStatus('approved');
+                }, 2000);
             }
         }, 1500);
     };
@@ -112,16 +117,6 @@ export default function OldAgeAssistantPage() {
                 <p className="text-muted-foreground text-lg">Comprehensive care and support for senior citizens.</p>
             </div>
 
-            <Card className="border">
-                <CardHeader>
-                    <CardTitle>How It Works</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 text-muted-foreground">
-                    <p>Our Old Age Assistant program provides complete support for elderly individuals, especially for parents of those living abroad. From medical appointments to daily companionship, our trained and verified attendants are here to help.</p>
-                    <p>You can book a complete package for hospital visits, request specific services like a nurse or caretaker, and even arrange for a vehicle. All updates and reports are shared in real-time through the app, giving you complete peace of mind.</p>
-                </CardContent>
-            </Card>
-
             <Tabs defaultValue="book-service" className="w-full">
                 <div className="p-1 border bg-muted rounded-lg">
                     <TabsList className="grid grid-cols-2">
@@ -132,81 +127,17 @@ export default function OldAgeAssistantPage() {
                 
                 <TabsContent value="book-service" className="mt-6">
                     <Card className="border">
-                        {serviceRequestStep === 1 ? (
-                             <>
-                                <CardHeader>
-                                    <CardTitle>Book a Service for Your Parents</CardTitle>
-                                    <CardDescription>Fill out the form below to request assistance.</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <form onSubmit={(e) => handleSubmit(e, "service")} className="space-y-6">
-                                        <div className="space-y-2">
-                                            <Label htmlFor="patient-search">Search for Patient (if in app)</Label>
-                                            <div className="flex gap-2">
-                                                <Input 
-                                                    id="patient-search" 
-                                                    placeholder="Enter patient name or ID" 
-                                                    className="border"
-                                                    value={patientSearch}
-                                                    onChange={(e) => setPatientSearch(e.target.value)}
-                                                />
-                                                <Button type="button" variant="outline" onClick={handlePatientSearch}><Search className="h-4 w-4 mr-2"/>Search</Button>
-                                            </div>
-                                        </div>
-                                        
-                                        {patientDetails.id && (
-                                            <div className="space-y-2">
-                                                <Label htmlFor="patient-id">Patient ID</Label>
-                                                <Input id="patient-id" value={patientDetails.id} readOnly className="border bg-muted"/>
-                                            </div>
-                                        )}
-
-                                        <div className="space-y-2">
-                                            <Label htmlFor="parent-name">Parent's Name *</Label>
-                                            <Input id="parent-name" placeholder="Enter their full name" className="border" value={patientDetails.name} onChange={e => setPatientDetails({...patientDetails, name: e.target.value})} />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="service-type">Type of Service Needed *</Label>
-                                            <Select>
-                                                <SelectTrigger id="service-type" className="border">
-                                                    <SelectValue placeholder="Select a service" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {services.map(service => (
-                                                        <SelectItem key={service.id} value={service.id}>{service.name}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="parent-address">Address & Contact *</Label>
-                                            <Textarea id="parent-address" placeholder="Enter their full address and phone number" className="border" value={patientDetails.address} onChange={e => setPatientDetails({...patientDetails, address: e.target.value})} />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label htmlFor="client-contact">Your Contact Number (for confirmation) *</Label>
-                                            <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
-                                        </div>
-                                         <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
-                                            <Info className="h-4 w-4" />
-                                            <AlertTitle className="font-bold">Peace of Mind, Guaranteed</AlertTitle>
-                                            <AlertDescription>
-                                                Once a provider is assigned, you'll get access to their contact details and verified documents. You will receive daily attendance and hourly status updates (with photos and location) in the app.
-                                            </AlertDescription>
-                                        </Alert>
-                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
-                                            {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle className="mr-2 h-4 w-4" />}
-                                            {isSubmitting ? 'Submitting...' : 'Submit Request'}
-                                        </Button>
-                                    </form>
-                                </CardContent>
-                             </>
-                        ) : (
-                            <div className="space-y-6 p-4">
+                         <CardHeader>
+                            <CardTitle>Family's View: Service Tracking</CardTitle>
+                            <CardDescription>Monitor the care being provided to your parents in real-time.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                             <div className="space-y-6 p-4">
                                 <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
                                     <Info className="h-4 w-4" />
-                                    <AlertTitle className="font-bold">Service Activated</AlertTitle>
+                                    <AlertTitle className="font-bold">Service Activated for Chinta Lokesh Babu</AlertTitle>
                                     <AlertDescription>
-                                        Your service request for <span className="font-bold">{patientDetails.name}</span> is active. You can monitor all activities below.
+                                        You are viewing the live tracking dashboard for the service requested for your parent. All updates from the provider appear here instantly.
                                     </AlertDescription>
                                 </Alert>
 
@@ -238,17 +169,18 @@ export default function OldAgeAssistantPage() {
                                     </Card>
 
                                     <Card>
-                                        <CardHeader><CardTitle>Submit Update</CardTitle></CardHeader>
-                                        <CardContent className="space-y-4">
-                                            <Textarea placeholder="Enter status update... e.g., Patient had lunch." rows={2} />
-                                             <Button variant="outline" asChild className="w-full justify-start text-left border-dashed">
-                                                <label className="cursor-pointer">
-                                                    <Camera className="mr-2 h-4 w-4"/>
-                                                    <span>Upload Photo (Optional)</span>
-                                                    <input type="file" className="hidden" />
-                                                </label>
-                                            </Button>
-                                            <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Submit Update</Button>
+                                        <CardHeader>
+                                            <CardTitle>Trust & Safety</CardTitle>
+                                        </CardHeader>
+                                        <CardContent className="space-y-3">
+                                            <div className="flex items-start gap-3">
+                                                <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
+                                                <div>
+                                                    <p className="font-semibold">Provider Verified</p>
+                                                    <p className="text-xs text-muted-foreground">Aadhar, professional certificates, and background checks are complete.</p>
+                                                </div>
+                                            </div>
+                                            <Button variant="link" className="p-0 h-auto">View Verified Documents</Button>
                                         </CardContent>
                                     </Card>
 
@@ -307,87 +239,135 @@ export default function OldAgeAssistantPage() {
                                         </div>
                                     </CardContent>
                                 </Card>
-
-                                <Button onClick={() => setServiceRequestStep(1)} className="w-full mt-4" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Book Another Service</Button>
                             </div>
-                        )}
+                        </CardContent>
                     </Card>
                 </TabsContent>
 
                 <TabsContent value="become-provider" className="mt-6">
                     <Card className="border">
-                        <CardHeader>
-                            <CardTitle>Join as a Service Provider</CardTitle>
-                            <CardDescription>Apply to become a verified attendant, nurse, or driver.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <form onSubmit={(e) => handleSubmit(e, "provider application")} className="space-y-6">
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="provider-name">Full Name *</Label>
-                                        <Input id="provider-name" placeholder="Enter your full name" className="border"/>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="provider-skill">Primary Skill / Service *</Label>
-                                        <Select>
-                                            <SelectTrigger id="provider-skill" className="border">
-                                                <SelectValue placeholder="Select your service type" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="nurse">Nurse</SelectItem>
-                                                <SelectItem value="caretaker">Caretaker / Attendant</SelectItem>
-                                                <SelectItem value="driver">Driver</SelectItem>
-                                                <SelectItem value="maid">Maid</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="provider-experience">Years of Experience *</Label>
-                                        <Input id="provider-experience" type="number" placeholder="e.g., 5" className="border"/>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="provider-contact">Your Contact Number *</Label>
-                                        <Input id="provider-contact" type="tel" placeholder="Enter your phone number" className="border" />
-                                    </div>
-                                </div>
-                                <div className="space-y-4">
-                                     <Label>Verification Documents *</Label>
-                                     <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
-                                        <Info className="h-4 w-4" />
-                                        <AlertTitle className="font-bold">Our Process</AlertTitle>
+                        {providerApplicationStatus === 'form' && (
+                            <>
+                                <CardHeader>
+                                    <CardTitle>Join as a Service Provider</CardTitle>
+                                    <CardDescription>Apply to become a verified attendant, nurse, or driver.</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <form onSubmit={(e) => handleSubmit(e, "provider")} className="space-y-6">
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <Label htmlFor="provider-name">Full Name *</Label>
+                                                <Input id="provider-name" placeholder="e.g., Bala Krishna" className="border"/>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="provider-skill">Primary Skill / Service *</Label>
+                                                <Select>
+                                                    <SelectTrigger id="provider-skill" className="border">
+                                                        <SelectValue placeholder="Select your service type" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="nurse">Nurse</SelectItem>
+                                                        <SelectItem value="caretaker">Caretaker / Attendant</SelectItem>
+                                                        <SelectItem value="driver">Driver</SelectItem>
+                                                        <SelectItem value="maid">Maid</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="provider-contact">Your Contact Number *</Label>
+                                                <Input id="provider-contact" type="tel" placeholder="Enter your phone number" className="border" />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <Label>Verification Documents *</Label>
+                                            <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                                                <Info className="h-4 w-4" />
+                                                <AlertTitle className="font-bold">Our Process</AlertTitle>
+                                                <AlertDescription>
+                                                    After you apply, our team will call you to verify these documents. Once verified, you will be added to our network of trusted providers.
+                                                </AlertDescription>
+                                            </Alert>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="doc-aadhar">Aadhar Card</Label>
+                                                <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
+                                                    <label htmlFor="doc-aadhar" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Aadhar Card</label>
+                                                </Button>
+                                                <input id="doc-aadhar" type="file" className="hidden" />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="doc-professional">Professional Certificate (for Nurses)</Label>
+                                                <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
+                                                    <label htmlFor="doc-professional" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Nursing/Other Certificate</label>
+                                                </Button>
+                                                <input id="doc-professional" type="file" className="hidden" />
+                                            </div>
+                                        </div>
+
+                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
+                                            {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UserPlus className="mr-2 h-4 w-4" />}
+                                            {isSubmitting ? 'Submitting...' : 'Apply to Join'}
+                                        </Button>
+                                    </form>
+                                </CardContent>
+                            </>
+                        )}
+                        
+                        {providerApplicationStatus === 'submitted' && (
+                            <CardContent className="text-center p-8">
+                                <Loader2 className="h-12 w-12 text-muted-foreground animate-spin mx-auto"/>
+                                <h3 className="text-xl font-bold mt-4">Application Submitted!</h3>
+                                <p className="text-muted-foreground">Our team is reviewing your application. We will contact you shortly. Please wait while we set up your dashboard...</p>
+                            </CardContent>
+                        )}
+
+                        {providerApplicationStatus === 'approved' && (
+                            <>
+                               <CardHeader>
+                                    <CardTitle>Provider Dashboard</CardTitle>
+                                    <CardDescription>Update your status for assigned patients here.</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-6">
+                                     <Alert className="bg-green-50 border-green-200 text-green-800 [&>svg]:text-green-600">
+                                        <CheckCircle className="h-4 w-4" />
+                                        <AlertTitle className="font-bold">Welcome, Bala Krishna! (ID: PROV007)</AlertTitle>
                                         <AlertDescription>
-                                            After you apply, our team will call you to verify these documents. Once verified, you will be added to our network of trusted providers.
+                                            Your application is approved. You are now a verified Arogyadhatha provider.
                                         </AlertDescription>
                                     </Alert>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="doc-aadhar">Aadhar Card</Label>
-                                        <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
-                                            <label htmlFor="doc-aadhar" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Aadhar Card</label>
-                                        </Button>
-                                        <input id="doc-aadhar" type="file" className="hidden" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="doc-license">Driving License (for Drivers)</Label>
-                                        <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
-                                            <label htmlFor="doc-license" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Driving License</label>
-                                        </Button>
-                                        <input id="doc-license" type="file" className="hidden" />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="doc-professional">Professional Certificate (for Nurses)</Label>
-                                        <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
-                                            <label htmlFor="doc-professional" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Nursing/Other Certificate</label>
-                                        </Button>
-                                        <input id="doc-professional" type="file" className="hidden" />
-                                    </div>
-                                </div>
+                                    
+                                     <Card>
+                                        <CardHeader>
+                                            <CardTitle>Current Assignment</CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <p><span className='font-bold'>Patient:</span> Chinta Lokesh Babu</p>
+                                            <p><span className='font-bold'>Service:</span> Daily Caretaker Package</p>
+                                        </CardContent>
+                                    </Card>
 
-                                <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
-                                    {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UserPlus className="mr-2 h-4 w-4" />}
-                                    {isSubmitting ? 'Submitting...' : 'Apply to Join'}
-                                </Button>
-                            </form>
-                        </CardContent>
+                                    <Card>
+                                        <CardHeader><CardTitle>Submit Update</CardTitle></CardHeader>
+                                        <CardContent className="space-y-4">
+                                            <Textarea placeholder="Enter status update... e.g., Patient had lunch." rows={2} />
+                                             <Button variant="outline" asChild className="w-full justify-start text-left border-dashed">
+                                                <label className="cursor-pointer">
+                                                    <Camera className="mr-2 h-4 w-4"/>
+                                                    <span>Upload Photo (Optional)</span>
+                                                    <input type="file" className="hidden" />
+                                                </label>
+                                            </Button>
+                                            <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Submit Update</Button>
+                                        </CardContent>
+                                    </Card>
+                                    <CardFooter>
+                                        <p className='text-xs text-destructive-foreground p-3 bg-destructive rounded-lg'>
+                                            <span className='font-bold'>Important:</span> Any misconduct or failure to provide updates will result in immediate suspension of your account.
+                                        </p>
+                                    </CardFooter>
+                                </CardContent>
+                            </>
+                        )}
+
                     </Card>
                 </TabsContent>
             </Tabs>
