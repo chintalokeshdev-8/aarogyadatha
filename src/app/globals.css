@@ -38,10 +38,11 @@
     --nav-junior-doctors: 342 91% 54%;
     --nav-diagnostics: 145 60% 30%;
     --nav-medicines: 197 90% 41%;
-    --nav-blood-bank: 0 70% 45%;
+    --nav-blood-bank: 265 89% 60%;
     --nav-profile: 217 91% 60%;
     --nav-emergency: 0 84.2% 60.2%;
     --nav-notifications: 24 9.8% 10%;
+    --nav-old-age: 30 90% 55%;
   }
 
   .dark {
@@ -77,10 +78,11 @@
     --nav-junior-doctors: 342 91% 64%;
     --nav-diagnostics: 145 60% 35%;
     --nav-medicines: 197 90% 51%;
-    --nav-blood-bank: 0 70% 50%;
+    --nav-blood-bank: 265 89% 70%;
     --nav-profile: 217 91% 70%;
     --nav-emergency: 0 62.8% 40.6%;
     --nav-notifications: 24 9.8% 20%;
+    --nav-old-age: 30 90% 65%;
   }
 }
 
