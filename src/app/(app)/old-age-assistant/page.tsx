@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Users2, HandHeart, Briefcase, Car, Stethoscope, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock } from 'lucide-react';
+import { Users2, HandHeart, Briefcase, Car, Stethoscope, FileText, UserPlus, Info, CheckCircle, Loader2, Search, Upload, User, Phone, MessageSquare, MapPin, Clock, Camera, Image as ImageIcon, ChevronDown } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -18,6 +18,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/components/ui/collapsible';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 
 const services = [
@@ -29,10 +31,24 @@ const services = [
     { id: "vehicle", name: "Vehicle Service", description: "Arrange a vehicle for appointments." },
 ];
 
-const hourlyUpdates = [
-    { time: '10:00 AM', text: 'Reached patient\'s home. All is well.', image: 'https://picsum.photos/seed/update1/400/300', dataAiHint: "selfie indoor", location: 'Rentala Village' },
-    { time: '11:15 AM', text: 'Helping with breakfast and morning medications.', image: 'https://picsum.photos/seed/update2/400/300', dataAiHint: "elderly person eating", location: 'Rentala Village' },
-    { time: '12:30 PM', text: 'Reading the newspaper together.', image: 'https://picsum.photos/seed/update3/400/300', dataAiHint: "person reading newspaper", location: 'Rentala Village' },
+const dailyUpdates = [
+    {
+        date: "July 26, 2024",
+        updates: [
+            { time: '10:00 AM', text: 'Reached patient\'s home. All is well.', image: 'https://picsum.photos/seed/update1/400/300', dataAiHint: "selfie indoor", location: 'Rentala Village' },
+            { time: '11:15 AM', text: 'Helping with breakfast and morning medications.', image: 'https://picsum.photos/seed/update2/400/300', dataAiHint: "elderly person eating", location: 'Rentala Village' },
+            { time: '12:30 PM', text: 'Reading the newspaper together.', image: 'https://picsum.photos/seed/update3/400/300', dataAiHint: "person reading newspaper", location: 'Rentala Village' },
+            { time: '02:00 PM', text: 'Patient is resting now. No issues to report.', image: null, dataAiHint: null, location: 'Rentala Village' },
+        ]
+    },
+    {
+        date: "July 25, 2024",
+        updates: [
+            { time: '10:00 AM', text: 'Arrived on time. Patient is in good spirits.', image: 'https://picsum.photos/seed/update4/400/300', dataAiHint: "selfie smiling", location: 'Rentala Village' },
+            { time: '12:00 PM', text: 'Assisted with lunch and had a nice chat.', image: null, dataAiHint: null, location: 'Rentala Village' },
+            { time: '03:00 PM', text: 'Went for a short walk in the garden.', image: 'https://picsum.photos/seed/update5/400/300', dataAiHint: "walking in garden", location: 'Rentala Village' },
+        ]
+    }
 ];
 
 export default function OldAgeAssistantPage() {
@@ -108,7 +124,7 @@ export default function OldAgeAssistantPage() {
 
             <Tabs defaultValue="book-service" className="w-full">
                 <div className="p-1 border bg-muted rounded-lg">
-                    <TabsList className="grid w-full grid-cols-2">
+                    <TabsList className="grid grid-cols-2">
                         <TabsTrigger value="book-service" className="font-bold">Book a Service</TabsTrigger>
                         <TabsTrigger value="become-provider" className="font-bold">Become a Provider</TabsTrigger>
                     </TabsList>
@@ -186,73 +202,113 @@ export default function OldAgeAssistantPage() {
                              </>
                         ) : (
                             <div className="space-y-6 p-4">
-                                 <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                                <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
                                     <Info className="h-4 w-4" />
-                                    <AlertTitle className="font-bold">Peace of Mind, Guaranteed</AlertTitle>
+                                    <AlertTitle className="font-bold">Service Activated</AlertTitle>
                                     <AlertDescription>
                                         Your service request for <span className="font-bold">{patientDetails.name}</span> is active. You can monitor all activities below.
                                     </AlertDescription>
                                 </Alert>
 
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle>Assigned Provider</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="flex items-center gap-4">
-                                            <Avatar className="h-16 w-16">
-                                                <AvatarImage src="https://picsum.photos/seed/bala/100/100" data-ai-hint="male portrait" />
-                                                <AvatarFallback>BK</AvatarFallback>
-                                            </Avatar>
-                                            <div className="flex-1">
-                                                <p className="font-bold text-lg">Bala Krishna</p>
-                                                <div className="flex flex-wrap gap-1 mt-1">
-                                                    <Badge variant="outline"><Stethoscope className="h-3 w-3 mr-1" />Nurse</Badge>
-                                                    <Badge variant="outline"><User className="h-3 w-3 mr-1" />Caretaker</Badge>
-                                                    <Badge variant="outline"><Car className="h-3 w-3 mr-1" />Driver</Badge>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>Assigned Provider</CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <div className="flex items-center gap-4">
+                                                <Avatar className="h-16 w-16">
+                                                    <AvatarImage src="https://picsum.photos/seed/bala/100/100" data-ai-hint="male portrait" />
+                                                    <AvatarFallback>BK</AvatarFallback>
+                                                </Avatar>
+                                                <div className="flex-1">
+                                                    <p className="font-bold text-lg">Bala Krishna</p>
+                                                    <div className="flex flex-wrap gap-1 mt-1">
+                                                        <Badge variant="outline"><Stethoscope className="h-3 w-3 mr-1" />Nurse</Badge>
+                                                        <Badge variant="outline"><User className="h-3 w-3 mr-1" />Caretaker</Badge>
+                                                        <Badge variant="outline"><Car className="h-3 w-3 mr-1" />Driver</Badge>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div className="grid grid-cols-2 gap-2 mt-4">
+                                                <Button variant="outline"><Phone className="h-4 w-4 mr-2" /> Call</Button>
+                                                <Button variant="outline"><MessageSquare className="h-4 w-4 mr-2" /> Chat</Button>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+
+                                    <Card>
+                                        <CardHeader><CardTitle>Submit Update</CardTitle></CardHeader>
+                                        <CardContent className="space-y-4">
+                                            <Textarea placeholder="Enter status update... e.g., Patient had lunch." rows={2} />
+                                             <Button variant="outline" asChild className="w-full justify-start text-left border-dashed">
+                                                <label className="cursor-pointer">
+                                                    <Camera className="mr-2 h-4 w-4"/>
+                                                    <span>Upload Photo (Optional)</span>
+                                                    <input type="file" className="hidden" />
+                                                </label>
+                                            </Button>
+                                            <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Submit Update</Button>
+                                        </CardContent>
+                                    </Card>
+
+                                </div>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Tracking & History</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="flex justify-between items-center p-3 bg-green-50 text-green-800 border border-green-200 rounded-lg mb-4">
+                                            <p className="font-bold">Attendance: Present</p>
+                                            <p className="text-sm">Checked in at 9:55 AM</p>
                                         </div>
-                                        <div className="grid grid-cols-2 gap-2 mt-4">
-                                            <Button variant="outline"><Phone className="h-4 w-4 mr-2" /> Call Provider</Button>
-                                            <Button variant="outline"><MessageSquare className="h-4 w-4 mr-2" /> Chat</Button>
+                                        
+                                        <div className="space-y-4">
+                                            {dailyUpdates.map(day => (
+                                                <Collapsible key={day.date} className="border rounded-lg" defaultOpen={day.date.includes("July 26")}>
+                                                    <CollapsibleTrigger className="w-full flex justify-between items-center p-3 hover:bg-muted/50">
+                                                        <p className="font-bold">{day.date}</p>
+                                                        <div className="flex items-center gap-4">
+                                                            <Badge variant="secondary">{day.updates.length} updates</Badge>
+                                                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                                        </div>
+                                                    </CollapsibleTrigger>
+                                                    <CollapsibleContent className="border-t p-4 space-y-4">
+                                                        {day.updates.map((update, index) => (
+                                                            <div key={index} className="flex gap-4">
+                                                                <div className="text-sm font-semibold text-muted-foreground w-20">{update.time}</div>
+                                                                <div className="flex-1 space-y-1">
+                                                                    <p>{update.text}</p>
+                                                                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                                                        <p className="flex items-center gap-1"><MapPin className="h-3 w-3" />{update.location}</p>
+                                                                        {update.image && (
+                                                                             <Dialog>
+                                                                                <DialogTrigger asChild>
+                                                                                    <Button variant="link" size="sm" className="p-0 h-auto text-primary" style={{color: 'hsl(var(--nav-old-age))'}}>
+                                                                                        <ImageIcon className="h-3 w-3 mr-1" /> View Photo
+                                                                                    </Button>
+                                                                                </DialogTrigger>
+                                                                                <DialogContent>
+                                                                                    <DialogHeader>
+                                                                                        <DialogTitle>Photo at {update.time}</DialogTitle>
+                                                                                    </DialogHeader>
+                                                                                    <Image src={update.image} data-ai-hint={update.dataAiHint || 'update photo'} alt={`Update at ${update.time}`} width={800} height={600} className="rounded-lg border aspect-video object-cover" />
+                                                                                </DialogContent>
+                                                                            </Dialog>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </CollapsibleContent>
+                                                </Collapsible>
+                                            ))}
                                         </div>
                                     </CardContent>
                                 </Card>
 
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle>Daily Tracking</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                         <div className="flex justify-between items-center p-3 bg-green-50 text-green-800 border border-green-200 rounded-lg">
-                                            <p className="font-bold">Attendance: Present</p>
-                                            <p className="text-sm">Checked in at 9:55 AM</p>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                                
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle>Hourly Updates</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="space-y-4">
-                                        {hourlyUpdates.map((update, index) => (
-                                            <div key={index} className="flex gap-4">
-                                                <div className="flex flex-col items-center">
-                                                    <p className="font-bold text-sm">{update.time}</p>
-                                                    <div className="w-px flex-1 bg-border my-1"></div>
-                                                </div>
-                                                <div className="flex-1 pb-4">
-                                                     <Image src={update.image} data-ai-hint={update.dataAiHint} alt={`Update at ${update.time}`} width={400} height={300} className="rounded-lg border aspect-[4/3] object-cover" />
-                                                     <p className="text-sm text-muted-foreground mt-2">{update.text}</p>
-                                                     <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1"><MapPin className="h-3 w-3" />{update.location}</p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </CardContent>
-                                </Card>
-                                 <Button onClick={() => setServiceRequestStep(1)} className="w-full mt-4" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Book Another Service</Button>
+                                <Button onClick={() => setServiceRequestStep(1)} className="w-full mt-4" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Book Another Service</Button>
                             </div>
                         )}
                     </Card>
