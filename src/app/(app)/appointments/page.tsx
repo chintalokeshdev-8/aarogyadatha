@@ -1327,16 +1327,16 @@ export default function AppointmentsPage() {
                                 </CardHeader>
                                 <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                      {uniqueDepartments.filter(dep => dep.value !== 'all').map(dep => (
-                                        <Card 
-                                            key={dep.value} 
-                                            className="p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-md hover:bg-primary/5 transition-all"
+                                        <div
+                                            key={dep.value}
+                                            className="flex flex-col items-center justify-center text-center gap-2 p-4 rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"
                                             onClick={() => handleDepartmentSelect(dep.value)}
                                         >
-                                            <div className="p-3 rounded-full bg-primary/10 mb-2">
+                                            <div className="p-3 rounded-full bg-primary/10">
                                                 <Image src={dep.imageUrl} alt={dep.label} width={40} height={40} data-ai-hint={dep.dataAiHint} />
                                             </div>
                                             <p className="font-bold text-sm">{dep.label}</p>
-                                        </Card>
+                                        </div>
                                      ))}
                                 </CardContent>
                             </Card>
@@ -1801,3 +1801,6 @@ export default function AppointmentsPage() {
 
     
 
+
+
+    
