@@ -85,8 +85,8 @@ export default function OldAgeAssistantPage() {
     const { toast } = useToast();
     const [isClient, setIsClient] = useState(false);
     
-    const [serviceBookingStep, setServiceBookingStep] = useState('form_and_directory'); // 'form_and_directory', 'tracking'
-    const [providerApplicationStatus, setProviderApplicationStatus] = useState('form'); // 'form', 'submitted', 'approved'
+    const [serviceBookingStep, setServiceBookingStep] = useState<'form_and_directory' | 'tracking'>('form_and_directory');
+    const [providerApplicationStatus, setProviderApplicationStatus] = useState<'form' | 'submitted' | 'approved'>('form');
     const [isSubmitting, setIsSubmitting] = useState(false);
     
     const [searchQuery, setSearchQuery] = useState('');
@@ -173,9 +173,13 @@ export default function OldAgeAssistantPage() {
                 
                 <TabsContent value="book-service" className="mt-6">
                     {serviceBookingStep === 'form_and_directory' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                            <div className="lg:col-span-1">
-                                <Card className="border sticky top-24">
+                         <Tabs defaultValue="form" className="w-full">
+                            <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="form">Request a Service</TabsTrigger>
+                                <TabsTrigger value="directory">Find a Provider</TabsTrigger>
+                            </TabsList>
+                             <TabsContent value="form" className="mt-6">
+                                <Card className="border">
                                     <CardHeader>
                                         <CardTitle>Book a Service for Your Parents</CardTitle>
                                         <CardDescription>Tell us who needs the service and what you're looking for.</CardDescription>
@@ -210,8 +214,8 @@ export default function OldAgeAssistantPage() {
                                         </form>
                                     </CardContent>
                                 </Card>
-                            </div>
-                            <div className="lg:col-span-2">
+                            </TabsContent>
+                            <TabsContent value="directory" className="mt-6">
                                  <Card className="border">
                                     <CardHeader>
                                         <CardTitle>Find a Service Provider</CardTitle>
@@ -250,54 +254,44 @@ export default function OldAgeAssistantPage() {
                                         </div>
                                         <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
                                             {filteredProviders.map(provider => (
-                                                <Card key={provider.id} className="p-4 border shadow-sm">
+                                                 <Card key={provider.id} className="p-4 border shadow-sm">
                                                     <div className="flex items-start gap-4">
-                                                        <Avatar className="h-16 w-16">
+                                                        <Avatar className="h-16 w-16 border-2" style={{borderColor: 'hsl(var(--nav-old-age))'}}>
                                                             <AvatarImage src={provider.avatar} data-ai-hint={provider.dataAiHint} />
                                                             <AvatarFallback>{provider.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                                         </Avatar>
                                                         <div className="flex-1">
-                                                            <h3 className="font-bold text-base">{provider.name}</h3>
-                                                            <p className="text-xs text-muted-foreground">{provider.id}</p>
-                                                            <div className="flex items-center gap-2 mt-1">
+                                                            <h3 className="font-bold text-lg">{provider.name}</h3>
+                                                            <div className="flex flex-wrap items-center gap-2 mt-1">
                                                                 <div className="flex items-center gap-1">
                                                                     <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                                                                     <span className="font-bold text-sm">{provider.rating}</span>
                                                                 </div>
                                                                 <Separator orientation="vertical" className="h-4" />
-                                                                <div className="flex flex-wrap gap-1">
-                                                                    {provider.skills.map(skill => (
-                                                                        <Badge key={skill} variant="secondary" className="text-xs">{skill}</Badge>
-                                                                    ))}
-                                                                </div>
+                                                                 {provider.verified && (
+                                                                    <Badge className="bg-green-100 text-green-800 border-green-300">
+                                                                        <CheckCircle className="h-3 w-3 mr-1" /> Verified
+                                                                    </Badge>
+                                                                )}
+                                                            </div>
+                                                             <div className="flex flex-wrap gap-1 mt-2">
+                                                                {provider.skills.map(skill => (
+                                                                    <Badge key={skill} variant="secondary" className="text-xs">{skill}</Badge>
+                                                                ))}
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <Separator className="my-3" />
-                                                    <div className="space-y-2 text-sm">
-                                                        <div className="flex justify-between">
-                                                            <span className="text-muted-foreground">Price (per day):</span>
-                                                            <span className="font-bold">₹{provider.pricing.day}</span>
-                                                        </div>
-                                                        <div className="flex justify-between">
-                                                            <span className="text-muted-foreground">Price (monthly):</span>
-                                                            <span className="font-bold">₹{provider.pricing.month}</span>
-                                                        </div>
-                                                    </div>
-                                                    <Separator className="my-3" />
                                                     <div className="flex items-center justify-between gap-2">
-                                                        {provider.verified ? (
-                                                            <Badge className="bg-green-100 text-green-800 border-green-300">
-                                                                <CheckCircle className="h-4 w-4 mr-1" /> Verified
-                                                            </Badge>
-                                                        ) : (
-                                                             <Badge variant="outline">Not Verified</Badge>
-                                                        )}
+                                                         <div className='text-sm'>
+                                                            <p><span className="font-bold">₹{provider.pricing.day}</span><span className="text-muted-foreground">/day</span></p>
+                                                            <p><span className="font-bold">₹{provider.pricing.month}</span><span className="text-muted-foreground">/month</span></p>
+                                                         </div>
                                                         <div className="flex items-center gap-2">
-                                                            <Button variant="outline" size="icon" asChild className="h-8 w-8">
+                                                            <Button variant="outline" size="icon" asChild className="h-9 w-9">
                                                                 <a href={`tel:${provider.contact}`}><Phone className="h-4 w-4"/></a>
                                                             </Button>
-                                                            <Button size="sm" className="h-8" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} onClick={() => handleBookProvider(provider)}>Book Now</Button>
+                                                            <Button size="sm" className="h-9" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} onClick={() => handleBookProvider(provider)}>Book Now</Button>
                                                         </div>
                                                     </div>
                                                 </Card>
@@ -305,8 +299,8 @@ export default function OldAgeAssistantPage() {
                                         </div>
                                     </CardContent>
                                 </Card>
-                            </div>
-                        </div>
+                            </TabsContent>
+                        </Tabs>
                     )}
 
                     {serviceBookingStep === 'tracking' && assignedProvider && (
@@ -376,7 +370,7 @@ export default function OldAgeAssistantPage() {
                                     </CardHeader>
                                     <CardContent className="space-y-4">
                                         {hourlyUpdates.map((day) => (
-                                            <Collapsible key={day.date} className="border rounded-lg">
+                                            <Collapsible key={day.date} className="border rounded-lg" defaultOpen>
                                                 <CollapsibleTrigger className="w-full p-3 flex justify-between items-center hover:bg-muted/50">
                                                     <span className="font-bold">{day.date} ({day.updates.length} updates)</span>
                                                     <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
@@ -461,14 +455,14 @@ export default function OldAgeAssistantPage() {
                                             </Alert>
                                             <div className="space-y-2">
                                                 <Label htmlFor="doc-aadhar">Aadhar Card</Label>
-                                                <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
+                                                <Button asChild variant="outline" className="w-full justify-start text-left border-dashed">
                                                     <label htmlFor="doc-aadhar" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Aadhar Card</label>
                                                 </Button>
                                                 <input id="doc-aadhar" type="file" className="hidden" />
                                             </div>
                                             <div className="space-y-2">
                                                 <Label htmlFor="doc-professional">Professional Certificate (for Nurses)</Label>
-                                                <Button asChild variant="outline" className="w-full justify-start text-left border-dashed border-2">
+                                                <Button asChild variant="outline" className="w-full justify-start text-left border-dashed">
                                                     <label htmlFor="doc-professional" className="cursor-pointer text-muted-foreground"><Upload className="mr-2 h-4 w-4" /> Upload Nursing/Other Certificate</label>
                                                 </Button>
                                                 <input id="doc-professional" type="file" className="hidden" />
