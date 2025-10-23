@@ -127,120 +127,185 @@ export default function OldAgeAssistantPage() {
                 
                 <TabsContent value="book-service" className="mt-6">
                     <Card className="border">
-                         <CardHeader>
-                            <CardTitle>Family's View: Service Tracking</CardTitle>
-                            <CardDescription>Monitor the care being provided to your parents in real-time.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <div className="space-y-6 p-4">
-                                <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
-                                    <Info className="h-4 w-4" />
-                                    <AlertTitle className="font-bold">Service Activated for Chinta Lokesh Babu</AlertTitle>
-                                    <AlertDescription>
-                                        You are viewing the live tracking dashboard for the service requested for your parent. All updates from the provider appear here instantly.
-                                    </AlertDescription>
-                                </Alert>
-
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <Card>
-                                        <CardHeader>
-                                            <CardTitle>Assigned Provider</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <div className="flex items-center gap-4">
-                                                <Avatar className="h-16 w-16">
-                                                    <AvatarImage src="https://picsum.photos/seed/bala/100/100" data-ai-hint="male portrait" />
-                                                    <AvatarFallback>BK</AvatarFallback>
-                                                </Avatar>
-                                                <div className="flex-1">
-                                                    <p className="font-bold text-lg">Bala Krishna</p>
-                                                    <div className="flex flex-wrap gap-1 mt-1">
-                                                        <Badge variant="outline"><Stethoscope className="h-3 w-3 mr-1" />Nurse</Badge>
-                                                        <Badge variant="outline"><User className="h-3 w-3 mr-1" />Caretaker</Badge>
-                                                        <Badge variant="outline"><Car className="h-3 w-3 mr-1" />Driver</Badge>
-                                                    </div>
-                                                </div>
+                        {serviceRequestStep === 1 ? (
+                             <>
+                                <CardHeader>
+                                    <CardTitle>Book a Service for Your Parents</CardTitle>
+                                    <CardDescription>Fill out the form below to request assistance.</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                     <form onSubmit={(e) => handleSubmit(e, "service")} className="space-y-6">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="patient-search">Search for Patient</Label>
+                                            <div className="flex gap-2">
+                                                <Input
+                                                    id="patient-search"
+                                                    placeholder="Enter patient name or ID"
+                                                    className="border"
+                                                    value={patientSearch}
+                                                    onChange={(e) => setPatientSearch(e.target.value)}
+                                                />
+                                                <Button type="button" variant="outline" onClick={handlePatientSearch}>
+                                                    <Search className="h-4 w-4" />
+                                                </Button>
                                             </div>
-                                            <div className="grid grid-cols-2 gap-2 mt-4">
-                                                <Button variant="outline"><Phone className="h-4 w-4 mr-2" /> Call</Button>
-                                                <Button variant="outline"><MessageSquare className="h-4 w-4 mr-2" /> Chat</Button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-
-                                    <Card>
-                                        <CardHeader>
-                                            <CardTitle>Trust & Safety</CardTitle>
-                                        </CardHeader>
-                                        <CardContent className="space-y-3">
-                                            <div className="flex items-start gap-3">
-                                                <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
-                                                <div>
-                                                    <p className="font-semibold">Provider Verified</p>
-                                                    <p className="text-xs text-muted-foreground">Aadhar, professional certificates, and background checks are complete.</p>
-                                                </div>
-                                            </div>
-                                            <Button variant="link" className="p-0 h-auto">View Verified Documents</Button>
-                                        </CardContent>
-                                    </Card>
-
-                                </div>
-
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle>Tracking & History</CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="flex justify-between items-center p-3 bg-green-50 text-green-800 border border-green-200 rounded-lg mb-4">
-                                            <p className="font-bold">Attendance: Present</p>
-                                            <p className="text-sm">Checked in at 9:55 AM</p>
                                         </div>
-                                        
-                                        <div className="space-y-4">
-                                            {dailyUpdates.map(day => (
-                                                <Collapsible key={day.date} className="border rounded-lg" defaultOpen={day.date.includes("July 26")}>
-                                                    <CollapsibleTrigger className="w-full flex justify-between items-center p-3 hover:bg-muted/50">
-                                                        <p className="font-bold">{day.date}</p>
-                                                        <div className="flex items-center gap-4">
-                                                            <Badge variant="secondary">{day.updates.length} updates</Badge>
-                                                            <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
-                                                        </div>
-                                                    </CollapsibleTrigger>
-                                                    <CollapsibleContent className="border-t p-4 space-y-4">
-                                                        {day.updates.map((update, index) => (
-                                                            <div key={index} className="flex gap-4">
-                                                                <div className="text-sm font-semibold text-muted-foreground w-20">{update.time}</div>
-                                                                <div className="flex-1 space-y-1">
-                                                                    <p>{update.text}</p>
-                                                                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                                                                        <p className="flex items-center gap-1"><MapPin className="h-3 w-3" />{update.location}</p>
-                                                                        {update.image && (
-                                                                             <Dialog>
-                                                                                <DialogTrigger asChild>
-                                                                                    <Button variant="link" size="sm" className="p-0 h-auto text-primary" style={{color: 'hsl(var(--nav-old-age))'}}>
-                                                                                        <ImageIcon className="h-3 w-3 mr-1" /> View Photo
-                                                                                    </Button>
-                                                                                </DialogTrigger>
-                                                                                <DialogContent>
-                                                                                    <DialogHeader>
-                                                                                        <DialogTitle>Photo at {update.time}</DialogTitle>
-                                                                                    </DialogHeader>
-                                                                                    <Image src={update.image} data-ai-hint={update.dataAiHint || 'update photo'} alt={`Update at ${update.time}`} width={800} height={600} className="rounded-lg border aspect-video object-cover" />
-                                                                                </DialogContent>
-                                                                            </Dialog>
-                                                                        )}
-                                                                    </div>
-                                                                </div>
+
+                                        <div className="space-y-2">
+                                            <Label htmlFor="parent-name">Patient Name *</Label>
+                                            <Input id="parent-name" placeholder="Enter their full name" className="border" value={patientDetails.name} onChange={(e) => setPatientDetails({...patientDetails, name: e.target.value})} />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <Label htmlFor="service-type">Type of Service Required *</Label>
+                                            <Select>
+                                                <SelectTrigger id="service-type" className="border">
+                                                    <SelectValue placeholder="Select a service" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {services.map(service => (
+                                                        <SelectItem key={service.id} value={service.id}>{service.name}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <Label htmlFor="client-contact">Your Contact Number (Requester) *</Label>
+                                            <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
+                                        </div>
+                                         <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                                            <Info className="h-4 w-4" />
+                                            <AlertTitle className="font-bold">How Tracking Works</AlertTitle>
+                                            <AlertDescription>
+                                                Once a provider is assigned, you can track their daily attendance and view hourly photo updates right here in the app.
+                                            </AlertDescription>
+                                        </Alert>
+                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
+                                            {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <HandHeart className="mr-2 h-4 w-4" />}
+                                            {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                                        </Button>
+                                    </form>
+                                </CardContent>
+                             </>
+                        ) : (
+                            <>
+                                <CardHeader>
+                                    <CardTitle>Family's View: Service Tracking</CardTitle>
+                                    <CardDescription>Monitor the care being provided to your parents in real-time.</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="space-y-6">
+                                        <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                                            <Info className="h-4 w-4" />
+                                            <AlertTitle className="font-bold">Service Activated for Chinta Lokesh Babu</AlertTitle>
+                                            <AlertDescription>
+                                                You are viewing the live tracking dashboard for the service requested for your parent. All updates from the provider appear here instantly.
+                                            </AlertDescription>
+                                        </Alert>
+
+                                        <div className="grid md:grid-cols-2 gap-6">
+                                            <Card>
+                                                <CardHeader>
+                                                    <CardTitle>Assigned Provider</CardTitle>
+                                                </CardHeader>
+                                                <CardContent>
+                                                    <div className="flex items-center gap-4">
+                                                        <Avatar className="h-16 w-16">
+                                                            <AvatarImage src="https://picsum.photos/seed/bala/100/100" data-ai-hint="male portrait" />
+                                                            <AvatarFallback>BK</AvatarFallback>
+                                                        </Avatar>
+                                                        <div className="flex-1">
+                                                            <p className="font-bold text-lg">Bala Krishna</p>
+                                                            <div className="flex flex-wrap gap-1 mt-1">
+                                                                <Badge variant="outline"><Stethoscope className="h-3 w-3 mr-1" />Nurse</Badge>
+                                                                <Badge variant="outline"><User className="h-3 w-3 mr-1" />Caretaker</Badge>
+                                                                <Badge variant="outline"><Car className="h-3 w-3 mr-1" />Driver</Badge>
                                                             </div>
-                                                        ))}
-                                                    </CollapsibleContent>
-                                                </Collapsible>
-                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-2 mt-4">
+                                                        <Button variant="outline"><Phone className="h-4 w-4 mr-2" /> Call</Button>
+                                                        <Button variant="outline"><MessageSquare className="h-4 w-4 mr-2" /> Chat</Button>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+
+                                            <Card>
+                                                <CardHeader>
+                                                    <CardTitle>Trust & Safety</CardTitle>
+                                                </CardHeader>
+                                                <CardContent className="space-y-3">
+                                                    <div className="flex items-start gap-3">
+                                                        <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
+                                                        <div>
+                                                            <p className="font-semibold">Provider Verified</p>
+                                                            <p className="text-xs text-muted-foreground">Aadhar, professional certificates, and background checks are complete.</p>
+                                                        </div>
+                                                    </div>
+                                                    <Button variant="link" className="p-0 h-auto">View Verified Documents</Button>
+                                                </CardContent>
+                                            </Card>
+
                                         </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </CardContent>
+
+                                        <Card>
+                                            <CardHeader>
+                                                <CardTitle>Tracking & History</CardTitle>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <div className="flex justify-between items-center p-3 bg-green-50 text-green-800 border border-green-200 rounded-lg mb-4">
+                                                    <p className="font-bold">Attendance: Present</p>
+                                                    <p className="text-sm">Checked in at 9:55 AM</p>
+                                                </div>
+                                                
+                                                <div className="space-y-4">
+                                                    {dailyUpdates.map(day => (
+                                                        <Collapsible key={day.date} className="border rounded-lg" defaultOpen={day.date.includes("July 26")}>
+                                                            <CollapsibleTrigger className="w-full flex justify-between items-center p-3 hover:bg-muted/50">
+                                                                <p className="font-bold">{day.date}</p>
+                                                                <div className="flex items-center gap-4">
+                                                                    <Badge variant="secondary">{day.updates.length} updates</Badge>
+                                                                    <ChevronDown className="h-5 w-5 transition-transform duration-200 [&[data-state=open]]:rotate-180" />
+                                                                </div>
+                                                            </CollapsibleTrigger>
+                                                            <CollapsibleContent className="border-t p-4 space-y-4">
+                                                                {day.updates.map((update, index) => (
+                                                                    <div key={index} className="flex gap-4">
+                                                                        <div className="text-sm font-semibold text-muted-foreground w-20">{update.time}</div>
+                                                                        <div className="flex-1 space-y-1">
+                                                                            <p>{update.text}</p>
+                                                                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                                                                <p className="flex items-center gap-1"><MapPin className="h-3 w-3" />{update.location}</p>
+                                                                                {update.image && (
+                                                                                    <Dialog>
+                                                                                        <DialogTrigger asChild>
+                                                                                            <Button variant="link" size="sm" className="p-0 h-auto text-primary" style={{color: 'hsl(var(--nav-old-age))'}}>
+                                                                                                <ImageIcon className="h-3 w-3 mr-1" /> View Photo
+                                                                                            </Button>
+                                                                                        </DialogTrigger>
+                                                                                        <DialogContent>
+                                                                                            <DialogHeader>
+                                                                                                <DialogTitle>Photo at {update.time}</DialogTitle>
+                                                                                            </DialogHeader>
+                                                                                            <Image src={update.image} data-ai-hint={update.dataAiHint || 'update photo'} alt={`Update at ${update.time}`} width={800} height={600} className="rounded-lg border aspect-video object-cover" />
+                                                                                        </DialogContent>
+                                                                                    </Dialog>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
+                                                            </CollapsibleContent>
+                                                        </Collapsible>
+                                                    ))}
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    </div>
+                                </CardContent>
+                            </>
+                        )}
                     </Card>
                 </TabsContent>
 
