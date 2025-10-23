@@ -86,7 +86,7 @@ export default function OldAgeAssistantPage() {
     const [isClient, setIsClient] = useState(false);
     
     // UI State Management
-    const [serviceBookingStep, setServiceBookingStep] = useState('form'); // 'form', 'directory', 'tracking'
+    const [serviceBookingStep, setServiceBookingStep] = useState('form_and_directory'); // 'form_and_directory', 'tracking'
     const [providerApplicationStatus, setProviderApplicationStatus] = useState('form'); // 'form', 'submitted', 'approved'
     const [isSubmitting, setIsSubmitting] = useState(false);
     
@@ -116,8 +116,7 @@ export default function OldAgeAssistantPage() {
         setIsSubmitting(true);
         setTimeout(() => {
             setIsSubmitting(false);
-            toast({ title: "Request Details Saved", description: "Please now select a provider from the list." });
-            setServiceBookingStep('directory');
+            toast({ title: "Service Preferences Noted", description: "Your service request details have been sent to our backend." });
         }, 1000);
     };
 
@@ -158,7 +157,7 @@ export default function OldAgeAssistantPage() {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-7xl mx-auto space-y-6">
             <div className="text-center space-y-2">
                 <div className="inline-block p-3 bg-primary/10 rounded-full" style={{backgroundColor: 'hsla(var(--nav-old-age)/0.1)'}}>
                      <Users2 className="h-8 w-8" style={{color: 'hsl(var(--nav-old-age))'}} />
@@ -168,161 +167,156 @@ export default function OldAgeAssistantPage() {
             </div>
 
             <Tabs defaultValue="book-service" className="w-full">
-                <div className="p-1 border bg-muted rounded-lg">
-                    <TabsList className="grid grid-cols-2">
+                <div className="p-1 border bg-muted rounded-lg max-w-md mx-auto">
+                    <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="book-service" className="font-bold">Book a Service</TabsTrigger>
                         <TabsTrigger value="become-provider" className="font-bold">Become a Provider</TabsTrigger>
                     </TabsList>
                 </div>
                 
                 <TabsContent value="book-service" className="mt-6">
-                    {serviceBookingStep === 'form' && (
-                         <Card className="border">
-                            <CardHeader>
-                                <CardTitle>Book a Service for Your Parents</CardTitle>
-                                <CardDescription>Tell us who needs the service and what you're looking for.</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <form onSubmit={handleServiceRequestSubmit} className="space-y-6">
-                                     <div className="space-y-2">
-                                        <Label htmlFor="parent-name">Patient's Full Name *</Label>
-                                        <Input id="parent-name" placeholder="Enter their full name" className="border"/>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="service-type">Type of Service Required *</Label>
-                                        <Select>
-                                            <SelectTrigger id="service-type" className="border">
-                                                <SelectValue placeholder="Select a service" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {services.map(service => (
-                                                    <SelectItem key={service.id} value={service.id}>{service.name}</SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                     <div className="space-y-2">
-                                        <Label htmlFor="client-contact">Your Contact Number *</Label>
-                                        <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
-                                    </div>
-                                    <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
-                                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                        {isSubmitting ? 'Saving...' : 'Save & Find Provider'}
-                                    </Button>
-                                </form>
-                            </CardContent>
-                        </Card>
-                    )}
-
-                    {serviceBookingStep === 'directory' && (
-                         <Card className="border">
-                            <CardHeader>
-                                 <div className="flex items-center justify-between">
-                                    <div>
+                    {serviceBookingStep === 'form_and_directory' && (
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                            <div className="lg:col-span-1">
+                                <Card className="border sticky top-24">
+                                    <CardHeader>
+                                        <CardTitle>Book a Service for Your Parents</CardTitle>
+                                        <CardDescription>Tell us who needs the service and what you're looking for.</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <form onSubmit={handleServiceRequestSubmit} className="space-y-6">
+                                             <div className="space-y-2">
+                                                <Label htmlFor="parent-name">Patient's Full Name *</Label>
+                                                <Input id="parent-name" placeholder="Enter their full name" className="border"/>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="service-type">Type of Service Required *</Label>
+                                                <Select>
+                                                    <SelectTrigger id="service-type" className="border">
+                                                        <SelectValue placeholder="Select a service" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {services.map(service => (
+                                                            <SelectItem key={service.id} value={service.id}>{service.name}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                             <div className="space-y-2">
+                                                <Label htmlFor="client-contact">Your Contact Number *</Label>
+                                                <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
+                                            </div>
+                                            <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
+                                                {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                                                {isSubmitting ? 'Saving...' : 'Book Service'}
+                                            </Button>
+                                        </form>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                            <div className="lg:col-span-2">
+                                 <Card className="border">
+                                    <CardHeader>
                                         <CardTitle>Find a Service Provider</CardTitle>
                                         <CardDescription>Browse our network to find the right care.</CardDescription>
-                                    </div>
-                                    <Button variant="outline" onClick={() => setServiceBookingStep('form')} className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200 hover:text-green-900">
-                                        <ArrowLeft className="mr-2 h-4 w-4" />
-                                        Back
-                                    </Button>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
-                                    <Input 
-                                        placeholder="Search by name..." 
-                                        className="border"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
-                                    <Select value={filterSkill} onValueChange={setFilterSkill}>
-                                        <SelectTrigger className="border">
-                                            <SelectValue placeholder="Service Type" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="All">All Services</SelectItem>
-                                            <SelectItem value="Caretaker">Caretaker</SelectItem>
-                                            <SelectItem value="Nurse">Nurse</SelectItem>
-                                            <SelectItem value="Driver">Driver</SelectItem>
-                                            <SelectItem value="Companion">Companion</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <Select value={filterLocation} onValueChange={setFilterLocation}>
-                                        <SelectTrigger className="border">
-                                            <SelectValue placeholder="Location" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="All">All Locations</SelectItem>
-                                            <SelectItem value="Guntur">Guntur</SelectItem>
-                                            <SelectItem value="Hyderabad">Hyderabad</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
-                                    {filteredProviders.map(provider => (
-                                        <Card key={provider.id} className="p-4 border shadow-sm flex flex-col sm:flex-row gap-4">
-                                            <div className="flex flex-col items-center text-center w-full sm:w-1/4">
-                                                <Avatar className="h-16 w-16 mb-2">
-                                                    <AvatarImage src={provider.avatar} data-ai-hint={provider.dataAiHint} />
-                                                    <AvatarFallback>{provider.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                                </Avatar>
-                                                <h3 className="font-bold text-base">{provider.name}</h3>
-                                                <p className="text-xs text-muted-foreground">{provider.id}</p>
-                                                <div className="flex items-center gap-1 mt-1">
-                                                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                                                    <span className="font-bold text-sm">{provider.rating}</span>
-                                                </div>
-                                            </div>
-                                            <div className="w-full sm:w-3/4">
-                                                <div className="flex flex-wrap gap-2">
-                                                    {provider.skills.map(skill => (
-                                                        <Badge key={skill} variant="secondary">{skill}</Badge>
-                                                    ))}
-                                                </div>
-                                                <Separator className="my-2" />
-                                                <div className="space-y-1 text-sm">
-                                                    <div className="flex justify-between">
-                                                        <span className="text-muted-foreground">Price (per day):</span>
-                                                        <span className="font-bold">₹{provider.pricing.day}</span>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-6">
+                                            <Input 
+                                                placeholder="Search by name..." 
+                                                className="border"
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                            />
+                                            <Select value={filterSkill} onValueChange={setFilterSkill}>
+                                                <SelectTrigger className="border">
+                                                    <SelectValue placeholder="Service Type" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="All">All Services</SelectItem>
+                                                    <SelectItem value="Caretaker">Caretaker</SelectItem>
+                                                    <SelectItem value="Nurse">Nurse</SelectItem>
+                                                    <SelectItem value="Driver">Driver</SelectItem>
+                                                    <SelectItem value="Companion">Companion</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <Select value={filterLocation} onValueChange={setFilterLocation}>
+                                                <SelectTrigger className="border">
+                                                    <SelectValue placeholder="Location" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="All">All Locations</SelectItem>
+                                                    <SelectItem value="Guntur">Guntur</SelectItem>
+                                                    <SelectItem value="Hyderabad">Hyderabad</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                        <div className="space-y-4 max-h-[80vh] overflow-y-auto pr-2">
+                                            {filteredProviders.map(provider => (
+                                                <Card key={provider.id} className="p-4 border shadow-sm flex flex-col sm:flex-row gap-4">
+                                                    <div className="flex flex-col items-center text-center w-full sm:w-1/4">
+                                                        <Avatar className="h-16 w-16 mb-2">
+                                                            <AvatarImage src={provider.avatar} data-ai-hint={provider.dataAiHint} />
+                                                            <AvatarFallback>{provider.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                                        </Avatar>
+                                                        <h3 className="font-bold text-base">{provider.name}</h3>
+                                                        <p className="text-xs text-muted-foreground">{provider.id}</p>
+                                                        <div className="flex items-center gap-1 mt-1">
+                                                            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                                                            <span className="font-bold text-sm">{provider.rating}</span>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex justify-between">
-                                                        <span className="text-muted-foreground">Price (monthly):</span>
-                                                        <span className="font-bold">₹{provider.pricing.month}</span>
+                                                    <div className="w-full sm:w-3/4">
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {provider.skills.map(skill => (
+                                                                <Badge key={skill} variant="secondary">{skill}</Badge>
+                                                            ))}
+                                                        </div>
+                                                        <Separator className="my-2" />
+                                                        <div className="space-y-1 text-sm">
+                                                            <div className="flex justify-between">
+                                                                <span className="text-muted-foreground">Price (per day):</span>
+                                                                <span className="font-bold">₹{provider.pricing.day}</span>
+                                                            </div>
+                                                            <div className="flex justify-between">
+                                                                <span className="text-muted-foreground">Price (monthly):</span>
+                                                                <span className="font-bold">₹{provider.pricing.month}</span>
+                                                            </div>
+                                                            <div className="flex justify-between items-center">
+                                                                <span className="text-muted-foreground">Contact:</span>
+                                                                <Button variant="link" asChild className="p-0 h-auto font-bold"><a href={`tel:${provider.contact}`}>{provider.contact}</a></Button>
+                                                            </div>
+                                                        </div>
+                                                        <Separator className="my-2" />
+                                                        <div className="flex items-center justify-between gap-2 mt-3">
+                                                            {provider.verified ? (
+                                                                <Badge className="bg-green-100 text-green-800 border-green-300">
+                                                                    <CheckCircle className="h-4 w-4 mr-1" /> Verified
+                                                                </Badge>
+                                                            ) : (
+                                                                 <Badge variant="outline">Not Verified</Badge>
+                                                            )}
+                                                             <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} onClick={() => handleBookProvider(provider)}>Book Now</Button>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex justify-between items-center">
-                                                        <span className="text-muted-foreground">Contact:</span>
-                                                        <Button variant="link" asChild className="p-0 h-auto font-bold"><a href={`tel:${provider.contact}`}>{provider.contact}</a></Button>
-                                                    </div>
-                                                </div>
-                                                <Separator className="my-2" />
-                                                <div className="flex items-center justify-between gap-2 mt-3">
-                                                    {provider.verified ? (
-                                                        <Badge className="bg-green-100 text-green-800 border-green-300">
-                                                            <CheckCircle className="h-4 w-4 mr-1" /> Verified
-                                                        </Badge>
-                                                    ) : (
-                                                         <Badge variant="outline">Not Verified</Badge>
-                                                    )}
-                                                     <Button size="sm" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} onClick={() => handleBookProvider(provider)}>Book Now</Button>
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
+                                                </Card>
+                                            ))}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </div>
                     )}
 
                     {serviceBookingStep === 'tracking' && assignedProvider && (
-                        <Card className="border">
+                        <Card className="border max-w-4xl mx-auto">
                             <CardHeader>
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <CardTitle>Family's View: Service Tracking</CardTitle>
                                         <CardDescription>Real-time updates for Chinta Lokesh Babu.</CardDescription>
                                     </div>
-                                    <Button variant="outline" onClick={() => setServiceBookingStep('directory')} className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200 hover:text-green-900">
+                                    <Button variant="outline" onClick={() => setServiceBookingStep('form_and_directory')} className="bg-green-100 text-green-800 border-green-300 hover:bg-green-200 hover:text-green-900">
                                         <ArrowLeft className="mr-2 h-4 w-4" />
                                         Back
                                     </Button>
@@ -422,7 +416,7 @@ export default function OldAgeAssistantPage() {
                 </TabsContent>
 
                 <TabsContent value="become-provider" className="mt-6">
-                    <Card className="border">
+                    <Card className="border max-w-4xl mx-auto">
                         {providerApplicationStatus === 'form' && (
                             <>
                                 <CardHeader>
@@ -531,7 +525,9 @@ export default function OldAgeAssistantPage() {
                                     </Card>
 
                                     <Card>
-                                        <CardHeader><CardTitle>Submit Update</CardTitle></CardHeader>
+                                        <CardHeader>
+                                            <CardTitle>Submit Update</CardTitle>
+                                        </CardHeader>
                                         <CardContent className="space-y-4">
                                             <Alert variant="destructive">
                                                 <AlertTitle className="font-bold">Legal Notice</AlertTitle>
@@ -559,3 +555,5 @@ export default function OldAgeAssistantPage() {
         </div>
     );
 }
+
+    
