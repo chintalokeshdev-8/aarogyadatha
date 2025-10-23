@@ -2,14 +2,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Users2, HandHeart, Briefcase, Car, Nurse, FileText, UserPlus, Info, CheckCircle, Loader2 } from 'lucide-react';
+import { Users2, HandHeart, Briefcase, Car, Nurse, FileText, UserPlus, Info, CheckCircle, Loader2, Search } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,21 @@ const services = [
 export default function OldAgeAssistantPage() {
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [patientSearch, setPatientSearch] = useState('');
+    const [patientDetails, setPatientDetails] = useState({ name: '', address: '', id: '' });
+    const [serviceRequestStep, setServiceRequestStep] = useState(1);
 
+    const handlePatientSearch = () => {
+        // This is a mock search. In a real app, this would be an API call.
+        if (patientSearch.toLowerCase().includes('lokesh')) {
+            setPatientDetails({
+                name: 'Chinta Lokesh Babu',
+                address: 'Rentala village, Rentachintala mandal, Palnadu district, Andhra Pradesh, India',
+                id: 'PAT001'
+            });
+        }
+    };
+    
     const handleSubmit = (e: React.FormEvent, formType: string) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -37,13 +51,16 @@ export default function OldAgeAssistantPage() {
                 title: "Request Submitted Successfully!",
                 description: `Your ${formType} request has been received. Our team will contact you shortly.`,
             });
+            if(formType === 'service') {
+                setServiceRequestStep(2);
+            }
         }, 1500);
     };
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
             <div className="text-center space-y-2">
-                <div className="inline-block p-3 bg-primary/10 rounded-full">
+                <div className="inline-block p-3 bg-primary/10 rounded-full" style={{backgroundColor: 'hsla(var(--nav-old-age)/0.1)'}}>
                      <Users2 className="h-8 w-8" style={{color: 'hsl(var(--nav-old-age))'}} />
                 </div>
                 <h1 className="text-4xl font-bold" style={{color: 'hsl(var(--nav-old-age))'}}>Old Age Assistant</h1>
@@ -76,9 +93,30 @@ export default function OldAgeAssistantPage() {
                         </CardHeader>
                         <CardContent>
                              <form onSubmit={(e) => handleSubmit(e, "service")} className="space-y-6">
+                                <div className="space-y-2">
+                                    <Label htmlFor="patient-search">Search for Patient (if in app)</Label>
+                                    <div className="flex gap-2">
+                                        <Input 
+                                            id="patient-search" 
+                                            placeholder="Enter patient name or ID" 
+                                            className="border"
+                                            value={patientSearch}
+                                            onChange={(e) => setPatientSearch(e.target.value)}
+                                        />
+                                        <Button type="button" variant="outline" onClick={handlePatientSearch}><Search className="h-4 w-4 mr-2"/>Search</Button>
+                                    </div>
+                                </div>
+                                
+                                {patientDetails.id && (
+                                     <div className="space-y-2">
+                                        <Label htmlFor="patient-id">Patient ID</Label>
+                                        <Input id="patient-id" value={patientDetails.id} readOnly className="border bg-muted"/>
+                                    </div>
+                                )}
+
                                  <div className="space-y-2">
                                     <Label htmlFor="parent-name">Parent's Name *</Label>
-                                    <Input id="parent-name" placeholder="Enter their full name" className="border"/>
+                                    <Input id="parent-name" placeholder="Enter their full name" className="border" value={patientDetails.name} onChange={e => setPatientDetails({...patientDetails, name: e.target.value})} />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="service-type">Type of Service Needed *</Label>
@@ -95,7 +133,7 @@ export default function OldAgeAssistantPage() {
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="parent-address">Address & Contact *</Label>
-                                    <Textarea id="parent-address" placeholder="Enter their full address and phone number" className="border" />
+                                    <Textarea id="parent-address" placeholder="Enter their full address and phone number" className="border" value={patientDetails.address} onChange={e => setPatientDetails({...patientDetails, address: e.target.value})} />
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="client-contact">Your Contact Number (for confirmation) *</Label>
@@ -106,6 +144,17 @@ export default function OldAgeAssistantPage() {
                                     {isSubmitting ? 'Submitting...' : 'Submit Request'}
                                 </Button>
                             </form>
+                             <Alert className="mt-6 bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                                <Info className="h-4 w-4" />
+                                <AlertTitle className="font-bold">How Provider Tracking Works</AlertTitle>
+                                <AlertDescription>
+                                    <ul className="list-disc list-inside mt-2 space-y-1">
+                                        <li>Our assigned provider will mark their attendance daily via the app.</li>
+                                        <li>For your peace of mind, the provider will upload an hourly status update, including a photo with your parent.</li>
+                                        <li>You can view all these updates in real-time from your app.</li>
+                                    </ul>
+                                </AlertDescription>
+                            </Alert>
                         </CardContent>
                     </Card>
                 </TabsContent>
