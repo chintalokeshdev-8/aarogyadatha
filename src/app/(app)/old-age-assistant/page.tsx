@@ -429,6 +429,12 @@ export default function OldAgeAssistantPage() {
                                     <Card>
                                         <CardHeader><CardTitle>Submit Update</CardTitle></CardHeader>
                                         <CardContent className="space-y-4">
+                                            <Alert variant="destructive">
+                                                <AlertTitle className="font-bold">Legal Notice</AlertTitle>
+                                                <AlertDescription>
+                                                    Any misconduct, failure to provide updates, or theft will result in immediate account suspension and will be legally proceeded with according to the law.
+                                                </AlertDescription>
+                                            </Alert>
                                             <Textarea placeholder="Enter status update... e.g., Patient had lunch." rows={2} />
                                              <Button variant="outline" asChild className="w-full justify-start text-left border-dashed">
                                                 <label className="cursor-pointer">
@@ -440,11 +446,6 @@ export default function OldAgeAssistantPage() {
                                             <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Submit Update</Button>
                                         </CardContent>
                                     </Card>
-                                    <CardFooter>
-                                        <p className='text-xs text-destructive-foreground p-3 bg-destructive rounded-lg'>
-                                            <span className='font-bold'>Important:</span> Any misconduct or failure to provide updates will result in immediate suspension of your account.
-                                        </p>
-                                    </CardFooter>
                                 </CardContent>
                             </>
                         )}
