@@ -1016,7 +1016,8 @@ export default function AppointmentsPage() {
     const [selectedDepartment, setSelectedDepartment] = useState('all');
     const [selectedHospital, setSelectedHospital] = useState('All Hospitals');
     const [selectedLocation, setSelectedLocation] = useState('all');
-    const [filteredDoctors, setFilteredDoctors] = useState(doctors);
+    const [filteredDoctors, setFilteredDoctors] = useState<typeof doctors>([]);
+    const [showDoctorList, setShowDoctorList] = useState(false);
     
     // History filters and state
     const [searchTerm, setSearchTerm] = useState('');
@@ -1094,7 +1095,22 @@ export default function AppointmentsPage() {
             return searchMatch && departmentMatch && hospitalFilterMatch && locationMatch;
         });
         setFilteredDoctors(filtered);
+        setShowDoctorList(true);
     };
+    
+    const handleDepartmentSelect = (department: string) => {
+        setSelectedDepartment(department);
+        // We need to trigger the filter logic immediately after setting the department
+        // To do this, we'll use a `useEffect` hook to watch for changes in `selectedDepartment`
+        // But for an immediate effect, we can also call handleFilter directly.
+        // Let's create a temp filtered list here and then update the main one.
+        const filtered = doctors.filter(doctor => {
+            return department === 'all' || doctor.specialty === department || (uniqueDepartments.find(d => d.value === department)?.label === doctor.specialty) || (uniqueDepartments.find(d => d.value === department)?.label === "Dental" && doctor.specialty.includes("Implantologist"));
+        });
+        setFilteredDoctors(filtered);
+        setShowDoctorList(true);
+    };
+
 
     const handleViewProfile = (doctor: any) => {
         setSelectedDoctor(doctor);
@@ -1177,6 +1193,14 @@ export default function AppointmentsPage() {
         setSearchTerm('');
         setFilterDoctor('all');
         setFilterDate(undefined);
+    };
+
+    const clearDoctorSearch = () => {
+        setSearchQuery('');
+        setSelectedDepartment('all');
+        setSelectedHospital('All Hospitals');
+        setSelectedLocation('all');
+        setShowDoctorList(false);
     };
 
     const handleUpload = (appointmentId: number, prescriptionId: number, newImage: { url: string; dataAiHint: string }, labName: string, reportDate: Date) => {
@@ -1290,81 +1314,113 @@ export default function AppointmentsPage() {
                                     </Select>
                                     <Button className="w-full" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={handleFilter}>Search</Button>
                                 </div>
+                                {showDoctorList && (
+                                    <Button variant="ghost" onClick={clearDoctorSearch} className="text-sm h-8 px-2 justify-start w-fit mt-2">
+                                        <X className='mr-2 h-4 w-4' />
+                                        Clear Search & View Departments
+                                    </Button>
+                                )}
                             </CardContent>
                         </Card>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            {filteredDoctors.map((doctor, index) => {
-                                const discountedFee = doctor.opFee * 0.5;
-                                return (
-                                    <Card key={index} className="transition-shadow hover:shadow-md border">
-                                        <CardContent className="p-4">
-                                            <div className="flex flex-row gap-4">
-                                                <Avatar className="h-20 w-20 border flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
-                                                    <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
-                                                    <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                                </Avatar>
-                                                <div className="flex-1">
+                        
+                        {!showDoctorList ? (
+                            <Card className="border">
+                                <CardHeader>
+                                    <CardTitle>Browse by Department</CardTitle>
+                                    <CardDescription>Select a department to find specialist doctors.</CardDescription>
+                                </CardHeader>
+                                <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                     {uniqueDepartments.filter(dep => dep.value !== 'all').map(dep => (
+                                        <Card 
+                                            key={dep.value} 
+                                            className="p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:shadow-md hover:bg-primary/5 transition-all"
+                                            onClick={() => handleDepartmentSelect(dep.value)}
+                                        >
+                                            <div className="p-3 rounded-full bg-primary/10 mb-2">
+                                                <dep.icon className="h-7 w-7" style={{color: 'hsl(var(--nav-appointments))'}}/>
+                                            </div>
+                                            <p className="font-bold text-sm">{dep.label}</p>
+                                        </Card>
+                                     ))}
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                {filteredDoctors.length > 0 ? filteredDoctors.map((doctor, index) => {
+                                    return (
+                                        <Card key={index} className="transition-shadow hover:shadow-md border">
+                                            <CardContent className="p-4">
+                                                <div className="flex flex-row gap-4">
+                                                    <Avatar className="h-20 w-20 border flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
+                                                        <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
+                                                        <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                                    </Avatar>
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <h3 className="text-xl font-bold">{doctor.name}</h3>
+                                                            {(doctor as any).recommended && (
+                                                                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 hidden sm:flex">
+                                                                    <Star className="h-3 w-3 mr-1" />
+                                                                    Recommended
+                                                                </Badge>
+                                                            )}
+                                                        </div>
+                                                        <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold text-sm">{doctor.specialty}</p>
+                                                        <p className="text-xs text-muted-foreground">{doctor.experience} experience</p>
+                                                        <p className="text-xs text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="mt-4 space-y-2 text-sm">
+                                                    <p className="font-semibold text-foreground">
+                                                        <strong className="font-bold text-foreground">Focus:</strong> {doctor.mainDealing}
+                                                    </p>
+                                                    <p className="font-semibold text-foreground">
+                                                        <strong className="font-bold text-foreground">Surgeries:</strong> {doctor.surgeries}
+                                                    </p>
+                                                </div>
+                                                <div className="mt-4 p-3 rounded-lg bg-muted/50 border flex flex-wrap items-center justify-between gap-2 text-sm">
                                                     <div className="flex items-center gap-2">
-                                                        <h3 className="text-xl font-bold">{doctor.name}</h3>
-                                                        {(doctor as any).recommended && (
-                                                            <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 hidden sm:flex">
-                                                                <Star className="h-3 w-3 mr-1" />
-                                                                Recommended
+                                                        <Clock className="h-4 w-4" />
+                                                        <span className="font-semibold text-xs">{doctor.availability}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        {Array.isArray(doctor.consultationType) ? (
+                                                            doctor.consultationType.map(type => (
+                                                                <Badge key={type} variant="outline" className="text-xs font-semibold" style={{borderColor: 'hsl(var(--nav-appointments))', color: 'hsl(var(--nav-appointments))'}}>
+                                                                    {type === 'Online' ? <Wifi className="h-3 w-3 mr-1" /> : <Hospital className="h-3 w-3 mr-1" />}
+                                                                    {type}
+                                                                </Badge>
+                                                            ))
+                                                        ) : (
+                                                            <Badge variant="outline" className="text-xs font-semibold" style={{borderColor: 'hsl(var(--nav-appointments))', color: 'hsl(var(--nav-appointments))'}}>
+                                                                {doctor.consultationType === 'Online' ? <Wifi className="h-3 w-3 mr-1" /> : <Hospital className="h-3 w-3 mr-1" />}
+                                                                {doctor.consultationType}
                                                             </Badge>
                                                         )}
                                                     </div>
-                                                    <p style={{color: 'hsl(var(--nav-appointments))'}} className="font-semibold text-sm">{doctor.specialty}</p>
-                                                    <p className="text-xs text-muted-foreground">{doctor.experience} experience</p>
-                                                    <p className="text-xs text-muted-foreground font-medium mt-1">{doctor.hospital}</p>
                                                 </div>
-                                            </div>
-                                            <div className="mt-4 space-y-2 text-sm">
-                                                <p className="font-semibold text-foreground">
-                                                    <strong className="font-bold text-foreground">Focus:</strong> {doctor.mainDealing}
-                                                </p>
-                                                <p className="font-semibold text-foreground">
-                                                    <strong className="font-bold text-foreground">Surgeries:</strong> {doctor.surgeries}
-                                                </p>
-                                            </div>
-                                            <div className="mt-4 p-3 rounded-lg bg-muted/50 border flex flex-wrap items-center justify-between gap-2 text-sm">
-                                                <div className="flex items-center gap-2">
-                                                    <Clock className="h-4 w-4" />
-                                                    <span className="font-semibold text-xs">{doctor.availability}</span>
+                                                 <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+                                                    <div className="flex items-baseline gap-2">
+                                                        <p className="text-sm font-semibold text-muted-foreground">Consultation Fee:</p>
+                                                        <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
+                                                    </div>
+                                                    <div className="flex w-full sm:w-auto shrink-0 gap-2">
+                                                        <Button variant="outline" className="flex-1 sm:flex-auto" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
+                                                        <Button className="flex-1 sm:flex-auto" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)}>
+                                                            Book Appointment
+                                                        </Button>
+                                                    </div>
                                                 </div>
-                                                <div className="flex items-center gap-2">
-                                                    {Array.isArray(doctor.consultationType) ? (
-                                                        doctor.consultationType.map(type => (
-                                                            <Badge key={type} variant="outline" className="text-xs font-semibold" style={{borderColor: 'hsl(var(--nav-appointments))', color: 'hsl(var(--nav-appointments))'}}>
-                                                                {type === 'Online' ? <Wifi className="h-3 w-3 mr-1" /> : <Hospital className="h-3 w-3 mr-1" />}
-                                                                {type}
-                                                            </Badge>
-                                                        ))
-                                                    ) : (
-                                                        <Badge variant="outline" className="text-xs font-semibold" style={{borderColor: 'hsl(var(--nav-appointments))', color: 'hsl(var(--nav-appointments))'}}>
-                                                            {doctor.consultationType === 'Online' ? <Wifi className="h-3 w-3 mr-1" /> : <Hospital className="h-3 w-3 mr-1" />}
-                                                            {doctor.consultationType}
-                                                        </Badge>
-                                                    )}
-                                                </div>
-                                            </div>
-                                             <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-                                                <div className="flex items-baseline gap-2">
-                                                    <p className="text-sm font-semibold text-muted-foreground">Consultation Fee:</p>
-                                                    <p className="text-lg font-bold" style={{color: 'hsl(var(--nav-appointments))'}}>₹{doctor.opFee}</p>
-                                                </div>
-                                                <div className="flex w-full sm:w-auto shrink-0 gap-2">
-                                                    <Button variant="outline" className="flex-1 sm:flex-auto" onClick={() => handleViewProfile(doctor)}>View Profile</Button>
-                                                    <Button className="flex-1 sm:flex-auto" style={{backgroundColor: 'hsl(var(--nav-appointments))'}} onClick={() => handleBookAppointment(doctor)}>
-                                                        Book Appointment
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                )
-                            })}
-                        </div>
+                                            </CardContent>
+                                        </Card>
+                                    )
+                                }) : (
+                                    <div className="text-center p-8 text-muted-foreground lg:col-span-2">
+                                        <p>No doctors found matching your criteria. Try broadening your search.</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </TabsContent>
                 <TabsContent value="history" className="mt-6">
@@ -1748,3 +1804,4 @@ export default function AppointmentsPage() {
     
 
     
+
