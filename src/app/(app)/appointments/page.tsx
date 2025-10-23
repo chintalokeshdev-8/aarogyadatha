@@ -168,7 +168,7 @@ const hospitalsData: Record<string, { location: string; address: string; phone: 
     "SVRR,Hospital, Tiruapti": { location: "Tirupati", address: "Tirupati", phone: "9441820772", website: "#" },
     "King George Hospital, Visakhapatnam": { location: "Visakhapatnam", address: "Visakhapatnam", phone: "9849903060", website: "#" },
     "GGH, VIZIANAGARAM": { location: "Vizianagaram", address: "Vizianagaram", phone: "9848130881", website: "#" },
-    "Distt, Hospital,Parvathipuram": { location: "Parvathipuram Manyam", address: "Parvathipuram", phone: "9652083038", website: "#" },
+    "Distt. Hospital,Parvathipuram": { location: "Parvathipuram Manyam", address: "Parvathipuram", phone: "9652083038", website: "#" },
     "Area Hospital, Gajapathinagaram": { location: "Vizianagaram", address: "Gajapathinagaram", phone: "9441494975", website: "#" },
     "Area Hospital,S. Kota": { location: "Vizianagaram", address: "S. Kota", phone: "7702345007", website: "#" },
     "District Hospital Tanuku": { location: "West Godavari", address: "Tanuku", phone: "7671821044", website: "#" },
@@ -1274,7 +1274,7 @@ export default function AppointmentsPage() {
                                         <Card key={index} className="transition-shadow hover:shadow-md border">
                                             <CardContent className="p-4">
                                                 <div className="flex flex-row gap-4">
-                                                    <Avatar className="h-20 w-20 border flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))')}>
+                                                    <Avatar className="h-20 w-20 border flex-shrink-0" style={{borderColor: 'hsl(var(--nav-appointments))'}}>
                                                         <AvatarImage src={doctor.avatar} data-ai-hint={doctor.dataAiHint} />
                                                         <AvatarFallback>{doctor.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                                                     </Avatar>
@@ -1710,26 +1710,3 @@ export default function AppointmentsPage() {
         </div>
     );
 }
-    
-
-    
-
-
-
-
-    
-
-
-    
-
-    
-
-    
-
-    
-
-
-
-    
-
-    
