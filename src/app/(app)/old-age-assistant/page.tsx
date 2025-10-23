@@ -47,12 +47,17 @@ export default function OldAgeAssistantPage() {
         setIsSubmitting(true);
         setTimeout(() => {
             setIsSubmitting(false);
-            toast({
-                title: "Request Submitted Successfully!",
-                description: `Your ${formType} request has been received. Our team will contact you shortly.`,
-            });
             if(formType === 'service') {
+                toast({
+                    title: "Request Submitted Successfully!",
+                    description: `Your service request has been received. Our team will contact you shortly.`,
+                });
                 setServiceRequestStep(2);
+            } else {
+                toast({
+                    title: "Application Submitted Successfully!",
+                    description: `Your provider application has been received. Our team will contact you shortly.`,
+                });
             }
         }, 1500);
     };
@@ -87,76 +92,84 @@ export default function OldAgeAssistantPage() {
                 
                 <TabsContent value="book-service" className="mt-6">
                     <Card className="border">
-                        <CardHeader>
-                            <CardTitle>Book a Service for Your Parents</CardTitle>
-                            <CardDescription>Fill out the form below to request assistance.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <form onSubmit={(e) => handleSubmit(e, "service")} className="space-y-6">
-                                <div className="space-y-2">
-                                    <Label htmlFor="patient-search">Search for Patient (if in app)</Label>
-                                    <div className="flex gap-2">
-                                        <Input 
-                                            id="patient-search" 
-                                            placeholder="Enter patient name or ID" 
-                                            className="border"
-                                            value={patientSearch}
-                                            onChange={(e) => setPatientSearch(e.target.value)}
-                                        />
-                                        <Button type="button" variant="outline" onClick={handlePatientSearch}><Search className="h-4 w-4 mr-2"/>Search</Button>
-                                    </div>
-                                </div>
-                                
-                                {patientDetails.id && (
-                                     <div className="space-y-2">
-                                        <Label htmlFor="patient-id">Patient ID</Label>
-                                        <Input id="patient-id" value={patientDetails.id} readOnly className="border bg-muted"/>
-                                    </div>
-                                )}
+                        {serviceRequestStep === 1 ? (
+                             <>
+                                <CardHeader>
+                                    <CardTitle>Book a Service for Your Parents</CardTitle>
+                                    <CardDescription>Fill out the form below to request assistance.</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <form onSubmit={(e) => handleSubmit(e, "service")} className="space-y-6">
+                                        <div className="space-y-2">
+                                            <Label htmlFor="patient-search">Search for Patient (if in app)</Label>
+                                            <div className="flex gap-2">
+                                                <Input 
+                                                    id="patient-search" 
+                                                    placeholder="Enter patient name or ID" 
+                                                    className="border"
+                                                    value={patientSearch}
+                                                    onChange={(e) => setPatientSearch(e.target.value)}
+                                                />
+                                                <Button type="button" variant="outline" onClick={handlePatientSearch}><Search className="h-4 w-4 mr-2"/>Search</Button>
+                                            </div>
+                                        </div>
+                                        
+                                        {patientDetails.id && (
+                                            <div className="space-y-2">
+                                                <Label htmlFor="patient-id">Patient ID</Label>
+                                                <Input id="patient-id" value={patientDetails.id} readOnly className="border bg-muted"/>
+                                            </div>
+                                        )}
 
-                                 <div className="space-y-2">
-                                    <Label htmlFor="parent-name">Parent's Name *</Label>
-                                    <Input id="parent-name" placeholder="Enter their full name" className="border" value={patientDetails.name} onChange={e => setPatientDetails({...patientDetails, name: e.target.value})} />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="service-type">Type of Service Needed *</Label>
-                                    <Select>
-                                        <SelectTrigger id="service-type" className="border">
-                                            <SelectValue placeholder="Select a service" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {services.map(service => (
-                                                <SelectItem key={service.id} value={service.id}>{service.name}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="parent-address">Address & Contact *</Label>
-                                    <Textarea id="parent-address" placeholder="Enter their full address and phone number" className="border" value={patientDetails.address} onChange={e => setPatientDetails({...patientDetails, address: e.target.value})} />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="client-contact">Your Contact Number (for confirmation) *</Label>
-                                    <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
-                                </div>
-                                <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
-                                    {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle className="mr-2 h-4 w-4" />}
-                                    {isSubmitting ? 'Submitting...' : 'Submit Request'}
-                                </Button>
-                            </form>
-                             <Alert className="mt-6 bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
-                                <Info className="h-4 w-4" />
-                                <AlertTitle className="font-bold">Peace of Mind, Guaranteed</AlertTitle>
-                                <AlertDescription>
-                                    <ul className="list-disc list-inside mt-2 space-y-1">
-                                        <li>Once a provider is assigned, you'll get access to their contact details and verified documents.</li>
-                                        <li>Our provider will mark their attendance daily via the app.</li>
-                                        <li>For your peace of mind, you will receive hourly status updates, including a photo with your parent and the provider's location.</li>
-                                        <li>You can view all these updates in real-time right here in the app.</li>
-                                    </ul>
-                                </AlertDescription>
-                            </Alert>
-                        </CardContent>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="parent-name">Parent's Name *</Label>
+                                            <Input id="parent-name" placeholder="Enter their full name" className="border" value={patientDetails.name} onChange={e => setPatientDetails({...patientDetails, name: e.target.value})} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="service-type">Type of Service Needed *</Label>
+                                            <Select>
+                                                <SelectTrigger id="service-type" className="border">
+                                                    <SelectValue placeholder="Select a service" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {services.map(service => (
+                                                        <SelectItem key={service.id} value={service.id}>{service.name}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="parent-address">Address & Contact *</Label>
+                                            <Textarea id="parent-address" placeholder="Enter their full address and phone number" className="border" value={patientDetails.address} onChange={e => setPatientDetails({...patientDetails, address: e.target.value})} />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label htmlFor="client-contact">Your Contact Number (for confirmation) *</Label>
+                                            <Input id="client-contact" type="tel" placeholder="Enter your phone number" className="border" />
+                                        </div>
+                                        <Button type="submit" className="w-full" style={{backgroundColor: 'hsl(var(--nav-old-age))'}} disabled={isSubmitting}>
+                                            {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle className="mr-2 h-4 w-4" />}
+                                            {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                                        </Button>
+                                    </form>
+                                </CardContent>
+                             </>
+                        ) : (
+                             <CardContent className="p-6">
+                                <Alert className="bg-blue-50 border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+                                    <Info className="h-4 w-4" />
+                                    <AlertTitle className="font-bold">Peace of Mind, Guaranteed</AlertTitle>
+                                    <AlertDescription>
+                                        <ul className="list-disc list-inside mt-2 space-y-1">
+                                            <li>Once a provider is assigned, you'll get access to their contact details and verified documents.</li>
+                                            <li>Our provider will mark their attendance daily via the app.</li>
+                                            <li>For your peace of mind, you will receive hourly status updates, including a photo with your parent and the provider's location.</li>
+                                            <li>You can view all these updates in real-time right here in the app.</li>
+                                        </ul>
+                                    </AlertDescription>
+                                </Alert>
+                                <Button onClick={() => setServiceRequestStep(1)} className="w-full mt-4" style={{backgroundColor: 'hsl(var(--nav-old-age))'}}>Book Another Service</Button>
+                            </CardContent>
+                        )}
                     </Card>
                 </TabsContent>
 
