@@ -226,7 +226,7 @@ function LocationSelector() {
         }
     }, [isOpen, location]);
 
-    const displayLocation = [location.village, location.mandal, location.district, location.state].filter(Boolean).join(', ');
+    const displayLocation = location.village || location.mandal || location.district || location.state || "Select Location";
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
