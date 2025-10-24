@@ -196,7 +196,6 @@ const doctors = [
     { name: "Dr. Jaya Lakshmi", specialty: "Gynaecologist", experience: "15 years", hospital: "Continental Hospitals, Gachibowli", surgeries: "500+ successful deliveries", mainDealing: "High-risk pregnancy and infertility.", avatar: "https://picsum.photos/seed/doc7/100/100", dataAiHint: "female doctor professional", opFee: 850, availability: "Mon - Sat 10AM - 3PM", consultationType: "Online", },
     { name: "Dr. Sunitha", specialty: "Neurologist", experience: "8 years", hospital: "Sravani Hospital, Guntur", surgeries: "N/A", mainDealing: "Stroke and Epilepsy management.", avatar: "https://picsum.photos/seed/doc18/100/100", dataAiHint: "female doctor professional", opFee: 700, availability: "Tue, Thu, Sat 9AM - 1PM", consultationType: "Offline (Hospital Visit)", },
     { name: "Dr. K. Sai Mounica Reddy", specialty: "General Physician", experience: "6 years", hospital: "Guntur Kidney & Multispeciality Hospital", surgeries: "N/A", mainDealing: "Diabetes management and general health.", avatar: "https://picsum.photos/seed/doc13/100/100", dataAiHint: "female doctor glasses", opFee: 450, availability: "Mon - Sat 9AM - 6PM", consultationType: "Online", },
-    // New doctors from list
     { name: "Dr.G.Sarveswara Rao", specialty: "General Medicine", experience: "15 years", hospital: "DISTRICT HOSPITAL, PADERU", surgeries: "N/A", mainDealing: "General Medicine", avatar: "https://picsum.photos/seed/doc20/100/100", dataAiHint: "male doctor professional", opFee: 700, availability: "Mon-Sat 9AM-5PM", consultationType: "Offline (Hospital Visit)" },
     { name: "Dr.Anand.Chaitanya Teja", specialty: "General Medicine", experience: "10 years", hospital: "Area Hospital, Arakuvalley", surgeries: "N/A", mainDealing: "General Medicine", avatar: "https://picsum.photos/seed/doc21/100/100", dataAiHint: "male doctor professional", opFee: 700, availability: "Mon-Sat 9AM-5PM", consultationType: "Offline (Hospital Visit)" },
     { name: "Dr.J.Kiran Durga Prasad", specialty: "General Medicine", experience: "12 years", hospital: "Area Hospital, Rampachodavaram", surgeries: "N/A", mainDealing: "General Medicine", avatar: "https://picsum.photos/seed/doc22/100/100", dataAiHint: "male doctor professional", opFee: 700, availability: "Mon-Sat 9AM-5PM", consultationType: "Offline (Hospital Visit)" },
@@ -294,7 +293,7 @@ const doctors = [
 ];
 
 const departments = [
-    { value: "all", label: "All Departments", Icon: StethoscopeIcon },
+    { value: "all", label: "All", Icon: StethoscopeIcon },
     { value: "Cardiologist", label: "Cardiology", Icon: HeartPulse },
     { value: "Orthopedic Surgeon", label: "Orthopedics", Icon: Bone },
     { value: "Orthopaedics", label: "Orthopedics", Icon: Bone },
@@ -303,12 +302,12 @@ const departments = [
     { value: "Pediatrician", label: "Pediatrics", Icon: Baby },
     { value: "Dermatologist", label: "Dermatology", Icon: Bot },
     { value: "Implantologist & Laser Specialist", label: "Dental", Icon: ToothIcon },
-    { value: "General Physician", label: "General Physician", Icon: User },
-    { value: "Gastroenterologist", label: "Gastroenterology", Icon: Leaf },
+    { value: "General Physician", label: "General", Icon: User },
+    { value: "Gastroenterologist", label: "Gastro", Icon: Leaf },
     { value: "Nephrologist", label: "Nephrology", Icon: Shield },
     { value: "Urologist", label: "Urology", Icon: Droplets },
-    { value: "Intensivist", label: "Intensivist", Icon: StethoscopeIcon },
-    { value: "General Surgeon", label: "General Surgery", Icon: Briefcase },
+    { value: "Intensivist", label: "Intensive Care", Icon: StethoscopeIcon },
+    { value: "General Surgeon", label: "Surgery", Icon: Briefcase },
 ];
 
 const uniqueDepartments = Array.from(new Map(departments.map(item => [item.label, item])).values());
@@ -1247,7 +1246,7 @@ export default function AppointmentsPage() {
                         {!showDoctorList ? (
                             <Card className="border">
                                 <CardHeader>
-                                    <CardTitle>Browse by Department</CardTitle>
+                                    <CardTitle>Departments</CardTitle>
                                     <CardDescription>Select a department to find specialist doctors.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
@@ -1710,5 +1709,7 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
 
     
