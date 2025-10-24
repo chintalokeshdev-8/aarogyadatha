@@ -174,7 +174,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
         
         <div className="text-center">
-            <p className="text-sm md:text-base font-bold text-foreground">
+            <p className="text-xs md:text-base font-bold text-foreground">
                 {language === 'en'
                     ? "Right disease for right doctor + Right Diet = 99% cure"
                     : "సరైన వ్యాధికి సరైన డాక్టర్ + సరైన ఆహారం = 99% నివారణ"
