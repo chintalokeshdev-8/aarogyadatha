@@ -1251,17 +1251,17 @@ export default function AppointmentsPage() {
                                     <CardDescription>Select a department to find specialist doctors.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div className="grid grid-cols-4 gap-2">
                                         {uniqueDepartments.filter(dep => dep.value !== 'all').map(dep => (
                                             <div
                                                 key={dep.value}
-                                                className="flex flex-col items-center justify-center text-center gap-2 p-4 rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"
+                                                className="flex flex-col items-center justify-center text-center gap-1 p-2 rounded-lg cursor-pointer hover:bg-primary/5 transition-colors"
                                                 onClick={() => handleDepartmentSelect(dep.value)}
                                             >
-                                                <div className="p-3 rounded-full bg-primary/10">
-                                                     <dep.Icon className="h-8 w-8 text-primary" style={{color: 'hsl(var(--nav-appointments))'}} />
+                                                <div className="p-2 rounded-full bg-primary/10">
+                                                     <dep.Icon className="h-6 w-6 text-primary" style={{color: 'hsl(var(--nav-appointments))'}} />
                                                 </div>
-                                                <p className="font-bold text-sm">{dep.label}</p>
+                                                <p className="font-bold text-xs leading-tight">{dep.label}</p>
                                             </div>
                                         ))}
                                     </div>
