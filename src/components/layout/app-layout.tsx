@@ -420,22 +420,20 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-80" align="end" forceMount>
                         <Link href="/profile" passHref>
-                            <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer" asChild>
-                                <a>
-                                    <div className="flex items-center gap-3">
-                                        <Avatar className="h-10 w-10">
-                                            <AvatarImage src="/images/profile.jpg" />
-                                            <AvatarFallback>CL</AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <p className="text-lg font-bold">Chinta Lokesh Babu</p>
-                                            <div className="space-y-0.5 text-xs text-muted-foreground">
-                                                <p>Patient ID: PAT001</p>
-                                                <p>Blood Group: O+ Positive</p>
-                                            </div>
+                            <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer">
+                                <div className="flex items-center gap-3">
+                                    <Avatar className="h-10 w-10">
+                                        <AvatarImage src="/images/profile.jpg" />
+                                        <AvatarFallback>CL</AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <p className="text-lg font-bold">Chinta Lokesh Babu</p>
+                                        <div className="space-y-0.5 text-xs text-muted-foreground">
+                                            <p>Patient ID: PAT001</p>
+                                            <p>Blood Group: O+ Positive</p>
                                         </div>
                                     </div>
-                                </a>
+                                </div>
                             </DropdownMenuItem>
                         </Link>
                         <DropdownMenuSeparator />
@@ -584,3 +582,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+    
