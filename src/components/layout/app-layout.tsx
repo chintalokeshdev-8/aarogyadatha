@@ -41,6 +41,7 @@ import {
   Languages,
   HandHeart,
   HeartHandshake,
+  Wallet,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -106,8 +107,8 @@ function AiAssistantDialog() {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button className="fixed bottom-24 right-4 h-14 w-14 rounded-full shadow-lg z-30" style={{backgroundColor: 'hsl(var(--primary))'}}>
-                    <Sparkles className="h-7 w-7" />
+                <Button className="fixed bottom-24 right-4 h-12 w-12 rounded-full shadow-lg z-30" style={{backgroundColor: 'hsl(var(--primary))'}}>
+                    <Sparkles className="h-6 w-6" />
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-2xl h-[80vh] flex flex-col">
@@ -272,7 +273,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     </div>
                 </Link>
             )}
-             <h1 className="text-lg font-bold text-primary-foreground truncate">Arogyadhatha</h1>
+             <div className="flex flex-col items-start">
+                <h1 className="text-base font-bold text-primary-foreground leading-tight">Arogyadhatha</h1>
+                <div className="flex items-center gap-1 text-xs text-primary-foreground/80">
+                    <MapPin className="h-3 w-3"/>
+                    <span>Guntur</span>
+                    <ChevronRight className="h-3 w-3"/>
+                </div>
+             </div>
         </div>
 
         {!isMobile && (
@@ -282,6 +290,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         )}
 
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+            <Button variant="ghost" className="h-10 rounded-full text-primary-foreground flex items-center gap-1.5 p-2">
+                <Wallet className="h-5 w-5" />
+                <span className="font-bold text-sm hidden sm:inline">₹150</span>
+            </Button>
             {isMobile && <GlobalSearch />}
             <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')}>
                 <Languages className="h-5 w-5" />
