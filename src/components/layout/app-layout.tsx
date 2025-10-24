@@ -42,6 +42,7 @@ import {
   HandHeart,
   HeartHandshake,
   Wallet,
+  LocateFixed,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -60,6 +61,7 @@ import { allMenuItems, type MenuItem } from "@/lib/nav-config";
 import { Switch } from "../ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/context/language-context";
+import { useLocation } from "@/context/location-context";
 import { GlobalSearch } from "./global-search";
 
 
@@ -69,6 +71,9 @@ const familyAccounts = [
     { name: "Chinta Ashok", avatar: "https://picsum.photos/seed/user4/100/100", fallback: "CA", isCurrentUser: false },
     { name: "Shiva Parvathi", avatar: "https://picsum.photos/seed/user5/100/100", fallback: "SP", isCurrentUser: false },
 ];
+
+const availableLocations = ["Guntur", "Hyderabad", "Vijayawada", "Visakhapatnam", "Tirupati", "Nellore"];
+
 
 interface ChatMessage {
     role: 'user' | 'assistant';
@@ -173,6 +178,50 @@ function AiAssistantDialog() {
     );
 }
 
+function LocationSelector() {
+    const { location, setLocation } = useLocation();
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    const handleSelectLocation = (newLocation: string) => {
+        setLocation(newLocation);
+        setIsOpen(false);
+    };
+
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+                <button className="flex items-center gap-1 text-xs text-primary-foreground/80">
+                    <MapPin className="h-3 w-3"/>
+                    <span>{location}</span>
+                    <ChevronRight className="h-3 w-3"/>
+                </button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-sm">
+                <DialogHeader>
+                    <DialogTitle>Select Your Location</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-3 py-4">
+                     <Button variant="outline" className="w-full justify-start gap-2">
+                        <LocateFixed className="h-4 w-4 text-primary" /> Use my current location
+                    </Button>
+                    <div className="space-y-2">
+                        {availableLocations.map(loc => (
+                            <Button 
+                                key={loc} 
+                                variant={location === loc ? "default" : "secondary"}
+                                className="w-full justify-start"
+                                onClick={() => handleSelectLocation(loc)}
+                            >
+                                {loc}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -275,11 +324,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             )}
              <div className="flex flex-col items-start">
                 <h1 className="text-base font-bold text-primary-foreground leading-tight">Arogyadhatha</h1>
-                <div className="flex items-center gap-1 text-xs text-primary-foreground/80">
-                    <MapPin className="h-3 w-3"/>
-                    <span>Guntur</span>
-                    <ChevronRight className="h-3 w-3"/>
-                </div>
+                <LocationSelector />
              </div>
         </div>
 
