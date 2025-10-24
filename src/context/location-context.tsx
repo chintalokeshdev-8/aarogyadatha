@@ -3,7 +3,12 @@
 
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-type Location = string;
+interface Location {
+    state: string | null;
+    district: string | null;
+    mandal: string | null;
+    village: string | null;
+}
 
 interface LocationContextType {
     location: Location;
@@ -13,7 +18,12 @@ interface LocationContextType {
 const LocationContext = createContext<LocationContextType | undefined>(undefined);
 
 export function LocationProvider({ children }: { children: ReactNode }) {
-    const [location, setLocation] = useState<Location>('Guntur');
+    const [location, setLocation] = useState<Location>({
+        state: "Andhra Pradesh",
+        district: "Palnadu",
+        mandal: "Rentachintala",
+        village: "Rentala"
+    });
 
     return (
         <LocationContext.Provider value={{ location, setLocation }}>
