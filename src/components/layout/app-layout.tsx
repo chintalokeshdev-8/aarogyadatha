@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import Link from "next/link";
@@ -417,28 +418,33 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-80" align="end" forceMount>
-                        <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer" asChild>
-                             <Link href="/profile" passHref>
-                                <div className="flex items-center gap-3 w-full">
+                        <DropdownMenuItem className="p-3 focus:bg-transparent" asChild>
+                             <div className="flex items-center gap-3 w-full">
+                                <Link href="/profile" className="flex items-center gap-3 flex-1 min-w-0">
                                     <Avatar className="h-10 w-10">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
-                                    <div className="flex-1 space-y-1">
+                                    <div className="flex-1 space-y-1 overflow-hidden">
                                         <p className="text-sm font-bold truncate">Chinta Lokesh Babu</p>
                                         <div className="flex items-center gap-2 text-xs text-muted-foreground font-semibold">
-                                            <span>PAT001</span>
-                                            <Droplets className="h-3 w-3 text-red-500" />
-                                            <span>O+</span>
+                                            <span className='truncate'>PAT001</span>
+                                            <Droplets className="h-3 w-3 text-red-500 flex-shrink-0" />
+                                            <span className="flex-shrink-0">O+</span>
                                         </div>
                                     </div>
-                                    <DialogTrigger asChild>
-                                        <Button variant="outline" size="sm" className="h-auto px-2 py-1 flex items-center gap-1 text-primary border-primary/50">
-                                            <Users className="h-4 w-4"/> Switch
-                                        </Button>
-                                    </DialogTrigger>
-                                </div>
-                             </Link>
+                                </Link>
+                                <DialogTrigger asChild>
+                                    <Button 
+                                        variant="outline"
+                                        size="sm"
+                                        className="h-auto px-2 py-1 flex items-center gap-1 text-destructive border-destructive/50 hover:bg-destructive/10 hover:text-destructive"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <Users className="h-4 w-4"/> Switch
+                                    </Button>
+                                </DialogTrigger>
+                            </div>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <div className="p-1 max-h-[60vh] overflow-y-auto">
@@ -580,3 +586,5 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+    
