@@ -419,29 +419,27 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-80" align="end" forceMount>
-                        <DropdownMenuLabel className="font-normal p-3">
-                        <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10">
-                                <AvatarImage src="/images/profile.jpg" />
-                                <AvatarFallback>CL</AvatarFallback>
-                            </Avatar>
-                            <div>
-                                <p className="text-lg font-bold">Chinta Lokesh Babu</p>
-                                <div className="space-y-0.5 text-xs text-muted-foreground">
-                                    <p>Patient ID: PAT001</p>
-                                    <p>Blood Group: O+ Positive</p>
-                                </div>
-                            </div>
-                        </div>
-                        </DropdownMenuLabel>
+                        <Link href="/profile" passHref>
+                            <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer" asChild>
+                                <a>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar className="h-10 w-10">
+                                            <AvatarImage src="/images/profile.jpg" />
+                                            <AvatarFallback>CL</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="text-lg font-bold">Chinta Lokesh Babu</p>
+                                            <div className="space-y-0.5 text-xs text-muted-foreground">
+                                                <p>Patient ID: PAT001</p>
+                                                <p>Blood Group: O+ Positive</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </DropdownMenuItem>
+                        </Link>
                         <DropdownMenuSeparator />
                         <div className="p-1 max-h-[60vh] overflow-y-auto">
-                            <Link href="/profile" passHref>
-                                <DropdownMenuItem className="p-3">
-                                    <User className="mr-3 text-primary" />
-                                    <span className="font-semibold">Profile</span>
-                                </DropdownMenuItem>
-                            </Link>
                             <DropdownMenuItem className="p-3">
                                 <Wallet className="mr-3 text-primary" />
                                 <span className="font-semibold">Wallet</span>
