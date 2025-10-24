@@ -181,7 +181,6 @@ function AiAssistantDialog() {
 function LocationSelector() {
     const { location, setLocation } = useLocation();
     const [isOpen, setIsOpen] = React.useState(false);
-    const [step, setStep] = React.useState(1);
 
     const [selectedState, setSelectedState] = React.useState<string | null>(location.state);
     const [selectedDistrict, setSelectedDistrict] = React.useState<string | null>(location.district);
@@ -190,7 +189,7 @@ function LocationSelector() {
 
     const districts = React.useMemo(() => {
         if (!selectedState) return [];
-        return locations[selectedState]?.districts || [];
+        return locations[selectedState as keyof typeof locations]?.districts || [];
     }, [selectedState]);
 
     const mandals = React.useMemo(() => {
@@ -222,7 +221,6 @@ function LocationSelector() {
             setSelectedDistrict(location.district);
             setSelectedMandal(location.mandal);
             setVillageSearch('');
-            setStep(1);
         }
     }, [isOpen, location]);
 
@@ -419,23 +417,23 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-80" align="end" forceMount>
-                         <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer" asChild>
-                            <Link href="/profile">
+                        <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer" asChild>
+                             <Link href="/profile" passHref>
                                 <div className="flex items-center gap-3">
                                     <Avatar className="h-10 w-10">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1">
-                                        <p className="text-lg font-bold">Chinta Lokesh Babu</p>
+                                        <p className="text-sm font-bold">Chinta Lokesh Babu</p>
                                     </div>
                                     <DialogTrigger asChild>
-                                        <Button variant="ghost" size="sm" className="h-auto px-2 py-1 flex items-center gap-1 text-primary">
+                                        <Button variant="outline" size="sm" className="h-auto px-2 py-1 flex items-center gap-1 text-primary border-primary/50">
                                             <Users className="h-4 w-4"/> Switch
                                         </Button>
                                     </DialogTrigger>
                                 </div>
-                            </Link>
+                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <div className="p-1 max-h-[60vh] overflow-y-auto">
