@@ -141,13 +141,15 @@ export default function BloodBankPage() {
                         </CardHeader>
                         <CardContent>
                              <Tabs defaultValue="find" className="w-full">
-                                <TabsList className="grid w-full grid-cols-3 h-auto p-1">
-                                    <TabsTrigger value="find" className="text-sm font-semibold h-12">Find a Donor</TabsTrigger>
-                                    <TabsTrigger value="request" className="text-sm font-semibold h-12">Request Blood</TabsTrigger>
-                                    <TabsTrigger value="register" className="text-sm font-semibold h-12 flex-col gap-1">
-                                        <div className='flex items-center gap-2'><UserPlus className="h-4 w-4"/>Become a Donor</div>
-                                    </TabsTrigger>
-                                </TabsList>
+                                <Card className="p-1">
+                                    <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 h-auto">
+                                        <TabsTrigger value="find" className="text-sm font-semibold h-10">Find a Donor</TabsTrigger>
+                                        <TabsTrigger value="request" className="text-sm font-semibold h-10">Request Blood</TabsTrigger>
+                                        <TabsTrigger value="register" className="text-sm font-semibold h-10 flex items-center gap-2">
+                                            <UserPlus className="h-4 w-4"/>Become a Donor
+                                        </TabsTrigger>
+                                    </TabsList>
+                                </Card>
                                 <div className="mt-6">
                                     <TabsContent value="find" className="mt-0">
                                         <div className="space-y-4">
