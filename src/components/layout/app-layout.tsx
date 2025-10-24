@@ -290,10 +290,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         )}
 
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-            <Button variant="ghost" className="h-10 rounded-full text-primary-foreground flex items-center gap-1.5 p-2">
-                <Wallet className="h-5 w-5" />
-                <span className="font-bold text-sm hidden sm:inline">₹150</span>
-            </Button>
             {isMobile && <GlobalSearch />}
             <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full text-primary-foreground" onClick={() => setLanguage(lang => lang === 'en' ? 'te' : 'en')}>
                 <Languages className="h-5 w-5" />
