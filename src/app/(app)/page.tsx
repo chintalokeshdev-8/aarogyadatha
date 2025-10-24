@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { HeartPulse, MessageSquare, Siren, Users, TestTube, FlaskConical, LifeBuoy, Stethoscope, Microscope, Pill, Headset, Phone, Link2, CalendarCheck, User, Heart, Baby, Leaf, Droplets, Wind, Brain, LayoutGrid, Activity, FileText, MapPin, UserPlus, Shield, CheckCircle, ChevronLeft, ChevronRight, AlertTriangle, Globe, BookOpenCheck, HandHeart } from 'lucide-react';
+import { HeartPulse, MessageSquare, Siren, Users, TestTube, FlaskConical, LifeBuoy, Stethoscope, Microscope, Pill, Headset, Phone, Link2, CalendarCheck, User, Heart, Baby, Leaf, Droplets, Wind, Brain, LayoutGrid, Activity, FileText, MapPin, UserPlus, Shield, CheckCircle, ChevronLeft, ChevronRight, AlertTriangle, Globe, BookOpenCheck, HandHeart, Users2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
@@ -37,6 +37,7 @@ const quickAccessItems = [
   { href: '/health-tracker', label: 'Health Tracker', telugu: 'ఆరోగ్య ట్రాకర్', icon: Activity, color: 'hsl(var(--nav-profile))' },
   { href: '/junior-doctors', icon: Headset, label: '24/7 Jr. Doctors', telugu: 'ఉచిత సలహా', color: 'hsl(var(--nav-junior-doctors))' },
   { href: '/pregnancy-tracker', label: 'Pregnancy Care', telugu: 'గర్భం', icon: PregnantLadyIcon, color: 'hsl(var(--nav-appointments))' },
+  { href: '/old-age-assistant', label: 'Old Age Assistant', telugu: 'వృద్ధాప్య సహాయం', icon: Users2, color: 'hsl(var(--nav-old-age))' },
   { href: '/profile', icon: User, label: 'Profile', telugu: 'ప్రొఫైల్', color: 'hsl(var(--nav-profile))' },
   { href: '/emergency', icon: Siren, label: 'Emergency', telugu: 'తక్షణ సహాయం', color: 'hsl(var(--nav-emergency))' },
   { href: '/surgery-care', label: 'Surgery Care', telugu: 'సర్జరీ కేర్', icon: Stethoscope, color: 'hsl(var(--nav-appointments))'},
