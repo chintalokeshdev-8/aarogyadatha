@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User, Wallet } from "lucide-react";
+import { Search, MapPin, HeartPulse, Bone, Brain, Stethoscope as StethoscopeIcon, Baby, Leaf, Phone, Globe, Share2, Copy, Loader2, Star, Calendar, History, ChevronDown, FileText, Pill, CheckCircle, XCircle, Filter, X, PartyPopper, MessageSquare, Upload, Printer, Download, View, XCircleIcon, ImageIcon, File as FileIcon, Sparkles, Map as MapIcon, Clock, PlusCircle, Pencil, Trash2, CreditCard, Lock, Sun, Moon, Separator as SeparatorIcon, ArrowLeft, ChevronRight, HelpCircle, Wifi, Hospital, Briefcase, User, Wallet, Users, HeartHandshake, Bot, Shield, Droplets } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -294,21 +294,21 @@ const doctors = [
 ];
 
 const departments = [
-    { value: "all", label: "All Departments", imageUrl: "https://picsum.photos/seed/alldep/100/100", dataAiHint: "hospital icon" },
-    { value: "Cardiologist", label: "Cardiology", imageUrl: "https://picsum.photos/seed/cardiology/100/100", dataAiHint: "heart organ" },
-    { value: "Orthopedic Surgeon", label: "Orthopedics", imageUrl: "https://picsum.photos/seed/orthopedics/100/100", dataAiHint: "human skeleton bone" },
-    { value: "Orthopaedics", label: "Orthopedics", imageUrl: "https://picsum.photos/seed/orthopedics/100/100", dataAiHint: "human skeleton bone" },
-    { value: "Neurologist", label: "Neurology", imageUrl: "https://picsum.photos/seed/neurology/100/100", dataAiHint: "brain nerves" },
-    { value: "Gynaecologist", label: "Gynaecology", imageUrl: "https://picsum.photos/seed/gynaecology/100/100", dataAiHint: "uterus icon" },
-    { value: "Pediatrician", label: "Pediatrics", imageUrl: "https://picsum.photos/seed/pediatrics/100/100", dataAiHint: "mother child" },
-    { value: "Dermatologist", label: "Dermatology", imageUrl: "https://picsum.photos/seed/dermatology/100/100", dataAiHint: "skin layers" },
-    { value: "Implantologist & Laser Specialist", label: "Dental", imageUrl: "https://picsum.photos/seed/dental/100/100", dataAiHint: "human tooth" },
-    { value: "General Physician", label: "General Physician", imageUrl: "https://picsum.photos/seed/gp/100/100", dataAiHint: "doctor stethoscope" },
-    { value: "Gastroenterologist", label: "Gastroenterology", imageUrl: "https://picsum.photos/seed/gastro/100/100", dataAiHint: "stomach intestine" },
-    { value: "Nephrologist", label: "Nephrology", imageUrl: "https://picsum.photos/seed/nephrology/100/100", dataAiHint: "kidneys organ" },
-    { value: "Urologist", label: "Urology", imageUrl: "https://picsum.photos/seed/urology/100/100", dataAiHint: "urinary system" },
-    { value: "Intensivist", label: "Intensivist", imageUrl: "https://picsum.photos/seed/intensivist/100/100", dataAiHint: "heartbeat monitor" },
-    { value: "General Surgeon", label: "General Surgery", imageUrl: "https://picsum.photos/seed/surgery/100/100", dataAiHint: "surgical tools" },
+    { value: "all", label: "All Departments", Icon: StethoscopeIcon },
+    { value: "Cardiologist", label: "Cardiology", Icon: HeartPulse },
+    { value: "Orthopedic Surgeon", label: "Orthopedics", Icon: Bone },
+    { value: "Orthopaedics", label: "Orthopedics", Icon: Bone },
+    { value: "Neurologist", label: "Neurology", Icon: Brain },
+    { value: "Gynaecologist", label: "Gynaecology", Icon: HeartHandshake },
+    { value: "Pediatrician", label: "Pediatrics", Icon: Baby },
+    { value: "Dermatologist", label: "Dermatology", Icon: Bot },
+    { value: "Implantologist & Laser Specialist", label: "Dental", Icon: ToothIcon },
+    { value: "General Physician", label: "General Physician", Icon: User },
+    { value: "Gastroenterologist", label: "Gastroenterology", Icon: Leaf },
+    { value: "Nephrologist", label: "Nephrology", Icon: Shield },
+    { value: "Urologist", label: "Urology", Icon: Droplets },
+    { value: "Intensivist", label: "Intensivist", Icon: StethoscopeIcon },
+    { value: "General Surgeon", label: "General Surgery", Icon: Briefcase },
 ];
 
 const uniqueDepartments = Array.from(new Map(departments.map(item => [item.label, item])).values());
@@ -1200,7 +1200,7 @@ export default function AppointmentsPage() {
                                             {uniqueDepartments.map(dep => (
                                                 <SelectItem key={dep.value} value={dep.value}>
                                                     <div className="flex items-center gap-2">
-                                                        <Image src={dep.imageUrl} alt={dep.label} width={16} height={16} data-ai-hint={dep.dataAiHint} />
+                                                        <dep.Icon className="h-4 w-4" />
                                                         {dep.label}
                                                     </div>
                                                 </SelectItem>
@@ -1251,7 +1251,7 @@ export default function AppointmentsPage() {
                                     <CardDescription>Select a department to find specialist doctors.</CardDescription>
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                         {uniqueDepartments.filter(dep => dep.value !== 'all').map(dep => (
                                             <div
                                                 key={dep.value}
@@ -1259,7 +1259,7 @@ export default function AppointmentsPage() {
                                                 onClick={() => handleDepartmentSelect(dep.value)}
                                             >
                                                 <div className="p-3 rounded-full bg-primary/10">
-                                                    <Image src={dep.imageUrl} alt={dep.label} width={40} height={40} data-ai-hint={dep.dataAiHint} />
+                                                     <dep.Icon className="h-8 w-8 text-primary" style={{color: 'hsl(var(--nav-appointments))'}} />
                                                 </div>
                                                 <p className="font-bold text-sm">{dep.label}</p>
                                             </div>
@@ -1710,3 +1710,5 @@ export default function AppointmentsPage() {
         </div>
     );
 }
+
+    
