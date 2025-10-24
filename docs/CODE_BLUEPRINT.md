@@ -117,7 +117,7 @@ This section details the primary features available to the user and the componen
         - And others for specific use cases.
 
 ### 3.3. Project Structure
-```
+`'
 /
 ├── public/                 # Static assets
 ├── src/
@@ -140,7 +140,7 @@ This section details the primary features available to the user and the componen
 │   └── lib/                # Utility functions and static data
 ├── tailwind.config.ts      # Tailwind CSS configuration
 └── next.config.ts          # Next.js configuration
-```
+`'
 
 ---
 
