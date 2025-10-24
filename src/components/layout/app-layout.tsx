@@ -419,18 +419,20 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-80" align="end" forceMount>
                         <DropdownMenuItem className="p-3 focus:bg-transparent" asChild>
-                             <div className="flex items-center gap-3 w-full">
-                                <Link href="/profile" className="flex items-center gap-3 flex-1 min-w-0">
+                             <div className="flex items-start gap-3 w-full">
+                                <Link href="/profile" className="flex items-start gap-3 flex-1 min-w-0">
                                     <Avatar className="h-10 w-10">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
                                     <div className="flex-1 space-y-1 overflow-hidden">
-                                        <p className="text-sm font-bold truncate">Chinta Lokesh Babu</p>
-                                        <div className="flex items-center gap-2 text-xs text-muted-foreground font-semibold">
-                                            <span className='truncate'>PAT001</span>
-                                            <Droplets className="h-3 w-3 text-red-500 flex-shrink-0" />
-                                            <span className="flex-shrink-0">O+</span>
+                                        <p className="font-bold truncate">Chinta Lokesh Babu</p>
+                                        <div className="flex items-center justify-between text-xs text-muted-foreground font-semibold">
+                                            <div className='flex items-center gap-2 min-w-0'>
+                                                <span className='truncate'>PAT001</span>
+                                                <Droplets className="h-3 w-3 text-red-500 flex-shrink-0" />
+                                                <span className="flex-shrink-0">O+</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </Link>
@@ -586,5 +588,3 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-    
