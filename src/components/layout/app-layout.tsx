@@ -419,23 +419,24 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-80" align="end" forceMount>
-                        <Link href="/profile" passHref>
-                            <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer">
+                         <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer" asChild>
+                            <Link href="/profile">
                                 <div className="flex items-center gap-3">
                                     <Avatar className="h-10 w-10">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
-                                    <div>
+                                    <div className="flex-1">
                                         <p className="text-lg font-bold">Chinta Lokesh Babu</p>
-                                        <div className="space-y-0.5 text-xs text-muted-foreground">
-                                            <p>Patient ID: PAT001</p>
-                                            <p>Blood Group: O+ Positive</p>
-                                        </div>
                                     </div>
+                                    <DialogTrigger asChild>
+                                        <Button variant="ghost" size="sm" className="h-auto px-2 py-1 flex items-center gap-1 text-primary">
+                                            <Users className="h-4 w-4"/> Switch
+                                        </Button>
+                                    </DialogTrigger>
                                 </div>
-                            </DropdownMenuItem>
-                        </Link>
+                            </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <div className="p-1 max-h-[60vh] overflow-y-auto">
                             <DropdownMenuItem className="p-3">
@@ -443,12 +444,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                 <span className="font-semibold">Wallet</span>
                                 <span className="ml-auto font-bold text-primary">₹150</span>
                             </DropdownMenuItem>
-                            <DialogTrigger asChild>
-                                <DropdownMenuItem className="p-3">
-                                    <Users className="mr-3 text-primary" />
-                                    <span className="font-semibold">Switch Account</span>
-                                </DropdownMenuItem>
-                            </DialogTrigger>
                             
                             {allMenuItems.filter(item => ['communityFund', 'surgery', 'healthKnowledge', 'bloodBank', 'healthTracker', 'jrDoctors', 'pregnancy', 'insurances'].includes(item.id)).map(item => (
                                 <Link href={item.href} key={item.id} passHref>
@@ -582,5 +577,3 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-    
