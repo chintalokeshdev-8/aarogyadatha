@@ -333,6 +333,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                     <span className="font-semibold">Profile</span>
                                 </DropdownMenuItem>
                             </Link>
+                            <DropdownMenuItem className="p-3">
+                                <Wallet className="mr-3 text-primary" />
+                                <span className="font-semibold">Wallet</span>
+                                <span className="ml-auto font-bold text-primary">₹150</span>
+                            </DropdownMenuItem>
                             <DialogTrigger asChild>
                                 <DropdownMenuItem className="p-3">
                                     <Users className="mr-3 text-primary" />
