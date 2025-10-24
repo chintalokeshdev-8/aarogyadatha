@@ -419,13 +419,18 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <DropdownMenuContent className="w-80" align="end" forceMount>
                         <DropdownMenuItem className="p-3 focus:bg-accent cursor-pointer" asChild>
                              <Link href="/profile" passHref>
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-3 w-full">
                                     <Avatar className="h-10 w-10">
                                         <AvatarImage src="/images/profile.jpg" />
                                         <AvatarFallback>CL</AvatarFallback>
                                     </Avatar>
-                                    <div className="flex-1">
-                                        <p className="text-sm font-bold">Chinta Lokesh Babu</p>
+                                    <div className="flex-1 space-y-1">
+                                        <p className="text-sm font-bold truncate">Chinta Lokesh Babu</p>
+                                        <div className="flex items-center gap-2 text-xs text-muted-foreground font-semibold">
+                                            <span>PAT001</span>
+                                            <Droplets className="h-3 w-3 text-red-500" />
+                                            <span>O+</span>
+                                        </div>
                                     </div>
                                     <DialogTrigger asChild>
                                         <Button variant="outline" size="sm" className="h-auto px-2 py-1 flex items-center gap-1 text-primary border-primary/50">
